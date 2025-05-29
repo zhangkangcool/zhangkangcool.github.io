@@ -1,0 +1,9 @@
+https://easyai.tech/ai-definition/cnn/#yuanli
+
+https://zhuanlan.zhihu.com/p/47184529
+
+
+
+全连接的话，某个输出结果与所有的输入都相关。
+
+卷积一般不是全连接，看卷积核大小。
