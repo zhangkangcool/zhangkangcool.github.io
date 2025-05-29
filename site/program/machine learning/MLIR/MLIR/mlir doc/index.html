@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="zhangkangcool" />
+      <link rel="shortcut icon" href="../../../../../img/favicon.ico" />
+    <title>1. IR设计细节 - zhangkangcool's blog</title>
+    <link rel="stylesheet" href="../../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "1. IR\u8bbe\u8ba1\u7ec6\u8282";
+        var mkdocs_page_input_path = "program/machine learning/MLIR/MLIR/mlir doc.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../../.." class="icon icon-home"> zhangkangcool's blog
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../about/">About</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Program</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../llvm-ir/">Llvm ir</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Browser</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../Browser/Chrome%20plugin/">Chrome plugin</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >BuildBot</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../BuildBot/1.3%20A%20Quick%20Tour/">1.3 A Quick Tour</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../BuildBot/1.4.1%20user-contributed%20tutorial/">1 Builder</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../BuildBot/2.1%20Instruction%20arch/">System Architecture</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../BuildBot/Configuration/">1 Configure file</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../BuildBot/First%20Run/">First Run</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../BuildBot/doing/">Doing</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >CAndCPlusPlus</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../CAndCPlusPlus/0%E9%95%BF%E6%95%B0%E7%BB%84/">零长度数组概念</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../CAndCPlusPlus/cmdLine/">cmdLine</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../CAndCPlusPlus/const/">Const</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../CAndCPlusPlus/header/">Header</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../CAndCPlusPlus/inline%20assembly%20test/">1 How to write the inline assembly test program</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../CAndCPlusPlus/option%20header/">Option header</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >C</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/C/C%E8%AF%AD%E8%A8%80%E6%97%B6%E9%97%B4/">C语言时间</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Useful function</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/C/useful_function/C%E8%AF%AD%E8%A8%80/">C语言</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >CPlusPlus</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/C%2B%2B%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4/">C++获取当前时间</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/STD/">STD</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/c%2B%2Bfilt/">1. c++filt</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >ADT</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/ADT/map/">Map</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >C11</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/C11/C11%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">C11类型转换</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/C11/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">1. 不涉及到类的情况</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/C11/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">智能指针</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >虚表虚指针</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/%E8%99%9A%E8%A1%A8%E8%99%9A%E6%8C%87%E9%92%88/C%2B%2B%E8%99%9A%E8%A1%A8%E5%9C%B0%E5%9D%80%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E5%9C%B0%E5%9D%80%E6%89%93%E5%8D%B0/">C++虚表地址、虚函数地址打印</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/%E8%99%9A%E8%A1%A8%E8%99%9A%E6%8C%87%E9%92%88/print%E8%99%9A%E8%A1%A8%E8%99%9A%E6%8C%87%E9%92%88/">Print虚表虚指针</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/%E8%99%9A%E8%A1%A8%E8%99%9A%E6%8C%87%E9%92%88/%E5%8D%95%E7%BB%A7%E6%89%BF/">Example</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/%E8%99%9A%E8%A1%A8%E8%99%9A%E6%8C%87%E9%92%88/%E5%A4%9A%E7%BB%A7%E6%89%BF/">Example:</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/CPlusPlus/%E8%99%9A%E8%A1%A8%E8%99%9A%E6%8C%87%E9%92%88/%E8%99%9A%E5%9F%BA%E7%B1%BB/">Example1</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Float Point</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/Float%20Point/FCMP/">llvm IR fcmp Instruction</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/Float%20Point/Float%20Point/">Float Point</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/Float%20Point/LLVM%20IR/">LLVM IR</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/Float%20Point/NaN/">NaN</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Clang</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/Clang%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Clang常用命令</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/Opt%20level/">Opt level</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/Other%20arch/">Other arch</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/clang%20cc1%20Xclang/">clang cc1 Xclang</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/clang%20option/">Clang option</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/%E6%9F%A5%E7%9C%8Binclude%20path/">2 查看include path(以下方法也可以用于clang)</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/%E7%BC%96%E8%AF%91%E6%AD%A5%E9%AA%A4/">编译步骤</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Clang calltree</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../CAndCPlusPlus/clang/clang%20calltree/calltree/">Calltree</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Inline</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/inline/inline/">Inline</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/inline/inline%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">C/C++中的inline关键字</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >openMP</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/openMP/openmp/">Openmp</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >命令行参数</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/getopt/">getopt()函数</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/getopt_long/">Getopt long</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../CAndCPlusPlus/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/getopt_long2/">Getopt long2</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >GCC</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../GCC/bin%20install/">Bin install</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../GCC/build/">1. Download site</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../GCC/gcc%20-M/">参数详解</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../GCC/lto/">Lto</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../GCC/opt%20level/">Opt level</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Gdb</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GCC/gdb/gdb%20%E8%B0%83%E8%AF%95%E5%88%A9%E5%99%A8/">Gdb 调试利器</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GCC/gdb/log/">Log</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GCC/gdb/print/">Print</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >GPU</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../GPU/%E4%B8%89%E7%A7%8Dshader%E7%BC%96%E8%AF%91%E5%99%A8/">三种shader编译器</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >GL</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GPU/GL/Uniform%E5%8F%98%E9%87%8F/">Uniform变量</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GPU/GL/openGL%E6%95%99%E7%A8%8B/">openGL教程</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GPU/GL/webGL/">着色器入门</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >基础概念</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GPU/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Saturate/">Saturate</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../GPU/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/swizzle/">Swizzle</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Go</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../Go/Go%20project/">Go project</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Optimization</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >尺寸size优化</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Optimization/%E5%B0%BA%E5%AF%B8size%E4%BC%98%E5%8C%96/%E5%8E%BB%E6%8E%89%E7%AC%A6%E5%8F%B7%E8%A1%A8/">动态链接库/优化---清除符号表信息</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Script</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../Script/get%20current%20dir/">Get current dir</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../Script/search%20all%20header%20file/">Search all header file</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Tool</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >画图</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Tool/%E7%94%BB%E5%9B%BE/%E5%9C%A8%E7%BA%BF%E7%94%BB%E5%9B%BE/">在线画图</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Typora</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../Tool/%E7%94%BB%E5%9B%BE/Typora/%E7%94%BB%E5%9B%BE/">画图</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Windows</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >WSL</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Windows/WSL/Error/">Error</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Windows/WSL/files%20share/">Files share</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Windows/WSL/install/">Install</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Windows/WSL/vscode/">Vscode</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Windows/WSL/%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/">离线安装</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >远程桌面连接</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../Windows/%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E8%BF%9E%E6%8E%A5/windows%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E8%BF%9E%E6%8E%A5/">Windows远程桌面连接</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Bazel</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../bazel/bazel/">Bazel</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Comment</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../comment/doxygen/">Doxygen</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Compiler</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >General compiler</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/General_compiler/SSA/">SSA</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/General_compiler/Useful%20web/">Useful web</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/General_compiler/cmd/">Option</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >CFG</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/General_compiler/CFG/Loop/">Natural Loop</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Asm & linker</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/General_compiler/asm%20%26%20linker/asm_linker/">Asm linker</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/General_compiler/asm%20%26%20linker/example/">Example</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/General_compiler/asm%20%26%20linker/linker/">Linker</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/General_compiler/asm%20%26%20linker/llvm%20asm/">Parser： asm -&gt; MCInst</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >链接库</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" >动态库</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >静态库</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >OpenCL</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/OpenCL/clBuildProgram%20%26%20clCompileProgram/">clBuildProgram & clCompileProgram</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/OpenCL/clCreateKernel/">clCreateKernel</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/OpenCL/cl%E7%BC%96%E8%AF%91%E6%88%90spirv/">Cl编译成spirv</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/OpenCL/%E4%B8%89%E4%B8%AAclCreateProgramWith%E5%87%BD%E6%95%B0/">三个clCreateProgramWith函数</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/OpenCL/%E4%B8%A4%E4%B8%AAclCreateKernel%E5%87%BD%E6%95%B0/">两个clCreateKernel函数</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/OpenCL/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B/">测试用例</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >OpenCV</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/OpenCV/bilateral/">Bilateral</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/OpenCV/%E4%BF%AE%E6%94%B9%E6%9B%BF%E6%8D%A2CL%E6%96%87%E4%BB%B6/">修改替换CL文件</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/OpenCV/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8OpenCL%E4%BB%A3%E7%A0%81/">如何使用OpenCL代码</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >SPIRV</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/SPIRV/accessChain/">accessChain</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/SPIRV/%E5%88%86%E6%9E%90/">分析</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/SPIRV/%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7/">可视化工具</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >SPIRV LLVM Translator</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/SPIRV-LLVM-Translator/%E7%BC%96%E8%AF%91%E5%92%8C%E4%BD%BF%E7%94%A8/">编译和使用</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >SPIRV Tools</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/SPIRV-Tools/%E7%BC%96%E8%AF%91%E5%92%8C%E4%BD%BF%E7%94%A8/">编译和使用</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Pocl</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/pocl/CTS/">CTS</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/pocl/CTS%E6%B5%8B%E8%AF%95%E8%AF%B4%E6%98%8E/">CTS测试说明</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/pocl/%E7%89%88%E6%9C%AC/">版本</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/pocl/%E7%BC%96%E8%AF%91/">编译</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >工作组 global id local id</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/%E5%B7%A5%E4%BD%9C%E7%BB%84%20global_id%20local_id/clEnqueueNDRangeKernel/">clEnqueueNDRangeKernel</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/OpenCL/%E5%B7%A5%E4%BD%9C%E7%BB%84%20global_id%20local_id/%E5%B7%A5%E4%BD%9C%E7%BB%84/">工作组</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >RA</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/RA/RA/">RA</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/RA/%E7%BA%BF%E6%80%A7%E6%89%AB%E6%8F%8F/">线性扫描</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Linker</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/linker/Relocation/">Relocation</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Make & build</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/make%20%26%20build/configure/">1. configure</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/make%20%26%20build/message/">Message</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/make%20%26%20build/ninja/">Ninja</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/make%20%26%20build/%E7%BC%96%E8%AF%91%E6%97%B6%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E5%91%BD%E4%BB%A4/">编译时显示详细命令</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Cmake</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/cmake%20configure_file/">Cmake configure file</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/cmake%20exe%20case/">Cmake exe case</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/cmake%20lib%20case/">Cmake lib case</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/cmake/">Cmake</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/cmake%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F/">Cmake内置变量</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/message/">Message</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/cmake/%E5%AE%8F%E7%9A%84%E4%BD%BF%E7%94%A8/">宏的使用</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >Cmd</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >Link</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Make</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/make/example/">Example</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../compiler/make%20%26%20build/make/make/">make</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >基础知识</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E4%BE%9D%E8%B5%96/">依赖</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%88%B0%E8%BE%BE%E5%AE%9A%E5%80%BC/">到达定值</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%9C%89%E7%94%A8%E7%9A%84%E6%95%99%E7%A8%8B/">有用的教程</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >基础数据结构</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" >活跃变量分析</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >汇编器</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../compiler/%E6%B1%87%E7%BC%96%E5%99%A8/gas%20%26%20nasm/">gas &amp; nasm</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Docker</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../docker/run/">1 docker run</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../docker/%E4%BC%A0%E6%96%87%E4%BB%B6/">传文件</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Github blog</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../github_blog/markdown/">Markdown</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Linux</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux/signal/">Signal</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux/so%E9%A9%B1%E5%8A%A8%E4%B8%8Edeb%E9%A9%B1%E5%8A%A8/">So驱动与deb驱动</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Library</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/library/%E7%B3%BB%E7%BB%9FLIBRARY%E8%AE%BE%E7%BD%AE/">系统LIBRARY设置</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Repo</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/repo/repo%E5%9C%B0%E5%9D%80/">Ubuntu系统镜像下载，国内镜像站大全</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/repo/%E9%98%BF%E9%87%8C%E9%95%9C%E5%83%8F/">阿里镜像</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Swap</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/swap/swap%E4%BD%9C%E7%94%A8/">简述Linux中Swap分区的作用,linux下的swap分区</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/swap/swap%E5%88%86%E5%8C%BA%E5%A2%9E%E5%8A%A0/">Ubuntu 18.04 swap分区扩展（推荐方法）</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Ubuntu</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/20.04%E8%AE%BE%E7%BD%AEIP/">20.04设置IP</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/cmake/">Cmake</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/repo%20LJW/">repo LJW</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/repo%E6%BA%90/">Repo源</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/vim%E5%8F%98%E6%88%90ABCD/">vim变成ABCD</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/%E5%85%B3%E9%97%ADGUI/">ubuntu如何关闭图形界面，启动文本模式</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/%E5%AE%89%E8%A3%85ssh/">安装ssh</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/%E5%AE%89%E8%A3%85typora/">Linux下激活Typora教程</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/ubuntu/%E8%AE%BE%E7%BD%AEIP/">设置IP</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >共享文件夹</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux/ubuntu/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/samba/">Samba</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux/ubuntu/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6/">共享文件</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >问题</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux/ubuntu/%E9%97%AE%E9%A2%98/Ubuntu%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80terminal/">Ubuntu无法打开terminal</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux/ubuntu/%E9%97%AE%E9%A2%98/%E9%87%8D%E5%90%AF%E5%A4%B1%E8%B4%A5/">UNEXPECTED INCONSISTENCY; RUN fsck MANUALLY.fsck exited with status code 4” 解决方案</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >共享文件夹</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/samba/">Samba</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6/">共享文件</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >连接wifi</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/%E8%BF%9E%E6%8E%A5wifi/%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%81%94%E7%BD%91/">第一次联网</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux/%E8%BF%9E%E6%8E%A5wifi/%E8%87%AA%E5%8A%A8%E8%BF%9E%E7%BD%91/">自动连网</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Linux command</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/diff%20%26%20patch/">Diff & patch</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/find/">Find</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/linux%20rpm%E9%97%AE%E9%A2%98%EF%BC%9A%E6%80%8E%E6%A0%B7%E6%9F%A5%E7%9C%8Brpm%E5%AE%89%E8%A3%85%E5%8C%85%E7%9A%84%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84/">1. 如何安装rpm软件包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/ls%E9%A2%9C%E8%89%B2%E9%97%AE%E9%A2%98/">Ls颜色问题</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/md5sum/">Md5sum</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/mount/">Mount</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/rm/">Linux下禁用rm命令之建立回收站</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/sed/">sed</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/svn%20command/">Svn command</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/useful%20command/">1. scp</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/xargs/">Xargs</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/%E6%89%A7%E8%A1%8CShell%E8%84%9A%E6%9C%AC%E7%9A%844%E7%A7%8D%E6%96%B9%E6%B3%95%E5%8F%8A%E5%8C%BA%E5%88%AB%E4%BB%8B%E7%BB%8D/">执行Shell脚本的4种方法及区别介绍</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/%E6%9F%A5%E7%9C%8BLinux%E5%8F%91%E8%A1%8C%E7%89%88%E5%90%8D%E7%A7%B0%E5%8F%8A%E7%89%88%E6%9C%AC%E5%8F%B7/">查看Linux发行版名称及版本号</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../linux_command/%E6%9F%A5%E7%9C%8Bcache%E4%BF%A1%E6%81%AF/">查看cache信息</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Compress</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/compress/tar/">Tar</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/compress/tar_more/">Tar more</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Gerrit</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/gerrit/Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83/">一、目标</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/gerrit/Gerrit%20%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E5%AE%A1%E6%A0%B8%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97v0.1/">一、创建Gerrit 账号</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/gerrit/Gerrit%2BGitlab%20%E9%9B%86%E6%88%90%E9%83%A8%E7%BD%B2%E5%AE%9E%E4%BE%8B/">一、创建Gerrit 项目工程</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/gerrit/Gerrit%2BJenkins%20%E9%9B%86%E6%88%90%E9%83%A8%E7%BD%B2%E5%AE%9E%E4%BE%8B/">一、 创建jenkins 用户</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/gerrit/gerrit%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E8%AF%B4%E6%98%8E/">一、 Changid</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/gerrit/%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E5%AE%A1%E6%A0%B8%E6%B5%81%E7%A8%8B%E7%AD%96%E5%88%92/">一、 总体设计流程</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Git</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/cherry-pick/">Cherry pick</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/commit%20message/">Commit message</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20bisect/">Git bisect</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20clone/">Git clone</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20command/">1. reset &amp; revert</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20format-patch/">Git format patch</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20log/">1 git reflog</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20merge/">1. git merge &amp; git rebase</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20remove%20untrack/">Git remove untrack</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20reset%E4%B9%8B%E5%90%8E%E7%9A%84%E6%81%A2%E5%A4%8D/">Git reset之后的恢复</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%20submodule/">深入理解Git submodules</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/gitconfig/">Gitconfig</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/gitignore/">Gitignore</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%E6%8D%A2%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80/">Git换仓库地址</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%E7%BD%91%E7%AB%99%E5%8A%A0%E9%80%9F/">使用gitclone.com加速github访问</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/git%E8%AE%BE%E7%BD%AE%E4%BB%A3%E7%90%86/">Git设置代理</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/%E5%88%87%E6%8D%A2%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF/">git 切换远程分支</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/%E5%88%A0%E9%99%A4%E5%88%86%E6%94%AF/">git 删除分支</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/git/%E6%8C%87%E5%AE%9Akey/">指定key</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Error</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/git/error/git%20error/">git checkout</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/git/error/identification%20changed/">Identification changed</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Git rebase</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/git/git%20rebase/git%20rebase/">Git rebase</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/git/git%20rebase/%E4%BF%AE%E6%94%B9%E6%9F%90%E6%AC%A1%E6%8F%90%E4%BA%A4/">用git rebase修改其次提交</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Hook</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/git/hook/hook/">Hook</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/git/hook/%E6%89%8B%E5%86%99git%20hooks%E8%84%9A%E6%9C%AC/">手写 git hooks 脚本（pre-commit、commit-msg）</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Shell</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/shell/getopt%20%26%20getopts/">linux 运行命令行参数,linux shell命令行选项与参数用法详解</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/shell/getopt/">Shell命令 getopt用法详解 命令行参数</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/shell/getopts/">getops命令（只支持短选项，shell内置）</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/shell/shell/">1. if statement</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Echo</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../linux_command/shell/echo/echo%E9%A2%9C%E8%89%B2/">Echo颜色</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Ssh</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/ssh/Error/">Error</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/ssh/ssh%20command/">1 Create the key</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/ssh/ssh%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/">Ssh免密登录</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/ssh/ssh%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%87%AA%E5%8A%A8%E6%96%AD%E5%BC%80%E8%A7%A3%E5%86%B3/">Ssh连接远程服务器自动断开解决</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/ssh/%E5%AE%89%E5%85%A8/">Security</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Useradd & del &sudo</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/useradd%20%26%20del%20%26sudo/add%20%26%20del/">1. useradd</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/useradd%20%26%20del%20%26sudo/sudo/">如何在 Ubuntu 上为用户授予和移除 sudo 权限</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../linux_command/useradd%20%26%20del%20%26sudo/%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%90%8D/">Linux修改用户名</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Llvm</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >DAG</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/DAG/build%20SDNode/">build SDNode</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >IR</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/IR/IR/">Shift</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/IR/nsw%20nuw%20UB/">nsw nuw UB</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >InstSel</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/BuildMI/">BuildMI</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/ISD%20inst%20to%20PPC%20inst/">td中定义的指令</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/ISD/">./lib/CodeGen/TargetLoweringBase.cpp</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/Instruction%20Format/">Instruction Format</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/Instruction%20Selection/">Instruction Selection</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/Instructoin%20Selection%20td%20files/">PPCInstrFormats.td</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/Memory%20format/">Memory format</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/inst%20define/">Independent instruction property</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/llc%20SelectionDag/">Print the SelectionDAG graph</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/pattern%20pat/">1. Simple Pat&lt;</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/InstSel/setOperationAction/">setOperationAction</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Intrinsic</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Intrinsic/Intrinsic/">Intrinsic</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Intrinsic/eh_return/">Clang</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Intrinsic/setrnd/">Setrnd</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Intrinsic/trap/">Trap</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >LL</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/LL/parser%20bb/">Parser bb</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >LLVM分析</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" >1. 代码结构</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/1.%20%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84/">代码结构</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >2. clang功能 & 模式</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/2.%20clang%E5%8A%9F%E8%83%BD%20%26%20%E6%A8%A1%E5%BC%8F/clang%E4%B8%A4%E7%A7%8D%E6%A8%A1%E5%BC%8F/">Clang两种模式</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/2.%20clang%E5%8A%9F%E8%83%BD%20%26%20%E6%A8%A1%E5%BC%8F/clang%E5%8A%9F%E8%83%BD/">clang功能模块</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >3. 核心数据结构</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/3.%20%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/1.%20CompilerInstance/">1. CompilerInstance</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/3.%20%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/2.%20CompilerInvocation/">2. CompilerInvocation</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/3.%20%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/3.%20FrontAction/">3. FrontAction</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/3.%20%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/4.%20Diagnostics/">4. Diagnostics</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/3.%20%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/5.%20SourceManager/">5. SourceManager</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >4. clang AST</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/4.%20clang%20AST/1.%20AST%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/">1. AST的基本结构</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/4.%20clang%20AST/2.%20AST%E7%94%9F%E6%88%90/">2. AST生成</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/4.%20clang%20AST/3.%20AST%E7%9A%84%E9%81%8D%E5%8E%86%20%E5%BA%8F%E5%88%97%E5%8C%96%20Consumer/">1. AST的遍历</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >5. 前端流程</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" >1. 预处理</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >2. 词法分析</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >3. 语法分析</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >4. 语义分析</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >6. 中间代码生成</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/LLVM%E5%88%86%E6%9E%90/6.%20%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB/">函数调用关系</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >llvm IR</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >7. 后端流程</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" >PASS</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >后端总体流程</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >指令选择</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >LTO</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/LTO/lto%E4%BC%98%E5%8C%96/">Lto优化</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/LTO/option/">Option</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >New Backend</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/New%20Backend/How%20to%20do/">How to do</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/New%20Backend/Other%20arch/">Other arch</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Other</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/Extend/">Extend</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/How%20to%20submit%20patch%20to%20Phabricator/">How to submit patch to Phabricator</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/LLVM%20CodeBook/">1. Error</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/LLVM%20study/">1. Some userful LLVM website</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/Useful%20web/">Useful web</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/Value%20%26%20Node/">SDValue &amp; SDNode</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/alias/">Alias</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/cast/">Cast</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/glue%20%26%20chain%20side%20effect/">Glue & chain side effect</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/liveness/">Liveness</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/llvm%20dir/">Llvm dir</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/traverse/">Traverse</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Other/%E6%9F%A5%E7%9C%8B%E4%B8%AA%E4%BA%BA%E5%9C%A8github%E4%B8%8A%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BB%A3%E7%A0%81/">查看个人在github上提交的代码</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >PGO</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/PGO/get%20pgo%20info/">静态分析</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/PGO/llvm%20pdf%20pgo/">Llvm pdf pgo</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Remove</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Remove/remove/">Remove</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Step & Process</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" >CallingConv</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/CallingConv/CallingConv%20def%20%26%20use/">CallingConv def & use</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Register & RA</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/Register%20%26%20RA/PPC%20llvm%20register/">PPCGenRegisterInfo.inc</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/Register%20%26%20RA/Register%20def/">Register def</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/Register%20%26%20RA/Tool/">Tool</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/Register%20%26%20RA/linear%20scan/">Linear scan</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >ShrinkingWrap</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/ShrinkingWrap/ShrinkWarp.cpp/">ShrinkWarp.cpp</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/ShrinkingWrap/tobey/">Tobey</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Debug</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/debug/bugpoint/">LLVM bugpoint tool: design and usage</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/Step%20%26%20Process/debug/llvm%20debug/">GDB</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Use define</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/Use-define/use-define/">1. SSA Reg</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Build</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/AddClang.cmake/">AddClang.cmake</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/AddLLVM.cmake/">AddLLVM.cmake</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/Use%20scripts%28often%29/">Note</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/llvm%20build/">Llvm build</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/log/">Log</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/x86%20machine/">X86 machine</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/">clang option</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/build/%E5%BA%93%E4%BE%9D%E8%B5%96/">库依赖</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Clang</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/clang/Xclang/">Xclang</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/clang/mllvm/">Mllvm</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/clang/%E4%BF%9D%E7%95%99%E4%B8%AD%E9%97%B4%E6%96%87%E4%BB%B6/">保留中间文件</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/clang/%E8%BE%93%E5%87%BApass/">输出pass</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Class</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/class/MO%20%26%20MI/">MO & MI</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/class/PPCInstrInfo/">PPCInstrInfo</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Debug</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/debug/DEBUG_TYPE/">DEBUG TYPE</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Driver</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" >Clang</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/driver/clang/clang/">Clang</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Instruction</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/instruction/%E6%8C%87%E4%BB%A4/">指令</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Learning</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/learning/website/">Website</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Mesa simplify</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/mesa_simplify/Mesa-LLVM-Analysis/">Mesa LLVM Analysis</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/mesa_simplify/Simplify-LLVM-Library/">P1. 可被删除的库</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >POCL</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/mesa_simplify/POCL/spirv/">Spirv</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Options</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/options/Option%20use%20in%20code/">Option use in code</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/options/debug%20pass/">Debug pass</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/options/llc%20option/">Llc option</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/options/llvm%20option/">Llvm option</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/options/%E6%BA%90%E7%A0%81%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AF%B9%E9%80%89%E9%A1%B9%E8%BF%9B%E8%A1%8C%E8%A7%A3%E6%9E%90/">源码中如何对选项进行解析</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Pass</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/LLVM%20Pass%E5%88%86%E7%B1%BB/">LLVM Pass分类</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/Machine%20verify/">Machine verify</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/PassConfig/">PassConfig</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/init%20pass%20and%20addpass/">Init the pass</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/llc%20option%20level%20pass/">Llc option level pass</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/pass%E5%9C%A8%E5%93%AA%E5%84%BF/">Pass在哪儿</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/pass%E6%B3%A8%E5%86%8C/">Pass注册</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/%E6%8C%87%E4%BB%A4%E9%80%89%E6%8B%A9pass/">指令选择pass</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/pass/%E7%A6%81%E7%94%A8pass/">1. 以下是禁用llvm/lib/CodeGen下的pass</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Deubg</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/deubg/clang%E8%BE%93%E5%87%BA%E6%89%80%E7%BB%8F%E8%BF%87%E7%9A%84pass/">Clang输出所经过的pass</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/deubg/debug%20pass/">Debug pass</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/deubg/%E8%BE%93%E5%87%BA%E5%90%84%E7%A7%8Dpass/">输出各种pass</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Opt</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/opt/opt%20pass/">Opt pass</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/opt/pass%20name/">Pass name</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Wiki</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/wiki/summary/">Summary</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >如何写一个pass</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AApass/Write%20pass/">Write pass</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/pass/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AApass/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AApass/">如何写一个pass</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Print</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/print/print%20ISD%20/">print ISD </a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/print/type/">Type</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Process</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/process/llc.cpp/">LLC的所有流程由llc.cpp驱动</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Register</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/register/register/">Register</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Td</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/Calling%20Convention/">Calling Convention</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/Operand/">Operand</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/TableGen/">TableGen</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/create%20td%20files/">Create td files</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/llvm%20td%20files/">1 include/llvm/IR/IntrinsicsPowerPC.td</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/llvm-mc/">Llvm mc</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/multiclass/">Multiclass</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/td%20pattern/">Td pattern</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/td%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF/">Td文件信息</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/td%E8%AF%AD%E6%B3%95/">Td语法</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/%E5%AE%9A%E4%B9%89operand/">定义operand</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/td/%E6%8C%87%E4%BB%A4example/">指令example</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Inc文件</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/td/inc%E6%96%87%E4%BB%B6/%E7%94%9F%E6%88%90inc%E6%96%87%E4%BB%B6/">生成inc文件</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/td/inc%E6%96%87%E4%BB%B6/%E7%94%A8%E8%84%9A%E6%9C%AC%E7%94%9F%E6%88%90/">用脚本生成</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >指令定义</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/td/%E6%8C%87%E4%BB%A4%E5%AE%9A%E4%B9%89/%E5%A4%A7%E4%BA%8E64%E4%BD%8D%E7%9A%84%E6%94%AF%E6%8C%81/">大于64位的支持</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/td/%E6%8C%87%E4%BB%A4%E5%AE%9A%E4%B9%89/%E6%8C%87%E4%BB%A4example/">指令example</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/td/%E6%8C%87%E4%BB%A4%E5%AE%9A%E4%B9%89/%E6%8C%87%E4%BB%A4%E5%AE%9A%E4%B9%89/">指令定义</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/td/%E6%8C%87%E4%BB%A4%E5%AE%9A%E4%B9%89/%E7%AD%89%E4%BB%B7%E7%9A%84%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F%E5%AE%9A%E4%B9%89/">等价的指令格式定义</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Test</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/test/ERROR/">ERROR</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/test/Lnt/">Lnt</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/test/keyword/">Keyword</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/test/llvm%20check%20test/">Llvm check test</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/test/remove%20runcpu/">Remove runcpu</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/test/test%20suite/">How to debug the test suite error</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Write case</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/test/Write%20case/ll%20case/">Ll case</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../llvm/test/Write%20case/mir/">Mir</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Tools</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/tools/alive/">Automatic LLVM's Instcombine Verifier</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/tools/llvm-config/">llvm-confg</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/tools/opt/">Opt</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/tools/position/">Position</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/tools/update_llc_test_checks.py/">Update llc test checks.py</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >交叉编译问题</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/">交叉编译</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >优化</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E4%BC%98%E5%8C%96/Code%20Size%E4%BC%98%E5%8C%96/">Code Size优化</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >基类</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E5%9F%BA%E7%B1%BB/Target/">Target</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >增加新架构</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E5%A2%9E%E5%8A%A0%E6%96%B0%E6%9E%B6%E6%9E%84/CSKY/">CSKY</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E5%A2%9E%E5%8A%A0%E6%96%B0%E6%9E%B6%E6%9E%84/LLVMBuild/">LLVMBuild</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E5%A2%9E%E5%8A%A0%E6%96%B0%E6%9E%B6%E6%9E%84/RISCV/">RISCV</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >处理源文件</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E5%A4%84%E7%90%86%E6%BA%90%E6%96%87%E4%BB%B6/%E8%AF%BB%E5%85%A5LL%E6%96%87%E4%BB%B6/">读入LL文件</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >有用的脚本</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E6%9C%89%E7%94%A8%E7%9A%84%E8%84%9A%E6%9C%AC/%E6%9F%A5%E6%89%BE%E8%B5%B7%E4%BD%9C%E7%94%A8%E7%9A%84Pass/">查找起作用的Pass</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >汇编器</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../llvm/%E6%B1%87%E7%BC%96%E5%99%A8/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Machine learning</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../../AI%20Compiler%20vs%20Traditional%20Compiler/">AI Compiler vs Traditional Compiler</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >AI base concept</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../AI%20base%20concept/case/">Case</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../AI%20base%20concept/pooling/">池化（pooling）</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../AI%20base%20concept/softmax/">Softmax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../AI%20base%20concept/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0relu/">激活函数relu</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >JAX</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../JAX/AOT/">AOT</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../JAX/JAX%E5%AE%89%E8%A3%85/">以下是pip3安装方式</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../JAX/jax_to_pb/">Jax to pb</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../JAX/%E8%B0%83%E8%AF%95%E7%94%A8%E9%80%89%E9%A1%B9/">调试用选项</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >JIT</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/JIT/JIT/">JIT</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/JIT/JIT%E5%8E%9F%E7%90%86%E5%92%8C%E9%99%90%E5%88%B6/">jax.jit避坑指南</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Jax introduce</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" >Markdown格式文件</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Loops</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/loops/jax%20%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86loop/">Jax 如何处理loop</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Matrix</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/matrix/BCOO%20%26%20COO/">BCOO & COO</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/matrix/CSR%20%26%20CSC/">CSR & CSC</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >流程与源码</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%BA%90%E7%A0%81/dialect/">Dialect</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%BA%90%E7%A0%81/hlo%E4%B8%8Emhlo%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/">Hlo与mhlo的相互转换</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../JAX/%E6%B5%81%E7%A8%8B%E4%B8%8E%E6%BA%90%E7%A0%81/jaxpr%E8%BD%ACmhlohlo/">Jaxpr转mhlohlo</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >MLIR</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../../introduce/">MLIR 发布：全新的中介码与编译器框架</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BC%95%E5%85%A5MLIR/">为什么引入MLIR</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" >MLIR</a>
+    <ul class="current">
+                <li class="toctree-l4"><a class="reference internal" href="../framework/">Framework</a>
+                </li>
+                <li class="toctree-l4 current"><a class="reference internal current" href="#">1. IR设计细节</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >翻译文章</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Toy Examples</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../Toy%20Examples/Ch1%20Toy%E8%AF%AD%E8%A8%80%E5%92%8CAST/">Toy语言和AST</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../Toy%20Examples/Ch2%20%E7%94%9F%E6%88%90%E5%88%9D%E7%BA%A7MLIR/">生成初级MLIR</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Mlir hlo</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../mlir-hlo/mlir-hlo/">Mlir hlo</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >NVPTX</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../NVPTX/link/">Link</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >TVM</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../TVM/Frame/">Frame</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../TVM/TVM%E5%BF%AB%E9%80%92%E5%85%A5%E9%97%A8/">TVM快递入门</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../TVM/%E5%88%9D%E8%AF%86TVM/">初识TVM</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >代码解读</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Relay%20IR/">Relay IR</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/relay%E5%88%B0llvm%20ir%201/">Relay到llvm ir 1</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/relay%E5%88%B0llvm%20ir%202/">Relay到llvm ir 2</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/relay%E5%88%B0llvm%20ir%203/">Relay到llvm ir 3</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/relay%E5%88%B0llvm%20ir%204/">Relay到llvm ir 4</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/relay%E5%88%B0llvm%20ir%205/">Relay到llvm ir 5</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Cuda</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../cuda/CUDA%E5%AE%9E%E4%BE%8B/">CUDA实例</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../cuda/nvcc/">Nvcc</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../cuda/nvdia_ptx/">Nvdia ptx</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Tensorflow</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/TensorFlow%20XLA%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">TensorFlow XLA工作原理</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/frame/">Frame</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/pip%20tensorflow%E5%AE%89%E8%A3%85/">tensorflow 安装(只是用pip install 安装tensorflow)</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/xla/">Xla</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/%E4%B8%BAXLA%E5%BC%80%E5%8F%91%E6%96%B0%E7%9A%84%E5%90%8E%E7%AB%AF/">为XLA开发新的后端</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/%E4%BB%8E%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">从源码编译安装</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../tensorflow/%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E9%80%89%E9%A1%B9/">编译调试选项</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >2.0 vs 1.0</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/2.0%20vs%201.0/Tensorflow%202.0%E5%BC%80%E5%8F%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">Tensorflow 2.0开发最佳实践</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >HLOToLLVMIR</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/HLOToLLVMIR/HLO%20Module/">HLO Module</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/HLOToLLVMIR/XLA%E7%BC%96%E8%AF%91/">XLA编译</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/HLOToLLVMIR/flow/">Flow</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/HLOToLLVMIR/gpu/">Gpu</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/HLOToLLVMIR/tensorflow%20xla%20hlo%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8Cpass%20pipeline/">Tensorflow xla hlo 基本概念和pass pipeline</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/HLOToLLVMIR/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E5%92%8C%E6%B3%A8%E9%87%8A/">一些概念和注释</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >PB文件</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../tensorflow/PB%E6%96%87%E4%BB%B6/%E4%BF%9D%E5%AD%98%E4%B8%BApb%E6%96%87%E4%BB%B6/">保存为pb文件</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >从0开始学习深度学习编译器</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BC%96%E8%AF%91%E5%99%A8/url/">6. TVM的编译流程详解</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >基本概念</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/%E5%8D%B7%E7%A7%AF%E5%92%8C%E6%B1%A0%E5%8C%96/">卷积和池化</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >神经网络</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RNN%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">RNN循环神经网络</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/SNN%E8%84%89%E5%86%B2%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">SNN脉冲神经网络</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Other</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../other/abbreviation/">缩写 &amp; abbreviation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../other/complement/">One's complement(反码)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Python</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/aes%E5%8A%A0%E5%AF%86/">python实现AES加密解密</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/constant/">Constant</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/dir/">Dir</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/export%20ENV/">将python加入环境变量_export-在python脚本中设置环境变量</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/file%20read%20write/">File read write</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/options/">1 --user</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/schedule%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">Schedule定时任务</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/shutil/">Shutil</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/tempdir/">Tempdir</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/virtualEnv/">virtualEnv</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/%E5%AE%89%E8%A3%85%E6%88%96%E5%8D%87%E7%BA%A7python/">安装或升级python</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../python/%E8%8E%B7%E5%BE%97%E6%8C%87%E4%BB%A4%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8D/">获得指令文件类型的文件名</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >File read and write</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/File%20read%20and%20write/open/">Open</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/File%20read%20and%20write/truncate/">Python清空文件并替换内容</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/File%20read%20and%20write/%E5%A4%9A%E8%A1%8C%E8%BE%93%E5%85%A5/">多行输入</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Arg option</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/arg%20option/argparser/">argparse详解</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/arg%20option/getopt/">Getopt</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Mail</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/mail/163%E5%8F%91%E9%82%AE%E4%BB%B6/">163发邮件</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Pdb 调试</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/pdb%20%E8%B0%83%E8%AF%95/pdb/">Pdb</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Print</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/print/print%20%25/">Print %</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/print/print%20format/">print.format</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/print/struct/">Python中struct.pack()和struct.unpack()用法详细说明</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Subprocess</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/subprocess/call%20%26%20run/">Call & run</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/subprocess/call/">subprocess.call(cmd, shell = False, timeout = num)</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/subprocess/subprocess/">Subprocess</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >包安装删除等</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E5%8C%85%E5%AE%89%E8%A3%85%E5%88%A0%E9%99%A4%E7%AD%89/%E5%87%A0%E7%A7%8D%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F/">Python安装包的几种常用方式</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E5%8C%85%E5%AE%89%E8%A3%85%E5%88%A0%E9%99%A4%E7%AD%89/%E5%88%A0%E9%99%A4%E5%AE%89%E8%A3%85%E5%8C%85/">删除安装包</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E5%8C%85%E5%AE%89%E8%A3%85%E5%88%A0%E9%99%A4%E7%AD%89/%E6%9F%A5%E7%9C%8B%E5%B7%B2%E5%AE%89%E8%A3%85%E5%8C%85/">查看已安装包</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >正则表达式</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/re.search%20%26%20re.match/">Re.search & re.match</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/regex%20search/">Regex search</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/regex/">Regex</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/%E6%AD%A3%E5%88%99/">正则</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >问题</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E9%97%AE%E9%A2%98/Cant%20compile%20Python/">Cant compile Python</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../python/%E9%97%AE%E9%A2%98/apt_pkg/">Apt pkg</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Software</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >VMware</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VMware/VMware%20tools/">VMware tools</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VMware/%E6%96%87%E4%BB%B6%E5%A4%B9%E5%85%B1%E4%BA%AB/">文件夹共享</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >VNC</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VNC/WSL%E4%BD%BF%E7%94%A8VNC/">WSL使用VNC</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VNC/%E5%AE%89%E8%A3%85/">安装</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VNC/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">常用命令</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VNC/%E7%81%B0%E5%B1%8F%E9%97%AE%E9%A2%98/">灰屏问题</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VNC/%E9%BC%A0%E6%A0%87%E9%97%AE%E9%A2%98/">鼠标问题</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >VS code</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VS%20code/Use%20clang%20in%20vscode/">Use clang in vscode</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VS%20code/extensions%20list/">Extensions list</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VS%20code/shrotcut/">Mac</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/VS%20code/%E6%8F%92%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%8F%91%E5%87%BA/">插件导入发出</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Remote ssh</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/VS%20code/remote%20ssh/remote%20ssh/">本地VSCode编辑远程服务器文件</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Markdown</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/markdown/markdown/">Markdown</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/markdown/%E7%94%9F%E6%88%90%E7%9B%AE%E5%BD%95/">生成目录</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/markdown/%E7%94%BB%E5%9B%BE/">画图</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Others</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/Useful%20web/">Useful web</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/Visual%20Performance%20Analyzer/">Visual Performance Analyzer</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/ascii%20graph/">Ascii flow</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/bat/">Bat</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/binary-decimal-double/">1. Very useful from Bill'O</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/build%20ld.gold/">If you have error for below</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/call%20hierarchy/">Call hierarchy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/calltree/">Calltree</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/clang-format/">Clang-Format格式化选项介绍</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/diff%20github/">Compare output of WYC and XLC</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/pipestat/">How to use pipestat</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/others/rsync%20%26%20fwatch/">Rsync & fwatch</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Dot</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/others/dot/dot%20tool/">Grammer</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/others/dot/dummy/">Dummy</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/others/dot/study/">Study</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/others/dot/subgraph/">Subgraph</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Perf</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/others/perf/perf/">Perf</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/others/perf/perf%E9%9C%80%E8%A6%81root%E7%9A%84%E9%97%AE%E9%A2%98/">Perf需要root的问题</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Shell tool</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/shell%20tool/mobaxterm/">mobaxterm</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/shell%20tool/terminator/">Terminator</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Tmux</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/shell%20tool/tmux/tmux%20error/">1. linux无法正常启动tmux的解决方法</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/shell%20tool/tmux/tmux/">Tmux</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/shell%20tool/tmux/tmux_config/">Tmux config</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" >源码编译安装</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Typora</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/typora/theme/">Theme</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Vim</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/ctags%20%26%20ctaglist/">Ctags & ctaglist</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/llvm-vim%E8%AE%BE%E7%BD%AE/">Llvm vim设置</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/shortcut/">Shortcut</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/use%20llvm%20to%20modify%20the%20binary%20file/">Use llvm to modify the binary file</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/vim%20command/">Vim command</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/vimrc/">Vimrc</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/vim%E4%B8%AD%E4%BD%BF%E7%94%A8clang%20format/">准备工作</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../../../software/vim/vim%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2/">vim查找和替换详解</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Nvim</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/vim/nvim/nvim/">Nvim</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" >Vim版本异常</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../../../software/vim/vim%E7%89%88%E6%9C%AC%E5%BC%82%E5%B8%B8/ubuntu%E4%B8%8B%E7%9A%84%E9%97%AE%E9%A2%98/">Ubuntu下的问题</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../..">zhangkangcool's blog</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Program</li>
+          <li class="breadcrumb-item">Machine learning</li>
+          <li class="breadcrumb-item">MLIR</li>
+          <li class="breadcrumb-item">MLIR</li>
+      <li class="breadcrumb-item active">1. IR设计细节</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/zhangkangcool/zhangkangcool.github.io/edit/master/docs/program/machine learning/MLIR/MLIR/mlir doc.md">Edit on zhangkangcool</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="1-ir">1. IR设计细节<a class="headerlink" href="#1-ir" title="Permanent link">&para;</a></h1>
+<h3 id="operations">Operations（操作）<a class="headerlink" href="#operations" title="Permanent link">&para;</a></h3>
+<p>MLIR中的语义单位是一个“操作”，称为Op。在MLIR系统中，从指令到函数再到模块，一切都建模为Op。MLIR没有固定的Op集合，因此允许并鼓励用户自定义扩展Op。编译器pass会保守地对待未知Op，并且MLIR支持通过特征（traits）、特殊的Operation hooks和Interfaces等方式为pass描述Op语义。</p>
+<p>Op（见Figure3）具有唯一的操作码（opcode）。从字面上看，操作码是一个字符串，用于标识它所在的dialect和操作。Op可以有零个或多个值作为操作数和结果，并以静态单赋值的形式（SSA）维护操作数和结果。所有值都有一个类型，类似于LLVM IR。除了操作码、操作数和结果外，Op还可能具有属性、区域、块参数和位置信息（<strong>「Attributes, Regions, Block Arguments, and Location Information」</strong>）。Figure4说明了值和Op，<code>％</code>标识符是命名值（包），如果包中有多个值，<code>：</code>后指定包中值的数量（注：如Figure3中的<code>%results:2</code>，表示返回值有2个），而“＃”表示特定值。在一般的文本表示形式中，操作名称是用引号括起来的字符串，后跟括号括起来的操作数。</p>
+<p>下图%result:2表示有两个返回值，"d.opertaion"表示操作名称。<code>(%arg0, %arg1)</code>是两个操作数。</p>
+<p>Regions由<code>{}</code>包起来，属于Op，一个Regision可以有多个blocks。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGyoU6YJBBQQJDL5lylTyzsBaFrR2KeM4X43mGYWamybrEUL8as7fnlkQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>属性：<code>{attribute="value" : !d.type}</code></p>
+<p>每个块都有一个（可能为空）类型化的块参数列表，这些参数是常规值并符合静态单赋值。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGyrqBQyY66elfgYQ6xOcWQPZONyvmqGBicAvSP4eqVXBgwoyzbicz3ASrQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>属性<code>{lower_bound = () -&gt; (0), step = 1 : index, upper_bound = #map3}</code>）。</p>
+<p>其中，<code>lower_bound</code>、<code>step</code>和<code>upper_bound</code>是属性名称。<code>() -&gt; (0)</code>标识用于内联仿射形式，在这个例子中是产生常数0的仿射函数。<code>＃map3</code>标识用于属性别名，该属性别名允许将属性值与标签预先关联，并可以在任何需要属性值的地方使用标签。</p>
+<p>每个块以终止符（<code>terminator</code>）操作结尾</p>
+<p>Op冒号后为类型，Op使用类似尾函数的语法列出其输入和结果类型。：如affine.store...: (f32, memref&lt;?xf32&gt;, index, index) -&gt; ()</p>
+<h3 id="attributes">Attributes（属性）<a class="headerlink" href="#attributes" title="Permanent link">&para;</a></h3>
+<p>MLIR属性是结构化的编译期静态信息，例如整数常量值、字符串数据或常量浮点值列表。属性有类型，每个Op实例都有一个从字符串名称到属性值的开放键值对字典映射。在通用语法描述中，<strong>「属性在Op操作数和其类型之间」</strong>，键值对列表中的不同键值对用逗号分隔，并用大括号将整个键值对列表括起来。与操作码一样，MLIR没有固定的属性集。属性的含义由Op语义或与属性相关的dialect 中得出。属性也是可扩展的，允许直接引用外部数据结构，这对于和现有系统集成很有帮助。例如，某个属性可以引用ML系统中（在编译期已知的）数据存储的内容。</p>
+<h3 id="location-information">Location information （位置信息）<a class="headerlink" href="#location-information" title="Permanent link">&para;</a></h3>
+<p>MLIR提供了位置信息的紧凑表示形式，并鼓励在整个系统中处理和传播位置信息。位置信息可用于保留产生Op的源程序堆栈踪迹，用以生成调试信息。位置信息使编译器产生诊断信息的方式变得标准化，并可用于各种测试工具。位置信息也是可扩展的，允许编译器引用现有的位置跟踪系统、高级AST节点、LLVM风格的文件-行-列（file-line-column ）地址、DWARF调试信息或其它高质量编译实现所需的信息。</p>
+<p><strong>「上面三个要点我们可以基于Toy语言的transpose Op来加深理解：」</strong></p>
+<pre><code class="language-c++">%t_tensor = &quot;toy.transpose&quot;(%tensor) {inplace = true} : (tensor&lt;2x3xf64&gt;) -&gt; tensor&lt;3x2xf64&gt; loc(&quot;example/file/path&quot;:12:1)
+</code></pre>
+<p>结构拆分解释：</p>
+<ul>
+<li><code>%t_tensor</code>：这个Operation定义的结果的名字，前面的<code>%</code>是避免冲突，见https://mlir.llvm.org/docs/LangRef/#identifiers-and-keywords 。一个Operation可以定义0或者多个结果（在Toy语言中，只有单结果的Operation），它们是SSA值。该名称在解析期间使用，但不是持久的（例如，它不会在 SSA 值的内存表示中进行跟踪）。</li>
+<li><code>"toy.transpose"</code> ：Operation的名字。它应该是一个唯一的字符串，Dialect 的命名空间前缀为“.”。这可以理解为Toy Dialect 中的transpose Operation。</li>
+<li><code>(%tensor)</code>：零个或多个输入操作数（或参数）的列表，它们是由其它操作定义的SSA值或block参数的引用。</li>
+<li><code>{ inplace = true }</code>：零个或多个属性的字典，这些属性是始终为常量的特殊操作数。在这里，我们定义了一个名为“inplace”的布尔属性，它的常量值为 true。</li>
+<li><code>(tensor&lt;2x3xf64&gt;) -&gt; tensor&lt;3x2xf64&gt;</code>：函数形式表示的操作类型，前者是输入，后者是输出。<code>&lt;2x3xf64&gt;</code>号中间的内容描述了张量的尺寸<code>2x3</code>和张量中存储的数据类型<code>f64</code>，中间使用<code>x</code>连接。</li>
+<li><code>loc("example/file/path":12:1)</code>：此操作的源代码中的位置。</li>
+</ul>
+<h3 id="regions-and-blocks">Regions and Blocks（区域和块）<a class="headerlink" href="#regions-and-blocks" title="Permanent link">&para;</a></h3>
+<p>Op的实例可能附有一系列附加区域。区域为MLIR中的嵌套结构提供了实现机制：一个区域包含一系列块，一个块包含一系列操作（操作中可能又包含区域，如Figure3所示）。与属性一样，区域的语义由其附加的操作定义，但是区域内部的块（如果有多个）可形成控制流图（CFG）。例如，Figure4中的<code>affine.for</code>操作是一个循环，其中位于<code>({</code>和<code>})</code>定界符之间的单独块是一个区域。Op指定了跨区域的控制流。在这个例子中，重复执行主体直到达到循环上限。每个区域的主体是一系列块，每个块以终止符（<code>terminator</code>）操作结尾，终止符操作可能具有后继块，控制流可以转移到后继块。每个终止符（例如“switch”，“conditional branch”或“unwind”）定义自己的语义。终止符可以选择将控制流转移到同一区域中的另一个块，或将其返回到包含该区域的Op。后续块的图定义了CFG，从而允许区域内有基于标准静态单赋值（SSA）的控制流。MLIR不使用节点，而是使用静态单赋值（SSA）的函数形式。其中，终止符将值传给后继块定义的块参数（block arguments）。每个块都有一个（可能为空）类型化的块参数列表，这些参数是常规值并符合静态单赋值。终止符Op的语义定义了在控制权转移后该块的参数会采用的值。对于该区域的第一个（入口）块，值由包含Op的语义定义。例如，<code>affine.for</code>使用入口块参数<code>％arg4</code>作为循环归纳变量。</p>
+<blockquote>
+<p>这里表达的意思就是一个Operation可能有多个Region，然后Region又是由一系列Block组成，然后Block又包含一系列Op。这样就形成了一个嵌套的关系，可以表达作用域和控制流关系。</p>
+</blockquote>
+<h3 id="value-dominance-and-visibility">Value dominance and visibility(值支配和可视化)<a class="headerlink" href="#value-dominance-and-visibility" title="Permanent link">&para;</a></h3>
+<p>Op只能使用作用域内的值，即根据SSA支配、嵌套和包含Operation的语义限制可见的值。如果值遵循标准的SSA支配关系，则在CFG中可以看到这些值，在这些值中，可以确保控件在使用前先经过定义。</p>
+<p>基于区域的可见性是根据区域的简单嵌套来定义的：如果Op的操作数在当前区域之外，则必须在使用的区域上方用外部词法对其进行定义，这允许<code>affine.for</code>操作中的Op使用外部作用域中定义的值。</p>
+<p>MLIR还允许将操作定义为<strong>「与上方隔离」</strong>，表明该操作是<strong>「作用域barrier」</strong>（scope barrier）。例如， “std.func” Op定义了一个函数，该函数内的操作不能引用该函数外定义的值。除了提供有用的语义检查之外，由于没有use-def链可以跨过隔离障碍（isolation barriers），包含与上方隔离（isolated-from-above）的Op的Module也可以由ML编译器并行处理。这对于利用多核计算机进行的编译很重要。</p>
+<h3 id="symbols-and-symbol-tables">Symbols and symbol tables<a class="headerlink" href="#symbols-and-symbol-tables" title="Permanent link">&para;</a></h3>
+<p>Op还可以附加一个符号表。这个符号表是将名称（以字符串表示）与IR对象（称为符号）相关联的标准方法。IR没有规定符号的用途，而是交由Op定义。对于无需遵守静态单赋值规则的命名实体，符号很有用。符号不能在同一表中重复定义，但是可以在定义之前使用符号。例如，全局变量、函数或命名模块可以表示为符号。没有这种机制，就不可能定义递归函数（在定义中引用自己）。如果附带符号表的Op的关联区域包含相似的Op，那么符号表可以嵌套。MLIR提供了一种机制来引用Op中的符号，包括嵌套符号。</p>
+<h3 id="dialects">Dialects<a class="headerlink" href="#dialects" title="Permanent link">&para;</a></h3>
+<p>MLIR使用Dialect管理可扩展性。Dialect在一个唯一的命名空间下提供Ops、属性和类型的逻辑分组。Dialect本身并未引入任何新的语义，而是用作逻辑分组机制，并且可用于提供Dialect通用Op支持（例如，dialect中所有op的常量折叠行为）。Dialect命名空间在操作码中是以“.”分隔的前缀，例如，Figure 4使用的<code>affine</code>和<code>std</code> dialect。</p>
+<p>概念上可以将Ops、类型和属性抽象为Dialect，这类似于设计一组模块化库。例如，某种Dialect可以包含用于对硬件向量进行操作的Op和类型（例如，shuffle、insert/extract元素、掩码等），而另一种Dialect可以包含用于对代数向量进行操作的Op和类型（例如，绝对值、点积等 ）。两种dialect是否使用相同的向量类型以及该类型属于哪一个，可以由MLIR用户在设计时决定。</p>
+<p>我们也可以将所有Op、类型和属性放在一个dialect中，但容易想到，这必然很快就会因为大量概念和名称冲突等问题，导致Dialect变得难以管理。尽管每个Op、类型和属性都只属于一个dialect，但是MLIR明确支持多种dialect的混合以便能实现渐进式lowering。来自不同dialect的Op可以在IR的任何级别共存，可以使用在不同dialect中定义的类型，等等。Dialect的混合可以加强重用性、可扩展性和灵活性。</p>
+<h3 id="_1">类型系统<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>MLIR中的每个值都有类型，该类型在产生该值的Op或将值定义为参数的Block中指定。类型为IR提供了编译期语义。MLIR中的类型系统是用户可扩展的，并且可以引用已有外部类型系统（例如llvm::Type或clang::Type）。MLIR强制执行严格的类型等价检查，并且不提供类型转换规则。Op使用类似尾函数的语法列出其输入和结果类型。Figure4中，<code>affine.load</code>从内存引用和索引类型映射到加载的值的类型。从类型理论的角度来看，MLIR仅支持非依赖类型，包括trivial类型、参数类型、函数类型、求和和乘积类型。</p>
+<h3 id="_2">标准类型<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>此外，MLIR提供了一组标准化的常用类型，包括任意精度整数、标准浮点类型和简单的通用容器，如元组（tuple）、多维矢量和张量。这些类型仅是方便Dialect开发者，但是不要求一定使用。</p>
+<h3 id="functions-and-modules">Functions and modules（函数和模块）<a class="headerlink" href="#functions-and-modules" title="Permanent link">&para;</a></h3>
+<p>与常规IR相似，MLIR通常被构造为函数和模块，这些不是MLIR的新概念。函数和模块在builtin dialect中作为Op实现。模块是一个具有单独区域的Op，这个区域包含了一个单独的块。模块被一个不转移控制流的dummy Op终止。</p>
+<p>模块定义了一个可以被引用的符号。像任何块一样，其主体包含一系列Op，这些Op可以是函数、全局变量、编译器元数据或其它顶级构造。函数是具有单个区域的Op，其参数对应于函数参数。</p>
+<p><strong>「函数定义了一个可以按名称引用的符号。使用函数调用Op可以将控制流转移到函数中」</strong>。一旦进入内部，控制流程遵循区域中各个块的CFG。“return”终止符没有后继，而是终止区域执行，从而将控制流转移回函数的调用方。“return”终止符Op的任何操作数都是函数的返回值。</p>
+<pre><code class="language-c++">// Compute A*B using an implementation of multiply kernel and print the
+// result using a TensorFlow op. The dimensions of A and B are partially
+// known. The shapes are assumed to match.
+func.func @mul(%A: tensor&lt;100x?xf32&gt;, %B: tensor&lt;?x50xf32&gt;) -&gt; (tensor&lt;100x50xf32&gt;) {
+  // Compute the inner dimension of %A using the dim operation.
+  %n = memref.dim %A, 1 : tensor&lt;100x?xf32&gt;
+
+  // Allocate addressable &quot;buffers&quot; and copy tensors %A and %B into them.
+  %A_m = memref.alloc(%n) : memref&lt;100x?xf32&gt;
+  memref.tensor_store %A to %A_m : memref&lt;100x?xf32&gt;
+
+  %B_m = memref.alloc(%n) : memref&lt;?x50xf32&gt;
+  memref.tensor_store %B to %B_m : memref&lt;?x50xf32&gt;
+
+  // Call function @multiply passing memrefs as arguments,
+  // and getting returned the result of the multiplication.
+  %C_m = call @multiply(%A_m, %B_m)
+          : (memref&lt;100x?xf32&gt;, memref&lt;?x50xf32&gt;) -&gt; (memref&lt;100x50xf32&gt;)
+
+  memref.dealloc %A_m : memref&lt;100x?xf32&gt;
+  memref.dealloc %B_m : memref&lt;?x50xf32&gt;
+
+  // Load the buffer data into a higher level &quot;tensor&quot; value.
+  %C = memref.tensor_load %C_m : memref&lt;100x50xf32&gt;
+  memref.dealloc %C_m : memref&lt;100x50xf32&gt;
+
+  // Call TensorFlow built-in function to print the result tensor.
+  &quot;tf.Print&quot;(%C){message: &quot;mul result&quot;} : (tensor&lt;100x50xf32&gt;) -&gt; (tensor&lt;100x50xf32&gt;)
+
+  return %C : tensor&lt;100x50xf32&gt;
+}
+
+// A function that multiplies two memrefs and returns the result.
+func.func @multiply(%A: memref&lt;100x?xf32&gt;, %B: memref&lt;?x50xf32&gt;)
+          -&gt; (memref&lt;100x50xf32&gt;)  {
+  // Compute the inner dimension of %A.
+  %n = memref.dim %A, 1 : memref&lt;100x?xf32&gt;
+
+  // Allocate memory for the multiplication result.
+  %C = memref.alloc() : memref&lt;100x50xf32&gt;
+
+  // Multiplication loop nest.
+  affine.for %i = 0 to 100 {
+     affine.for %j = 0 to 50 {
+        memref.store 0 to %C[%i, %j] : memref&lt;100x50xf32&gt;
+        affine.for %k = 0 to %n {
+           %a_v  = memref.load %A[%i, %k] : memref&lt;100x?xf32&gt;
+           %b_v  = memref.load %B[%k, %j] : memref&lt;?x50xf32&gt;
+           %prod = arith.mulf %a_v, %b_v : f32
+           %c_v  = memref.load %C[%i, %j] : memref&lt;100x50xf32&gt;
+           %sum  = arith.addf %c_v, %prod : f32
+           memref.store %sum, %C[%i, %j] : memref&lt;100x50xf32&gt;
+        }
+     }
+  }
+  return %C : memref&lt;100x50xf32&gt;
+}
+</code></pre>
+<h1 id="2-ir">2.  <strong>IR基础设施</strong><a class="headerlink" href="#2-ir" title="Permanent link">&para;</a></h1>
+<p>除了IR本身之外，MLIR还提供了用于定义IR元素（如dialect、Ops、 pattern rewrite、验证和可重用passes）的基础结构。当定义新的抽象并将MLIR用作优化工具包时，MLIR的基础结构对于提供可扩展性和易用性至关重要。</p>
+<h3 id="operation-description">Operation description（操作描述）<a class="headerlink" href="#operation-description" title="Permanent link">&para;</a></h3>
+<p>MLIR使用TableGen[47]规范定义操作描述（Operation Descriptions, ODS），以声明的方式定义Op的结构及其验证程序组件。TableGen是一种在LLVM中广泛使用的数据建模工具，目的是帮助定义和维护领域特定（ domain-specific）信息的记录。ODS可以看作是嵌入TableGen语言并用来定义MLIR Op的DSL。因此ODS语法由TableGen规定，但MLIR特定的语义由ODS规定。ODS定义最终会转换为C++代码，这些代码可以与编译系统的其余部分互操作。</p>
+<p>MLIR使用TableGen Op类在ODS中对Op进行建模。Figure 5显示了Op 用ODS定义的示例。每个Op定义都有一个名称，该名称是唯一标识符。Op的特征（trait）列表描述了Op属性。Op的argument（参数）列表指定Op的操作数和属性。Op定义中还有一个result（结果）列表。Op的参数和结果具有名称和类型约束（例如float或int32的固定形状张量）。Op定义还可以指定人类可读的Op描述。当Op需要定义比ODS提供的更精细的控制时，可以通过builder、printer、parser、verifier语句注入额外C++代码。Op trait可以是通用的，例如“has no side-effects”，也可以是特定于Dialect或ODS的，例如“has custom exporter”。ODS中的traits可以由定义trait行为的C++类支持。MLIR没有固定的trait集合，但是有些trait或者optimizer（对应论文的6.1节）对ODS来说是已知的（例如，“shape result and operand type”表示对于给定输入类型完全捕获输出类型的约束）。</p>
+<p>类型约束会检查参数/结果类型的属性，并且由用户/dialect扩展。MLIR基础结构还提供了许多预定义的类型约束，例如“any type”、““tensor with element satisfying the given constraint”、““vector of given rank”等。ODS对自动推断操作数结果的返回类型的支持很有限，这些操作数使用了由特征带来的约束。更多信息请参见下一节（对应论文的4.2节）。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGyZxtGCuI2p7icXO07yYkFCNDrk7UmoTj31haR2vahdNlibicFW2IDQwUbw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<h3 id="declarative-rewrites">Declarative rewrites（声明式重写）<a class="headerlink" href="#declarative-rewrites" title="Permanent link">&para;</a></h3>
+<p>许多MLIR变换涉及Op操作，尽管某些变换需要对IR进行复杂的修改，但许多其它转换可以表示为对静态单赋值 use-def 关系定义DAG的简单重写。MLIR提供了一个图重写框架，并辅以声明性重写规则（Declarative Rewrite Rule, DRR）系统，使得模式（pattern）表达变得简单。</p>
+<p>与ODS相似，DRR是嵌入到TableGen语言中的DSL。DRR表示源和目标DAG pattern以及约束（包括动态约束[49]）并从pattern优先优先级中受益。pattern可以捕获和重用Op的参数。从概念上讲，DRR表示在特定约束下DAG的等效性。Figure 6给出了DRR模式的示例，该模式将Fiugure 5中定义的Op转换为由<code>compare</code>和<code>select</code>组成的通用低级别实现。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGyFsBzYLzvQTEBgW9sAjFIjA487vrTKA2sEdvDaW5QNdMZBbe4icd2e4A/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" />DRR图改写规则</p>
+<p>DRR被转换为C++代码，可以使用通用图重写框架将其与直接在C++中定义的更复杂的模式混合。通过这项功能，MLIR可以使常见用例保持简洁，且不会限制框架的通用性。</p>
+<h3 id="pass-manager">Pass Manager<a class="headerlink" href="#pass-manager" title="Permanent link">&para;</a></h3>
+<p>MLIR pass管理器以各种粒度组织并处理IR pass序列，保证pass的高效执行。现有编译系统中的pass管理通常是按照固定的粒度（例如，模块、函数或循环 pass管理器）定义的。但在MLIR中，模块和函数并无特殊，它们只是具有区域的Ops，并且有多种变体。<strong>「因此，MLIR pass管理器也不专门针对固定的Op集合，而是针对任意嵌套级别的任意Op。」</strong></p>
+<p><strong>「并行编译」</strong> MLIR的一个重要需求是利用多核计算机来加快编译速度。pass管理器支持并发遍历和修改IR，这可以通过Op的“与上方隔离（isolated-from-above）”属性提供的不变量来实现，因为静态单赋值 use-def链无法跨越这些op的区域边界，因此具有这种行为的Op（例如“ std.func” Op）定义了可以并行处理的区域树。</p>
+<p>这个需求也是MLIR不具有whole-module use-def链的原因（这与LLVM相反）。全局对象通过符号表条目进行引用，而常量则由具有关联属性的Op实现。</p>
+<h3 id="ir">可相互变换的IR文本表示形式<a class="headerlink" href="#ir" title="Permanent link">&para;</a></h3>
+<h3 id="ir_1">可相互变换的IR文本表示形式<a class="headerlink" href="#ir_1" title="Permanent link">&para;</a></h3>
+<p>MLIR中的IR和Op具有文本表示形式，可以完全反映内存中的IR表示，这对于调试、理解变换期间的IR以及编写测试用例至关重要。Figure4所示的原始IR表示冗长且难以理解，因此MLIR允许用户为Op定义定制的打印和解析格式，这使得示例可以如Figure 8所示进行打印和解析，这更容易使用。两种形式可以完全相互转换，并且可以使用文本形式作为输入和输出，分别测试每个编译器pass。由于没有隐藏状态，因此运行单个pass的结果与在完整pass pipeline中运行相同pass的结果相同。这种方法对用户友好，因为可以手动创建IR格式，并可方便跟踪IR转换。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGynu0Sw0DghDS7UL0F1zkUzQNJ1WPWhX09SPNPvpu7OLjaJropvx9SSA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" />自定义解析格式的Affine Dialect IR</p>
+<h3 id="_3">文档<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>Dialect、Op和Interfaces都有从其对应ODS描述生成的文档。除了summary和更易读懂的description之外，生成的文档还包括参数和结果类型约束。由于验证代码和文档使用相同的来源，因此文档可以与运行时行为保持同步。</p>
+<h3 id="_4">验证器<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>验证器用于增强 IR 的结构正确性和 Op 的不变性 让pass确定已验证的IR不变式是经过检查的，并且还可以用作调试工具。验证过程以MLIR总体结构属性检查开始，比如，检查类型必须完全匹配，值仅定义一次且遵守支配规则和可见性，符号名称在符号表中是唯一的，所有块均以终结符Op结尾，等等。之后，应用各个Op和属性的验证器。每个Op可以定义一组检查结构和语义有效性规则。例如，二元Op会检查是否有两个操作数，一些Op只接受特定类型的值，而一些Op需要附加特定的属性或区域。同样，Dialect属性只能在特定的Op上被允许使用，或者通过这些属性对其所附加的Op做进一步的限制。例如，Dialect属性可以要求Op仅使用Dialect中定义的类型，即使Op本身更通用。验证失败被视为invariant violation并中止编译。</p>
+<h3 id="tensorflow-graphs">TensorFlow graphs<a class="headerlink" href="#tensorflow-graphs" title="Permanent link">&para;</a></h3>
+<p>尽管大多数编译器开发人员也都熟悉其它表示形式，但是MLIR的关键用例之一是支持机器学习框架的开发。机器学习框架的内部表示通常基于具有动态执行语义的数据流图[53]。</p>
+<p>TensorFlow[1]是这种框架的一个例子。TensorFlow的表示是高级数据流计算，其中的节点是可以放置在各种设备（包括特定的硬件加速器）上的各种计算过程。</p>
+<p>TensorFlow使用MLIR对该内部表示进行建模，并针对Figure1所示的用例进行转换，将简单的代数优化转换为能在（硬件加速器的）数据中心集群上并行执行的、新形式的图，并将IR lowering为能使用XLA[57]这类工具生成高效本地代码、适合移动端部署的表示。MLIR中的TensorFlow Graph表示如图7所示：</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGysUGricI4HMUdqfvoT4KVmCRTcrpUOtwODbiaVgVRgU5QsSYRF42yC61Q/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<h1 id="3-mlir">3. <strong>MLIR设计的成果</strong><a class="headerlink" href="#3-mlir" title="Permanent link">&para;</a></h1>
+<p>MLIR设计有助于对新语言和编译抽象进行建模，同时有助于重用现有的、通用的相关编译方法。<strong>「MLIR对很多问题的有效解决方法是“添加新操作、新类型”，如果可能，将其收集到“某个新dialect”中」</strong>。对于编译器工程而言，这是重大的设计转变，产生了新的机遇，挑战和见解。本节将探讨其中部分观点。</p>
+<h3 id="pass">可重用的编译器Pass<a class="headerlink" href="#pass" title="Permanent link">&para;</a></h3>
+<p>在一个 IR 中可以表示多个抽象级别的能力自然产生了编写跨多个抽象级别工作的pass的想法。关于MLIR的一个常见问题是，既然MLIR具有可扩展的操作和类型系统，那么如何编写编译器pass？虽然编译器pass可能总是以保守、正确的方式处理未知结构，但MLIR的目标是生成高性能代码，主要有四种方法：</p>
+<p><strong>「基本操作特征」</strong> 一些“bread and butter”编译器pass（如“死代码消除”和“通用子表达式消除”）只依赖我们定义为Op traits简单属性（例如“has no side effect”或“is commutative”）。ODS中Op的定义允许Op的开发者指定这些特征，并且pass可以使用此信息来保持操作在许多不同抽象域都适用。</p>
+<p>MLIR的可扩展性体现为包含一些结构属性，其中包括下述信息：<strong>「是否知道某个操作是控制流终止符」</strong>，<strong>「是否知道某个操作包含的区域是与上方隔离的」</strong>（isolated-from-above）等等。这些信息可用于函数、闭包、模块和其他代码结构的建模和处理。</p>
+<p><strong>「Privileged operation hooks」</strong>（Op的特殊钩子）虽然某些特征可以用单比特建模，但是其它很多特征则需要C++代码实现，例如常量折叠逻辑。MLIR对适用于大量pass的某些hook提供了最好的支持。这些hook可以基于每个操作实现，也可以在dialect对象中实现。后一种方法对支持诸如TensorFlow ops的常量折叠之类pass很方便，在这种情况下，很容易实现对现有逻辑的委托。</p>
+<p>尽管常量折叠是非常重要的功能，但更有意思的hook是<code>getCanonicalizationPatterns</code>，这个hook允许指定应用于操作的折叠模式。这使得重要的代数简化形式（例如x − x→0，min（x，y，y）→min（x，y）等）具有可扩展性，并可帮助将普通“规范化（Canonicalization）”pass应用到所有dialect 。这些都使得单一的可扩展系统可以包含像“InstCombine”、“DAGCombine”、“PeepholeOptimizer”、“SILCombine”这类pass，以及LLVM生态系统（和其它编译器）中的其它特殊用途pass。</p>
+<p><strong>「Optimization interfaces」</strong> (优化接口) MLIR的主要目标是可扩展性，不仅在Op和类型方面，而且在转换方面也要有可扩展性。虽然规范化（canonicalization）和常量折叠是关键操作，但仍需要以某些方式对许多标准转换进行参数化设置，才能描述转换的特定属性，才能实现代码模型等。</p>
+<p>问题的解决方案是称为“优化接口”的子系统。考虑一下MLIR内联pass，我们希望inliner可以处理TensorFlow图、Flang函数、函数语言的闭包等，但是inliner不知道调用方是什么，甚至不知道被调用方是什么。inliner需要了解的核心特性是：</p>
+<ul>
+<li>将给定操作内联到给定区域是否有效；</li>
+<li>如何处理内联后终止于块中间的终止符操作。</li>
+</ul>
+<p>为了了解这些属性，Inliner pass定义了Figure 10中的接口。各个操作和dialect可以向MLIR注册该接口在操作和dialect中的实现，并从通用的Innerer pass中获益。如果某个操作或dialect没有提供接口，则相应的优化pass将会保守地对待该操作。这种设计让dialect的开发者能快速启动开发并运行dialect。随着时间的推移，通过将更多的精力投入到接口的开发，可以从系统中获得更多收益。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/SdQCib1UzF3uz0Xgufw2Oa3NRFwpH8RGyVYbmAY9ywvqGY09BN9ecqgskGMuloYibxPz47ntMstYeyZRHlborWww/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" />内联Pass接口</p>
+<p>优化接口还为核心编译器提供了模块化优势，因为dialect特定的逻辑是在dialect自身内部实现，而不是在核心转换中实现。</p>
+<p><strong>「Dialect特定pass」</strong> 最后，定义特定dialect可以定义专用pass，MLIR系统中的这些pass和在其它编译器系统中的pass一样都很有用。比如说，如果想让代码生成器根据特定的机器约束对机器指令进行自定义调度，就可以通过专用pass达到目的。这可当作开发新转换pass的起点，不需要考虑pass的通用性。</p>
+<h3 id="dialect">Dialect的混合<a class="headerlink" href="#dialect" title="Permanent link">&para;</a></h3>
+<p>MLIR中一个最根本（也是最难理解）的部分是允许并鼓励将来自不同dialect的操作混合在一个程序中。尽管在某些情况下（例如，将主机和加速器的计算保存在同一模块中），这样做很容易理解，但最有趣的情况是，在MLIR中可以将dialect直接混合（因为这样可以实现整个类的重用），这在其它系统中是见不到的。</p>
+<p>考虑第0x6.5.2节中描述的afﬁne dialect。affine控制流和affine映射的定义与affine区域中包含的操作的语义无关。在我们的案例中，我们将afﬁne dialect与“standard” dialect结合起来，以目标无关的形式（如同LLVM IR）表示简单算术，也可以针对内部加速器，将afﬁne dialect与多个目标相关机器指令dialect结合。也有人将afﬁne dialect与其它问题领域的抽象相结合。</p>
+<p>重用通用多面体变换（使用Op Interface获取特定转换中操作的语义）的能力是分解编译器基础结构的一种有力方法。另一个例子是，可以在各种源语言IR中使用和重用OpenMP dialect。</p>
+<h3 id="_5">互操作性<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>本文的工作涉及与大量现有系统的互操作，例如，protobuff格式的机器学习graphs、包括LLVM IR在内的编译器IR、各种专有指令集等。任何一种表示形式不可避免都有各种缺陷，虽然这些缺陷在某个现有系统的适用场景下是合理的，但是MLIR的表达能力使MLIR成为一种更好的表示形式。因为importer和exporters的测试难度很大（测试用例通常是二进制格式），因此我们希望确保其复杂性最低。</p>
+<p>问题的解决方案是尽可能定义与外部系统直接相对应的dialect，从而能以一种简单且可预测的方式来回转换该格式。一旦将IR导入MLIR格式中，就可以使用MLIR基础结构中所有转换，将导入的IR升级或降级为某种更适合的IR格式，并允许对这些转换pass进行类似于所有其它MLIR pass的测试。</p>
+<p>这类dialect的例子很多，包括：a）LLVM dialect，可将LLVM IR映射为MLIR；b）TensorFlow的图表示形式，提出这种表示是为了简化TensorFlow中“切换和合并（switch and merge）”节点相关的分析和转换；c ）函数式控制流运算符。“functional while”和“functional if”在机器学习图中很常见，在这种情况下，将其代码主体作为区域而不是外联（out-of-line）函数更方便。</p>
+<p>这种方法对我们来说效果很好，并且MLIR工具对于编写外来二进制文件格式的测试用例也很有用。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../framework/" class="btn btn-neutral float-left" title="Framework"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../%E7%BF%BB%E8%AF%91%E6%96%87%E7%AB%A0/5.%20MLIR%EF%BC%9A%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B%E7%BB%88%E7%BB%93%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%20%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/" class="btn btn-neutral float-right" title="5. MLIR：摩尔定律终结的编译器基础结构 论文解读">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>zhangkangcool</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/zhangkangcool/zhangkangcool.github.io" class="fa fa-code-fork" style="color: #fcfcfc"> zhangkangcool</a>
+        </span>
+    
+    
+      <span><a href="../framework/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../%E7%BF%BB%E8%AF%91%E6%96%87%E7%AB%A0/5.%20MLIR%EF%BC%9A%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B%E7%BB%88%E7%BB%93%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%20%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../../..";</script>
+    <script src="../../../../../js/theme_extra.js"></script>
+    <script src="../../../../../js/theme.js"></script>
+      <script src="../../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
