@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>安装 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../WSL%E4%BD%BF%E7%94%A8VNC/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#windowsvnclinux" class="nav-link">Windows下通过VNC访问Linux服务器(可视化界面)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#1-vnc" class="nav-link">1. VNC介绍</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2" class="nav-link">2. 安装方法</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#22-linuxvncserver" class="nav-link">2.2 Linux服务器端安装vncserver</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#3" class="nav-link">3 配置和使用</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>以下安装方法已在ubuntu16.04上测试通过</p>
+<p>https://blog.csdn.net/qq_38451119/article/details/82461855</p>
+<h1 id="windowsvnclinux">Windows下通过VNC访问Linux服务器(可视化界面)</h1>
+<h2 id="1-vnc">1. VNC介绍</h2>
+<p>VNC (Virtual Network Console)，即虚拟网络控制台，它是一款基于 UNIX 和 Linux 操作系统的优秀远程控制工具软件，由著名的 AT&amp;T 的欧洲研究实验室开发，远程控制能力强大，高效实用，并且免费开源。</p>
+<p>VNC基本上是由两部分组成：一部分是客户端的应用程序(vncviewer)；另外一部分是服务器端的应用程序(vncserver)。</p>
+<p>在任何安装了客户端的应用程序(vncviewer)的计算机都能十分方便地与安装了服务器端的应用程序(vncserver)的计算机相互连接。</p>
+<h2 id="2">2. 安装方法</h2>
+<p>因为我是想实现Windows系统下远程打开服务器，并实现可视化</p>
+<p>所以我这里的客户端就是Windows系统，服务器端就是Linux系统</p>
+<h3 id="21-vncviewer">2.1 安装客户端vncviewer</h3>
+<p>先去VNC的官网下载上述的vncviewer</p>
+<p>入口： https://www.realvnc.com/en/connect/download/viewer/</p>
+<p><img alt="img" src="../%E5%AE%89%E8%A3%85.assets/20180906152947884" /></p>
+<p><img alt="img" src="../%E5%AE%89%E8%A3%85.assets/20180906153214236" /></p>
+<h2 id="22-linuxvncserver">2.2 Linux服务器端安装vncserver</h2>
+<pre><code class="language-shell">sudo apt-get install vnc4server    # 系统就会自动安装vncserver
+</code></pre>
+<h2 id="3">3 配置和使用</h2>
+<h3 id="31-vnc">3.1 开启vnc服务</h3>
+<pre><code class="language-python">vncserver    # 分配最小的端口
+vncserver :2 # 指定端口号    vncserver和冒号之间有个空格
+</code></pre>
+<p>首次启动会要求设置密码（<code>不能超过8位，我第一次输入了9位，然后它就只取了我输入的前8位作为密码</code>），用来在客户端访问时使用，后面可以使用vncpasswd 修改。</p>
+<pre><code class="language-python">New 'dw:2 (lincanran)' desktop is dw:2
+
+Starting applications specified in /home/lincanran/.vnc/xstartup
+Log file is /home/lincanran/.vnc/dw:2.log
+</code></pre>
+<p>即此时vncserver已经产生了一个新的桌面，其中的:2是端口号，用于vnc客户端远程连接端口的。</p>
+<p>并且会根据//home/lincanran/.vnc/xstartup（即用户主目录下的 .vnc/xstartup)文件的配置进行启动，</p>
+<p>相关的log运行记录保存在/home/lincanran/.vnc/dw:2.log</p>
+<p>启动vnc成功后，会在主目录下产生一个.vnc目录</p>
+<p>默认的配置文件是<code>~/.vnc/xstartup</code>。</p>
+<p><strong>必须确保<code>xstartup</code>有可执行权限</strong></p>
+<pre><code class="language-shell">chmod a+x ~/.vnc/xstartup
+</code></pre>
+<p>刚安装完如果不修改配置文件的话，从客户端连接时将看不到完整的桌面，而只有一个Terminal窗口，如下所示：</p>
+<p><img alt="img" src="../%E5%AE%89%E8%A3%85.assets/aHR0cHM6Ly9rZndpbWcuaWthZmFuLmNvbS91cGxvYWQvZTAvMGIvZTAwYmM4ZDZmYzgwZGJiYmY1OTZiN2QxMGJhZGYzMDFfdGh1bWIucG5n" /></p>
+<p>也就是只有一个终端窗口没有图形界面，这显然不是我们想要的，那么如何图形化访问呢？这就需要修改vnc的配置文件xstartup。</p>
+<h3 id="32-xstartup">3.2 修改原有xstartup文件以图形化访问(以上出错才修改，说不定默认的可以使用)</h3>
+<p>默认配置文件<code>sudo vim /home/lincanran/.vnc/xstartup</code>修改如下(在utuntu16.04使用如下配置测试通过)：</p>
+<pre><code class="language-shell">#!/bin/sh
+
+# Uncomment the following two lines for normal desktop:
+# unset SESSION_MANAGER
+# 上面这句话在XUbuntu桌面环境下开启vnc的话最好取消注释
+# unset DBUS_SESSION_BUS_ADDRESS  
+#exec /etc/X11/xinit/xinitrc
+#上面这行先不要打开
+# [ -x /etc/vnc/xstartup ] &amp;&amp; exec /etc/vnc/xstartup
+# [ -r $HOME/.Xresources ] &amp;&amp; xrdb $HOME/.Xresources
+# xsetroot -solid grey
+# vncconfig -iconic &amp;
+# x-terminal-emulator -geometry 80x24+10+10 -ls -title &quot;$VNCDESKTOP Desktop&quot; &amp;
+#gnome-session &amp;
+
+
+export XKL_XMODMAP_DISABLE=1
+unset SESSION_MANAGER
+gnome-panel &amp;
+gnome-settings-daemon &amp;
+metacity &amp;
+nautilus &amp;
+gnome-terminal &amp;
+
+# 默认是1024x768，需要根据自己的显示器进行修改，否则看不太清
+VNCSERVERARGS[1]=&quot;-geometry 1920x1080&quot;
+</code></pre>
+<p>修改配置后需要进行重启</p>
+<pre><code class="language-shell">vncserver -kill :2
+vncserver :2
+</code></pre>
+<p>以上方法还不行的话，考虑安装所需要的组件</p>
+<p>https://blog.csdn.net/orDream/article/details/79797113</p>
+<pre><code class="language-shell">sudo apt-get install gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+</code></pre>
+<h3 id="33-vncviewer">3.3 客户端vncviewer建立连接</h3>
+<p>配置好服务器端，接下来就很简单了，就是通过之前安装好的Windows下的vncviewer建立连接，去访问服务器</p>
+<p>打开vncviewer：点击左上角File，然后点击New Connection：</p>
+<p>这里只需要填2个地方：</p>
+<p>这里的VNC SERVER也可以输入：SERVER_IP:5900+2 即 SERVER_IP:5902</p>
+<pre><code class="language-shell">VNC Server: IP:2    # 2是vncserver指定或者默认分配的
+Name: 随便取，以后还可以修改
+</code></pre>
+<p><img alt="img" src="../%E5%AE%89%E8%A3%85.assets/20180906160848720" /></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

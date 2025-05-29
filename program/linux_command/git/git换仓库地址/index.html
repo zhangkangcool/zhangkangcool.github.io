@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Git换仓库地址 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../gitignore/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../git%E7%BD%91%E7%AB%99%E5%8A%A0%E9%80%9F/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://my.oschina.net/u/4370754/blog/3550662</p>
+<p>https://www.liaoxuefeng.com/wiki/896043488029600/898732864121440</p>
+<h4 id="_1">下面是真实的需求和例子</h4>
+<p>把从<code>github</code>上下载的llvm-project源代码，上传到内部使用的<code>gitlab</code>上。</p>
+<ol>
+<li>
+<p>设置好ssh key(不设也行，需要输入密码)</p>
+</li>
+<li>
+<p>登陆到github/gitlab之后，选择新建<code>llvm-project</code>新项目。不要产生REAMDE.md，不要有任何文件，因为会和即将上传的<code>llvm-project</code>有冲突。新建一个无任何文件的空项目。非空的话，最后一部使用force</p>
+</li>
+<li>
+<p>更改远程仓库地址</p>
+</li>
+</ol>
+<p>```shell
+   执行此操作前，在源仓库上多切换这个分支，这样这些分支的信息会下载到本地。在目的仓库上一一进行上传。</p>
+<p>git remote -v      // 查看git对应的远程仓库地址
+   git branch -a<br />
+   git checkout llvm_release_100,切换各种仓库，这些仓库会被上传(比如远程remotes/origin/llvm_release_100)
+   git remote rm origin     // 删除关联对应的远程仓库地址,这里只会有本地仓库
+   git remote -v     // 查看是否删除成功，如果没有任何返回结果，表示OK
+   git remote add origin git@192.168.5.11:kang.zhang/llvm-project.git // 重新关联git远程仓库地址，这里使用git地址，不要使用https地址，否则可能需要输入用户名和密码。
+   git push -u origin master    // 这里可能只会上传master分支，其它分支需要切换过去才行。</p>
+<p>git push -u origin --all   // 所有本地分支分支，需要先把远程分支切换到本地才行
+   ```</p>
+<p>下面脚本把所有的原来的远程分支切换到本地，并进行提交</p>
+<pre><code class="language-shell">git branch -a
+* main
+  remotes/origin/HEAD -&gt; origin/main
+  remotes/origin/canary
+  remotes/origin/dependabot/npm_and_yarn/tools/sva/cross-spawn-7.0.6
+  remotes/origin/fix-diff-crash-opstring
+  remotes/origin/main
+</code></pre>
+<pre><code class="language-shell">#!/bin/bash
+
+# 获取所有本地分支名称
+# branches=$(git branch -l | sed 's/^[ *]*//')
+
+branches=$(git branch -r | cut -d '/' -f 2)
+# git branch -r显示远程分支，如origin/dependabot/npm_and_yarn/tools/sva/cross-spawn-7.0.6
+# cut -d '/' -f 2 提取 dependabot/npm_and_yarn/tools/sva/cross-spawn-7.0.6
+# ，-d '/' 表示以 / 作为分隔符，-f 2- 表示提取从第 2 个字段开始到最后的所有字段。
+echo $branches
+for branch in $branches; do
+    # 切换到当前分支
+    git checkout $branch
+    # 拉取最新代码
+    git pull origin $branch
+    # 推送当前分支到远程仓库
+    git push -u origin $branch
+done
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

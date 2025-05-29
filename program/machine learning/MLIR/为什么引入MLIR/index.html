@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>为什么引入MLIR - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../introduce/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../MLIR/framework/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>MLIR统一了各种层级的IR，通过（Dialect）方式，语法统一，各层dialect之间的跨度小，方便实现，组件可重用，各层可以协调优化。</p>
+<p><img alt="image-20221009170907755" src="../%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BC%95%E5%85%A5MLIR.assets/image-20221009170907755.png" /></p>
+<p>目前深度学习领域的IR数量众多，很难有一个IR可以统一其它的IR，这种百花齐放的局面就造成了一些困境。这里说下我的理解，以TensorFlow Graph为例，它可以直接被转换到TensorRT的IR，nGraph IR，CoreML IR，TensorFlow Lite IR来直接进行部署。或者TensorFlow Graph可以被转为XLA HLO，然后用XLA编译器来对其进行Graph级别的优化得到优化后的XLA HLO，这个XLA HLO被喂给XLA编译器的后端进行硬件绑定式优化和Codegen。在这个过程中主要存在两个问题。</p>
+<ul>
+<li>第一，IR的数量太多，开源要维护这么多套IR，每种IR都有自己的图优化Pass，这些Pass可能实现的功能是一样的，但无法在两种不同的IR中直接迁移。假设深度学习模型对应的DAG一共有10种图层优化Pass，要是为每种IR都实现10种图层优化Pass，那工作量是巨大的。</li>
+<li>第二，如果出现了一种新的IR，开发者想把另外一种IR的图层优化Pass迁移过来，但由于这两种IR语法表示完全不同，除了借鉴优化Pass的思路之外，就丝毫不能从另外一种IR的Pass实现受益了，即互相迁移的难度比较大。此外，如果你想为一个IR添加一个Pass，难度也是不小的。举个例子你可以尝试为onnx添加一个图优化Pass，会发现这并不是一件简单的事，甚至需要我们去较为完整的学习ONNX源码。</li>
+<li>第三，在上面的例子中优化后的XLA HLO直接被喂给XLA编译器后端产生LLVM IR然后Codegen，这个跨度是非常大的。这里怎么理解呢？我想到了一个例子。以优化GEMM来看，我们第一天学会三重for循环写一个naive的矩阵乘程序，然后第二天你就要求我用汇编做一个优化程度比较高的矩阵乘法程序？那我肯定是一脸懵逼的，只能git clone了，当然是学不会的。但如果你缓和一些，让我第二天去了解并行，第三天去了解分块，再给几天学习一下SIMD，再给几个月学习下汇编，没准一年下来我就可以真正的用汇编优化一个矩阵乘法了。所以跨度太大最大的问题在于，我们这种新手玩家很难参与。我之前分享过TVM的Codegen流程，虽然看起来理清了Codegen的调用链，但让我现在自己去实现一个完整的Codegen流程，那我是很难做到的。<a href="https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/n7-ZTzCwFOvHrrzg4gFXQQ">【从零开始学深度学习编译器】九，TVM的CodeGen流程</a></li>
+</ul>
+<p>针对上面的问题，MLIR（Multi-Level Intermediate Representation）被提出。MLIR是由LLVM团队开发和维护的一套编译器基础设施，它强调工具链的可重用性和可扩展性。下面我们具体分析一下：</p>
+<p>针对第一个问题和第二个问题，造成这些深度学习领域IR的优化Pass不能统一的原因就是因为它们没有一个统一的表示，互转的难度高。因此MLIR提出了Dialect，我们可以将其理解为各种IR需要学习的语言，一旦某种IR学会这种语言，就可以基于这种语言将其重写为MLIR。Dialect将所有IR都放在了同一个命名空间里面，分别对每个IR定义对应的产生式以及绑定对应的操作，从而生成MLIR模型。关于Dialect我们后面会细讲，这篇文章先提一下，它是MLIR的核心组件之一。</p>
+<p>针对第三个问题，怎么解决IR跨度大的问题？MLIR通过Dialect抽象出了多种不同级别的MLIR，下面展示官方提供的一些MLIR IR抽象，我们可以看到Dialect是对某一类IR或者一些数据结构相关操作进行抽象，比如llvm dialect就是对LLVM IR的抽象，tensor dialect就是对Tensor这种数据结构和操作进行抽象：</p>
+<p><img alt="img" src="https://pic4.zhimg.com/80/v2-520f9685209f7b941dff67d7b2035d9b_1440w.jpg" />官网提供的MLIR Dialect</p>
+<p>除了这些，各种深度学习框架都在接入MLIR，比如TensorFlow，Pytorch，OneFlow以及ONNX等等，大家都能在github找到对应工程。</p>
+<p>抽象了多个级别的IR好处是什么呢？这就要结合MLIR的编译流程来看，MLIR的编译流程大致如下：</p>
+<p><img alt="img" src="https://pic4.zhimg.com/80/v2-b2b6b256c4d085cced7f70546797149b_1440w.jpg" />图源法斯特豪斯，侵删</p>
+<p>对于一个源程序，首先经过语法树分析，然后通过Dialect将其下降为MLIR表达式，再经MLIR分析器得到目标程序。注意这个目标程序不一定是可运行的程序。比如假设第一次的目标程序是C语言程序，那么它可以作为下一次编译流程的源程序，通过Dialect下降为LLVM MLIR。这个LLVM MLIR即可以被MLIR中的JIT执行，也可以通过Dialect继续下降，下降到三地址码IR对应的MLIR，再被MLIR分析器解析获得可执行的机器码。</p>
+<p>因此MLIR这个多级别的下降过程就类似于我们刚才介绍的可以渐进式学习，解决了IR到之间跨度太大的问题。比如我们不熟悉LLVM IR之后的层次，没有关系，我们交给LLVM编译器，我们去完成前面那部分的Dialect实现就可以了。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

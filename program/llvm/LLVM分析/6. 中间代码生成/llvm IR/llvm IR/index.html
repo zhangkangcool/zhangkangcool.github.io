@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../../img/favicon.ico">
+        <title>llvm IR - My Docs</title>
+        <link href="../../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../../7.%20%E5%90%8E%E7%AB%AF%E6%B5%81%E7%A8%8B/PASS/pass%E7%B1%BB/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>LLVM IR是LLVM项目使用的一种低级的机器无关的字节码形式的中间表示形式。它的设计便于对程序进行分析和优化。LLVM IR采用静态单赋值形式的设计（SSA），程序中的每个变量都只定义一次并赋予一个唯一的名字。LLVM IR还拥有丰富的指令和类型，它的实现高度灵活且模块化。</p>
+<h3 id="1-llvmtype">1.  llvm::Type</h3>
+<p>LLVM类型系统式LLVM IR最重要的特性之一，是llvm IR和一般三地址码的重要区别，是一系列的基于LLVM IR的优化的基础。相当于在三地址码中增加了操作数的类型修饰。</p>
+<p>类型系统通过llvm::Type类实现，Type类型一但实例化不可修改，特定类型的实例仅创建一次，且一旦分配了Type类，不会进行释放。</p>
+<p>Type的所有类型由枚举类型TypeID定义，其中PrimitiveTypes是没有子类的类型。</p>
+<h5 id="12">1.2 类图</h5>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image002.png" /></p>
+<p>图 32 llvm:Type类图</p>
+<h5 id="13-llvmtype">1.3  llvm::Type</h5>
+<p>为所有Type类型的父类，由于构造函数被声明为protected，所以不能被直接实例化。</p>
+<h5 id="14-llvmintegertype">1.4 llvm::IntegerType</h5>
+<p>表示任意位宽的integer类型。位宽的范围为</p>
+<p>[IntegerType::MIN_INT_BITS (1) ,IntegerType::MAX_INT_BITS]。</p>
+<h5 id="15-llvmfunctiontype">1.5 llvm::FunctionType</h5>
+<p>表示函数类型的类，包含了1个返回值类型和1个参数类型列表。语法：</p>
+<p><returntype> (<parameter list>)</p>
+<p>示例：</p>
+<table>
+<thead>
+<tr>
+<th>i32 (i32)</th>
+<th>传入1个i32, 返回i32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float (i16, i32 *) *</td>
+<td>函数指针类型，传入1个i16和1个i32的指针, 返回float.</td>
+</tr>
+<tr>
+<td>i32 (i8*, ...)</td>
+<td>变长函数，至少传入1个i8 的指针, 放回i32，既llvm中printf的函数签名。</td>
+</tr>
+<tr>
+<td>{i32, i32} (i32)</td>
+<td>传入1个i32, 返回1个由2个i32组成的结构体</td>
+</tr>
+</tbody>
+</table>
+<h5 id="16-llvmpointertype">1.6  llvm::PointerType</h5>
+<p>表示指针，即Memory Location。PointerType有1个可选的address space属性，默认为0，非0的address space的语义是实现自定义的(target-specific)的。语法：<type> * ptr，示例：</p>
+<table>
+<thead>
+<tr>
+<th>[4 x i32]*</th>
+<th>长度为4的i32数组指针</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i32 (i32*) *</td>
+<td>函数指针，传入1个i32*, 返回i32.</td>
+</tr>
+<tr>
+<td>i32 addrspace(5)*</td>
+<td>address space 5中的指向i32的指针</td>
+</tr>
+<tr>
+<td>ptr</td>
+<td>不透明指针.</td>
+</tr>
+<tr>
+<td>ptr addrspace(5)</td>
+<td>address space 5中的不透明指针</td>
+</tr>
+</tbody>
+</table>
+<h5 id="17-llvmstructuretype">1.7  llvm::StructureType</h5>
+<p>内存中数据成员的集合，数据成员必须是有size属性的Type。内存中的Structure访问：通过"getelementptr"指令获取数据成员指针，再对指针使用load和store指令。寄存器中的Structure访问：使用extractvalue和insertvalue指令Structure可以是"packed" Structure，按照1byte对齐；也可以是"no-packed" Structure，数据成员间的padding由module中的DataLayout字符串决定。Structure可以是"literal"的，既使用inline的形式定义，例如：{i32, i32}*；也可以是"identified"的，既使用名字进行定义，例如：</p>
+<pre><code class="language-c++">%T1 = type { &lt;type list&gt; }   ; 定义no-packed identified structure T1
+
+%T2 = type &lt;{ &lt;type list&gt; }&gt;  ; 定义packed identified structure T2
+
+Structure也可以是不透明的，通常用于前置声明，语法如下：
+
+%X = type opaque  ; 定义有名字的不透明 structure X
+
+%52 = type opaque ; 定义没有名字的不透明structure 52
+
+</code></pre>
+<h5 id="18-llvmarraytype">1.8  llvm::ArrayType</h5>
+<p>ArrayType是1种将元素在内存中顺序排列的类型，有2个属性：size和元素类型。语法：</p>
+<p>[&lt;# elements&gt; x <elementtype>]</p>
+<p>其中elementtype是任意有size属性的Type。示例：</p>
+<table>
+<thead>
+<tr>
+<th>[40 x i32]</th>
+<th>长度为40的32位整数Array</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[41 x i32]</td>
+<td>长度为41的32位整数Array</td>
+</tr>
+<tr>
+<td>[4 x i8]</td>
+<td>长度为4的8位整数Array</td>
+</tr>
+<tr>
+<td>[3 x [4 x i32]]</td>
+<td>3x4的32位整数Array</td>
+</tr>
+<tr>
+<td>[12 x [10 x float]]</td>
+<td>12x10的单精度浮点Array</td>
+</tr>
+<tr>
+<td>[2 x [3 x [4 x i16]]]</td>
+<td>2x3x4的16位整数Array</td>
+</tr>
+</tbody>
+</table>
+<h5 id="19-llvmvectortype">1.9  llvm::VectorType</h5>
+<p>VectorType表示元素的矢量，用于SIMD（单指令多数据），有3个属性：size，元素类型（必须是primitive类型），是否可扩展(scalable)。如果VectorType是可扩展的，则Vector的实际长度 = N * size。</p>
+<p>当VectorType的长度以byte为单位时，VectorType在内存中的排布和ArrayType相同。当VectorType的长度不以byte为单位时，需要使用bitcase指令完成VectorType到IntegerType的相互转换，示例如下（大端）：</p>
+<pre><code class="language-python">%val = bitcast &lt;4 x i4&gt; &lt;i4 1, i4 2, i4 3, i4 5&gt; to i16
+
+; Bitcasting from a vector to an integral type can be seen as
+
+; concatenating the values:
+
+;  %val now has the hexadecimal value 0x1235.
+
+
+
+store i16 %val, i16* %ptr
+
+
+
+; In memory the content will be (8-bit addressing):
+
+;
+
+;   [%ptr + 0]: 00010010  (0x12)
+
+;   [%ptr + 1]: 00110101  (0x35)
+
+
+
+</code></pre>
+<p>语法：</p>
+<pre><code class="language-python">&lt; &lt;# elements&gt; x &lt;elementtype&gt; &gt;      ; Fixed-length vector
+
+&lt; vscale x &lt;# elements&gt; x &lt;elementtype&gt; &gt;  ; Scalable vector
+</code></pre>
+<p>其中elementtype只能是整数，浮点数，指针。</p>
+<p>示例：</p>
+<table>
+<thead>
+<tr>
+<th>&lt;4 x i32&gt;</th>
+<th>长度为4的32位整数Vector</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt;8 x float&gt;</td>
+<td>长度为8的32位单精度浮点数Vector</td>
+</tr>
+<tr>
+<td>&lt;2 x i64&gt;</td>
+<td>长度为2的64位整数Vector</td>
+</tr>
+<tr>
+<td>&lt;4 x i64*&gt;</td>
+<td>长度为2的64位整数指针Vector</td>
+</tr>
+<tr>
+<td><vscale x 4 x i32></td>
+<td>长度为4的整数倍的32位整数Vector</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-llvmvalue">2.  llvm::Value</h3>
+<p>LLVM IR中所有可能作为操作数参与计算的值的基类，包括指令和函数。其继承树如下。</p>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image004.png" /></p>
+<p>所有的Value都拥有Type，可以通过getType()方法获取，Type不是Value的子类。</p>
+<p>Value可以有名字，有些Value拥有名字且从属于Module，设置此类Value的名字将自动更新对应Module的符号表。</p>
+<h5 id="21-">2.1  定义-使用 链</h5>
+<p>一个具体的值，在IR中可能会在多处被引用，比如函数的参数可能被函数中的多条指令引用。</p>
+<p>每个Value都有一个使用列表“UseList”，用于追踪所有引用该Value的其他Value(即User)，有助于IR分析时构筑定义-使用链（def-use-chain）来分析某个值的生命期。</p>
+<p>一个Value可用于任意数量的ValueHandle对象（类似于指向Value的智能指针），监听RAUW（replace all uses with，在IR变换中，替换某一Value时需要修改所有引用者）与销毁事件。比如一条指令的结果恒为常数，那么就可以用常数替换这条指令。同时还需要修改引用这个Value的Users，这时就可以使用replaceAllUsesWith（Value* V）替换所有使用到该值（Value)的地方为新的常量(Value)。</p>
+<h5 id="22-valuehandle">2.2  ValueHandle</h5>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image006.png" /></p>
+<p>ValueHandle的继承树如上图所示，有三个子类，WeakVH，WeakTrackingVH，CallBackVH。</p>
+<p>WeakVH引用Value，在引用的Value被delete或RAUW后，设置为null；</p>
+<p>WeakTrackingVH引用Value，当引用的Value被delete后，会被置为null；</p>
+<p>CallbackVH引用Value，当引用的Value被delete后，会调用deleted方法，当引用的Value被RAUW后会调用allUsesReplacedWith方法，deleted和allUsesReplacedWith是虚函数，CallbackVH通常被用作用户自定义拓展类的基类。</p>
+<h3 id="3-llvmuser">3  llvm::User</h3>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image008.png" /></p>
+<p>图 35 llvm:User类图</p>
+<p>User类是LLVM IR中所用引用Value类的结点的基类。User类继承自Value类，可被其他User类引用。被引用的Value称为Operands，即操作数，由于LLVM IR是静态单赋值（SSA）形式的，所以User的操作数直接指向Value的定义处，对Operand可以使用索引或迭代器进行遍历。</p>
+<h3 id="4-llvmuse">4  llvm::Use</h3>
+<p>在LLVM IR中，指令与值之间由引用-定义链连接，一个引用表示一条指令或一个值依赖于另一个值（的定义），可以理解为数据流图中的边。llvm::Use类用于表示指令的操作数或其他引用Value的User实例，保持被引用的Value的“使用链”处于最新状态，用于跟踪Module中的指令与值之间的依赖关系，并提供查询和修改User的方法。</p>
+<p>Use类实质上是一个双向链表结点，支持对特定值所有引用的遍历，也支持直接从User的操作数找打被引用的值，以及从值得引用找到User。</p>
+<p>如图 所示，一个Value可以有多个Use，每个Use对应一个User，既def-use chain。一个User可以有多个Use，每个Use对应一个Value，既use-def chain。Use类的核心就是如何让Value和User高效地双向关联。</p>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image010.png" /></p>
+<h5 id="41-valueuser">4.1  遍历Value的User</h5>
+<p>遍历Value的Use进而通过Use找到User。Value类中有一个UseList，而Use类本质上是一个双向链表节点，因此使用Value的Use会被挂接到Value的UseList。Value类中定义了users迭代器用于遍历UseList。</p>
+<h5 id="42-uservalue">4.2  遍历User使用的Value</h5>
+<p>llvm允许User采用2种方式管理Use：1）侵入式（IntrusiveOperands）；2）挂接式（HungOffOperands）。</p>
+<p>可使用operands()迭代器遍历所有Use，根据Use的类型进行dyn_cast后作相应的处理。</p>
+<h3 id="5-llvmmodule">5. llvm::Module</h3>
+<p>用于存储LLVM module的所有相关信息。module是其他LLVM IR对象（如函数，基本块等）的顶层容器，是源程序的一个编译单元，即LLVM以module为单元进行语言的翻译，多个module可由LLVM linker进行链接。module中包含全局变量列表，函数列表，本模块所依赖的库列表（或其他模块），一个符号表，以及关于目标特性的各种数据。</p>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image012.png" /></p>
+<p>module会维护一个GlobalList对象，该对象用于保存module中全局变量所有的常量引用。GlobalList中对应全局变量v的条目清空后才能销毁相应的全局变量v。</p>
+<h3 id="51">5.1  成员</h3>
+<pre><code class="language-c++">private:
+
+ LLVMContext &amp;Context;      ///LLVM线程上下文，类型与常量由此分配
+
+ GlobalListType GlobalList;    ///module中的全局变量链表
+
+ FunctionListType FunctionList;  /// module中的函数链表
+
+ AliasListType AliasList;     ///module中的别名链表
+
+ IFuncListType IFuncList;     ///间接函数链表
+
+ NamedMDListType NamedMDList;   ///命名的metadata链表
+
+ std::string GlobalScopeAsm;   ///全局作用域下的内联的汇编码
+
+ std::unique_ptr&lt;ValueSymbolTable&gt; ValSymTab; ///Value的符号表
+
+ ComdatSymTabType ComdatSymTab;  ///Comdat的符号表
+
+ std::unique_ptr&lt;MemoryBuffer&gt;
+
+ OwnedMemoryBuffer;        ///module直接拥有的mem buffer，仅限legacy用户使用
+
+ std::unique_ptr&lt;GVMaterializer&gt;
+
+ Materializer;          ///用于将全局变量实质化(materialize)，module的加载器
+
+ std::string ModuleID;      ///代表该module的可读的标识符（字符串）
+
+ std::string SourceFileName;   ///对应module的原始的源文件名字，记录在bitcode中.
+
+ std::string TargetTriple;    ///目标平台，格式(arch)(sub)-(vendor)-(sys0-(abi)
+
+ NamedMDSymTabType NamedMDSymTab;  ///NamedMDNode与名字的符号表
+
+ DataLayout DL;          ///与module关联的数据布局，以字符串形式描述
+
+ StringMap&lt;unsigned&gt;
+
+   CurrentIntrinsicIds; ///&lt; Keep track of the current unique id count for
+
+              ///&lt; the specified intrinsic basename.
+
+ DenseMap&lt;std::pair&lt;Intrinsic::ID, const FunctionType *&gt;, unsigned&gt;
+
+   UniquedIntrinsicNames; ///&lt; Keep track of uniqued names of intrinsics
+
+               ///&lt; based on unnamed types. The combination of
+
+               ///&lt; ID and FunctionType maps to the extension that
+
+               ///&lt; is used to make the intrinsic name unique.
+
+
+
+ friend class Constant;
+
+</code></pre>
+<h3 id="6-llvm-llvmcontext">6  llvm:: LLVMContext</h3>
+<p>在线程中使用LLVM时的重要类，拥有并管理LLVM核心框架的全局数据（不透明），包括类型和常量的唯一列表，该类不提供锁，使用时应保证一个线程中只有一个LLVMContext。</p>
+<p>在LLVM编译器的前端、优化器和后端中，都需要使用上下文对象来表示LLVM IR中的各种实体。</p>
+<p>每个llvm::Module都包含一个独立的上下文对象，用于管理该模块中定义的类型、常量和指令等信息。不同模块中的类型、常量和指令不能互相引用，因为它们具有不同的上下文对象。</p>
+<p>llvm::LLVMContext提供了一些方法来操作和查询上下文对象，例如获取或创建类型、创建常量、发出错误信息以及全局初始化等等。以下是几个常见的方法：</p>
+<p>getTypeByName(const char* Name)：根据名称获取类型对象。</p>
+<p>getInt32Ty()：获取32位整数类型对象。</p>
+<p>getConstantInt(const APInt&amp; V)：根据APInt对象创建整数常量对象。</p>
+<p>emitError(const Twine&amp; Msg)：发出错误信息。 </p>
+<p>enableGlobalValueMaterialization()：启用全局值材料化（global value materialization）。</p>
+<p>除了这些基本方法外，llvm::LLVMContext还提供了许多其他方法和属性，用于管理LLVM IR中的各种实体。例如，llvm::LLVMContext还提供了一些静态方法来创建特定类型的常量或指令对象，例如llvm::ConstantInt::get()和llvm::BinaryOperator::Create()等。</p>
+<h3 id="7-llvmglobalvariable">7  llvm::GlobalVariable</h3>
+<p>: public GlobalObject, public ilist_node<GlobalVariable></p>
+<p>全局变量对象，保存LLVM IR中的一个全局变量的信息。全局变量指在函数外定义且具有全局作用域的变量。在程序的任意位置都能访问全局变量。</p>
+<p>llvm::GlobalVariable类提供方法用于创建、查询和修改全局变量，也可设置变量类型，初值以及其他属性，例如是否为常量、是否为外部（external）、是否thread-local（每个线程维护一个独立的该变量的复本）。</p>
+<h5 id="71">7.1  成员</h5>
+<pre><code class="language-c++"> AttributeSet Attrs;
+
+ bool isConstantGlobal : 1;          // 是否为全局常量
+
+ bool isExternallyInitializedConstant : 1;  //该全局变量初值能在初始化执行之前改变？
+</code></pre>
+<h3 id="8-llvmfunciton">8  llvm::Funciton</h3>
+<p>继承自: public GlobalObject, public ilist_node<Function></p>
+<p>llvm::Funciton类表示LLVM IR中的函数/过程，函数是执行特定任务的代码块，并且可从程序的其他部分调用。llvm::Funciton包含一列基本块，一列参数和一个符号表。</p>
+<p>llvm::Funciton继承自GlobalObject，是一个全局独立对象，其次，Function继承ilist_node<Function>，主要的作用是：通过当前节点（Function）可遍历链表上其他节点（遍历Module中的Function）。</p>
+<p>llvm::Funciton提供了创建、操作和查询函数的方法。并能指定函数名称、返回类型、参数类型、参数数量以及可见性、链接与调用约定等其他属性。</p>
+<p>例如，可以使用 getReturnType() 获取函数的返回类型，arg_size() 获取参数数量，以及使用 getEntryBlock() 获取函数的入口块（即函数中的第一个基本块）。您还可以使用 getParent() 获取包含函数的模块。</p>
+<h5 id="81">8.1  成员</h5>
+<pre><code class="language-c++">private:
+
+ BasicBlockListType BasicBlocks;     ///函数中的基本块链表，基本块构成CFG
+
+ mutable Argument *Arguments = nullptr;  ///函数的形参“formal arg”，不表示实际的值，表示类型、参数编号以及参数的attributes
+
+ size_t NumArgs;             ///函数的参数个数
+
+ std::unique_ptr&lt;ValueSymbolTable&gt;
+
+   SymTab;               ///参数args或指令instruction的符号表
+
+ AttributeList AttributeSets;       ///存储函数、返回值、参数的属性信息
+
+
+
+ /*
+
+  * Value::SubclassData
+
+  *
+
+  * bit 0    : HasLazyArguments
+
+  * bit 1    : HasPrefixData
+
+  * bit 2    : HasPrologueData
+
+  * bit 3    : HasPersonalityFn
+
+  * bits 4-13 : CallingConvention
+
+  * bits 14   : HasGC
+
+  * bits 15 : [reserved]
+
+  */
+
+ /// Bits from GlobalObject::GlobalObjectSubclassData.
+
+ enum {
+
+  /// Whether this function is materializable.
+
+  IsMaterializableBit = 0,
+
+ };
+
+</code></pre>
+<h5 id="82-llvmargument">8.2  llvm::Argument</h5>
+<p>llvm::Argument类用于表示LLVM IR中的函数形参。对于函数申明中的每个参数都会相应地构造一个Argument对象来表示，对象中包含参数的名字、类型和在参数列表中的位置信息。</p>
+<p>llvm::Argument类提供方法来访问和修改其属性，还能获取它在函数体中对应的值。</p>
+<h3 id="9-llvm-basicblock">9  llvm:: BasicBlock</h3>
+<p><strong>继承自</strong><strong>:</strong> public Value, public ilist_node_with_parent<BasicBlock, Function></p>
+<p>表示LLVM IR中的基本块。是指令序列的容器，有一个入口点和一个出口点。基本块是控制流图（control flow graph）的基本单位，用于表示程序的执行路径。</p>
+<p>基本块可被跳转分支指令引用，故继承Value对象，基本块的类型为Type::LabelTy，表示其为跳转的目标（即BasicBlock会被例如branch等跳转指令Use）。终结指令（Terminator Instruction）不可出现在基本块中间。基本块由非终结指令序列加一个终结指令尾部。但该类中，特殊情况下允许终结指令临时出现在中间，在中间阶段临时使用这种形式便于构建或修改目标程序。而verifier则会严格执行检查，确保基本块中间没有终结指令以保证基本块的良构。</p>
+<p>BasicBlock继承ilist_node_with_parent<BasicBlock, Function>，可通过当前结点（例，BasicBlock1）获取父节点（例，Func1），也可通过BasicBlock1遍历其他节点BasicBlock234。</p>
+<p>llvm::BasicBlock提供了许多方法来操作基本块，包括向基本块调价指令、删除指令、清空指令列表、获取后继基本块、获取前驱基本块等等。</p>
+<h5 id="91">9.1  成员</h5>
+<pre><code class="language-c++"> friend class BlockAddress;
+
+ friend class SymbolTableListTraits&lt;BasicBlock&gt;;
+
+
+
+ InstListType InstList;    ///拥有指令序列
+
+ Function *Parent;      ///从属于Function对象
+
+</code></pre>
+<h3 id="10-llvminstruction">10  llvm::Instruction</h3>
+<p><strong>继承自</strong><strong>:</strong> public User, public ilist_node_with_parent<Instruction, BasicBlock></p>
+<p>llvm::Instruction类是LLVM框架中所有IR指令的基类，LLVM IR中的每一条指令都由一个llvm::Instruction对象来表示。</p>
+<p>llvm::Instruction继承自User，大部分时候指令会引用操作数，故自然是User。</p>
+<p>llvm::Instruction提供了许多方法，可查询和操作指令，包括获取指令的操作数、查询指令的副作用、获取指令的父函数以及将指令转换为字符串等等。还提供了许多虚函数，被派生类覆盖来实现特殊类型的指令。</p>
+<h5 id="101">10.1  成员</h5>
+<p>BasicBlock *Parent;            //所属基本块</p>
+<p>DebugLoc DbgLoc;              //调试信息元数据</p>
+<p>///在父基本块中的相对位置. 用于在指令见做0（1）局部支配性检查dominance checks</p>
+<p>mutable unsigned Order = 0;</p>
+<h5 id="102">10.2  继承</h5>
+<p>llvm::Instruction的继承树如下所示</p>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image014.png" /></p>
+<h5 id="103-llvminstruction">10.3  llvm::Instruction</h5>
+<p>有许多子类，每个子类对应一种不同类型的指令。</p>
+<h5 id="104-llvmunaryoperators">10.4  llvm::UnaryOperators</h5>
+<p>表示一元运算指令，有一个操作数，常见的一元运算符如取负和取非等运算符；</p>
+<h5 id="105-llvmbinaryoperators">10.5  llvm::BinaryOperators</h5>
+<p>表示二元运算指令，有两个操作数，常见的二元运算有加减乘除等；</p>
+<h5 id="106-llvmcmpinst">10.6  llvm::CmpInst</h5>
+<p>表示比较运算指令，用于比较操作数并将结果存储为布尔值；</p>
+<h5 id="107-llvmbranchinst">10.7  llvm::BranchInst</h5>
+<p>表示分支指令，用于跳转至函数内部的另一基本块；</p>
+<h5 id="108-llvmcallbase">10.8  llvm::CallBase</h5>
+<p>所有调用型指令（InvokeInst 与 CallInst）的基类，包含函数调用相关的信息，包括被调用函数、参数列表、输出操作数bundle、子类控制的操作数等。</p>
+<h5 id="109-llvmcallinst">10.9  llvm::CallInst</h5>
+<p>是CallBase的子类，表示普通函数调用指令，用于调用函数或代码库的中的函数，除了基类提供的属性外，提供了一些可选属性，可是遏制调用指令能否内联展开，设置调用约定（calling convention）等。</p>
+<h5 id="1010-llvminvokeinst">10.10  llvm::InvokeInst</h5>
+<p>是CallBase的子类，表示异常处理调用指令，不同于普通函数调用指令，异常处理调用指令在调用函数时还需要指定异常处理基本块和正常执行基本块。如果在调用过程中出现异常，则程序会跳转到异常处理基本块继续运行；否则，程序会跳转至正常执行基本块。因此， llvm::InvokeInst提供了额外的方法来设置和查询异常处理基本块与正常处理基本块。</p>
+<p>还有很多其他类型的指令包括ReturnInst、ExtractElementInst、SwitchInst、TruncInst、CastInst等，不一一介绍。</p>
+<h3 id="11-llvmconstant">11  llvm::Constant</h3>
+<p>llvm::Constant是LLVM IR中表示常量的基类类，它派生出了许多不同类型的常量对象，例如整型常量、浮点常量、指针常量等等。常量在LLVM IR中一般用于初始化全局变量、函数参数等。</p>
+<p>llvm::Constant类继承自llvm::User，因为llvm::Constant会引用其他llvm::Value，也会被其他Value引用。</p>
+<p>llvm::Constant提供了一些通用方法来操作和查询常量，例如获取常量的类型、获取常量的值、获取常量是否为空（null）等等。下面是一些常见的方法：</p>
+<p>getType()：获取常量的类型。</p>
+<p>isNullValue()：返回常量是否为零值或空指针。</p>
+<p>getUniqueInteger()：获取整数常量的值。</p>
+<p>getSplatValue()：获取向量常量的所有元素的相同值。</p>
+<h5 id="111">11.1  继承</h5>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image016.png" /></p>
+<p>图 39 llvm:Constant类继承树</p>
+<p>llvm::Constant的继承树如上图所示，其中，ConstantData用于表示简单常量，如int，float等；ConstantAggregate用于表示复合常量，如struct，array等；BlockAddress用于表示BasicBlock的地址，ConstantExpr用于表示常量表达式，GlobalValue用于表示全局常量。</p>
+<h5 id="112-llvmconstantdata">11.2  llvm::ConstantData</h5>
+<p>llvm::ConstantData类用于表示LLVM IR中的简单常量数据，是所有简单常量类的基类，继承树如下：</p>
+<p><img alt="img" src="../llvm%20IR.assets/clip_image018.png" /></p>
+<p>图 40 llvm:ConstantData类继承树</p>
+<p>这些ConstantData（子）类直接表示常量的值本身，用户通过这些类来创建和操作LLVM IR中的各种常量，这些常量对象在需要的时候创建，具有全局可见性，可以在不相关的Module之间共享，且不会销毁。</p>
+<h5 id="113-llvmglobalvalue">11.3  llvm::GlobalValue</h5>
+<p>llvm::GlobalValue用于表示LLVM IR中的全局值，派生有函数类，全局变量类和全局别名类。llvm::GlobalValue的定义位于Module层级，它对于Module中的所有函数都是可见的。</p>
+<p>llvm::GlobalValue提供的方法包括访问和修改自身名字、链接类型、可见性以及对齐配置（alignment）、获取值的类型、获取其初始化、获取其定义等</p>
+<h3 id="12-llvmglobalalias">12  llvm::GlobalAlias</h3>
+<p><strong>继承自</strong>: public GlobalValue, public ilist_node<GlobalAlias></p>
+<p>用于表示一个指向全局值（全局函数或变量等）的别名，不创建新数据，只是原有对象的新符号与metadata。允许有多个别名指向同一个底层对象。</p>
+<p>llvm::GlobalAlias提供创建、操作和查询别名的方法，此外还能指定别名的目标全局对象、名称和其他属性（可见性、链接、是外部或内部符号）。</p>
+<h5 id="121">12.1  成员</h5>
+<p>friend class SymbolTableListTraits<GlobalAlias>;</p>
+<h3 id="13-llvmglobalvariable">13  llvm::GlobalVariable</h3>
+<p><strong>继承自</strong>:public GlobalObject, public ilist_node<GlobalVariable></p>
+<p>llvm::GlobalVariable 是用于表示LLVM IR中全局变量的类。全局变量是指在程序的任何地方都可以访问的变量。llvm::GlobalVariable中保存有变量定义和声明，并可用于在代码优化和转换期间分析和修改变量。</p>
+<p>该类提供了多个方法来获取和设置有关变量的信息，例如变量名称、类型、初始值等。除此之外，它还提供了一些实用方法，如检查变量是否为常量以及获取变量的地址等。</p>
+<h3 id="14-llvmglobalfunction">14  llvm::GlobalFunction</h3>
+<p><strong>继承自</strong>:public GlobalObject, public ilist_node<GlobalIFunc></p>
+<p>llvm::GlobalFunction类表示全局函数。它可以用于在 LLVM IR 中表示函数定义和声明，并可用于在代码优化和转换期间分析和修改函数。该类提供了许多方法来获取和设置有关函数的信息，例如函数名称、参数、返回类型等。此外，它还提供了一些实用程序方法，例如检查函数是否是内联函数以及获取函数的入口块等。</p>
+<h3 id="15-llvmglobalifunc">15  llvm::GlobalIFunc</h3>
+<p><strong>继承自</strong><strong>:</strong> public GlobalObject, public ilist_node<GlobalIFunc></p>
+<p>llvm::GlobalIFunc用于表示LLVM IR中的间接函数符号（ifunc）。间接函数符号使用ELF符号类型拓展来标记某个声明的地址应在运行时通过解析函数进行解析。</p>
+<p>llvm::GlobalIFunc继承GlobalObject，是全局独立对象，并可通过getResolverFunction()方法获取其对应的解析函数。</p>
+<h5 id="151">15.1  成员</h5>
+<p>friend class SymbolTableListTraits<GlobalIFunc>;</p>
+<h3 id="16-llvmnamedmdnode">16  llvm::NamedMDNode</h3>
+<p><strong>继承自</strong><strong>:</strong> public ilist_node<NamedMDNode></p>
+<p>由Medadata结点MDNode的链表构成的处在module层级的命名对象</p>
+<h5 id="161">16.1  成员</h5>
+<pre><code class="language-c++">friend class LLVMContextImpl;
+
+friend class Module;
+
+std::string Name;
+
+  Module *Parent = nullptr;
+
+void *Operands; // SmallVector&lt;TrackingMDRef, 4&gt;
+</code></pre>
+<h3 id="17-llvmcomdat">17  llvm::Comdat</h3>
+<p>拥有名字的SelectionKind pair，保证每个Comdat拥有不同的SelectionKind。</p>
+<h5 id="171">17.1  成员</h5>
+<pre><code class="language-c++">private:
+
+ friend class Module;
+
+ friend class GlobalObject;
+
+
+ Comdat();
+
+ void addUser(GlobalObject *GO);
+
+ void removeUser(GlobalObject *GO);
+
+
+ // Points to the map in Module.
+
+ StringMapEntry&lt;Comdat&gt; *Name = nullptr;
+
+ SelectionKind SK = Any;
+
+ // Globals using this comdat.
+
+ SmallPtrSet&lt;GlobalObject *, 2&gt; Users;
+
+</code></pre>
+<h3 id="18-llvmvaluesymboltable">18  llvm::ValueSymbolTable</h3>
+<p>符号表，保存成对的名字与Value对象，封装了访问和操作的接口，并且保证表内词条的唯一性</p>
+<h5 id="181">18.1  成员</h5>
+<pre><code class="language-c++">ValueMap vmap;          ///实际符号表数据，string与llvm::Value的map
+int MaxNameSize;         ///名字的最大尺寸，超出会被cap
+mutable uint32_t LastUnique = 0; ///唯一名字的计数器
+</code></pre>
+<h3 id="19-llvm-memorybuffer">19  llvm:: MemoryBuffer</h3>
+<p>接口，提供一块内存的只读访问，提供简单的方法完成文件读取并导入内存buffer。可访问读入文件的每个char，并保证可以超过EOF，读到最后的‘\0’字符。有利于用户感知文件结束，（读到\0便结束，优于反复检查当前位置）。</p>
+<h5 id="191">19.1  成员</h5>
+<pre><code class="language-c++"> const char *BufferStart; // buffer起点
+
+const char *BufferEnd;  // buffer终点
+
+</code></pre>
+<h3 id="20-llvm-gvmaterializer">20  llvm:: GVMaterializer</h3>
+<p>抽象接口，用于（从文件）加载一个llvm module。该接口可进行递增的或随机访问的函数加载。多用于JIT编译器或过程间优化器，它们不需要将整个程序都放在内存中处理</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../../js/base.js"></script>
+        <script src="../../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

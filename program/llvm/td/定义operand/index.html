@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>定义operand - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../td%E8%AF%AD%E6%B3%95/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E6%8C%87%E4%BB%A4example/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link"></a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#operand" class="nav-link">定义Operand</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="_1"></h2>
+<p>https://blog.csdn.net/fs3296/article/details/141831812</p>
+<h1 id="operand">定义Operand</h1>
+<p>Operand用于定义操作，相关字段如下：</p>
+<pre><code class="language-c++">Type：操作数类型，例如i8、i16、i32等；
+PrintMethod：在class XXXInstPrinter中用于打印该操作数的成员函数，参数分别为const MCInst *MI、unsigned Op、raw_ostream &amp;O。需要cpp实现；
+
+EncoderMethod：在class XXXMCCodeEmitter中用于编码该操作数的成员函数，参数分别为const MCInst &amp;MI、unsigned OpNo、SmallVectorImpl &amp;Fixups、const MCSubtargetInfo &amp;STI，返回值为unsigned，表示错误编号。需要cpp实现；
+
+DecoderMethod：在class XXXDisassembler中用于解码该操作数的成员函数，参数分别为MCInst &amp;Inst、uint64_t Imm、int64_t Address、const void *Decoder，返回值为DecodeStatus；
+
+hasCompleteDecoder：
+
+OperandType：操作数类型字符串，包括MCInstrDesc.h中定义的enum OperandType中，有些target会进行自定义。
+
+OperandNamespace：操作数类型定义所在的namespace。默认为MCOI，即定义在MCInstrDesc.h中；
+MIOperandInfo：子操作数片段。例如地址可能有基地址、偏移、scale等组成，为了可读性将其合并定义为addr；
+MCOperandPredicate：在XXXAsmParser和XXXAsmPrinter发射该操作数有效的匹配前置条件的代码片段。代码片段可访问const MCOperand &amp;MCOp；
+ParserMatchClass：用于汇编解析的方法集合，类型为AsmOperandClass。
+</code></pre>
+<p>class AsmOperandClass用于生成汇编解析代码，其各个字段如下：</p>
+<pre><code class="language-c++">Name：操作数类型名称；
+SuperClasses：操作数分类所属父类列表；
+PredicateMethod：表示class XXXOperand的成员函数名称，该成员函数用于判断是否为该类型的操作数，不定义则为bool is%Name%() const；
+
+RenderMethod：表示class XXXOperand的成员函数名称，该成员函数用于将该操作数添加到MCInst中，不定义则为void add%Name%Operands(MCInst &amp;Inst, unsigned N) const；
+ParserMethod：表示class XXXAsmParser的成员函数名称，用于解析该汇编操作数。函数原型为( OperandMatchResultTy )(OperandVector &amp;Operands)；
+DiagnosticType：当XXXAsmParser解析失败时，触发的错误打印；
+DiagnosticString：当该操作数被赋值一个非法值时，触发的错误打印；
+IsOptional：为1表示为可选参数，为0为必须参数；
+
+DefaultMethod：表示class XXXAsmParser的成员函数名称，当IsOptional时，该成员函数用于创建默认的该操作数，不定义则为std::unique_ptr&lt; XXXOperand &gt; default%Name%Operands() const；
+</code></pre>
+<p>以下示例代码来自<code>CSKYInstrInfo.td</code>：</p>
+<p>下面的定义会用在<code>ParserMatchClass</code>中</p>
+<pre><code class="language-c++">//===----------------------------------------------------------------------===//
+// Operand and SDNode transformation definitions.
+//===----------------------------------------------------------------------===//
+class ImmAsmOperand&lt;string prefix, int width, string suffix&gt; : AsmOperandClass {
+  let Name = prefix # &quot;Imm&quot; # width # suffix;
+  let RenderMethod = &quot;addImmOperands&quot;;
+  let DiagnosticType = !strconcat(&quot;Invalid&quot;, Name);
+}
+
+class SImmAsmOperand&lt;int width, string suffix = &quot;&quot;&gt;
+    : ImmAsmOperand&lt;&quot;S&quot;, width, suffix&gt; {
+}
+
+class UImmAsmOperand&lt;int width, string suffix = &quot;&quot;&gt;
+    : ImmAsmOperand&lt;&quot;U&quot;, width, suffix&gt; {
+}
+
+class OImmAsmOperand&lt;int width, string suffix = &quot;&quot;&gt;
+    : ImmAsmOperand&lt;&quot;O&quot;, width, suffix&gt; {
+}
+</code></pre>
+<pre><code class="language-c++">class oimm&lt;int num&gt; : Operand&lt;i32&gt;,
+  ImmLeaf&lt;i32, &quot;return isUInt&lt;&quot;#num#&quot;&gt;(Imm - 1);&quot;&gt; {
+  let EncoderMethod = &quot;getOImmOpValue&quot;;
+  let ParserMatchClass = OImmAsmOperand&lt;num&gt;;  # 使用上面定义的
+  let DecoderMethod = &quot;decodeOImmOperand&lt;&quot;#num#&quot;&gt;&quot;;
+}
+
+def imm_neg_XFORM : SDNodeXForm&lt;imm, [{
+  return CurDAG-&gt;getTargetConstant(-N-&gt;getSExtValue(), SDLoc(N), MVT::i32);
+}]&gt;;
+
+class oimm_neg&lt;int num&gt; : Operand&lt;i32&gt;,
+  ImmLeaf&lt;i32, &quot;return isUInt&lt;&quot;#num#&quot;&gt;(-Imm - 1);&quot;&gt; {
+}
+
+class uimm&lt;int num, int shift = 0&gt; : Operand&lt;i32&gt;,
+  ImmLeaf&lt;i32, &quot;return isShiftedUInt&lt;&quot;#num#&quot;, &quot;#shift#&quot;&gt;(Imm);&quot;&gt; {
+  let EncoderMethod = &quot;getImmOpValue&lt;&quot;#shift#&quot;&gt;&quot;;
+  let ParserMatchClass =
+    !if(!ne(shift, 0),
+        UImmAsmOperand&lt;num, &quot;Shift&quot;#shift&gt;,
+        UImmAsmOperand&lt;num&gt;);
+  let DecoderMethod = &quot;decodeUImmOperand&lt;&quot;#num#&quot;, &quot;#shift#&quot;&gt;&quot;;
+}
+
+class uimm_neg&lt;int num, int shift = 0&gt; : Operand&lt;i32&gt;,
+  ImmLeaf&lt;i32, &quot;return isShiftedUInt&lt;&quot;#num#&quot;, &quot;#shift#&quot;&gt;(-Imm);&quot;&gt; {
+}
+
+class simm&lt;int num, int shift = 0&gt; : Operand&lt;i32&gt;,
+  ImmLeaf&lt;i32, &quot;return isShiftedInt&lt;&quot;#num#&quot;, &quot;#shift#&quot;&gt;(Imm);&quot;&gt; {
+  let EncoderMethod = &quot;getImmOpValue&lt;&quot;#shift#&quot;&gt;&quot;;
+  let ParserMatchClass = SImmAsmOperand&lt;num&gt;;
+  let DecoderMethod = &quot;decodeSImmOperand&lt;&quot;#num#&quot;, &quot;#shift#&quot;&gt;&quot;;
+}
+</code></pre>
+<pre><code class="language-c++">def oimm4 : oimm&lt;4&gt;;
+def oimm5 : oimm&lt;5&gt; {
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isUInt&lt;5&gt;(Imm - 1);
+    return MCOp.isBareSymbolRef();
+  }];
+}
+def oimm6 : oimm&lt;6&gt;;
+
+def imm5_idly : Operand&lt;i32&gt;, ImmLeaf&lt;i32,
+  &quot;return Imm &lt;= 32 &amp;&amp; Imm &gt;= 0;&quot;&gt; {
+  let EncoderMethod = &quot;getImmOpValueIDLY&quot;;
+  let DecoderMethod = &quot;decodeOImmOperand&lt;5&gt;&quot;;
+}
+
+def oimm8 : oimm&lt;8&gt; {
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isUInt&lt;8&gt;(Imm - 1);
+    return MCOp.isBareSymbolRef();
+  }];
+}
+def oimm12 : oimm&lt;12&gt; {
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isUInt&lt;12&gt;(Imm - 1);
+    return MCOp.isBareSymbolRef();
+  }];
+}
+</code></pre>
+<pre><code class="language-c++">def nimm12 : nimm&lt;12&gt;;
+
+def uimm1 : uimm&lt;1&gt;;
+def uimm2 : uimm&lt;2&gt;;
+
+
+def uimm2_jmpix : Operand&lt;i32&gt;,
+  ImmLeaf&lt;i32, &quot;return Imm == 16 || Imm == 24 || Imm == 32 || Imm == 40;&quot;&gt; {
+  let EncoderMethod = &quot;getImmJMPIX&quot;;
+  let DecoderMethod = &quot;decodeJMPIXImmOperand&quot;;
+}
+
+def uimm3 : uimm&lt;3&gt;;
+def uimm4 : uimm&lt;4&gt;;
+def uimm5 : uimm&lt;5&gt; {
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isShiftedUInt&lt;5, 0&gt;(Imm);
+    return MCOp.isBareSymbolRef();
+  }];
+}
+def uimm5_msb_size : uimm&lt;5&gt; {
+  let EncoderMethod = &quot;getImmOpValueMSBSize&quot;;
+}
+
+def uimm5_1 : uimm&lt;5, 1&gt; {
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    if (MCOp.evaluateAsConstantImm(Imm))
+      return isShiftedUInt&lt;5, 1&gt;(Imm);
+    return MCOp.isBareSymbolRef();
+  }];
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

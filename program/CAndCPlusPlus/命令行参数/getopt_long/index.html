@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Getopt long - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../getopt/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../getopt_long2/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#getopt_long" class="nav-link">getopt_long()函数</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://www.cnblogs.com/hellokitty2/p/9102924.html</p>
+<h1 id="getopt_long">getopt_long()函数</h1>
+<h3 id="1">1 原型</h3>
+<p>getopt_long函数包含了getopt函数的功能，并且还可以指定“长参数”（或者说长选项），与getopt函数对比，getopt_long比其多了两个参数。</p>
+<pre><code class="language-c++">#define _GNU_SOURCE
+
+#include &lt;getopt.h&gt;
+
+extern char *optarg;
+
+extern int optind, opterr, optopt;
+
+int getopt_long(int argc, char *const argv[], const char *optstring, const struct option *longopts, int *longindex);
+int getopt_long_only(int argc, char *const argv[], const char *optstring, const struct option *longopts, int *longindex);
+</code></pre>
+<p>getopt_long_only与getopt_long的区别在于：getopt_long仅仅只能将"--"开始的选项视为长选项，但getopt_long_only将"-"开头选项也会视为长选项，当长选项列表均不满足时，且短选项满足时，"-"才会解析为短选项。</p>
+<p>only可以使用 <code>-arg 123</code>和<code>--arg 123</code>，而非only只能用<code>--arg 123</code>，建议使用only版。</p>
+<h3 id="2">2 描述</h3>
+<p>1、注意相比getopt，使用getopt_long需要加头文件<getopt.h>;
+2、getopt_long除了会接受长选项，其他概念和getopt是一样的；
+3、如果使用getopt_long想只接受短选项，设置longopts为NULL即可；如果只想接受长选项，相应地设置optstring为NULL即可；
+4、长选项名是可以使用缩写方式，比如：选项有--file--create,那么输入--c/--cr/--cre等均会被正确识别为create选项；
+5、对于带参数的长选项格式是：--arg=param或--arg param；
+6、longopts是指向struct option数组的第一个元素的指针，struct option定义在<getopt.h>中；
+7、longindex如果非NULL，则是返回识别到struct option数组中元素的位置指针，当前是第几个长选项，一般为空；
+8、当所给的参数存在问题时，函数的返回值是'?'。</p>
+<h3 id="3-struct-option">3. struct option</h3>
+<pre><code class="language-c++">struct option {
+               const char *name;      
+               int         has_arg;  // 0/1/2
+               int        *flag;
+               int         val;   // 返回值，可以是0 1 2 'a' 之类的
+           };
+</code></pre>
+<p>name: 长选项名
+has_arg: 是否带参数或可选参数，这个值在getopt.h中有宏定义，如下：</p>
+<ul>
+<li>define no_argument        0                表明这个长参数不带参数（即不带数值，如：--name）</li>
+<li>define required_argument  1           表明这个长参数必须带参数（即必须带数值，如：--name Bob）</li>
+<li>define optional_argument  2            表明这个长参数后面带的参数是可选的，（即--name和--name Bob均可）</li>
+</ul>
+<p>flag: 确定函数返回值的情况，如果flag==NULL，则识别选项后 函数返回val（常用的如：设置val为长命令的短命令字符）；否则，识别后getopt_long返回0，flag指向一个设置到val的变量；
+val: 设置为函数返回值，字符常量返回值('m', 'n', 0 , 1, 2, '2'，即ascii )，可以设成数字，如果不想成为短选项，不要设成字母字符，或者是flag指向的变量；这里要注意不要写-1到val，否则其作用是getopt_long返回-1，然后停止解析选项；如果flag是NULL，那么val通常是个字符常量，用于函数的返回值，如果短选项和长选项一致，那么该字符就应该与optstring中出现的这个选项的参数相同；v</p>
+<p><code>struct option long_options[]</code>数组的最后一个元素必须是全0填充，否则会报段错误                                                                                                                                                                                                                                                                                                                                                                                   </p>
+<h3 id="4">4 返回值</h3>
+<p>每次调用getopt_long，它会解析一个符号，返回相应的短选项字符，如果解析完毕返回-1
+如果getopt_long遇到一个无效的选项字符，它会打印一个错误消息并且返回'?'
+当getopt_long解析到一个长选项并且发现后面没有参数则返回':'，表示缺乏参数。</p>
+<p>当处理一个参数时，全局变量optarg指向下一个要处理的变量。当getopt_long处理完所有的选项后，全局变
+量optind指向第一个未知的选项索引。</p>
+<h3 id="5-example">5 Example</h3>
+<h4 id="51-1">5.1 例1</h4>
+<pre><code class="language-c++">#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;getopt.h&gt;
+
+int main(int argc, char **argv)
+{
+   int opt;   // 带回getopt_long的返回值
+   int option_index = 0;    // 最后一个参数，获得值
+
+   // short option, if only use long otpion, use NULL.
+   char *optstring = &quot;a:b:c:d&quot;;
+
+   // long option, if only use short option, use NULL.
+   static struct option long_options[] = {  // long option
+       {&quot;reqarg&quot;, required_argument, NULL, 'r'},   // long_option_index = 0  
+       {&quot;noarg&quot;,  no_argument,       NULL, 'n'},   // long_option_index = 1
+       {&quot;optarg&quot;, optional_argument, NULL, 'o'},   // long_option_index = 2
+       {&quot;opt1&quot;, optional_argument, NULL, '1'},   // long_option_index = 2
+       {&quot;opt2&quot;, optional_argument, NULL, '2'},   // long_option_index = 2
+       {&quot;opt1&quot;, optional_argument, NULL, 1},   // long_option_index = 2
+       {0, 0, 0, 0}
+   };
+
+//   while ((opt = getopt_long(argc, argv, optstring, long_options, &amp;option_index)) != -1)
+   while ((opt = getopt_long_only(argc, argv, optstring, long_options, &amp;long_option_index)) != -1)
+   {
+        printf(&quot;opt = %c\n&quot;, opt);
+        printf(&quot;optarg = %s\n&quot;, optarg);   // 内置全局变量
+        printf(&quot;optind = %d\n&quot;, optind);   // 内置全局变量
+        printf(&quot;argv[optind - 1] = %s\n&quot;,  argv[optind - 1]);
+        printf(&quot;option_index = %d\n\n&quot;, long_option_index);
+   }
+
+   return 0;
+}
+</code></pre>
+<pre><code class="language-c++">./test_getopt -a 100 --reqarg 100 --noarg
+opt = a
+optarg = 100
+optind = 3
+argv[optind - 1] = 100
+option_index = 0
+opt = r
+optarg = 100
+optind = 5
+argv[optind - 1] = 100
+option_index = 0
+opt = n
+optarg = (null)
+optind = 6
+argv[optind - 1] = --noarg
+option_index = 1
+
+------------------------------------------
+./a.out -a 100 -reqarg 200 --noarg -m   // 没有-m参数，所以会报错
+opt = a
+optarg = 100
+optind = 3
+argv[optind - 1] = 100
+option_index = 0
+
+opt = r
+optarg = 200
+optind = 5
+argv[optind - 1] = 200
+option_index = 0
+
+opt = n
+optarg = (null)
+optind = 6
+argv[optind - 1] = --noarg
+option_index = 1
+
+./a.out: unrecognized option '-m'
+opt = ?
+optarg = (null)
+optind = 7
+argv[optind - 1] = -m
+option_index = 1
+
+</code></pre>
+<h4 id="52-2">5.2 例2</h4>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;getopt.h&gt;
+
+int do_name, do_gf_name;
+char *l_opt_arg;
+static const char *shortopts = &quot;l:ng&quot;;
+
+struct option longopts[] = {
+  {&quot;name&quot;,    no_argument,       NULL, 'n'},
+  {&quot;good&quot;, no_argument,       NULL, 'g'},
+  {&quot;love&quot;,    required_argument, NULL, 'l'},
+  {0,         0,                 0,      0},
+};
+
+int main (int argc, char *argv[])
+{
+    int c;
+    while ((c = getopt_long (argc, argv, shortopts, longopts, NULL)) != -1)
+    {   // c是longopts中的
+        switch (c)
+        {
+        case 'n':
+            printf (&quot;nnnnn.\n&quot;);
+            break;
+        case 'g':
+            printf (&quot;ggggg.\n&quot;);
+            break;
+        case 'l':
+            l_opt_arg = optarg;
+            printf (&quot;%s!\n&quot;, l_opt_arg);
+            break;
+        case '?':
+        default:
+            printUsageInfo(); 
+            break;      
+        }
+    }
+
+    return 0;
+}
+</code></pre>
+<pre><code class="language-c++">$ ./dd --name
+nnnnn.
+$ ./dd --good
+ggggg.
+$ ./dd --love you
+you!
+</code></pre>
+<pre><code>
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

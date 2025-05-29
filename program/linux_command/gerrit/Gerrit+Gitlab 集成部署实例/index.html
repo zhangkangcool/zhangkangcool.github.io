@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>一、创建Gerrit 项目工程 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Gerrit%20%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E5%AE%A1%E6%A0%B8%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97v0.1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Gerrit%2BJenkins%20%E9%9B%86%E6%88%90%E9%83%A8%E7%BD%B2%E5%AE%9E%E4%BE%8B/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerrit" class="nav-link">一、创建Gerrit 项目工程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#11" class="nav-link">1.1 创建工程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#12-gerrit-ssh-key" class="nav-link">1.2 配置gerrit ssh key</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gitlab" class="nav-link">二、创建Gitlab 项目工程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerritgitlab" class="nav-link">三、配置Gerrit同步项目到gitlab</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerritgitlab_1" class="nav-link">四、Gerrit同步项目到gitlab 测试</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#cp101" class="nav-link">五、实例CP101 部署实战</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#51gerrit-cp101" class="nav-link">5.1、创建Gerrit cp101工程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#52gitlab-cp101" class="nav-link">5.2、创建Gitlab cp101工程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#53gerrit-gitlab-cp101" class="nav-link">5.3、配置Gerrit 同步项目到Gitlab cp101工程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#54-gerrit-cp101" class="nav-link">5.4 Gerrit CP101项目审核测试</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerrit-replication" class="nav-link">六、 Gerrit replication 插件调试技巧</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#61-log" class="nav-link">6.1 查看log</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#62-gerrit-replication-error-ssh-connection-failed" class="nav-link">6.2 Gerrit replication error: SSH-connection Failed</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="gerrit">一、创建Gerrit 项目工程</h1>
+<h1 id="11">1.1 创建工程</h1>
+<p>登录账号后，点击Repositories -&gt; CREATE NEW</p>
+<p><img alt="img" src="Untitled.assets/-174598052532729.assets" /></p>
+<h1 id="12-gerrit-ssh-key">1.2 配置gerrit ssh key</h1>
+<p>在 docker gerrit 容器中，创建gerrit， 并生成gerrit ssh-key (<strong>仅第一次需要操作生成ssh -key</strong>)</p>
+<pre><code class="language-Bash"># 进入 gerrit 容器
+sudo docker ps  # 列出所有的docker容器
+
+# 找到gerrit 容器id,并进入gerrit 容器
+sudo docker exec -it &lt;container_id_or_name&gt; /bin/bash
+
+
+git config --global user.name &quot;gerrit&quot;
+git config --global user.email &quot;gerrit@ljm.com&quot;
+
+
+# 在gerrit 容器中生成公私钥
+ssh-keygen -t rsa -C gerrit@ljm.com
+</code></pre>
+<h1 id="gitlab">二、创建Gitlab 项目工程</h1>
+<ul>
+<li>Step1: 创建和Gerrit 项目同名 的项目</li>
+</ul>
+<p><img alt="img" src="Untitled.assets/-17459805252907.assets" /></p>
+<ul>
+<li>Step2:  在gitlab 中创建gerrit 用户（<strong>仅第一次需要创建， 如果有gerrit 用户，就不需要重复创建）</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>gitlab账号用户名</th>
+<th>密码</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gerrit</td>
+<td>0000</td>
+<td>在gitlab 中创建gerrit 用户</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>Step3：Gitlab 中有gerrit 用户，并为gerrit用户添加ssh key， ssh-key 在1.2章节中，去gerrit 容器中获取（<strong>仅第一次需要添加）</strong></p>
+</li>
+<li>
+<p>Step4: 为Gitlab 项目添加项目成员gerrit</p>
+</li>
+</ul>
+<h1 id="gerritgitlab">三、配置Gerrit同步项目到gitlab</h1>
+<ul>
+<li>Step1: Gerrit 项目同步到gitlab 是依赖于gerrit 中replication 插件， 请确保gerrit 安装此插件，并使能。（如果显示已经使能， 就不需要enable）</li>
+</ul>
+<p><img alt="img" src="Untitled.assets/-17459805252908.assets" /></p>
+<p><img alt="img" src="Untitled.assets/-17459805252909.assets" /></p>
+<ul>
+<li>Step2:  配置 replication 插件配置文件</li>
+</ul>
+<p>在部署gerrit服务器中， 找到/opt/env_devops/gerrit/docker/gerrit/etc 目录下的replication.config, </p>
+<p><img alt="img" src="Untitled.assets/-174598052529010.assets" /></p>
+<p>配置文件如下：</p>
+<p><img alt="img" src="Untitled.assets/-174598052529011.assets" /></p>
+<p>如上图所示， 添加了testgilab  repositority 同步配置；</p>
+<p><strong>Note:</strong> 如果需要增加其他仓库的同步， 请在replication.config， 继续添加需要同步的仓库项目</p>
+<ul>
+<li>Step3: 使 replication 配置文件生效</li>
+</ul>
+<pre><code class="language-Plain">sudo docker ps
+docker restart &lt;gerrit_container_id&gt;
+</code></pre>
+<h1 id="gerritgitlab_1">四、Gerrit同步项目到gitlab 测试</h1>
+<p>4.1 拉取gerrit 代码</p>
+<p>4.2 修改代码后push</p>
+<pre><code class="language-Bash"># 提交到master上进行审核
+git push origin HEAD:refs/for/master
+</code></pre>
+<p>如果遇到提示没有Change-id, 如下所示：</p>
+<p><img alt="img" src="Untitled.assets/-174598052529012.assets" /></p>
+<p>解决方案：</p>
+<p>安装 <code>commit-msg</code> Hook：</p>
+<p>Gerrit 提供了一个 <code>commit-msg</code> 钩子脚本，可以自动为提交信息添加 <code>Change-Id</code>。在项目的根目录运行以下命令，将钩子安装到 <code>.git/hooks/</code> 目录中：</p>
+<pre><code class="language-Plain">gitdir=$(git rev-parse --git-dir)
+scp -p -P 29418 root@172.18.1.251:hooks/commit-msg ${gitdir}/hooks/
+
+# 注意：如果你使用的是 OpenSSH 9.0 或更高版本，可能需要在 scp 命令中加上 -O 参数：
+scp -O -p -P 29418 root@172.18.1.251:hooks/commit-msg ${gitdir}/hooks/
+
+
+# 可以通过 `ssh -V` 指令查看openssh 版本
+</code></pre>
+<p><img alt="img" src="Untitled.assets/-174598052529113.assets" /></p>
+<p>再次运行command</p>
+<pre><code class="language-Bash">git commit --amend 
+git push origin HEAD:refs/for/master
+</code></pre>
+<p><img alt="img" src="Untitled.assets/-174598052529114.assets" /></p>
+<p>将会看到new reference, 同时在gerrit web 看到changes</p>
+<p><img alt="img" src="Untitled.assets/-174598052529115.assets" /></p>
+<p>需要人工review 和投票</p>
+<p><img alt="img" src="Untitled.assets/-174598052529116.assets" /></p>
+<p>当CodeReview +2 后，就可以人工merge</p>
+<p><img alt="img" src="Untitled.assets/-174598052529117.assets" /></p>
+<p><img alt="img" src="Untitled.assets/-174598052529118.assets" /></p>
+<p>去gitlab 上查看这个改动是否同步：</p>
+<p><img alt="img" src="Untitled.assets/-174598052529119.assets" /></p>
+<h1 id="cp101">五、实例CP101 部署实战</h1>
+<h2 id="51gerrit-cp101">5.1、创建Gerrit cp101工程</h2>
+<p><img alt="img" src="Untitled.assets/-174598052529120.assets" /></p>
+<h2 id="52gitlab-cp101">5.2、创建Gitlab cp101工程</h2>
+<p>创建与gerrit 上项目同名</p>
+<p><img alt="img" src="Untitled.assets/-174598052529121.assets" /></p>
+<p>添加gerrit 成员到gitlab 仓库成员中</p>
+<p><img alt="img" src="Untitled.assets/-174598052529122.assets" /></p>
+<h2 id="53gerrit-gitlab-cp101">5.3、配置Gerrit 同步项目到Gitlab cp101工程</h2>
+<ul>
+<li>Step1: 配置replication config</li>
+</ul>
+<p><img alt="img" src="Untitled.assets/-174598052529123.assets" /></p>
+<p>增加cp101 同步配置</p>
+<p><img alt="img" src="Untitled.assets/-174598052529124.assets" /></p>
+<ul>
+<li>Step2: replication.config 生效</li>
+</ul>
+<pre><code class="language-Bash"># 找到 gerrit 容器id
+sudo docker ps
+
+# 重启gerrit， 使repilcation.config 生效
+
+sudo docker restart &lt;gerrit 容器id&gt;
+</code></pre>
+<h2 id="54-gerrit-cp101">5.4 Gerrit CP101项目审核测试</h2>
+<ul>
+<li>Step1： 拉取代码</li>
+</ul>
+<p><img alt="img" src="Untitled.assets/-174598052529125.assets" /></p>
+<ul>
+<li>Step2: 修改代码，提交到特定分支上进行审核</li>
+</ul>
+<p><img alt="img" src="Untitled.assets/-174598052529126.assets" /></p>
+<h1 id="gerrit-replication">六、 Gerrit replication 插件调试技巧</h1>
+<h2 id="61-log">6.1 查看log</h2>
+<pre><code class="language-Bash"># 进入到gerrit 容器中, 查看log
+
+# 找到 gerrit 容器id
+sudo docker ps
+
+# 进入到gerrit 容器中
+sudo docker exec -it &lt;gerrit 容器id&gt; /bin/bash
+
+# 查看 replication 插件log
+cd /var/gerrit/logs
+ls
+
+#可以看到replication log
+#查看是否有相关错误方便排查
+
+
+# 退出gerrit 容器
+exit
+</code></pre>
+<p><img alt="img" src="Untitled.assets/-174598052529127.assets" /></p>
+<h2 id="62-gerrit-replication-error-ssh-connection-failed">6.2 Gerrit replication error: SSH-connection Failed</h2>
+<p>如图：</p>
+<p><img alt="img" src="Untitled.assets/-174598052529128.assets" /></p>
+<p>解决办法：</p>
+<p>从日志来看，Gerrit 在通过 SSH 推送到 GitLab 时失败了，原因是 SSH 连接需要确认并接受目标服务器的主机密钥 (Accept and store this key, and continue connecting?)。这是由于 SSH 连接的主机密钥验证失败，JGit 无法交互式接受主机密钥。</p>
+<h3 id="_1">解决方法</h3>
+<p>要解决这个问题，需要提前将目标主机的 SSH 密钥加入 Gerrit 容器的 <code>~/.ssh/known_hosts</code> 文件中，确保 SSH 连接能够顺利建立。</p>
+<h4 id="1">方法 1: 手动添加主机密钥</h4>
+<pre><code class="language-Bash"># 进入 Gerrit 容器:
+docker exec -it gerrit bash
+
+#添加目标服务器的主机密钥: 使用 ssh-keyscan 获取目标服务器的主机密钥并添加到 known_hosts 文件中
+ssh-keyscan -p 2222 172.18.1.251 &gt;&gt; ~/.ssh/known_hosts
+
+# 验证是否成功: 测试连接：
+ssh -p 2222 git@172.18.1.251
+
+# 确保连接成功且不会提示确认密钥。
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

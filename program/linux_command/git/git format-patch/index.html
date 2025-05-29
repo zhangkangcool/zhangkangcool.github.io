@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Git format patch - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../git%20command/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../git%20log/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#git-cherry-pick" class="nav-link">方法一：使用 git cherry-pick</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#git-format-patch-git-am" class="nav-link">方法二：使用 git format-patch 和 git am</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#git-diff-git-apply" class="nav-link">方法三：使用 git diff 和 git apply （仅复制更改而不保留提交日志）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_3" class="nav-link">比较三种方法</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>如何使用git命令，将其它项目的提交Commit 打 补丁到本项目，保留提交的时间 等日志信息、</p>
+<p>以下是<code>chatGPT的回答</code>。</p>
+<h2 id="git-cherry-pick">方法一：<strong>使用 <code>git cherry-pick</code></strong></h2>
+<ol>
+<li>
+<p><strong>获取另一个项目的提交哈希：</strong></p>
+</li>
+<li>
+<p>在另一个项目的分支中，找到目标提交的哈希值（<code>commit hash</code>）。</p>
+<p><code>git log --oneline</code></p>
+<p>假设目标提交的哈希为 <code>abc1234</code>。</p>
+</li>
+<li>
+<p><strong>在当前项目中添加另一个项目的远程仓库：</strong></p>
+</li>
+<li>
+<p>添加另一个项目为远程仓库：</p>
+<p><code>shell
+ git remote add other_project &lt;url-of-the-other-project&gt;
+ git fetch other_project</code></p>
+<p>这样，你就能访问另一个项目的分支和提交记录。</p>
+</li>
+<li>
+<p><strong>使用 <code>git cherry-pick</code>：</strong></p>
+</li>
+<li>
+<p>将目标提交引入当前分支，同时保留原始时间、作者信息等：</p>
+<p><code>shell
+ git cherry-pick abc1234</code></p>
+</li>
+<li>
+<p>如果你需要引入多个提交，可以指定多个 </p>
+<p><code>shell
+ commit hash</code></p>
+<p>，或者使用一个范围：</p>
+<p><code>shell
+ git cherry-pick commitA commitB
+ # 或者范围：
+ git cherry-pick commitA..commitC</code></p>
+</li>
+<li>
+<p><strong>解决冲突（如有）：</strong></p>
+</li>
+<li>
+<p>如果在<code>cherry-pick</code>的过程中遇到冲突，可以按照以下步骤解决：</p>
+<p><code>shell
+ git status</code></p>
+<p>手动解决冲突后，添加解决冲突的文件：</p>
+<p><code>shell
+ git add &lt;resolved-file&gt;
+ git cherry-pick --continue</code></p>
+</li>
+<li>
+<p>如果想中止操作：</p>
+<p><code>shell
+ git cherry-pick --abort</code></p>
+</li>
+<li>
+<p><strong>清理远程仓库（可选）：</strong></p>
+</li>
+<li>
+<p>如果已经完成了需要的操作，可以删除添加的远程仓库：</p>
+<p><code>shell
+ git remote remove other_project</code></p>
+</li>
+</ol>
+<hr />
+<h2 id="git-format-patch-git-am">方法二：<strong>使用 <code>git format-patch</code> 和 <code>git am</code></strong></h2>
+<p>这是一种更通用的方法，可以生成补丁文件并应用到当前项目。</p>
+<h3 id="_1">第一步：在另一个项目中生成补丁文件</h3>
+<ol>
+<li>进入另一个项目的目录：</li>
+</ol>
+<p><code>shell
+   cd /path/to/other-project</code></p>
+<ol>
+<li>
+<p>使用 <code>git format-patch</code> 生成补丁文件：</p>
+</li>
+<li>
+<p>生成某个提交的补丁：</p>
+</li>
+</ol>
+<p><code>shell
+   git format-patch -1 &lt;commit-hash&gt;</code></p>
+<p>这会在当前目录生成一个 <code>.patch</code> 文件（如<code>0001-some-message.patch</code>）。</p>
+<ul>
+<li>
+<p>如果需要生成多个提交的补丁：</p>
+<p><code>shell
+ git format-patch &lt;start-commit&gt;..&lt;end-commit&gt;</code></p>
+<p>这会生成从 <code>start-commit</code>（不含）到 <code>end-commit</code>（含）的所有提交的补丁。</p>
+</li>
+<li>
+<p>将生成的 <code>.patch</code> 文件复制到当前项目中。</p>
+</li>
+</ul>
+<hr />
+<h3 id="_2">第二步：在当前项目中应用补丁</h3>
+<ol>
+<li>进入当前项目的目录：</li>
+</ol>
+<p><code>shell
+   cd /path/to/current-project</code></p>
+<ol>
+<li>
+<p>使用 <code>git am</code> 应用补丁：</p>
+</li>
+<li>
+<p>应用单个补丁文件：</p>
+<p><code>shell
+ git am 0001-some-message.patch</code></p>
+</li>
+<li>
+<p>如果有多个补丁文件，可以使用通配符一次性应用：</p>
+<p><code>git am *.patch</code></p>
+</li>
+<li>
+<p><strong>解决冲突（如有）：</strong></p>
+</li>
+<li>
+<p>如果应用补丁时发生冲突，</p>
+<p><code>shell
+ git am</code></p>
+<p>会暂停并提示冲突文件：</p>
+<p><code>shell
+ git status</code></p>
+<p>手动解决冲突后：</p>
+<p><code>shell
+ git add &lt;resolved-file&gt;
+ git am --continue</code></p>
+</li>
+<li>
+<p>如果要中止操作：</p>
+<p><code>shell
+ git am --abort</code></p>
+</li>
+</ol>
+<hr />
+<h2 id="git-diff-git-apply">方法三：<strong>使用 <code>git diff</code> 和 <code>git apply</code></strong> （仅复制更改而不保留提交日志）</h2>
+<p>如果你不需要保留原始提交的作者、时间等信息，而只是想要应用更改，可以使用以下方法：</p>
+<ol>
+<li><strong>在另一个项目中生成差异文件：</strong></li>
+</ol>
+<p><code>shell
+   git diff &lt;commitA&gt; &lt;commitB&gt; &gt; changes.patch</code></p>
+<ol>
+<li><strong>在当前项目中应用差异文件：</strong></li>
+</ol>
+<p><code>shell
+   git apply changes.patch</code></p>
+<p>这不会生成新的提交，需要手动创建提交。</p>
+<hr />
+<h2 id="_3">比较三种方法</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>是否保留提交日志</th>
+<th>是否适合多个提交</th>
+<th>是否需要远程仓库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>git cherry-pick</code></strong></td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong><code>git format-patch</code> 和 <code>git am</code></strong></td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong><code>git diff</code> 和 <code>git apply</code></strong></td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>如果需要完整保留提交信息，建议使用 <strong><code>git cherry-pick</code></strong> 或 <strong><code>git format-patch</code> 和 <code>git am</code></strong>。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

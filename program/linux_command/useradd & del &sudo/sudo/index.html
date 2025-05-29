@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>如何在 Ubuntu 上为用户授予和移除 sudo 权限 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../add%20%26%20del/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%90%8D/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#ubuntu-sudo" class="nav-link">如何在 Ubuntu 上为用户授予和移除 sudo 权限</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#linux-sudo" class="nav-link">在 Linux 上向普通用户授予 sudo 权限</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#sudo" class="nav-link">移除用户的 sudo 权限</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="ubuntu-sudo">如何在 Ubuntu 上为用户授予和移除 sudo 权限</h1>
+<p>如你所知，用户可以在 Ubuntu 系统上使用 sudo 权限执行任何管理任务。在 Linux 机器上创建新用户时，他们无法执行任何管理任务，直到你将其加入 <code>sudo</code> 组的成员。在这个简短的教程中，我们将介绍如何将普通用户添加到 <code>sudo</code> 组以及移除给定的权限，使其成为普通用户。</p>
+<h2 id="linux-sudo"><strong>在 Linux 上向普通用户授予 sudo 权限</strong></h2>
+<p>通常，我们使用 <code>useradd</code> 命令创建新用户，如下所示。</p>
+<pre><code class="language-text">$ sudo useradd ostechnix -m -s /bin/bash
+</code></pre>
+<p>如果你希望新创建的用户使用 <code>sudo</code> 执行管理任务，只需使用以下命令将它添加到 <code>sudo</code> 组：</p>
+<pre><code class="language-text">$ sudo usermod -a -G sudo ostechnix
+
+如果是redhat及其衍生
+$ sudo usermod -a -G wheel ostechnix
+</code></pre>
+<p>上面的命令将使名为 <code>ostechnix</code> 的用户成为 <code>sudo</code> 组的成员。</p>
+<p>你也可以使用此命令将用户添加到 <code>sudo</code> 组。</p>
+<pre><code class="language-text">$ sudo useradd ostechnix sudo
+</code></pre>
+<p>现在，注销并以新用户身份登录，以使此更改生效。此时用户已成为管理用户。</p>
+<p>要验证它，只需在任何命令中使用 <code>sudo</code> 作为前缀。</p>
+<pre><code class="language-text">$ sudo mkdir /test
+[sudo] password for ostechnix:
+</code></pre>
+<h2 id="sudo"><strong>移除用户的 sudo 权限</strong></h2>
+<p>有时，你可能希望移除特定用户的 <code>sudo</code> 权限，而不用在 Linux 中删除它。要将任何用户设为普通用户，只需将其从 <code>sudo</code> 组中删除即可。</p>
+<p>比如说如果要从 <code>sudo</code> 组中删除名为 <code>ostechnix</code> 的用户，只需运行：</p>
+<pre><code class="language-text">$ sudo deluser ostechnix sudo
+</code></pre>
+<p>示例输出：</p>
+<pre><code class="language-text">Removing user `ostechnix' from group `sudo' ...
+Done.
+</code></pre>
+<p>此命令仅从 <code>sudo</code> 组中删除用户 <code>ostechnix</code>，但不会永久地从系统中删除用户。现在，它成为了普通用户，无法像 <code>sudo</code> 用户那样执行任何管理任务。</p>
+<p>此外，你可以使用以下命令撤消用户的 <code>sudo</code> 访问权限：</p>
+<pre><code class="language-text">$ sudo gpasswd -d ostechnix sudo
+</code></pre>
+<p>从 <code>sudo</code> 组中删除用户时请小心。不要从 <code>sudo</code> 组中删除真正的管理员。</p>
+<p>使用命令验证用户 <code>ostechnix</code> 是否已从 <code>sudo</code> 组中删除：</p>
+<pre><code class="language-text">$ sudo -l -U ostechnix
+User ostechnix is not allowed to run sudo on ubuntuserver.
+
+
+
+</code></pre>
+<p>是的，用户 <code>ostechnix</code> 已从 <code>sudo</code> 组中删除，他无法执行任何管理任务。</p>
+<p>从 <code>sudo</code> 组中删除用户时请小心。如果你的系统上只有一个 <code>sudo</code> 用户，并且你将他从 <code>sudo</code> 组中删除了，那么就无法执行任何管理操作，例如在系统上安装、删除和更新程序。所以，请小心。在我们的下一篇教程中，我们将解释如何恢复用户的 <code>sudo</code> 权限。</p>
+<h3 id="2">方法2（不建议，只在测试服务器上运行过，且成功）</h3>
+<p>直接修改<code>/etc/sudoers</code></p>
+<pre><code>youuser ALL=(ALL) ALL 
+%youuser ALL=(ALL) ALL 
+youuser ALL=(ALL) NOPASSWD: ALL (最好不写此行)
+%youuser ALL=(ALL) NOPASSWD: ALL (最好不写此行)
+</code></pre>
+<p>第一行:允许用户youuser执行sudo命令(需要输入密码).
+ 第二行:允许用户组youuser里面的用户执行sudo命令(需要输入密码).
+ 第三行:允许用户youuser执行sudo命令,并且在执行的时候不输入密码.
+ 第四行:允许用户组youuser里面的用户执行sudo命令,并且在执行的时候不输入密码.</p>
+<p>只使用下面两行即可，<code>ken</code>为用户名。</p>
+<pre><code>ken ALL=(ALL) ALL 
+%ken ALL=(ALL) ALL 
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

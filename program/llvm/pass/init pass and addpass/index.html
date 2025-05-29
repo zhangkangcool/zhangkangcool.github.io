@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Init the pass - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../PassConfig/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../llc%20option%20level%20pass/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#init-the-pass" class="nav-link">Init the pass</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#ppc-pass" class="nav-link">PPC pass</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#add-the-pass" class="nav-link">Add the pass</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="init-the-pass">Init the pass</h1>
+<p><code>./include/llvm/PassSupport.h</code></p>
+<p>通过下面的宏定义来生成 所需要的<code>initializePPCEarlyReturnPass</code>函数。</p>
+<pre><code class="language-c++">207 INITIALIZE_PASS(PPCEarlyReturn, DEBUG_TYPE,
+208                 &quot;PowerPC Early-Return Creation&quot;, false, false)
+</code></pre>
+<pre><code class="language-shell"> 35 #define INITIALIZE_PASS(passName, arg, name, cfg, analysis)                    \
+ 36   static void *initialize##passName##PassOnce(PassRegistry &amp;Registry) {        \
+ 37     PassInfo *PI = new PassInfo(                                               \
+ 38         name, arg, &amp;passName::ID,                                              \
+ 39         PassInfo::NormalCtor_t(callDefaultCtor&lt;passName&gt;), cfg, analysis);     \
+ 40     dbgs() &lt;&lt; &quot;name = &quot; &lt;&lt; name &lt;&lt; &quot; PassSupport1\n&quot;;                           \
+ 41     Registry.registerPass(*PI, true);                                          \
+ 42     return PI;                                                                 \
+ 43   }                                                                            \
+ 44   static llvm::once_flag Initialize##passName##PassFlag;                       \
+ 45   void llvm::initialize##passName##Pass(PassRegistry &amp;Registry) {              \
+ 46     dbgs() &lt;&lt; &quot;name = &quot; &lt;&lt; name &lt;&lt; &quot; PassSupport2\n&quot;;                           \
+ 47     llvm::call_once(Initialize##passName##PassFlag,                            \
+ 48                     initialize##passName##PassOnce, std::ref(Registry));       \
+ 49   }
+</code></pre>
+<p>初始化会注册pass的信息，比如用于调度等stop-afeer=passname</p>
+<p>initialize用于注册pass，后面可以使用create类似的方法，通过 addPass进行添加执行。</p>
+<h3 id="codegen-pass">CodeGen Pass</h3>
+<p>在<code>./include/llvm/InitializePasses.h</code>中声明init函数。通过<code>INITIALIZE_PASS</code>宏进行实现</p>
+<pre><code class="language-c++">155 void initializeEarlyCSEMemSSALegacyPassPass(PassRegistry&amp;);
+156 void initializeEarlyIfConverterPass(PassRegistry&amp;);
+157 void initializeEarlyIfPredicatorPass(PassRegistry &amp;);
+158 void initializeEarlyMachineLICMPass(PassRegistry&amp;);
+159 void initializeEarlyTailDuplicatePass(PassRegistry&amp;);
+160 void initializeEdgeBundlesPass(PassRegistry&amp;);
+161 void initializeEliminateAvailableExternallyLegacyPassPass(PassRegistry&amp;);
+162 void initializeEntryExitInstrumenterPass(PassRegistry&amp;);
+</code></pre>
+<p>在<code>./lib/CodeGen/CodeGen.cpp</code>中调用init函数对pass进行初始化</p>
+<pre><code class="language-c++"> 21 void llvm::initializeCodeGen(PassRegistry &amp;Registry) {
+       这些init系列函数是通过调用INITIALIZE_PASS来生成的b 
+ 22   initializeAtomicExpandPass(Registry);
+ 23   initializeBranchFolderPassPass(Registry);
+ 24   initializeBranchRelaxationPass(Registry);
+ 25   initializeCFGuardLongjmpPass(Registry);
+ 26   initializeCFIInstrInserterPass(Registry);
+ 27   initializeCodeGenPreparePass(Registry);
+ 28   initializeDeadMachineInstructionElimPass(Registry);
+ 29   initializeDetectDeadLanesPass(Registry);
+ 30   initializeDwarfEHPreparePass(Registry);
+ 31   initializeEarlyIfConverterPass(Registry);
+ 32   initializeEarlyIfPredicatorPass(Registry);
+ 33   initializeEarlyMachineLICMPass(Registry);
+ 34   initializeEarlyTailDuplicatePass(Registry);
+ ...
+}
+</code></pre>
+<h2 id="ppc-pass">PPC pass</h2>
+<p><code>lib/Target/PowerPC/PPCEarlyReturn.cpp</code></p>
+<pre><code class="language-cpp">207 INITIALIZE_PASS(PPCEarlyReturn, DEBUG_TYPE,
+208                 &quot;PowerPC Early-Return Creation&quot;, false, false)
+209
+210 char PPCEarlyReturn::ID = 0;
+211 FunctionPass*
+212 llvm::createPPCEarlyReturnPass() { return new PPCEarlyReturn(); }
+</code></pre>
+<pre><code class="language-cpp">49     PPCEarlyReturn() : MachineFunctionPass(ID) {
+ 50       dbgs() &lt;&lt; &quot;initializePPCEarlyReturnPass\n&quot;;
+ 51       initializePPCEarlyReturnPass(*PassRegistry::getPassRegistry());
+ 52     }
+</code></pre>
+<p><code>./lib/Target/PowerPC/PPCTargetMachine.cpp</code></p>
+<p>注意<code>PPCEarlyReturnPass</code>未使用PassID,不存在<code>PPCEarlyReturnPass</code>,注册pass时使用<code>addPass(createPPCEarlyReturnPass(), false);</code>。</p>
+<pre><code class="language-c++">./lib/Target/PowerPC/PPCEarlyReturn.cpp:char PPCEarlyReturn::ID = 0;
+</code></pre>
+<p>没有类似下面的赋值,只是初始化为0，未对ID进行任何引用。</p>
+<pre><code class="language-c++">./lib/CodeGen/EarlyIfConversion.cpp:char &amp;llvm::EarlyIfConverterID = EarlyIfConverter::ID;
+</code></pre>
+<h1 id="add-the-pass">Add the pass</h1>
+<p><code>PPCTargetMachine.cpp</code></p>
+<pre><code class="language-c++">97 extern &quot;C&quot; void LLVMInitializePowerPCTarget() {
+ 98   // Register the targets
+ 99   RegisterTargetMachine&lt;PPCTargetMachine&gt; A(getThePPC32Target());
+100   RegisterTargetMachine&lt;PPCTargetMachine&gt; B(getThePPC64Target());
+101   RegisterTargetMachine&lt;PPCTargetMachine&gt; C(getThePPC64LETarget());
+102
+103   PassRegistry &amp;PR = *PassRegistry::getPassRegistry();
+104 #ifndef NDEBUG
+105   initializePPCCTRLoopsVerifyPass(PR);
+106 #endif
+107   initializePPCLoopInstrFormPrepPass(PR);
+108   initializePPCTOCRegDepsPass(PR);
+109   initializePPCEarlyReturnPass(PR);
+110   initializePPCVSXCopyPass(PR);
+111   initializePPCVSXFMAMutatePass(PR);
+112   initializePPCVSXSwapRemovalPass(PR);
+113   initializePPCReduceCRLogicalsPass(PR);
+114   initializePPCBSelPass(PR);
+115   initializePPCBranchCoalescingPass(PR);
+116   initializePPCQPXLoadSplatPass(PR);
+117   initializePPCBoolRetToIntPass(PR);
+118   initializePPCExpandISELPass(PR);
+119   initializePPCPreEmitPeepholePass(PR);
+120   initializePPCTLSDynamicCallPass(PR);
+121   initializePPCMIPeepholePass(PR);
+122   initializePPCLowerMASSVEntriesPass(PR);
+123 }
+
+
+522 void PPCPassConfig::addPreEmitPass() {
+523   addPass(createPPCPreEmitPeepholePass());
+524   addPass(createPPCExpandISELPass());
+525
+526   if (getOptLevel() != CodeGenOpt::None)
+  ****************************************
+527     addPass(createPPCEarlyReturnPass(), false);
+    ****************************************
+528   // Must run branch selection immediately preceding the asm printer.
+529   addPass(createPPCBranchSelectionPass(), false);
+530 }
+531
+</code></pre>
+<p>PassID用于添加Pass时</p>
+<pre><code class="language-C++">./include/llvm/CodeGen/Passes.h:  extern char &amp;EarlyIfConverterID;
+./lib/Target/PowerPC/PPCTargetMachine.cpp:  addPass(&amp;EarlyIfConverterID);
+./lib/Target/X86/X86TargetMachine.cpp:  addPass(&amp;EarlyIfConverterID);
+./lib/Target/AMDGPU/AMDGPUTargetMachine.cpp:    addPass(&amp;EarlyIfConverterID);
+./lib/Target/SystemZ/SystemZTargetMachine.cpp:  addPass(&amp;EarlyIfConverterID);
+./lib/Target/AArch64/AArch64TargetMachine.cpp:    addPass(&amp;EarlyIfConverterID);
+./lib/CodeGen/EarlyIfConversion.cpp:char &amp;llvm::EarlyIfConverterID = EarlyIfConverter::ID;
+./lib/CodeGen/TargetPassConfig.cpp:  if (StandardID == &amp;EarlyIfConverterID)
+</code></pre>
+<p>对于未add进pass，是不会运行到的。但我们依然可以使用<code>run-pass</code>强行让只运行某个pass。如<code>early-if-predicator</code> pass.</p>
+<pre><code>/home/shkzhang/llvm/build/bin/llc -march=hexagon -run-pass early-if-predicator /home/shkzhang/llvm/llvm/test/CodeGen/Hexagon/early-if-predicator.mir -o - -verify-machineinstrs | /home/shkzhang/llvm/build/bin/FileCheck /home/shkzhang/llvm/llvm/test/CodeGen/Hexagon/early-if-predicator.mir
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

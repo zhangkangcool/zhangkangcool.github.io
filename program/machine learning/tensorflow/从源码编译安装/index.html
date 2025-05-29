@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>从源码编译安装 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../%E4%B8%BAXLA%E5%BC%80%E5%8F%91%E6%96%B0%E7%9A%84%E5%90%8E%E7%AB%AF/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95%E9%80%89%E9%A1%B9/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">源码安装地址</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1" class="nav-link">1.编译</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2" class="nav-link">2.问题解决</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#24-gcc-internal-compiler-error-killed-program-cc1plus" class="nav-link">2.4 gcc: internal compiler error: Killed (program cc1plus)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#3" class="nav-link">3 编译命令</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>知乎地址：</p>
+<p>https://zhuanlan.zhihu.com/p/572757265?</p>
+<h2 id="_1">源码安装地址</h2>
+<pre><code class="language-python">https://tensorflow.juejin.im/install/install_sources.html
+</code></pre>
+<p>有所支持的显卡的机器上安装tensorflow和CUDA。</p>
+<p>这里我使用的源代码是r2.10，不同的源代码需要使用的<code>python</code>，<code>cmake</code>,<code>bazel</code>的版本可能不同。</p>
+<pre><code class="language-python">commit 359c3cdfc5fabac82b3c70b3b6de2b0a8c16874f (HEAD -&gt; r2.10, tag: v2.10.0, origin/r2.10)
+Merge: 203b3338195 724308fadba
+Author: Mihai Maruseac &lt;mihaimaruseac@google.com&gt;
+Date:   Fri Sep 2 15:59:55 2022 -0700
+
+    Merge pull request #57609 from tensorflow/vinila21-patch-6
+
+    Update estimator and keras version in TF 2.10 branch for 2.10.0.
+</code></pre>
+<p>https://cloud-atlas.readthedocs.io/zh_CN/latest/machine_learning/tensorflow/build_tensorflow.html</p>
+<p>我使用的安装环境是8核，8G内存，swap 16G内存。</p>
+<h1 id="1">1.编译</h1>
+<p>先把<code>packaging</code>装上，最后装包时要用。</p>
+<pre><code class="language-python">pip3 install packaging
+pip2 install packaging
+</code></pre>
+<h3 id="11-configure">1.1 configure</h3>
+<pre><code class="language-python">./configure
+# 没有cuda的话，不要编译cuda
+</code></pre>
+<h3 id="12-build">1.2 Build(看最后我用的命令行)</h3>
+<p>仅支持 CPU 的情况下，调用下面的命令建立一个 TenslorFlow pip 包：</p>
+<pre><code class="language-python">bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
+</code></pre>
+<p>支持 GPU 的情况下，调用下面的命令建立一个 TensorFlow pip 包：</p>
+<pre><code class="language-python">bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package 
+</code></pre>
+<h3 id="13-whl">1.3 生成whl安装文件</h3>
+<p>出现以下信息表示build成功</p>
+<pre><code class="language-python">INFO: Found applicable config definition build:dynamic_kernels in file /home/ken/workspace/tensorflow/tensorflow/.bazelrc: --define=dynamic_loaded_kernels=true --copt=-DAUTOLOAD_DYNAMIC_KERNELS
+INFO: Analyzed target //tensorflow/tools/pip_package:build_pip_package (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+Target //tensorflow/tools/pip_package:build_pip_package up-to-date:
+  bazel-bin/tensorflow/tools/pip_package/build_pip_package
+INFO: Elapsed time: 5.072s, Critical Path: 4.12s
+INFO: 3 processes: 1 internal, 2 local.
+INFO: Build completed successfully, 3 total actions
+</code></pre>
+<p><code>bazel build</code> 命令执行一个叫 <code>build_pip_package</code> 的脚本，该脚本在第5行所有的位置。执行这个脚本将会在 <code>/tmp/tensorflow_pkg</code> 目录下构建一个 <code>.whl</code> 文件。</p>
+<pre><code class="language-python">bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg  // 可以改成~/tensorflow_pkg
+
+# 以下是我执行该命令后的输出
+~/workspace/tensorflow/tensorflow/bazel-bin/tensorflow/tools/pip_package/build_pip_package.runfiles/org_tensorflow ~/workspace/tensorflow/tensorflow
+~/workspace/tensorflow/tensorflow
+/tmp/tmp.4uUFP30gwO/tensorflow/include ~/workspace/tensorflow/tensorflow
+~/workspace/tensorflow/tensorflow
+2022年 10月 12日 星期三 18:12:49 CST : === Building wheel
+/usr/lib/python3.7/distutils/dist.py:274: UserWarning: Unknown distribution option: 'long_description_content_type'
+  warnings.warn(msg)
+warning: no files found matching 'README'
+warning: no files found matching '*.pyd' under directory '*'
+warning: no files found matching '*.pyi' under directory '*'
+warning: no files found matching '*.pd' under directory '*'
+warning: no files found matching '*.dylib' under directory '*'
+warning: no files found matching '*.dll' under directory '*'
+warning: no files found matching '*.lib' under directory '*'
+warning: no files found matching '*.csv' under directory '*'
+warning: no files found matching '*.h' under directory 'tensorflow/include/tensorflow'
+warning: no files found matching '*.proto' under directory 'tensorflow/include/tensorflow'
+warning: no files found matching '*' under directory 'tensorflow/include/third_party'
+2022年 10月 12日 星期三 18:13:25 CST : === Output wheel file is in: /home/ken/tensorflow_pkg
+
+</code></pre>
+<h3 id="14-whlvirtualenv">1.4 安装whl文件（这里最好是使用virtualenv进行安装）</h3>
+<pre><code class="language-python">pip3 --user install /tmp/tensorflow_pkg/tensorflow-1.8.0-py3-none-any.whl
+pip2 --user install /tmp/tensorflow_pkg/tensorflow-1.8.0-py2-none-any.whl
+</code></pre>
+<p>如果编译时用的是python3，名字中会有py3，使用<code>pip3</code>命令。</p>
+<p>如果编译时用的是python2，名字中会有py2，使用<code>pip</code>命令。</p>
+<h3 id="15">1.5 验证是否安装成功</h3>
+<p>按照以下说明验证 TensorFlow 是否安装成功：</p>
+<p>启动终端。</p>
+<pre><code>python
+</code></pre>
+<p>在 python 交互式 shell 中输入以下代码：</p>
+<p>TF1.x hello world:</p>
+<pre><code class="language-python">import tensorflow as tf
+msg = tf.constant('Hello, TensorFlow!')
+sess = tf.Session()
+print(sess.run(msg))
+</code></pre>
+<p>TF2.x hello world:</p>
+<pre><code class="language-python">import tensorflow as tf
+msg = tf.constant('Hello, TensorFlow!')
+tf.print(msg)
+</code></pre>
+<p>如果系统输出以下内容，你就可以开始编写 TensorFlow 程序了：</p>
+<pre><code class="language-python">Hello, TensorFlow!
+</code></pre>
+<h1 id="2">2.问题解决</h1>
+<p>https://blog.csdn.net/surtol/article/details/97638399</p>
+<p>这里是以<code>r2.10</code>为例。</p>
+<h3 id="21-bazel">2.1 bazel版本错误</h3>
+<p>需要安装指定版本的bazel，根据报错信息选择指定版本，<code>r2.10</code>需要使用<code>bazel-5.1.1</code>。</p>
+<pre><code class="language-python">https://github.com/bazelbuild/bazel/releases?page=3
+下载指定版本的 bazel-5.1.1-installer-linux-x86_64.sh
+
+即可安装完成
+</code></pre>
+<p>安装<code>bazel</code></p>
+<pre><code class="language-python">chmod a+x *.sh
+sudo ./bazel****.sh
+</code></pre>
+<h3 id="22">2.2 依赖无法下载</h3>
+<p>这是在安装<code>tensorflow</code>中最大的问题。很多依赖都是从<code>github</code>或<code>google</code>下载的，国内有<code>gfw</code>导致无法下载而失败。</p>
+<p>依赖的解决有三种方式，前两种方式是首选，我用前两种方式解决的所有依赖问题，第三种方式没试过</p>
+<p>https://stackoverflow.com/questions/42918662/bazel-error-building-tensorflow-with-local-llvm-repository</p>
+<h4 id="1-over_repository">1 <code>--over_repository</code>方式</h4>
+<p>先将所需有依赖根据报错的链接用<code>wget</code>下下来，下载指定的报错的<code>commit</code>版本，一般会有<code>google</code>链接和<code>github</code>链接。如果没办法下载的话，通过下载源码然后使用<code>git reset commit --hard</code> 的方式。</p>
+<p>下载好之后，解压到某个位置，然后用<code>--over_repository</code>进行指定。如<code>tf_runtime</code></p>
+<pre><code class="language-python">--override_repository=tf_runtime=/home/ken/workspace/tf_dep/runtime-6ca793b5d862ef6c50f242d77a811f06cce9b60a
+</code></pre>
+<h4 id="2-http">2. 自己搭建http服务器</h4>
+<ul>
+<li>
+<p>下载所需的依赖打包文件。放到某个位置。</p>
+</li>
+<li>
+<p>搭建http服务器</p>
+</li>
+</ul>
+<p><code>python
+  sudo python3 -m http.server</code></p>
+<p>这里，执行该命令的目录为home目录，可以在网页上输入<code>http://localhost:8000</code>进行测试。</p>
+<p>最好直接在自己的<code>$HOME</code>目录执行该操作。这里我将依赖文件放于<code>/home/ken/workspace/tf_dep/0538e5431afdb1fa05bdcedf70ee502ccfcd112a.tar.gz</code></p>
+<ul>
+<li>将链接加到对应的<code>workspace.bzl</code>文件中</li>
+</ul>
+<p>```python
+  用以下命令清空bazel build cache
+  bazel clean --expunge</p>
+<p>~/workspace/tensorflow/tensorflow$ git diff third_party/llvm/workspace.bzl
+  diff --git a/third_party/llvm/workspace.bzl b/third_party/llvm/workspace.bzl
+  index c9760c3ab38..75308a26ec4 100644
+  --- a/third_party/llvm/workspace.bzl
+  +++ b/third_party/llvm/workspace.bzl
+  @@ -13,6 +13,7 @@ def repo(name):
+           strip_prefix = "llvm-project-{commit}".format(commit = LLVM_COMMIT),
+           urls = [
+               "https://storage.googleapis.com/mirror.tensorflow.org/github.com/llvm/llvm-project/archive/{commit}.tar.gz".format(commit = LLVM_COMMIT),
+  +            "http://localhost:8000/workspace/tf_dep/0538e5431afdb1fa05bdcedf70ee502ccfcd112a.tar.gz",
+               "https://github.com/llvm/llvm-project/archive/{commit}.tar.gz".format(commit = LLVM_COMMIT),
+         ],
+           build_file = "//third_party/llvm:llvm.BUILD",
+  ```</p>
+<p>这样，会自动下载该依赖。</p>
+<h4 id="3-nativelocal_repository">3. 使用native.local_repository</h4>
+<p>该方法还没研究清楚具体怎么用，没用过，不保证是对的</p>
+<pre><code class="language-python">Changed the temp_workaround_http_archive rule in //tensorflow/workspace.bzl to:
+
+  native.local_repository (
+    name = &quot;llvm&quot;,
+    path = &quot;/git/llvm/&quot;,
+  )
+
+In /git/llvm I added the file WORKSPACE containing:
+
+  workspace( name = &quot;llvm&quot; )
+</code></pre>
+<h3 id="23-mlir">2.3 mlir依赖报错</h3>
+<pre><code class="language-python">DIR=$(PREFIX)/include --define=PROTOBUF_INCLUDE_PATH=$(PREFIX)/include --cxxopt=-std=c++17 --host_cxxopt=-std=c++17 --config=dynamic_kernels --distinct_host_configuration=false --experimental_guard_against_concurrent_changes
+INFO: Found applicable config definition build:dynamic_kernels in file /home/ken/workspace/tensorflow/tensorflow/.bazelrc: --define=dynamic_loaded_kernels=true --copt=-DAUTOLOAD_DYNAMIC_KERNELS
+INFO: Analyzed target //tensorflow/tools/pip_package:build_pip_package (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+ERROR: /home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/llvm-project/mlir/BUILD.bazel:6592:10: Compiling mlir/tools/mlir-tblgen/DirectiveCommonGen.cpp failed: undeclared inclusion(s) in rule '@llvm-project//mlir:mlir-tblgen':
+this rule is missing dependency declarations for the following files included by 'mlir/tools/mlir-tblgen/DirectiveCommonGen.cpp':
+  'bazel-out/k8-opt-exec-50AE0418/bin/external/llvm-project/llvm/Demangle.cppmap'
+  'bazel-out/k8-opt-exec-50AE0418/bin/external/llvm_terminfo/terminfo.cppmap'
+  'bazel-out/k8-opt-exec-50AE0418/bin/external/llvm_zlib/zlib.cppmap'
+Target //tensorflow/tools/pip_package:build_pip_package failed to build
+INFO: Elapsed time: 136.286s, Critical Path: 29.42s
+INFO: 487 processes: 199 internal, 288 local.
+FAILED: Build did NOT complete successfully
+</code></pre>
+<p>此种情况可能是使用了<code>clang/clang++</code>进行编译，换成<code>gcc/g++</code>后，该问题得到解决。</p>
+<h2 id="24-gcc-internal-compiler-error-killed-program-cc1plus">2.4 gcc: internal compiler error: Killed (program cc1plus)</h2>
+<pre><code> Configuration: 3ae23968b857c69df50fb9f45895d8d26e5e5626ba667099462d25a3ebb9874f
+# Execution platform: @local_execution_config_platform//:platform
+gcc: internal compiler error: Killed (program cc1plus)
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See &lt;file:///usr/share/doc/gcc-7/README.Bugs&gt; for instructions.
+Target //tensorflow/tools/pip_package:build_pip_package failed to build
+
+</code></pre>
+<p>可能是资源不够用。</p>
+<p>使用<code>free -m</code>或者<code>htop</code>查看资源使用情况</p>
+<p>如果是<code>swap</code>分区不够用，如果是ubuntu的话，用下面的方法对swap分区进行扩容。</p>
+<p>https://blog.csdn.net/AlexWang30/article/details/90341172</p>
+<h4 id="25-sse3-sse41-sse42-avx-avx2-fma">2.5  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA</h4>
+<pre><code class="language-python">2022-10-12 17:29:57.576173: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</code></pre>
+<p>这不是个错误 ，只是告诉你你可以加AVX等相关的选项去提高性能。</p>
+<h4 id="26-packaing-not-found">2.6 packaing not found</h4>
+<pre><code class="language-python">from packaging import version as packaging_version  # pylint: disable=g-bad-import-order
+ModuleNotFoundError: No module named 'packaging'
+Target //tensorflow/tools/pip_package:build_pip_package failed to build
+ERROR: /home/ken/workspace/tensorflow/tensorflow/tensorflow/lite/python/BUILD:68:10 Middleman _middlemen/tensorflow_Slite_Spython_Stflite_Uconvert-runfiles failed: (Exit 1): bash failed: error executing command
+
+</code></pre>
+<pre><code class="language-python">pip3 install packaging
+pip2 install packaging
+</code></pre>
+<h1 id="3">3 编译命令</h1>
+<p>下面是我用的编译命令，<code>--override_repository</code>是提前下好解决的文件。这里只针对<code>r2.10</code>版本，其它版本所需要的依赖commit可能是不同的。</p>
+<p>使用4GB内存，4个核来编译。htop来看有多少核，我这里有8G内存，8个核，只用了一半ram，另外设置了16G的swapp空间。</p>
+<p><code>--local_ram_resources=4096 --local_cpu_resources=6</code>, 不设置，则所有资源可用，可能会异常中止.</p>
+<p>如果使用clang来编译，需要使用，建议不要用clang</p>
+<pre><code class="language-python">CC=clang bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package 
+--verbose_failures出错的话，会显示详细的出错信息
+</code></pre>
+<pre><code class="language-python">CC=gcc CXX=g++ bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package  --override_repository=tf_runtime=/home/ken/workspace/tf_dep/runtime-6ca793b5d862ef6c50f242d77a811f06cce9b60a --override_repository=upb=/home/ken/workspace/tf_dep/upb-9effcbcb27f0a665f9f345030188c0b291e32482 --override_repository=io_bazel_rules_go=/home/ken/workspace/tf_dep/rules_go-0.18.5 --override_repository=envoy_api=/home/ken/workspace/tf_dep/data-plane-api-c83ed7ea9eb5fb3b93d1ad52b59750f1958b8bde --override_repository=rules_java=/home/ken/workspace/tf_dep/rules_java-981f06c3d2bd10225e85209904090eb7b5fb26bd --override_repository=XNNPACK=/home/ken/workspace/tf_dep/XNNPACK-6b409ac0a3090ebe74d0cdfb494c4cd91485ad39 --override_repository=rules_cc=/home/ken/workspace/tf_dep/rules_cc-081771d4a0e9d7d3aa0eed2ef389fa4700dfb23e --local_ram_resources=4096 --local_cpu_resources=6  --verbose_failures 
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>零长度数组概念 - My Docs</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../BuildBot/doing/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../cmdLine/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">零长度数组概念</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">零长度数组的用途</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">零长度数组概念</h1>
+<p>众所周知, <a href="https://so.csdn.net/so/search?q=GNU&amp;spm=1001.2101.3001.7020">GNU</a>/GCC 在标准的 C/C++ 基础上做了有实用性的扩展, 零长度数组（Arrays of Length Zero） 就是其中一个知名的扩展.</p>
+<p>多数情况下, 其应用在<a href="https://so.csdn.net/so/search?q=变长数组&amp;spm=1001.2101.3001.7020">变长数组</a>中, 其定义如下</p>
+<pre><code class="language-cpp">struct Packet
+{
+    int state;
+    int len;
+    char cData[0]; //这里的0长结构体就为变长结构体提供了非常好的支持
+};
+
+</code></pre>
+<p>首先对 0长度数组, 也叫柔性数组 做一个解释 ：</p>
+<ul>
+<li>
+<p>用途 : 长度为0的数组的主要用途是为了满足需要变长度的结构体</p>
+</li>
+<li>
+<p>用法：在一个结构体的最后，申明一个长度位0的数组，就可以使得这个结构体是可变长的。</p>
+</li>
+</ul>
+<p>对于编译器来说，此时长度位0的数组不占空间，因为数组名本身不占空间，它只是一个偏移量, 数组名这个符号本身代表了一个不可修改的地址常量</p>
+<p>(注意 : 数组名永远都不会是指针!), 但对于这个数组的大小, 我们可以进行动态分配。</p>
+<p>注意 ：如果结构体是通过calloc、malloc或 者new等动态分配方式生成，在不需要时要释放相应的空间。</p>
+<ul>
+<li>优点：比起在结构体中声明一个指针变量、再进行动态分 配的办法，这种方法效率要高。因为在访问数组内容时，不需要间接访问，避免了两次访存。</li>
+<li>在结构体中，数组为0的数组必须在最后声明，使 用上有一定限制。</li>
+</ul>
+<h1 id="_2">零长度数组的用途</h1>
+<p>我们设想这样一个场景, 我们在<a href="https://so.csdn.net/so/search?q=网络通信&amp;spm=1001.2101.3001.7020">网络通信</a>过程中使用的数据缓冲区, 缓冲区包括一个len字段和data字段, 分别标识数据的长度和传输的数据, 我们常见的有几种设计思路</p>
+<ul>
+<li>定长数据缓冲区, 设置一个足够大小 MAX_LENGTH 的数据缓冲区</li>
+<li>设置一个指向实际数据的指针, 每次使用时, 按照数据的长度动态的开辟数据缓冲区的空间.</li>
+</ul>
+<p>我们从实际场景中应用的设计来考虑他们的优劣. 主要考虑的有, 缓冲区空间的开辟, 释放和访问.</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+
+using namespace std;
+
+struct Arr0 {
+  int len;
+  char *data;
+};
+
+struct Arr1 {
+  uint64_t len;
+  char data[1];
+};
+
+int main() {
+  cout &lt;&lt; &quot;Arr0 size: &quot; &lt;&lt; sizeof(Arr0) &lt;&lt; endl;
+  cout &lt;&lt; &quot;Arr1 size: &quot; &lt;&lt; sizeof(Arr1) &lt;&lt; endl;
+
+  struct Arr1 *arr1ptr = (struct Arr1*)malloc(sizeof(struct Arr1) + 10);
+  cout &lt;&lt; &quot;arr1ptr size: &quot; &lt;&lt; sizeof(*arr1ptr) &lt;&lt; endl;
+
+  arr1ptr-&gt;len = 10;
+  memcpy(arr1ptr-&gt;data, &quot;1234567890&quot;, 10);
+  cout &lt;&lt; &quot;data: &quot; &lt;&lt; arr1ptr-&gt;data &lt;&lt; endl;
+
+  return 0;
+}
+
+
+Result:
+
+Arr0 size: 16
+Arr1 size: 16
+arr1ptr size: 16
+data: 1234567890
+
+</code></pre>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+
+using namespace std;
+
+struct Arr0 {
+  int len;
+  char *data;
+};
+
+struct Arr1 {
+  uint64_t len;
+  char data[0];
+};
+
+int main() {
+  cout &lt;&lt; &quot;Arr0 size: &quot; &lt;&lt; sizeof(Arr0) &lt;&lt; endl;
+  cout &lt;&lt; &quot;Arr1 size: &quot; &lt;&lt; sizeof(Arr1) &lt;&lt; endl;
+
+  struct Arr1 *arr1ptr = (struct Arr1*)malloc(sizeof(struct Arr1) + 10);
+  cout &lt;&lt; &quot;arr1ptr size: &quot; &lt;&lt; sizeof(*arr1ptr) &lt;&lt; endl;
+
+  arr1ptr-&gt;len = 10;
+  memcpy(arr1ptr-&gt;data, &quot;123456789&quot;, 10);
+  cout &lt;&lt; &quot;data: &quot; &lt;&lt; arr1ptr-&gt;data &lt;&lt; endl;
+
+  return 0;
+}
+
+Result：
+Arr0 size: 16
+Arr1 size: 8
+arr1ptr size: 8
+data: 123456789
+
+</code></pre>
+<p>如果使用以下的方式，则data需要单独申请内存，且与<code>struct Arr1</code>不连续。</p>
+<pre><code class="language-c++">struct Arr1 {
+  uint64_t len;
+  char *data;
+};
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

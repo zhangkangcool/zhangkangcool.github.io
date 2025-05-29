@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Visual Performance Analyzer - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Useful%20web/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../ascii%20graph/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#run-performance-test-on-m1" class="nav-link">Run Performance Test on M1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#prepare-testcase-for-m1-perf-test" class="nav-link">Prepare testcase for M1 perf test</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#guidelines" class="nav-link">Guidelines</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#simple-steps" class="nav-link">Simple steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>Visual Performance Analyzer(VPA)</p>
+<p>Download: https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/W5be7727ab90c_4453_b240_01bb7c1df49d/page/Performance%20Tools%20Release</p>
+<p>https://ctweb.torolab.ibm.com/wiki/index.php/Prepare_testcase_for_P9_M1_perf_test</p>
+<p>https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/Wf6305d6e6a03_468d_9aea_5b6b54446a50/page/Run%20Performance%20Test%20on%20M1</p>
+<p>Jviewer</p>
+<h2 id="run-performance-test-on-m1">Run Performance Test on M1</h2>
+<p>The Mambo (Functional simulator, qtrace generator) and M1 (Performance simulator) simulation env have been set up on recycler.</p>
+<p>Mambo :</p>
+<pre><code class="language-shell"> P9: /opt/systemsim-p9-release
+P10: /opt/systemsim-p10-release
+</code></pre>
+<p>M1:</p>
+<pre><code class="language-shell"> P9: /opt/m1-p9/
+P10: /opt/m1-p10/
+</code></pre>
+<p>You can use these simulators directly if you want. But please don't try to run long trace (eg: SPEC!) on recycler! </p>
+<p>If you would like to run some simple test, you can use Jinsong's script on <code>recycler</code>.</p>
+<ol>
+<li>
+<p>refer to how to prepare the testcase and how to link it in <a href="https://ctweb.torolab.ibm.com/wiki/index.php/Prepare_testcase_for_P9_M1_perf_test">https://ctweb.torolab.ibm.com/wiki/index.php/Prepare_testcase_for_P9_M1_perf_test</a> first.</p>
+</li>
+<li>
+<p>source the setup here: <code>source /opt/sim_env.cfg</code> </p>
+</li>
+<li>
+<p>run <strong>run_bare_metal_sim.pl</strong></p>
+</li>
+</ol>
+<p><code>run_bare_metal_sim.pl -10 -f ./a.out</code></p>
+<p>If you want run it on the real machine, you should not using <code>-8</code> or <code>-10</code>.</p>
+<pre><code class="language-shell">$ run_bare_metal_sim.pl 
+Usage: /home/jji/Mambo_M1/Mambo_M1_barmetal_sim_scripts/run_bare_metal_sim.pl
+​        -d &lt;string&gt;, optional, directory to run
+​        -f &lt;string&gt;, optional, binary to run
+​        -o &lt;string&gt;, optional, output filename, default is timestamp.csv
+​        -q , optional, generate qtrace only
+​        -m , optional, use the qtrace directly (run M1 only)
+​        -s , optional, run scrollpv to ASCII
+​        -n , optional, don't generate pipe file
+​        -8 , optional, run P8 mambo/M1 instead
+​        -10 , optional, run P10 mambo/M1 instead
+​        -p9mambo , optional, run P9 mambo for P10, when -10 is used instead
+​        -p , optional, PATH to Mambo installation, default is using ENV setting
+​        -i , optional, show instruction when simulating with Mambo
+​        -r , optional, show register when simulating with Mambo
+​        -x , optional, show memory reference when simulating with Mambo
+​        -a , optional, analyze the report only
+​        -v , optional, verbose print commands
+</code></pre>
+<h3 id="results">Results</h3>
+<ul>
+<li>You can find the CPI/INST/TIME in output csv file. eg:</li>
+</ul>
+<pre><code>Directory, Filename, CPI, INST, TIME
+lhs/test, lhs_test1a.qt.bz2, 0.47159, 11561, 5452
+</code></pre>
+<ul>
+<li>You can get the detail M1 report and pipe file in *.qt.bz2.results in your binary dir.</li>
+</ul>
+<h1 id="prepare-testcase-for-m1-perf-test">Prepare testcase for M1 perf test</h1>
+<p>(Redirected from <a href="https://ctweb.torolab.ibm.com/wiki/index.php?title=Prepare_testcase_for_P9_M1_perf_test&amp;redirect=no">Prepare testcase for P9 M1 perf test</a>)</p>
+<h2 id="guidelines">Guidelines</h2>
+<ul>
+<li>No system call  </li>
+<li>No getenv/setenv etc </li>
+<li>No cout/printf etc </li>
+<li>No malloc/free, unless you write your own library that don't use any system call. <ul>
+<li>Use static array if you can. </li>
+</ul>
+</li>
+<li>No runtime dependency </li>
+<li>No too many iterations. </li>
+</ul>
+<h2 id="simple-steps">Simple steps</h2>
+<ul>
+<li>Define special nops for mambo </li>
+</ul>
+<pre><code>#define mambo_warm_trace() asm volatile(&quot;or 13,13,13&quot;)
+#define mambo_start_trace() asm volatile(&quot;or 14,14,14&quot;)
+#define mambo_stop_trace() asm volatile(&quot;or 15,15,15&quot;)
+</code></pre>
+<ul>
+<li>Point out where you want to collect the trace with special nops </li>
+<li>call mambo_warm_trace(); at the beginning of your test. eg: in main . </li>
+<li>call mambo_start_trace; where the interested part is. eg: at the beginning of Run(). </li>
+<li>call mambo_stop_trace; where the interested part ends. eg: at the end of Run(). </li>
+<li>Static link with nocrt. </li>
+<li>Add "-e main -qnocrt -static -L/opt/at11.0/lib64/ " to your normal xl link options </li>
+<li>Add "-Xlinker -emain -nostartfiles -static " to your normal clang link options </li>
+</ul>
+<p>cat main.c</p>
+<pre><code class="language-cpp">#define mambo_warm_trace() asm volatile(&quot;or 13,13,13&quot;)
+#define mambo_start_trace() asm volatile(&quot;or 14,14,14&quot;)
+#define mambo_stop_trace() asm volatile(&quot;or 15,15,15&quot;)
+
+struct parm {
+  int *arr;
+  int m;
+  int n;
+};
+void foo(struct parm*);
+int main() {
+  int a[5000];
+  struct parm arg = {a, 1000, 5};pkl     nlkm  mambo_warm_trace();
+  mambo_start_trace();
+  foo(&amp;arg);
+  mambo_stop_trace();
+  return 0;
+}
+</code></pre>
+<p>cat foo.c</p>
+<pre><code class="language-c">struct parm {
+  int *arr;
+  int m;
+  int n;
+};
+void foo(struct parm *arg) {
+//  m--;
+//  n--;
+  struct parm localArg = *arg;
+  int m = localArg.m;
+  int *s = localArg.arr;
+  int n = localArg.n;
+  do{
+    int k = n;
+//    n--;
+//    k--;
+    do{
+      s[++k] = k++;
+      s[k++] = k;
+      s[k++] = k;
+      s[k] = k;
+      s[--k] = k--;
+      s[k--] = k;
+      s[--k] = k;
+//      s[k++] = k--;
+//      s[k++] = k--;
+//      s[k-1]=k;
+    }while(k--);
+  } while(m--);
+
+  s[n]=0;
+}
+</code></pre>
+<p>cat t.ksh</p>
+<pre><code class="language-shell">mv t.dis t_old.dis
+clang -c main.c -O0
+#clang -c main.c -O
+clang -S foo.c -O -fno-vectorize -mllvm -unroll-count=0
+#clang -o t foo.s main.o -Xlinker -emain -nostartfiles -static
+clang -o t main.o foo.s -Xlinker -emain -nostartfiles -static
+#clang -o t foo.s main.o
+#clang -o t main.o foo.s
+objdump -dr t &gt; t.dis
+</code></pre>
+<p>After you link the program by using <code>clang -Xlinker -emain -nostartfiles -static</code>, you must run it by using <code>run_bare_metal_sim.pl</code>, or you will get <code>segmentation fault</code>.</p>
+<h3 id="use-the-vpa-to-open-the-pipe-file">Use the VPA to open the pipe file</h3></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

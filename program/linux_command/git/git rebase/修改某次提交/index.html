@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>用git rebase修改其次提交 - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../git%20rebase/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../hook/hook/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#git-rebase" class="nav-link">用git rebase修改其次提交</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="git-rebase">用git rebase修改其次提交</h1>
+<p>在自己的分支上做</p>
+<pre><code class="language-c++">commit 9b74f14a9ab454814baa913d79e6a4fd94507f50 (HEAD -&gt; zhangkang/simplify_llvm, origin/zhangkang/simplify_llvm)
+Author: kang.zhang &lt;kang.zhang@csmicro.com&gt;
+Date:   Mon May 15 14:02:58 2023 +0800
+
+    working
+
+commit 788fab2564443a7690d8bc63b16ae43327aae9bc
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Thu May 11 04:16:30 2023 -0400
+
+    [Feat] Disalbe MicrosoftCXXABI &amp; MicrosoftMangle in AST
+
+commit 6074f4e1614b24e3edc0e7f55111c416d854fb00
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Thu May 11 03:57:51 2023 -0400
+
+    [feat] Disable MicrosoftDemangle &amp; MicrosoftDemangleNodes
+
+commit 05e01f95e5e6bdade25b6f820b2f2fddd1a50998
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Thu May 11 03:08:15 2023 -0400
+
+    Remove buildin in CGubiltin except amdgpu x86
+
+commit 26831e6bed2c507fe492655c3ab7824c64169afa
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Wed May 10 23:48:55 2023 -0400
+
+    [feat] Remove ObjC from clang/lib/CodeGen
+
+    This patch will remove ObjC from clang/lib/CodeGen.
+
+commit ee736ec3ef836733ef5f674cecad3e6a7537ac12
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Wed May 10 15:08:07 2023 -0400
+
+    [feat] Remove ObjCRuntime RewriteModernObjC &amp; RewriteObjC
+
+    This patch will remove ObjCRuntime.cpp, RewriteModernObjC.cpp and
+    RewriteObjC.cpp
+
+commit 8e7f79f0c38cd3812f7912383259fcb94ddd918b
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Wed May 10 14:18:25 2023 -0400
+
+    [Feat] Remove ObjARC analysis passes
+
+    This patch remove ObjARC analysis passes.
+
+commit 75ea670f3742d1ab7908553d1f3be117d51db8b5 (origin/dev, origin/HEAD, dev)
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Tue May 9 23:54:28 2023 -0400
+
+    [feat] Remove the library libLLVMObjCARCOpts.a
+
+commit d03d8fddc24d7981cb7baee80fa74af7b814f1fd
+Author: zhangkang &lt;zhangkang@csmicro.net&gt;
+Date:   Tue May 9 15:04:55 2023 +0800
+
+</code></pre>
+<p>使用git rebase -i命令</p>
+<pre><code class="language-shell">git rebase -i HEAD~7  // 这里是波浪线，不是减号
+</code></pre>
+<p>以下是7次提交的信息</p>
+<pre><code class="language-shell">pick 8e7f79f0c [Feat] Remove ObjARC analysis passes
+pick ee736ec3e [feat] Remove ObjCRuntime RewriteModernObjC &amp; RewriteObjC
+pick 26831e6be [feat] Remove ObjC from clang/lib/CodeGen
+pick 05e01f95e Remove buildin in CGubiltin except amdgpu x86
+pick 6074f4e16 [feat] Disable MicrosoftDemangle &amp; MicrosoftDemangleNodes
+pick 788fab256 [Feat] Disalbe MicrosoftCXXABI &amp; MicrosoftMangle in AST
+pick 9b74f14a9 working
+
+# 变基 75ea670f3..9b74f14a9 到 05e01f95e（7 个提交）
+#
+# 命令:
+# p, pick &lt;提交&gt; = 使用提交
+# r, reword &lt;提交&gt; = 使用提交，但修改提交说明
+# e, edit &lt;提交&gt; = 使用提交，进入 shell 以便进行提交修补
+# s, squash &lt;提交&gt; = 使用提交，但融合到前一个提交
+# f, fixup &lt;提交&gt; = 类似于 &quot;squash&quot;，但丢弃提交说明日志
+# x, exec &lt;命令&gt; = 使用 shell 运行命令（此行剩余部分）
+# b, break = 在此处停止（使用 'git rebase --continue' 继续变基）
+# d, drop &lt;提交&gt; = 删除提交
+# l, label &lt;label&gt; = 为当前 HEAD 打上标记
+# t, reset &lt;label&gt; = 重置 HEAD 到该标记
+# m, merge [-C &lt;commit&gt; | -c &lt;commit&gt;] &lt;label&gt; [# &lt;oneline&gt;]
+# .       创建一个合并提交，并使用原始的合并提交说明（如果没有指定
+# .       原始提交，使用注释部分的 oneline 作为提交说明）。使用
+# .       -c &lt;提交&gt; 可以编辑提交说明。
+#
+# 可以对这些行重新排序，将从上至下执行。
+#
+# 如果您在这里删除一行，对应的提交将会丢失。
+#
+# 然而，如果您删除全部内容，变基操作将会终止。
+#
+# 注意空提交已被注释掉
+
+</code></pre>
+<p>上述第二行中的<code>pick</code>修改为<code>edit</code>，对第二次的提交进行修改</p>
+<pre><code class="language-shell">停止在 ee736ec3e... [feat] Remove ObjCRuntime RewriteModernObjC &amp; RewriteObjC
+您现在可以修补这个提交，使用
+
+  git commit --amend
+
+当您对变更感到满意，执行
+
+  git rebase --continue
+
+</code></pre>
+<p>如果有多个edit的话，每完成一个要使用一次<code>git rebase --continue</code></p>
+<p>修改有问题的文件<code>clang/lib/Driver/ToolChains/Clang.cpp</code>后，查看状态。</p>
+<pre><code class="language-shell">llvm@llvm-gw001m1aftf:~/workspace/OpenCL_Compiler$ git status
+交互式变基操作正在进行中；至 75ea670f3
+最后的命令已完成（2 条命令被执行）：
+   pick 8e7f79f0c [Feat] Remove ObjARC analysis passes
+   edit ee736ec3e [feat] Remove ObjCRuntime RewriteModernObjC &amp; RewriteObjC
+接下来要执行的命令（剩余 5 条命令）：
+   pick 26831e6be [feat] Remove ObjC from clang/lib/CodeGen
+   pick 05e01f95e Remove buildin in CGubiltin except amdgpu x86
+  （使用 &quot;git rebase --edit-todo&quot; 来查看和编辑）
+您在执行将分支 'zhangkang/simplify_llvm' 变基到 '75ea670f3' 的操作时拆分提交。
+  （一旦您工作目录提交干净后，运行 &quot;git rebase --continue&quot;）
+
+尚未暂存以备提交的变更：
+  （使用 &quot;git add &lt;文件&gt;...&quot; 更新要提交的内容）
+  （使用 &quot;git restore &lt;文件&gt;...&quot; 丢弃工作区的改动）
+        修改：     clang/lib/Driver/ToolChains/Clang.cpp
+
+未跟踪的文件:
+  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）
+        test.log
+
+</code></pre>
+<pre><code class="language-shell">git add clang/lib/Driver/ToolChains/Clang.cpp
+git commit --amend
+git rebase --continue
+</code></pre>
+<pre><code class="language-shell">git push --force  // 提交到 
+</code></pre>
+<pre><code class="language-shell"> /home/ken/workspace/OpenCL_Compiler/build/bin/clang -cc1 -internal-isystem /home/ken/workspace/OpenCL_Compiler/build/lib/clang/9.0.1/include -nostdsysteminc /home/ken/workspace/OpenCL_Compiler/clang/test/CodeGenOpenCLCXX/addrspace-of-this.cl -triple spir-unknown-unknown -cl-std=clc++ -emit-llvm -pedantic -verify -O0 -o - -DDECL | /home/ken/workspace/OpenCL_Compiler/build/bin/FileCheck /home/ken/workspace/OpenCL_Compiler/clang/test/CodeGenOpenCLCXX/addrspace-of-this.cl --check-prefixes=&quot;COMMON,EXPL&quot;
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

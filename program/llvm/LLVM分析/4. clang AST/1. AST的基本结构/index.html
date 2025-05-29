@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>1. AST的基本结构 - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../3.%20%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/5.%20SourceManager/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../2.%20AST%E7%94%9F%E6%88%90/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>首先用OpenCL的程序来展示下clang中语法树的结构，如下所示为要编译的OpenCL kernel:</p>
+<pre><code class="language-c++">__kernel void add_kernel(global int *a, global int *b, global int *c)
+
+{
+
+  int i = get_global_id(0);
+
+  c[i]=a[i]+b[i];
+
+}
+
+</code></pre>
+<p>使用下面命令dump其语法树结构：</p>
+<pre><code class="language-shell">clang -c -target spir -x cl -cl-std=CL1.0 -Xclang -ast-dump -Xclang -finclude-default-header input.cl
+</code></pre>
+<p>语法树结构如下所示：</p>
+<pre><code class="language-c++">TranslationUnitDecl 0x55ff6668d008 &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt;
+
+|-TypedefDecl 0x55ff666aa1e8 &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit NSConstantString 'struct NSConstantString_tag'
+
+| `-RecordType 0x55ff6668dfc0 'struct __NSConstantString_tag'
+
+|  `-Record 0x55ff6668df48 '__NSConstantString_tag'
+
+|-TypedefDecl 0x55ff666aa248 &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit referenced sampler_t 'sampler_t'
+
+| `-BuiltinType 0x55ff6668dca0 'sampler_t'
+
+|-TypedefDecl 0x55ff666aa2a8 &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit referenced event_t 'event_t'
+
+| `-BuiltinType 0x55ff6668dcc0 'event_t'
+
+...
+
+...
+
+-FunctionDecl 0x55ff66d4ee28 &lt;input.cl:1:1, line:5:1&gt; line:1:15 add_kernel 'void (global int *, global int *, __global int *)'
+
+ |-ParmVarDecl 0x55ff66d4ec20 &lt;col:26, col:38&gt; col:38 used a '__global int *'
+
+ |-ParmVarDecl 0x55ff66d4ec98 &lt;col:41, col:53&gt; col:53 used b '__global int *'
+
+ |-ParmVarDecl 0x55ff66d4ed10 &lt;col:55, col:67&gt; col:67 used c '__global int *'
+
+ |-CompoundStmt 0x55ff66d4f2d0 &lt;line:2:1, line:5:1&gt;
+
+ | |-DeclStmt 0x55ff66d4f098 &lt;line:3:5, col:29&gt;
+
+ | | `-VarDecl 0x55ff66d4ef30 &lt;col:5, col:28&gt; col:9 used i 'int' cinit
+
+ | |  `-ImplicitCastExpr 0x55ff66d4f080 &lt;col:13, col:28&gt; 'int' &lt;IntegralCast&gt;
+
+ | |   `-CallExpr 0x55ff66d4f040 &lt;col:13, col:28&gt; 'size_t':'unsigned int'
+
+ | |    |-ImplicitCastExpr 0x55ff66d4f028 col:13 'size_t (*)(uint)' &lt;FunctionToPointerDecay&gt;
+
+ | |    | `-DeclRefExpr 0x55ff66d4ef90 col:13 'size_t (uint)' Function 0x55ff6685b330 'get_global_id' 'size_t (uint)'
+
+ | |    `-ImplicitCastExpr 0x55ff66d4f068 col:27 'uint':'unsigned int' &lt;IntegralCast&gt;
+
+ | |     `-IntegerLiteral 0x55ff66d4efb0 col:27 'int' 0
+
+ | `-BinaryOperator 0x55ff66d4f2b0 &lt;line:4:5, col:22&gt; 'int' '='
+
+ |  |-ArraySubscriptExpr 0x55ff66d4f121 &lt;col:5, col:8&gt; '__global int' lvalue
+
+ |  | |-ImplicitCastExpr 0x55ff66d4f0f0 col:5 '__global int *' &lt;LValueToRValue&gt;
+
+ |  | | `-DeclRefExpr 0x55ff66d4f0b0 col:5 'global int *' lvalue ParmVar 0x55ff66d4ed10 'c' 'global int *'
+
+ |  | `-ImplicitCastExpr 0x55ff66d4f108 col:7 'int' &lt;LValueToRValue&gt;
+
+ |  |  `-DeclRefExpr 0x55ff66d4f0d0 col:7 'int' lvalue Var 0x55ff66d4ef30 'i' 'int'
+
+ |  `-BinaryOperator 0x55ff66d4f290 &lt;col:12, col:22&gt; 'int' '+'
+
+ |   |-ImplicitCastExpr 0x55ff66d4f260 &lt;col:12, col:15&gt; 'int' &lt;LValueToRValue&gt;
+
+ |   | `-ArraySubscriptExpr 0x55ff66d4f1b0 &lt;col:12, col:15&gt; '__global int' lvalue
+
+ |   |  |-ImplicitCastExpr 0x55ff66d4f180 col:12 '__global int *' &lt;LValueToRValue&gt;
+
+ |   |  | `-DeclRefExpr 0x55ff66d4f140 col:12 'global int *' lvalue ParmVar 0x55ff66d4ec20 'a' 'global int *'
+
+ |   |  `-ImplicitCastExpr 0x55ff66d4f198 col:14 'int' &lt;LValueToRValue&gt;
+
+ |   |   `-DeclRefExpr 0x55ff66d4f160 col:14 'int' lvalue Var 0x55ff66d4ef30 'i' 'int'
+
+ |   `-ImplicitCastExpr 0x55ff66d4f278 &lt;col:19, col:22&gt; 'int' &lt;LValueToRValue&gt;
+
+ |    `-ArraySubscriptExpr 0x55ff66d4f240 &lt;col:19, col:22&gt; '__global int' lvalue
+
+ |     |-ImplicitCastExpr 0x55ff66d4f210 col:19 '__global int *' &lt;LValueToRValue&gt;
+
+ |     | `-DeclRefExpr 0x55ff66d4f1d0 col:19 'global int *' lvalue ParmVar 0x55ff66d4ec98 'b' 'global int *'
+
+ |     `-ImplicitCastExpr 0x55ff66d4f228 col:21 'int' &lt;LValueToRValue&gt;
+
+ |      `-DeclRefExpr 0x55ff66d4f1f0 col:21 'int' lvalue Var 0x55ff66d4ef30 'i' 'int'
+
+ `-OpenCLKernelAttr 0x55ff66d4eed8 line:1:1
+
+</code></pre>
+<p>从以上输出可以看出，每一行包括AST node的类型，行号、列号以及类型的信息。最顶部一般是TranslationUnitDecl，一个cl/c/cpp文件以及那些#include包括的文件称为翻译单元（TranslaitonUnit）。在上述代码中，FunctionDecl之前的语法树都是解析OpenCL头文件得来的，大多是一些typedef的声明，FunctionDecl表示的是kernel函数add_kernel，里面又嵌套函数参数（ParmVarDecl）、定义语句（DeclStmt）、变量声明（VarDecl)等结构。</p>
+<p>clang的AST和其他编译器的AST不同，例如LJMICRO的语法树有一个共同的node节点，其他node节点都是在这个父节点上继承而来，但clang的AST没有共同的节点，取而代之的是三个重要的基类，主要是分为Decl、Stmt、Type。其中Decl表示声明，如函数声明、变量声明、结构声明等都是基于Decl类继承而来；Stmt表示语句，语句中又有声明语句、实现语句、返回语句等；Type用来管理数据类型，包括标准数据类型和自定义的数据类型。另外有些特别的类不由这三种基类继承而来，如CXXBaseSpecifier单独用来表示C++中的基类。</p>
+<p>一个翻译单元生成的语法树的所有信息都保存在ASTContext对象中。ASTContext中有一个重要的成员函数getTranslationUnitDecl，获取TranslationUnitDecl（其父类是Decl，DeclContext），这是AST树的顶层（top level）结构，可以通过其decls_begin()/decls_end()遍历其保存的nodes。</p>
+<p>AST树的本地化存储和读入借助ASTWriter和ASTReader，Clang还提供了一些高层次的类ASTUnit，将AST树保存为二进制文件，也可以加载AST文件构建ASTContext。</p>
+<pre><code class="language-c++">ASTUnit::LoadFromASTFile(&quot;input.ast&quot;, Diags,opts);
+</code></pre>
+<p>AST基类和派生的子类有一个关键的回调函数HandleTranslationUnit，该函数会在处理完一个翻译单元后每调用，不同的子类完成的任务不一样，其实现也不同，如ASTPrinter类，负责打印输出AST节点信息，其HandleTranslationUnit函数的功能是获取当前翻译单元声明，遍历并打印</p>
+<pre><code class="language-c++">void HandleTranslationUnit(ASTContext &amp;Context) override {
+
+   TranslationUnitDecl *D = Context.getTranslationUnitDecl();
+
+   if (FilterString.empty())
+
+     return print(D);
+
+   TraverseDecl(D);
+
+}
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

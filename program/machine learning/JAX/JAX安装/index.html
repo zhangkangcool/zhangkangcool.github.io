@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>以下是pip3安装方式 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../AOT/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../jax_to_pb/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#pip3" class="nav-link">以下是pip3安装方式</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">以下是源码安装方式</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="pip3">以下是pip3安装方式</h1>
+<p>最好先弄个虚拟环境</p>
+<pre><code>pip3 install jax -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host https://pypi.tuna.tsinghua.edu.cn
+
+pip3 install jaxlib -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host https://pypi.tuna.tsinghua.edu.cn
+</code></pre>
+<h1 id="_1">以下是源码安装方式</h1>
+<p>https://jax.readthedocs.io/en/latest/developer.html#building-from-source</p>
+<pre><code class="language-shell">python3 build/build.py --bazel_options=--override_repository=org_tensorflow=/home/ken/workspace/tensorflow/tensorflow
+这样不用编译时下载tensorflow
+
+Bazel binary path: /usr/local/bin/bazel
+Bazel version: 5.1.1
+Python binary path: /usr/bin/python3
+Python version: 3.7
+NumPy version: 1.21.6
+MKL-DNN enabled: yes
+Target CPU: x86_64
+Target CPU features: release
+CUDA enabled: no
+TPU enabled: no
+Remote TPU enabled: no
+ROCm enabled: no
+</code></pre>
+<pre><code>pip3 install pybind11
+pip3 install ducc0
+</code></pre>
+<pre><code class="language-python"> python3 build/build.py --bazel_options=&quot;--override_repository=org_tensorflow=/home/ken/workspace/tensorflow/tensorflow --override_repository=bazel_skylib=/home/ken/workspace/jax_dep/bazel-skylib-1.2.1 --override_repository=local_config_cuda=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_cuda --override_repository=local_config_tensorrt=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_tensorrt --override_repository=local_config_rocm=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_rocm --override_repository=local_config_remote_execution=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_remote_execution --override_repository=com_github_grpc_grpc=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_github_grpc_grpc --override_repository=com_google_protobuf=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_google_protobuf&quot;
+
+</code></pre>
+<pre><code class="language-python">python3 build/build.py --bazel_options=&quot;--override_repository=bazel_skylib=/home/ken/workspace/jax_dep/bazel-skylib-1.2.1 --override_repository=local_config_cuda=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_cuda --override_repository=local_config_tensorrt=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_tensorrt --override_repository=local_config_rocm=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_rocm --override_repository=local_config_remote_execution=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_remote_execution --override_repository=com_github_grpc_grpc=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_github_grpc_grpc --override_repository=com_google_protobuf=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_google_protobuf --override_repository=flatbuffers=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/flatbuffers --override_repository=build_bazel_rules_android=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/build_bazel_rules_android --override_repository=absl_py=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/absl_py --override_repository=llvm-project=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/llvm-project --override_repository=pybind11=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/pybind11 --override_repository=six_archive=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/six_archive --override_repository=local_config_python=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_python --override_repository=com_google_absl=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_google_absl&quot;
+
+</code></pre>
+<pre><code class="language-c++"> python3 build/build.py --bazel_options=&quot;--override_repository=bazel_skylib=/home/ken/workspace/jax_dep/bazel-skylib-1.2.1 --override_repository=local_config_cuda=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_cuda --override_repository=local_config_tensorrt=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_tensorrt --override_repository=local_config_rocm=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_rocm --override_repository=local_config_remote_execution=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_remote_execution --override_repository=com_github_grpc_grpc=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_github_grpc_grpc --override_repository=com_google_protobuf=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_google_protobuf --override_repository=flatbuffers=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/flatbuffers --override_repository=build_bazel_rules_android=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/build_bazel_rules_android --override_repository=absl_py=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/absl_py --override_repository=llvm-project=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/llvm-project --override_repository=pybind11=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/pybind11 --override_repository=six_archive=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/six_archive --override_repository=local_config_python=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/local_config_python --override_repository=com_google_absl=/home/ken/.cache/bazel/_bazel_ken/7958fc4ffdc3fda57f47c66f5611f525/external/com_google_absl --override_repository=ducc=/home/ken/workspace/jax_dep/ducc-356d619a4b5f6f8940d15913c14a043355ef23be&quot;
+</code></pre>
+<pre><code>https://storage.googleapis.com/mirror.tensorflow.org/github.com/llvm/llvm-project/archive/0538e5431afdb1fa05bdcedf70ee502ccfcd112a.tar.gz
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

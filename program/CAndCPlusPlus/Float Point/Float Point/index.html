@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Float Point - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../FCMP/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../LLVM%20IR/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#0" class="nav-link">0. 浮点数的表示和精度</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1" class="nav-link">1. 浮点数</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2" class="nav-link">2. 精度</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#3" class="nav-link">3. 特殊的浮点数</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#4-compare-ieee754" class="nav-link">4. Compare IEEE754</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#5" class="nav-link">5.结束语</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><a href="http://www.fmddlmyy.cn/text60.html">浮点数的表示和精度</a> (This article)</p>
+<p><a href="http://www.cnblogs.com/kingwolfofsky/archive/2011/07/21/2112299.html">浮点数与IEEE 754</a></p>
+<p>http://c.biancheng.net/view/314.html</p>
+<p>Float Point: Binary &lt;--&gt; decimal</p>
+<p>http://www.binaryconvert.com/convert_double.html</p>
+<p>https://www.h-schmidt.net/FloatConverter/IEEE754.html</p>
+<p>IEEE Calculate: http://weitz.de/ieee/</p>
+<h1 id="0">0. 浮点数的表示和精度</h1>
+<p>https://www.h-schmidt.net/FloatConverter/IEEE754.html</p>
+<p>如果a&gt;0，那么1+a一定大于1吗？在数学上，答案是肯定的。但在计算机上，答案就与a的大小和浮点数的精度有关了。在matalb上，可以作以下计算：</p>
+<pre><code class="language-shell">&gt;&gt; a=1/2^52
+a =
+    2.220446049250313e-016
+
+&gt;&gt; 1+a&gt;1
+ans =
+     1
+
+&gt;&gt; a=1/2^53
+a =
+    1.110223024625157e-016
+
+&gt;&gt; 1+a&gt;1
+ans =
+     0
+</code></pre>
+<p>可见，当a等于1/2^53时，1+a&gt;1是不成立的。</p>
+<h1 id="1">1. 浮点数</h1>
+<p>IEEE754定义了单精度浮点数和双精度数浮点数，即float和double。float有32bit，double有64bit。它们都包括符号位、指数和尾数。</p>
+<p>图片来自： https://www.h-schmidt.net/FloatConverter/IEEE754.html</p>
+<p><a href="http://c.biancheng.net/view/314.html">-9.625 = 1 10000010 00110011111101111100111</a></p>
+<p>3 = Exponent - 127 --&gt; Exponent = 130</p>
+<p>9.625 = 1001.101 = 1.001101×2^3 ==&gt;  00110011111101111100111</p>
+<p><img alt="image-20200103103107276" src="../assets/image-20200103103107276.png" /></p>
+<pre><code>        符号位    指数         尾数
+float   31(1)   30-23(8)    22-0(23)
+double  63(1)   62-52(11)   51-0(52)
+</code></pre>
+<p>符号位有1bit，0表示正、1表示负。设一个数的指数是e，指数部分的值是bias+e。加上一个bias是为了表示负数。 float的bias是127，double的bias是1023。指数全0或全1有特殊含义，不算正常指数。</p>
+<pre><code>float的指数部分有8bit，可以取值1~254，减掉127，得到对应的指数范围-126~127。
+double的指数部分有11位，可以取值1~2046，减掉1023，得到对应的指数范围-1022~1023。
+</code></pre>
+<p>这里的指数是以2为底的，同样尾数也是二进制的。IEEE754要求浮点数以规范形式存储，即小数点前有1位非零数字。 对于二进制数，非零数字只有1。所以IEEE754在存储时省略了这个小数点前面的1，只存储小数点后面的位。 </p>
+<h1 id="2">2. 精度</h1>
+<p>可以把机器精度定义为满足条件</p>
+<pre><code>fl(1+ε)&gt;1
+</code></pre>
+<p>的最小浮点数<code>ε</code>。其中<code>fl(1+ε)</code>是<code>1+ε</code>的浮点表示。显然double的机器精度是<code>1/2^52</code>。float的机器精度是<code>1/2^23</code>。 matlab内部采用double，<code>1+1/2^53</code>对double来说就是1，所以<code>1+1/2^53</code>不会大于1。</p>
+<p>对于规范数来说，因为小数点前默认有个1，所以float的有效数字是24bit，对应8位十进制有效数字； double的有效数字是53bit，对应16位十进制有效数字。</p>
+<h1 id="3">3. 特殊的浮点数</h1>
+<p>前面提到浮点数的指数全0或全1有特殊含义，让我们来看看这些特殊的浮点数：</p>
+<p>除了 NaN 之外，IEEE 标准还定义了 ±0，±∞ 以及非规范化数（Denormalized Number）。</p>
+<ul>
+<li>
+<p>±0：指数和尾数都是全0表示0。根据符号位不同可以分为+0和-0。</p>
+</li>
+<li>
+<p>非规范化数（Denormalized Number）：指数全0，尾数不为全0，这些数是非规范数，即尾数部分不假设前面存在小数点前的1。 或者说这些数太接近0了，因为指数已经不能再小，所以这些数不能写成规范形式。 例如：double数0000 0000 0000 0001的尾数是0 0000 0000 0001，即1/2^52，对应的数是1/(2^52)*2^-1022，即4.9406564584124654e-324。</p>
+</li>
+<li>
+<p>±∞ ：指数全1，尾数全0表示无穷大，即inf。根据符号位不同可以分为+inf和-inf。</p>
+</li>
+<li>
+<p>NaN：指数全1，尾数不为全0表示NaN，即Not a Number，不是数。尾数最高位为1的NaN被称作QNaN（Quiet NaN）。 尾数最高位为0的NaN被称作SNaN（Signalling NaN）。通常用QNaN表示不确定的操作，用SNaN表示无效的操作。是一个范围。</p>
+</li>
+</ul>
+<p>非规范化数用于数值非常小的情况</p>
+<p>在计算机内部，double就是一个64位数。从0x0000 0000 0000 0000~0xFFFF FFFF FFFF FFFF，每个64位数都对应一个浮点数或NaN。 我写了一个小程序，按照64位无符号整数的顺序打印出典型的浮点数。 表格的第一列是浮点数的内部表示。为了便于阅读，按大尾顺序输出。第二列是对应的浮点数。 第三列是注释，对于非规范数和规范数给出了由内部表示计算数值的matlab算式。 注意在C/C++中，2^52要写成pow(2.0,52.0)。</p>
+<pre><code>0000 0000 0000 0000 0.0000000000000000e+000 +0
+0000 0000 0000 0001 4.9406564584124654e-324 1/(2^52)*2^-1022
+000F FFFF FFFF FFFF 2.2250738585072009e-308 .5*(1-.5^52)/(1-.5)*2^-1022
+0010 0000 0000 0000 2.2250738585072014e-308 1.0*2^-1022
+0010 0000 0000 0001 2.2250738585072019e-308 (1+1/2^52)*2^(-1022)
+001F FFFF FFFF FFFF 4.4501477170144023e-308 (1+.5*(1-.5^52)/(1-.5))*2^-1022
+0020 0000 0000 0000 4.4501477170144028e-308 1.0*2^-1021
+3FF0 0000 0000 0000 1.0000000000000000e+000 1.0
+3FF0 0000 0000 0001 1.0000000000000002e+000 1.0+1/(2^52)
+3FFF FFFF FFFF FFFF 1.9999999999999998e+000 1+.5*(1-.5^52)/(1-.5)
+4000 0000 0000 0000 2.0000000000000000e+000 1.0*2^1
+7FEF FFFF FFFF FFFF 1.7976931348623157e+308 (1+.5*(1-.5^52)/(1-.5))*2^1023
+7FF0 0000 0000 0000 1.#INF000000000000e+000 +INF
+
+7FF0 0000 0000 0001 1.#SNAN00000000000e+000 SNaN 
+...
+7FF7 FFFF FFFF FFFF 1.#SNAN00000000000e+000 SNaN
+
+7FF8 0000 0000 0000 1.#QNAN00000000000e+000 QNaN 
+...
+7FFF FFFF FFFF FFFF 1.#QNAN00000000000e+000 QNaN
+
+8000 0000 0000 0000 0.0000000000000000e+000 -0
+8000 0000 0000 0001 -4.9406564584124654e-324    -(1/(2^52)*2^-1022)
+800F FFFF FFFF FFFF -2.2250738585072009e-308    -(.5*(1-.5^52)/(1-.5)*2^-1022)
+8010 0000 0000 0000 -2.2250738585072014e-308    -(1.0*2^-1022)
+8010 0000 0000 0001 -2.2250738585072019e-308    -((1+1/2^52)*2^(-1022))
+801F FFFF FFFF FFFF -4.4501477170144023e-308    -((1+.5*(1-.5^52)/(1-.5))*2^-1022)
+8020 0000 0000 0000 -4.4501477170144028e-308    -(1.0*2^-1021)
+BFF0 0000 0000 0000 -1.0000000000000000e+000    -1.0
+BFFF FFFF FFFF FFFF -1.9999999999999998e+000    -(1+.5*(1-.5^52)/(1-.5))
+C000 0000 0000 0000 -2.0000000000000000e+000    -(1.0*2^1)
+FFEF FFFF FFFF FFFF -1.7976931348623157e+308    -((1+.5*(1-.5^52)/(1-.5))*2^1023)
+FFF0 0000 0000 0000 -1.#INF000000000000e+000    -INF
+
+FFF0 0000 0000 0001 -1.#SNAN00000000000e+000    SNaN
+...
+FFF7 FFFF FFFF FFFF -1.#SNAN00000000000e+000    SNaN
+FFF8 0000 0000 0000 -1.#IND000000000000e+000    QNaN
+...
+FFFF FFFF FFFF FFFF -1.#QNAN00000000000e+000    QNaN
+</code></pre>
+<p>从表中可以看到，double内部表示的设计是很有规律的，按照对应64位数的顺序依次为 +0、正非规范数、正规范数、正无穷大、符号位为正的NaN、-0、负非规范数、负规范数、负无穷大、符号位为负的NaN。</p>
+<p>double内部表示的设计保持了浮点数的有序性。即：如果正double数a&lt;正double数b，则a对应的64位无符号整数&lt;b对应的64位无符号整数。 负数因为差了个符号，所以浮点数与对应整数的顺序相反。 float也有类似的规律。</p>
+<h4 id="graph">Graph</h4>
+<p>https://babbage.cs.qc.cuny.edu/IEEE-754.old/References.xhtml</p>
+<h1 id="4-compare-ieee754">4. Compare IEEE754</h1>
+<h4 id="2008">2008</h4>
+<pre><code>For each supported arithmetic format, an implementation shall provide the following predicate that defines
+an ordering among all operands in a particular format: ― boolean totalOrder(source, source)
+totalOrder(x, y) imposes a total ordering on canonical members of the format of x and y:
+a) If x &lt; y, totalOrder(x, y) is true.
+b) If x &gt; y, totalOrder(x, y) is false.
+c) If x=y:
+1) totalOrder(−0, +0) is true.
+2) totalOrder(+0, −0) is false.
+3) If x and y represent the same floating-point datum:
+i) If x and y have negative sign,
+totalOrder(x, y) is true if and only if the exponent of x ≥ the exponent of y
+ii) otherwise
+totalOrder(x, y) is true if and only if the exponent of x ≤ the exponent of y.
+d) If x and y are unordered numerically because x or y is NaN:
+1) totalOrder(−NaN, y) is true where −NaN represents a NaN with negative sign bit and y is a
+floating-point number.
+2) totalOrder(x, +NaN) is true where +NaN represents a NaN with positive sign bit and x is a floating-point number.
+3) If x and y are both NaNs, then totalOrder reflects a total ordering based on:
+i) negative sign orders below positive sign
+ii) signaling orders below quiet for +NaN, reverse for −NaN
+iii) lesser payload, when regarded as an integer, orders below greater payload for +NaN, reverse for −NaN.
+Neither signaling NaNs nor quiet NaNs signal an exception. For canonical x and y, totalOrder(x, y) and totalOrder( y, x) are both true if x and y are bitwise identical.
+NOTE— totalOrder does not impose a total ordering on all encodings in a format. In particular, it does not distinguish among different encodings of the same floating-point representation, as when one or both encodings are non-canonical.
+
+</code></pre>
+<h4 id="2019">2019</h4>
+<pre><code>For each supported arithmetic format, an implementation shall provide the following predicate that defines
+an ordering among all operands in a particular format: ― boolean totalOrder(source, source)
+totalOrder(x, y) imposes a total ordering on canonical members of the format of x and y:
+a) If x &lt; y, totalOrder(x, y) is true.
+b) If x &gt; y, totalOrder(x, y) is false.
+c) Ifx=y:
+1) totalOrder(−0, +0) is true.
+2) totalOrder(+0, −0) is false.
+3) If x and y represent the same floating-point datum:
+i) If x and y have negative sign,
+totalOrder(x, y) is true if and only if the exponent of x ≥ the exponent of y
+ii) otherwise,
+totalOrder(x, y) is true if and only if the exponent of x ≤ the exponent of y.
+d) If
+2) totalOrder(x, −NaN) is false where −NaN represents a NaN with negative sign bit and x is a floating-point number.
+3) totalOrder(x, +NaN) is true where +NaN represents a NaN with positive sign bit and x is a floating-point number.
+4) totalOrder(+NaN, y) is false where +NaN represents a NaN with positive sign bit and y is a floating-point number.
+5) If x and y are both NaNs, then totalOrder reflects a total ordering based on:
+i) negative sign orders below positive sign
+ii) signaling orders below quiet for +NaN, reverse for −NaN
+iii) otherwise, the order of NaNs is implementation-defined.
+Neither signaling NaNs nor quiet NaNs signal an exception. For canonical x and y, totalOrder(x, y) and totalOrder( y, x) are both true if x and y are bitwise identical.
+Unsigned NaNs, as may occur in non-interchange formats, should order like NaNs with positive sign bit.
+NOTE—totalOrder does not impose a total ordering on all encodings in a format. In particular, it does not distinguish among different encodings of the same floating-point representation, as when one or both encodings are non-canonical.
+</code></pre>
+<pre><code> 10000000 00000000 00000000 00000000 - 10000000 00000000
+=11111111 11111111 10000000 00000000 
+</code></pre>
+<h1 id="5">5.结束语</h1>
+<p>float和int都是32bit，但float的尾数只用了23bit。int的精度高于float，float的表示范围大于int。float牺牲精度换取了更大的表示范围。 double的尾数是52bit，高于32bit的int，所以用dobule表示int不会有精度损失。 double是科学计算的常用类型，了解double的内在和限制，有助于我们更好地使用它。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

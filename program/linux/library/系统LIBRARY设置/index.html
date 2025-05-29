@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>系统LIBRARY设置 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../so%E9%A9%B1%E5%8A%A8%E4%B8%8Edeb%E9%A9%B1%E5%8A%A8/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../repo/repo%E5%9C%B0%E5%9D%80/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>/usr/local/lib/ 不在系统的LD_LIBRARY_PATH</p>
+<p>在 Linux 系统中，<code>/usr/local/lib/</code> 目录通常用于存放用户手动安装的库文件。不过，该目录可能并未被默认添加到 <code>LD_LIBRARY_PATH</code> 环境变量里，这会致使系统在运行时无法找到存于该目录下的库文件。以下为你介绍几种把 <code>/usr/local/lib/</code> 加入 <code>LD_LIBRARY_PATH</code> 的方法。</p>
+<h3 id="_1">临时添加</h3>
+<p>你能够在当前终端会话里临时添加 <code>/usr/local/lib/</code> 到 <code>LD_LIBRARY_PATH</code>，此设置仅在当前终端会话中生效，关闭终端后便会失效。</p>
+<pre><code class="language-bash">export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+</code></pre>
+<p>运行此命令之后，<code>/usr/local/lib/</code> 就会被添加到 <code>LD_LIBRARY_PATH</code> 的开头。你可以通过如下命令来验证：</p>
+<pre><code class="language-bash">echo $LD_LIBRARY_PATH
+</code></pre>
+<h3 id="_2">永久添加</h3>
+<p>若要让 <code>/usr/local/lib/</code> 永久地被添加到 <code>LD_LIBRARY_PATH</code>，可以按照以下步骤操作。</p>
+<h4 id="_3">针对单个用户</h4>
+<p>编辑当前用户的 <code>~/.bashrc</code> 或者 <code>~/.bash_profile</code> 文件，添加如下内容：</p>
+<pre><code class="language-bash">export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+</code></pre>
+<p>保存文件后，运行下面的命令使更改生效：</p>
+<pre><code class="language-bash">source ~/.bashrc
+</code></pre>
+<pre><code class="language-bash">source ~/.bash_profile
+</code></pre>
+<h4 id="_4">针对所有用户</h4>
+<p>编辑 <code>/etc/profile</code> 或者 <code>/etc/environment</code> 文件。</p>
+<p><strong>编辑 <code>/etc/profile</code></strong>：
+在文件末尾添加如下内容：</p>
+<pre><code class="language-bash">export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+</code></pre>
+<p>保存文件后，运行以下命令使更改生效：</p>
+<pre><code class="language-bash">source /etc/profile
+</code></pre>
+<p><strong>编辑 <code>/etc/environment</code></strong>：
+打开 <code>/etc/environment</code> 文件，找到 <code>LD_LIBRARY_PATH</code> 变量（若不存在则添加），并添加 <code>/usr/local/lib/</code> 到变量值中。示例如下：</p>
+<pre><code class="language-plaintext">LD_LIBRARY_PATH=&quot;/usr/local/lib/:$LD_LIBRARY_PATH&quot;
+</code></pre>
+<p>保存文件后，重启系统或者注销并重新登录，使更改生效。</p>
+<h3 id="ldconfig">通过 <code>ldconfig</code> 解决</h3>
+<p>另一种解决办法是借助 <code>ldconfig</code> 工具更新动态链接器的缓存。你可以在 <code>/etc/ld.so.conf.d/</code> 目录下创建一个新的配置文件，例如 <code>local.conf</code>，并在文件中添加 <code>/usr/local/lib/</code>：</p>
+<pre><code class="language-plaintext">/usr/local/lib/
+</code></pre>
+<p>保存文件后，运行以下命令更新缓存：</p>
+<pre><code class="language-bash">sudo ldconfig
+</code></pre>
+<p>这种方法能让系统在运行时自动查找 <code>/usr/local/lib/</code> 目录下的库文件，而无需修改 <code>LD_LIBRARY_PATH</code> 环境变量。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

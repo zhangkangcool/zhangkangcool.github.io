@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Git bisect - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../commit%20message/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../git%20clone/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#git-bisect" class="nav-link">git bisect 命令教程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>如何用此命令：https://cloud.tencent.com/developer/article/1379508</p>
+<p>实现细节： https://cloud.tencent.com/developer/section/1138673</p>
+<h1 id="git-bisect">git bisect 命令教程</h1>
+<p>需要在<code>/hone/llvm</code>目录下运行命令。</p>
+<pre><code>You need to run this command from the toplevel of the working tree.
+</code></pre>
+<pre><code class="language-shell">bad              -- mark current or given revision as bad
+good             -- mark current or given revision as good
+help             -- display a short usage description
+log              -- show log of the current bisection
+next             -- find next bisection to test and check it out
+replay           -- replay a bisection log
+reset            -- finish bisection search and return to the given branch (or master)
+run              -- run evaluation script
+skip             -- choose a nearby commit
+start            -- reset bisection state and start a new bisection
+terms            -- show currently used good/bad terms
+visualize  view  -- show the remaining revisions in gitk
+</code></pre>
+<p><code>git bisect</code>是一个很有用的命令，用来查找哪一次代码提交引入了错误。</p>
+<p><img alt="img" src="https://ask.qcloudimg.com/http-save/yehe-1634626/b24kywbmrq.png?imageView2/2/w/1620" /></p>
+<p>它的原理很简单，就是将代码提交的历史，按照两分法不断缩小定位。所谓"两分法"，就是将代码历史一分为二，确定问题出在前半部分，还是后半部分，不断执行这个过程，直到范围缩小到某一次代码提交。</p>
+<p>本文通过一个实例，解释如何使用这个命令。下面是一个<a href="https://github.com/bradleyboy/bisectercise">代码库</a>，请将它克隆到本地。</p>
+<pre><code class="language-javascript">$ git clone git@github.com:bradleyboy/bisectercise.git
+$ cd bisectercise
+</code></pre>
+<p>这个库是一个网页<code>index.html</code>，在浏览器打开这个网页。</p>
+<pre><code class="language-javascript">$ open index.html
+</code></pre>
+<p><img alt="img" src="https://ask.qcloudimg.com/http-save/yehe-1634626/ankbdb4ieg.png?imageView2/2/w/1620" /></p>
+<p>网页上是一个计数器，有两个按钮。点击<code>+</code>号按钮，可以看到计数器没有递增，反而递减，这说明代码有问题。</p>
+<p>现在，就要来查找，到底哪一次代码提交，引入了错误。首先，检查一下代码提交历史。</p>
+<pre><code class="language-javascript">$ git log --pretty=oneline
+</code></pre>
+<p>可以看到，这个库一共有101次提交。最早的第一次提交的哈希是<code>4d83cf</code>。</p>
+<p><code>git bisect start</code>命令启动查错，它的格式如下。</p>
+<pre><code class="language-javascript">git bisect start [latest] [old]
+git bisect start [终点] [起点]
+git bisect start [BAD [GOOD...]]
+</code></pre>
+<p>上面代码中，"终点"是最近的提交，"起点"是更久以前的提交。它们之间的这段历史，就是差错的范围。</p>
+<p>这个例子中，我们选择全部的代码历史。起点是第一次提交<code>4d83cf</code>，终点是最近一次的<code>HEAD</code>。当然，指定其他范围也可以。</p>
+<pre><code class="language-javascript">$ git bisect start HEAD 4d83cf
+</code></pre>
+<p>执行上面的命令以后，代码库就会切换到这段范围正当中的那一次提交，本例是第51次提交。</p>
+<p>现在刷新浏览器，点击<code>+</code>按钮，发现可以正常递增。使用<code>git bisect good</code>命令，标识本次提交（第51次）没有问题。</p>
+<pre><code class="language-javascript">$ git bisect good
+</code></pre>
+<p>既然第51次提交没有问题，就意味着错误是在代码历史的后半段引入的。执行上面的命令，Git 就自动切换到后半段的中点（第76次提交）。</p>
+<p>现在刷新浏览器，点击<code>+</code>按钮，发现不能正常递增。使用<code>git bisect bad</code>命令，标识本次提交（第76）有问题。</p>
+<pre><code class="language-javascript">$ git bisect bad
+</code></pre>
+<p>执行上面的命令以后，Git 就自动切换到第51次到第76次的中点（第63次提交）。</p>
+<p>接下来，不断重复这个过程，直到成功找到出问题的那一次提交为止。这时，Git 会给出如下的提示。</p>
+<pre><code class="language-javascript">b47892 is the first bad commit
+</code></pre>
+<p>既然找到那个有问题的提交，就可以<a href="https://github.com/bradleyboy/bisectercise/commit/b47892adec22ee3b0330aff37cbc5e695dfb99d6">检查代码</a>，确定具体是什么错误。</p>
+<p>然后，使用<code>git bisect reset</code>命令，退出查错，回到最近一次的代码提交。</p>
+<pre><code class="language-javascript">$ git bisect reset
+</code></pre>
+<p>现在就可以开始修复错误了。</p>
+<pre><code class="language-shell">git bisect log
+git bisect visualize  # 查看出错的commit-id
+</code></pre>
+<h3 id="error">Error</h3>
+<p>是不是bad good弄错了。</p>
+<pre><code>The merge base 531c1161b9758aa7eae1a4dd8ecf11fdf4417b29 is bad.
+This means the bug has been fixed between 531c1161b9758aa7eae1a4dd8ecf11fdf4417b29 and [19d96ca63f8480ae705a377cd98c072916d33590].
+</code></pre>
+<p>比如latest是good, old is the bad，你想要找到变好的那个commit</p>
+<pre><code class="language-shell">git bisect start [latest] [old]
+</code></pre>
+<p>结果如果是好的，你应该<code>git bisect bad</code>，如果是坏的，你应该<code>git bisect good</code>。</p>
+<h3 id="merge">有merge的情况时，是很复杂的，要多加注意</h3></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

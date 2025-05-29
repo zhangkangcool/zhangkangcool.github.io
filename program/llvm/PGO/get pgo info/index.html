@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>静态分析 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../Other/%E6%9F%A5%E7%9C%8B%E4%B8%AA%E4%BA%BA%E5%9C%A8github%E4%B8%8A%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BB%A3%E7%A0%81/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../llvm%20pdf%20pgo/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">静态分析</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#pgo" class="nav-link">判断和使用PGO优化</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#metadata" class="nav-link">Metadata</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">静态分析</h1>
+<p><code>lib/Analysis/BranchProbabilityInfo.cpp</code></p>
+<pre><code class="language-cpp">865 /// Get the raw edge probability for the edge. If can't find it, return a
+ 866 /// default probability 1/N where N is the number of successors. Here an edge is
+ 867 /// specified using PredBlock and an
+ 868 /// index to the successors.
+ 869 BranchProbability
+ 870 BranchProbabilityInfo::getEdgeProbability(const BasicBlock *Src,
+ 871                                           unsigned IndexInSuccessors) const {
+ 872  dbgs() &lt;&lt; __FILE__ &lt;&lt; &quot; getEdgeProbability zhangkang &quot; &lt;&lt; __LINE__ &lt;&lt; &quot;\n&quot;;
+ 873   auto I = Probs.find(std::make_pair(Src, IndexInSuccessors));
+ 874
+ 875   if (I != Probs.end())
+ 876     return I-&gt;second;
+ 877
+ 878  dbgs() &lt;&lt; __FILE__ &lt;&lt; &quot; getEdgeProbability zhangkang &quot; &lt;&lt; __LINE__ &lt;&lt; &quot;\n&quot;;
+ 879   return {1, static_cast&lt;uint32_t&gt;(succ_size(Src))};
+ 880 }
+</code></pre>
+<h1 id="pgo">判断和使用PGO优化</h1>
+<p><code>./lib/Passes/PassBuilder.cpp</code></p>
+<pre><code class="language-cpp"> 806   if (!LTOPreLink &amp;&amp; PGOOpt) {
+ 807     if (PGOOpt-&gt;CSAction == PGOOptions::CSIRInstr)
+ 808       addPGOInstrPasses(MPM, DebugLogging, Level, /* RunProfileGen */ true,
+ 809                         /* IsCS */ true, PGOOpt-&gt;CSProfileGenFile,
+ 810                         PGOOpt-&gt;ProfileRemappingFile);
+ 811     else if (PGOOpt-&gt;CSAction == PGOOptions::CSIRUse)
+ 812       addPGOInstrPasses(MPM, DebugLogging, Level, /* RunProfileGen */ false,
+ 813                         /* IsCS */ true, PGOOpt-&gt;ProfileFile,
+ 814                         PGOOpt-&gt;ProfileRemappingFile);
+ 815   }
+
+1174   if (PGOOpt) {
+1175     if (PGOOpt-&gt;CSAction == PGOOptions::CSIRInstr)
+1176       addPGOInstrPasses(MPM, DebugLogging, Level, /* RunProfileGen */ true,
+1177                         /* IsCS */ true, PGOOpt-&gt;CSProfileGenFile,
+1178                         PGOOpt-&gt;ProfileRemappingFile);
+1179     else if (PGOOpt-&gt;CSAction == PGOOptions::CSIRUse)
+1180       addPGOInstrPasses(MPM, DebugLogging, Level, /* RunProfileGen */ false,
+1181                         /* IsCS */ true, PGOOpt-&gt;ProfileFile,
+1182                         PGOOpt-&gt;ProfileRemappingFile);
+1183   }
+</code></pre>
+<h3 id="libcodegenbranchfoldingcpp">lib/CodeGen/BranchFolding.cpp</h3>
+<pre><code class="language-cpp">1222 void BranchFolder::setCommonTailEdgeWeights(MachineBasicBlock &amp;TailMBB) {
+1223   SmallVector&lt;BlockFrequency, 2&gt; EdgeFreqLs(TailMBB.succ_size());
+1224   BlockFrequency AccumulatedMBBFreq;
+1225
+1226   // Aggregate edge frequency of successor edge j:
+1227   //  edgeFreq(j) = sum (freq(bb) * edgeProb(bb, j)),
+1228   //  where bb is a basic block that is in SameTails.
+1229   for (const auto &amp;Src : SameTails) {
+1230     const MachineBasicBlock *SrcMBB = Src.getBlock();
+1231     BlockFrequency BlockFreq = MBBFreqInfo.getBlockFreq(SrcMBB);
+1232     AccumulatedMBBFreq += BlockFreq;
+1233
+1234     // It is not necessary to recompute edge weights if TailBB has less than two
+1235     // successors.
+1236     if (TailMBB.succ_size() &lt;= 1)
+1237       continue;
+1238
+1239     auto EdgeFreq = EdgeFreqLs.begin();
+1240
+1241     for (auto SuccI = TailMBB.succ_begin(), SuccE = TailMBB.succ_end();
+1242          SuccI != SuccE; ++SuccI, ++EdgeFreq)
+1243       *EdgeFreq += BlockFreq * MBPI.getEdgeProbability(SrcMBB, *SuccI);
+1244   }
+</code></pre>
+<pre><code class="language-cpp">560 void BranchFolder::MBFIWrapper::setBlockFreq(const MachineBasicBlock *MBB,
+ 561                                              BlockFrequency F) {
+ 562   assert(false);
+ 563  dbgs() &lt;&lt; __FILE__ &lt;&lt; &quot; setBlockFreq zhangkang &quot; &lt;&lt; __LINE__ &lt;&lt; &quot;\n&quot;;
+ 564   MergedBBFreq[MBB] = F;
+ 565 }
+ 566
+</code></pre>
+<h3 id="read-the-pgo-info">Read the PGO info</h3>
+<p>./lib/Transforms/Instrumentation/PGOInstrumentation.cpp</p>
+<pre><code class="language-cpp">1517 static bool annotateAllFunctions(
+1518     Module &amp;M, StringRef ProfileFileName, StringRef ProfileRemappingFileName,
+1519     function_ref&lt;BranchProbabilityInfo *(Function &amp;)&gt; LookupBPI,
+1520     function_ref&lt;BlockFrequencyInfo *(Function &amp;)&gt; LookupBFI, bool IsCS) {
+1521   LLVM_DEBUG(dbgs() &lt;&lt; &quot;Read in profile counters: &quot;);
+1522   auto &amp;Ctx = M.getContext();
+1523   // Read the counter array from file.
+1524   auto ReaderOrErr =
+1525       IndexedInstrProfReader::create(ProfileFileName, ProfileRemappingFileName);
+1526   if (Error E = ReaderOrErr.takeError()) {
+1527     handleAllErrors(std::move(E), [&amp;](const ErrorInfoBase &amp;EI) {
+1528       Ctx.diagnose(
+1529           DiagnosticInfoPGOProfile(ProfileFileName.data(), EI.message()));
+1530     });
+1531     return false;
+1532   }
+</code></pre>
+<h2 id="metadata">Metadata</h2>
+<p>metadata是class Instruction的属性</p>
+<p>https://llvm.org/doxygen/classllvm_1_1Metadata.html</p>
+<p>https://llvm.org/docs/doxygen/classllvm_1_1Instruction.html</p>
+<pre><code class="language-c++">$ cat def.c 
+int test(int a, int b) {
+  return a &lt;= b ? a : -a;
+}
+
+$ cat use.c 
+int test(int, int);
+int main(int argc, const char **argv) {
+  int Ret = 0;
+  for (int i = 0; i &lt; 1 &lt;&lt; 28; i += 1) {
+    Ret += test(i, i - 1);
+  }
+
+  return Ret;
+}
+
+$ clang -O3 def.c use.c -fprofile-generate
+$ ./a.out
+$ llvm-profdata merge default_*.profraw -o default.profdata
+$ clang -O3 def.c -fprofile-use -emit-llvm -S
+$ grep '\!30' def.ll 
+  %cond = select i1 %cmp, i32 %sub, i32 %a, !prof !30
+!30 = !{!&quot;branch_weights&quot;, i32 1073741818, i32 6}
+</code></pre>
+<p>Metadata for branch/select</p>
+<pre><code class="language-C++">7396       uint64_t TrueWeight, FalseWeight;
+7397       if (Br1-&gt;extractProfMetadata(TrueWeight, FalseWeight)) {
+7398         uint64_t NewTrueWeight = TrueWeight;
+7399         uint64_t NewFalseWeight = TrueWeight + 2 * FalseWeight;
+7400         scaleWeights(NewTrueWeight, NewFalseWeight);
+7401         Br1-&gt;setMetadata(LLVMContext::MD_prof, MDBuilder(Br1-&gt;getContext())
+7402                          .createBranchWeights(TrueWeight, FalseWeight));
+7403
+7404         NewTrueWeight = TrueWeight;
+7405         NewFalseWeight = 2 * FalseWeight;
+7406         scaleWeights(NewTrueWeight, NewFalseWeight);
+7407         Br2-&gt;setMetadata(LLVMContext::MD_prof, MDBuilder(Br2-&gt;getContext())
+7408                          .createBranchWeights(TrueWeight, FalseWeight));
+7409       }
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>CUDA实例 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../TVM/%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/relay%E5%88%B0llvm%20ir%205/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../nvcc/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#cuda" class="nav-link">一、cuda简介</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">二、运行例子的方法：</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">三、实战代码：</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="cuda">一、cuda简介</h2>
+<p>CUDA是支持c++/c语言，一般我喜欢用c来写，他的编译是gpu部分由nvcc来进行的</p>
+<p>一般的函数定义 void  function();</p>
+<p>cuda的函数定义 <strong>global</strong> void function();</p>
+<p><em>解释</em>：在这里，这个global前缀表明这个函数在哪里执行，可以由谁来呼叫</p>
+<pre><code class="language-js">global:主机呼叫，设备执行
+host:主机呼叫，主机执行
+device:设备呼叫，设备执行
+</code></pre>
+<p>执行一般c函数  funtion();</p>
+<p>执行cuda函数  function&lt;&lt;&gt;&gt; ();</p>
+<p><em>解释</em>：在GPU上面执行函数可以自定分配grid和线程，grid包含线程，因为是并列执行，因此如果内容一样数据的生成很多是不分前后的。</p>
+<h2 id="_1">二、运行例子的方法：</h2>
+<p>建立一个CUDA8.0 Runtim模版为基础的工程，</p>
+<p>或建立一个c++工程，将cpp后缀改为.cu</p>
+<p><img alt="img" src="https://images2018.cnblogs.com/blog/1159866/201808/1159866-20180809155340993-668993078.png" /></p>
+<p>建完工程后会有一部分代码</p>
+<p><img alt="img" src="https://images2018.cnblogs.com/blog/1159866/201808/1159866-20180809155425954-1133203682.png" /></p>
+<p>在主函数return 0 之前加入getchar();即可运行，关于此代码后期可慢慢研究，这里不做讲解。</p>
+<p>源码为：</p>
+<p><img alt="img" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" /> View Code</p>
+<h2 id="_2">三、实战代码：</h2>
+<h3 id="hello-world">例一：第一个程序hello world</h3>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">#include &quot;cuda_runtime.h&quot;
+#include &quot;device_launch_parameters.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;Windows.h&gt;
+__global__ void helloFromGPU(void)
+{
+    printf(&quot;Hello World from GPU!\n&quot;);
+}
+
+int main(void)
+{
+    // hello from cpu
+    cudaError_t cudaStatus;
+    printf(&quot;Hello World from CPU!\n&quot;);
+
+    helloFromGPU &lt;&lt; &lt;1, 10 &gt;&gt; &gt; ();
+    cudaDeviceReset();//重置CUDA设备释放程序占用的资源
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<p>无视所有错误直接运行即可。</p>
+<p>在这里 helloFromGPU &lt;&lt; &lt;1, 10 &gt;&gt; &gt;();</p>
+<p>表示这一函数将有十个一样的线程，也就是这个函数总计会被执行十次。</p>
+<p><img alt="img" src="https://img2018.cnblogs.com/blog/1159866/201811/1159866-20181101140910356-1874731998.png" /></p>
+<p>改为helloFromGPU &lt;&lt; &lt;2, 10 &gt;&gt; &gt;();</p>
+<p><img alt="img" src="https://img2018.cnblogs.com/blog/1159866/201811/1159866-20181101140925545-647344744.png" /></p>
+<h3 id="_3">例二：参数的传入</h3>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">#include &quot;cuda_runtime.h&quot;
+#include &quot;device_launch_parameters.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;Windows.h&gt;
+__global__ void Add(int i, int j)
+{
+    int count;
+    count = i + j;
+    printf(&quot;\nNum is %d\n&quot;, count);
+}
+int main(void)
+{
+    Add &lt;&lt; &lt;1, 1 &gt;&gt; &gt;(10, 15);
+    cudaDeviceReset();//重置CUDA设备释放程序占用的资源
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<p>传入参数与一般的c没有什么不一样之处</p>
+<h3 id="_4">例三：数据的传入和传出</h3>
+<p>从这里开始要用到显存分配，在这一段中，我们的数据要从内存copy到显存上面，然后现在又要从显存上面copy回来</p>
+<p>这次我们定一个减法函数，在设备上执行</p>
+<pre><code class="language-c++">__global__ void Decrease(int a, int b, int *c)
+{
+    *c = a - b;
+}
+</code></pre>
+<p>我的要传的数为一个整数型的c，一般会定义一个全局的以cuda错误处理返回值为类型的函数，在这一函数内执行数据的传输，及时返回错误</p>
+<p>cudaError_t  addWithCuda(int *c);</p>
+<p>在例子中我省略了这个直接用void类型</p>
+<p>void addWithCuda(int *c);</p>
+<p>代码：</p>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">#include &quot;cuda_runtime.h&quot;
+#include &quot;device_launch_parameters.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;Windows.h&gt;
+void addWithCuda(int *c);//1.定义传入的函数c
+int main(void)
+{
+    int c;
+    c = 10;
+    addWithCuda(&amp;c);//2.传入参数变量（地址）
+    cudaDeviceReset();//6.重置CUDA设备释放程序占用的资源
+    printf(&quot;Value is %d&quot;, c);//7.主机上打印显示数据
+
+    system(&quot;pause&quot;);
+    return 0;
+}
+__global__ void Decrease(int a, int b, int *c)
+{
+    *c = a - b;
+}
+
+void addWithCuda(int *c)
+{
+    int *dev_c = 0;//这个相当于内存和显存有一样的
+    //3.请求CUDA设备的内存（显存），执行CUDA函数
+    cudaMalloc((void**)&amp;dev_c, sizeof(int));
+    Decrease &lt;&lt; &lt;1, 1 &gt;&gt; &gt;(15, 30, dev_c);
+    //4.等待设备所有线程任务执行完毕
+    cudaDeviceSynchronize();
+    //5.数据复制到主机，释放占用空间
+    cudaMemcpy(c, dev_c, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaFree(dev_c);
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<h3 id="ii">例四：数据的传入和传出Ⅱ</h3>
+<p>如果要复制数据进去，那么我们先要修改下上一个例子的函数</p>
+<p><strong>1.传入的数值全改为指针类型</strong></p>
+<pre><code>__global__ void Decrease(int *a, int *b, int *c)
+{
+     *c = *a - *b;
+}
+</code></pre>
+<p><strong>2.修改函数的传入参数</strong></p>
+<p>void addWithCuda(int <em>c,int </em>a,int *b);//1.定义传入的函数c</p>
+<p><strong>3.增加处理函数中对于相应存储空间的的申请和释放</strong></p>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">void addWithCuda(int *c, int *a, int *b)
+{
+    int *dev_c = 0;
+    int *dev_a = 0;
+    int *dev_b = 0;
+    //3.请求CUDA设备的内存（显存），执行CUDA函数
+    cudaMalloc((void**)&amp;dev_c, sizeof(int));
+    cudaMalloc((void**)&amp;dev_a, sizeof(int));
+    cudaMalloc((void**)&amp;dev_b, sizeof(int));
+
+    //4.从主机复制数据到设备上
+    cudaMemcpy(dev_a, a, sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_b, b, sizeof(int), cudaMemcpyHostToDevice);
+
+    Decrease &lt;&lt; &lt; 1, 1 &gt;&gt; &gt;(dev_a, dev_b, dev_c);
+
+    //5.等待设备所有线程任务执行完毕
+    cudaDeviceSynchronize();
+
+    //6.数据复制到主机，释放占用空间
+    cudaMemcpy(c, dev_c, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaFree(dev_c);
+    cudaFree(dev_a);
+    cudaFree(dev_b);
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<p><strong>4.最后是主函数</strong></p>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">int main(void)
+{
+    int c;
+    int a, b;
+    c = 10;
+    a = 30;
+    b = 15;
+    addWithCuda(&amp;c, &amp;a, &amp;b);   // 2.传入参数变量（地址）
+    cudaDeviceReset();         // 7.重置CUDA设备释放程序占用的资源
+    printf(&quot;Value is %d&quot;, c);  // 8.主机上打印显示数据
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<p><strong>5.代码：</strong></p>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">#include &quot;cuda_runtime.h&quot;
+#include &quot;device_launch_parameters.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;Windows.h&gt;
+__global__ void Decrease(int *a, int *b, int *c)
+{
+    *c = *a - *b;
+}
+void addWithCuda(int *c, int *a, int *b)
+{
+    int *dev_c = 0;
+    int *dev_a = 0;
+    int *dev_b = 0;
+    //3.请求CUDA设备的内存（显存），执行CUDA函数
+    cudaMalloc((void**)&amp;dev_c, sizeof(int));
+    cudaMalloc((void**)&amp;dev_a, sizeof(int));
+    cudaMalloc((void**)&amp;dev_b, sizeof(int));
+
+    //4.从主机复制数据到设备上
+    cudaMemcpy(dev_a, a, sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_b, b, sizeof(int), cudaMemcpyHostToDevice);
+
+    Decrease &lt;&lt; &lt; 1, 1 &gt;&gt; &gt;(dev_a, dev_b, dev_c);
+
+    //5.等待设备所有线程任务执行完毕
+    cudaDeviceSynchronize();
+
+    //6.数据复制到主机，释放占用空间
+    cudaMemcpy(c, dev_c, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaFree(dev_c);
+    cudaFree(dev_a);
+    cudaFree(dev_b);
+}
+
+int main(void)
+{
+    int c;
+    int a, b;
+    c = 10;
+    a = 30;
+    b = 15;
+    addWithCuda(&amp;c, &amp;a, &amp;b);//2.传入参数变量（地址）
+    cudaDeviceReset();//7.重置CUDA设备释放程序占用的资源
+    printf(&quot;Value is %d&quot;, c);//8.主机上打印显示数据
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<p>最后再放一个程序关于循环可以自行理解</p>
+<p>程序实现向量的加法操作，使用了一个block内部的512个线程。</p>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+#include&lt;cuda_runtime.h&gt;
+
+//__global__声明的函数，告诉编译器这段代码交由CPU调用，由GPU执行
+__global__ void add(const int *dev_a,const int *dev_b,int *dev_c)
+{
+    int i=threadIdx.x;
+    dev_c[i]=dev_a[i]+dev_b[i];
+}
+
+int main(void)
+{
+    //申请主机内存，并进行初始化
+    int host_a[512],host_b[512],host_c[512];
+    for(int i=0;i&lt;512;i++)
+    {
+        host_a[i]=i;
+        host_b[i]=i&lt;&lt;1;
+    }
+
+    //定义cudaError，默认为cudaSuccess(0)
+    cudaError_t err = cudaSuccess;
+
+    //申请GPU存储空间
+    int *dev_a,*dev_b,*dev_c;
+    err=cudaMalloc((void **)&amp;dev_a, sizeof(int)*512);
+    err=cudaMalloc((void **)&amp;dev_b, sizeof(int)*512);
+    err=cudaMalloc((void **)&amp;dev_c, sizeof(int)*512);
+    if(err!=cudaSuccess)
+    {
+        printf(&quot;the cudaMalloc on GPU is failed&quot;);
+        return 1;
+    }
+    printf(&quot;SUCCESS&quot;);
+    //将要计算的数据使用cudaMemcpy传送到GPU
+    cudaMemcpy(dev_a,host_a,sizeof(host_a),cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_b,host_b,sizeof(host_b),cudaMemcpyHostToDevice);
+
+    //调用核函数在GPU上执行。数据较少，之使用一个Block，含有512个线程
+    add&lt;&lt;&lt;1,512&gt;&gt;&gt;(dev_a,dev_b,dev_c);
+    cudaMemcpy(&amp;host_c,dev_c,sizeof(host_c),cudaMemcpyDeviceToHost);
+    for(int i=0;i&lt;512;i++)
+        printf(&quot;host_a[%d] + host_b[%d] = %d + %d = %d\n&quot;,i,i,host_a[i],host_b[i],host_c[i]);
+    cudaFree(dev_a);//释放GPU内存
+    cudaFree(dev_b);//释放GPU内存
+    cudaFree(dev_c);//释放GPU内存
+    return 0 ;
+}
+</code></pre>
+<p><a href="javascript:void(0);"><img alt="复制代码" src="https://common.cnblogs.com/images/copycode.gif" /></a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

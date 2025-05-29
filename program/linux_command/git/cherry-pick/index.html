@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Cherry pick - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../gerrit/%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E5%AE%A1%E6%A0%B8%E6%B5%81%E7%A8%8B%E7%AD%96%E5%88%92/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../commit%20message/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#git-cherry-pick" class="nav-link">git cherry-pick 教程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://baijiahao.baidu.com/s?id=1757715688212769266&amp;wfr=spider&amp;for=pc&amp;searchword=git%20cherry-pick%E8%AF%A6%E8%A7%A3</p>
+<p>https://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html</p>
+<h1 id="git-cherry-pick">git cherry-pick 教程</h1>
+<p>对于多分支的代码库，将代码从一个分支转移到另一个分支是常见需求。这时分两种情况。一种情况是，你需要另一个分支的所有代码变动，那么就采用合并（ <code>git merge</code> ）。另一种情况是，你只需要部分代码变动（某几个提交），这时可以采用 Cherry pick。</p>
+<h3 id="1">1. 基本用法</h3>
+<p><code>git cherry-pick</code> 命令的作用，就是将指定的提交（commit）应用于其他分支。</p>
+<pre><code class="language-bash">$ git cherry-pick &lt;commitHash&gt;
+</code></pre>
+<p>上面命令就会将指定的提交 <code>commitHash</code> ，应用于当前分支。这会在当前分支产生一个新的提交，当然它们的哈希值会不一样。举例来说，代码仓库有 <code>master</code> 和 <code>feature</code> 两个分支。</p>
+<pre><code class="language-bash">    a - b - c - d   Master         \           e - f - g Feature
+</code></pre>
+<p>现在将提交 <code>commit_f</code> 应用到 <code>master</code> 分支。</p>
+<pre><code class="language-bash">git checkout master
+git cherry-pick commit_f
+</code></pre>
+<p>上面的操作完成以后，代码库就变成了下面的样子。</p>
+<pre><code class="language-bash">    a - b - c - d - f   Master         \           e - f - g Feature
+</code></pre>
+<p>从上面可以看到， <code>master</code> 分支的末尾增加了一个提交 <code>f</code> 。<code>git cherry-pick</code> 命令的参数，不一定是提交的哈希值，分支名也是可以的，表示转移该分支的最新提交。</p>
+<pre><code class="language-bash">$ git cherry-pick feature
+</code></pre>
+<p>上面代码表示将 <code>feature</code> 分支的最近一次提交，转移到当前分支。</p>
+<h3 id="2">2. 转移多个提交</h3>
+<h4 id="cherry-pick">Cherry pick 支持一次转移多个提交。</h4>
+<pre><code class="language-bash">$ git cherry-pick &lt;HashA&gt; &lt;HashB&gt;
+</code></pre>
+<p>上面的命令将 A 和 B 两个提交应用到当前分支。这会在当前分支生成两个对应的新提交。如果想要转移一系列的连续提交，可以使用下面的简便语法。</p>
+<h4 id="aba">A到B，不包括A</h4>
+<pre><code class="language-bash">$ git cherry-pick A..B
+</code></pre>
+<p>上面的命令可以转移从 A 到 B 的所有提交。它们必须按照正确的顺序放置：提交 A 必须早于提交 B，否则命令将失败，但不会报错。注意，使用上面的命令，提交 A 将不会包含在 Cherry pick 中。</p>
+<h4 id="aba_1">A到B，包括A</h4>
+<p>如果要包含提交 A，可以使用下面的语法。</p>
+<pre><code class="language-bash">$ git cherry-pick A^..B
+</code></pre>
+<h3 id="3">3. 配置项</h3>
+<p><code>git cherry-pick</code> 命令的常用配置项如下。</p>
+<p><strong>（1） <code>-e</code> ， <code>--edit</code></strong></p>
+<p>打开外部编辑器，编辑提交信息。</p>
+<p><strong>（2） <code>-n</code> ， <code>--no-commit</code></strong></p>
+<p>只更新工作区和暂存区，不产生新的提交。</p>
+<p><strong>（3） <code>-x</code></strong></p>
+<p>在提交信息的末尾追加一行 <code>(cherry picked from commit ...)</code> ，方便以后查到这个提交是如何产生的。</p>
+<p><strong>（4） <code>-s</code> ， <code>--signoff</code></strong></p>
+<p>在提交信息的末尾追加一行操作者的签名，表示是谁进行了这个操作。</p>
+<p><strong>（5） <code>-m parent-number</code> ， <code>--mainline parent-number</code></strong></p>
+<p>如果原始提交是一个合并节点，来自于两个分支的合并，那么 Cherry pick 默认将失败，因为它不知道应该采用哪个分支的代码变动。<code>-m</code> 配置项告诉 Git，应该采用哪个分支的变动。它的参数 <code>parent-number</code> 是一个从 <code>1</code> 开始的整数，代表原始提交的父分支编号。</p>
+<pre><code class="language-bash">$ git cherry-pick -m 1 &lt;commitHash&gt;
+</code></pre>
+<p>上面命令表示，Cherry pick 采用提交 <code>commitHash</code> 来自编号1的父分支的变动。一般来说，1号父分支是接受变动的分支（the branch being merged into），2号父分支是作为变动来源的分支（the branch being merged from）。</p>
+<h3 id="4">4.代码冲突</h3>
+<p>如果操作过程中发生代码冲突，Cherry pick 会停下来，让用户决定如何继续操作。</p>
+<p><strong>（1） <code>--continue</code></strong></p>
+<p>用户解决代码冲突后，第一步将修改的文件重新加入暂存区（ <code>git add .</code> ），第二步使用下面的命令，让 Cherry pick 过程继续执行。</p>
+<pre><code class="language-bash">$ git cherry-pick --continue
+</code></pre>
+<p><strong>（2） <code>--abort</code></strong></p>
+<p>发生代码冲突后，放弃合并，回到操作前的样子。</p>
+<p><strong>（3） <code>--quit</code></strong></p>
+<p>发生代码冲突后，退出 Cherry pick，但是不回到操作前的样子。</p>
+<h3 id="5">5. 转移到另一个代码库</h3>
+<p>Cherry pick 也支持转移另一个代码库的提交，方法是先将该库加为远程仓库。</p>
+<pre><code class="language-bash">$ git remote add target git://gitUrl（直接从github上复制替换git://gitUrl）
+</code></pre>
+<p>上面命令添加了一个远程仓库 <code>target</code> 。然后，将远程代码抓取到本地。</p>
+<pre><code class="language-bash">$ git fetch target
+git branch -a 查看所有的分支
+</code></pre>
+<p>上面命令将远程代码仓库抓取到本地。接着，检查一下要从远程仓库转移的提交，获取它的哈希值。</p>
+<pre><code class="language-bash">$ git log target/master
+</code></pre>
+<p>最后，使用 <code>git cherry-pick</code> 命令转移提交。</p>
+<pre><code class="language-bash">$ git cherry-pick &lt;commitHash&gt;  或者使用 git rebase target/std_llvm9
+</code></pre>
+<p>将target仓库的某个分支提交到本仓库</p>
+<p>假设target有zhangkang/llvm9_std仓库，</p>
+<pre><code class="language-shell">有同名分支时使用--track
+git checkout --track target/zhangkang/llvm9_std    # 此时会本地的zhangkang/llvm9_std会跟踪远程的zhangkang/llvm9_std
+git push -u origin zhangkang/llvm9_std   与 git push --set-upstream origin zhangkang/llvm0_std等价
+</code></pre>
+<p>操作完后，可以删除远程的target</p>
+<pre><code class="language-shell">git remote rm target
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Print % - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../pdb%20%E8%B0%83%E8%AF%95/pdb/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../print%20format/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">使用占位符%输出</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link"></a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://www.cnblogs.com/fat39/p/7159881.html</p>
+<h1 id="_1">使用占位符%输出</h1>
+<p>python2.6版本之前，使用%格式化字符串沿用的是C语言的输出格式。</p>
+<pre><code class="language-python">print(&quot;格式化字符串&quot; % 变量)
+#变量超过2个使用元组格式：
+print(&quot;格式化字符串&quot; % （变量1,变量2）)
+使用%占位符表示字符串中变量位置。
+传入的值要与%占位符的变量一一对应。
+其中，%s表示字符串，%d表示整数，%f表示小数（默认保留小数点后6位，%.2f保留两位小数），存在格式化标志时，需要用 %%表示一个百分号。
+
+</code></pre>
+<pre><code class="language-python">pi=3.1415926
+print(&quot;%2.5f&quot; %(pi))#字段宽度为2，精度为3，左对齐
+print(&quot;%10.5f&quot; %(pi))#字段宽度为10，精度为3，左对齐，对象宽度不够，采用空白填充
+print(&quot;%*.*f&quot; %(10,3,pi))#用*从后面的元组中读取字段宽度的精度
+print(&quot;%010.5f&quot; %(pi))#字段宽度为10，精度为3，左对齐，对象宽度不够，采用0填充
+print(&quot;%-10.5f&quot; %(pi))#字段宽度为10，精度为3，右对齐，对象宽度不够，采用空白填充
+print(&quot;%+f&quot; %(pi))#显示正负号
+print(&quot;%+10.5f&quot; %(pi))
+
+&quot;&quot;&quot;输出结果：
+3.14159
+   3.14159
+     3.142
+0003.14159
+3.14159   
++3.141593
+  +3.14159
+&quot;&quot;&quot;
+</code></pre>
+<p>https://www.runoob.com/w3cnote/python3-print-func-b.html</p>
+<h2 id="_2"></h2>
+<h3 id="1">1. 输出字符串和数字</h3>
+<pre><code class="language-python">&gt;&gt;&gt;print(&quot;runoob&quot;)  # 输出字符串
+runoob 
+&gt;&gt;&gt; print(100)            # 输出数字
+100
+&gt;&gt;&gt; str = 'runoob'
+&gt;&gt;&gt; print(str)            # 输出变量
+runoob
+&gt;&gt;&gt; L = [1,2,'a']         # 列表 
+&gt;&gt;&gt; print(L)  
+[1, 2, 'a']  
+&gt;&gt;&gt; t = (1,2,'a')         # 元组
+&gt;&gt;&gt; print(t)  
+(1, 2, 'a')  
+&gt;&gt;&gt; d = {'a':1, 'b':2}    # 字典
+&gt;&gt;&gt; print(d)  
+{'a': 1, 'b': 2}
+</code></pre>
+<h3 id="2">2. 格式化输出整数</h3>
+<p>支持参数格式化，与 C 语言的 printf 类似</p>
+<pre><code class="language-python">&gt;&gt;&gt;str = &quot;the length of (%s) is %d&quot; %('runoob',len('runoob'))
+&gt;&gt;&gt; print(str)
+the length of (runoob) is 6
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">符  号</th>
+<th style="text-align: left;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">%c</td>
+<td style="text-align: left;">格式化字符及其ASCII码</td>
+</tr>
+<tr>
+<td style="text-align: left;">%s</td>
+<td style="text-align: left;">格式化字符串</td>
+</tr>
+<tr>
+<td style="text-align: left;">%d</td>
+<td style="text-align: left;">格式化整数</td>
+</tr>
+<tr>
+<td style="text-align: left;">%u</td>
+<td style="text-align: left;">格式化无符号整型</td>
+</tr>
+<tr>
+<td style="text-align: left;">%o</td>
+<td style="text-align: left;">格式化无符号八进制数</td>
+</tr>
+<tr>
+<td style="text-align: left;">%x</td>
+<td style="text-align: left;">格式化无符号十六进制数</td>
+</tr>
+<tr>
+<td style="text-align: left;">%X</td>
+<td style="text-align: left;">格式化无符号十六进制数（大写）</td>
+</tr>
+<tr>
+<td style="text-align: left;">%f</td>
+<td style="text-align: left;">格式化浮点数字，可指定小数点后的精度</td>
+</tr>
+<tr>
+<td style="text-align: left;">%e</td>
+<td style="text-align: left;">用科学计数法格式化浮点数</td>
+</tr>
+<tr>
+<td style="text-align: left;">%E</td>
+<td style="text-align: left;">作用同%e，用科学计数法格式化浮点数</td>
+</tr>
+<tr>
+<td style="text-align: left;">%g</td>
+<td style="text-align: left;">%f和%e的简写</td>
+</tr>
+<tr>
+<td style="text-align: left;">%G</td>
+<td style="text-align: left;">%f 和 %E 的简写</td>
+</tr>
+<tr>
+<td style="text-align: left;">%p</td>
+<td style="text-align: left;">用十六进制数格式化变量的地址</td>
+</tr>
+</tbody>
+</table>
+<p>格式化操作符辅助指令:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">符号</th>
+<th style="text-align: left;">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">*</td>
+<td style="text-align: left;">定义宽度或者小数点精度</td>
+</tr>
+<tr>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">用做左对齐</td>
+</tr>
+<tr>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">在正数前面显示加号( + )</td>
+</tr>
+<tr>
+<td style="text-align: left;"><sp></td>
+<td style="text-align: left;">在正数前面显示空格</td>
+</tr>
+<tr>
+<td style="text-align: left;">#</td>
+<td style="text-align: left;">在八进制数前面显示零('0')，在十六进制前面显示'0x'或者'0X'(取决于用的是'x'还是'X')</td>
+</tr>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">显示的数字前面填充'0'而不是默认的空格</td>
+</tr>
+<tr>
+<td style="text-align: left;">%</td>
+<td style="text-align: left;">'%%'输出一个单一的'%'</td>
+</tr>
+<tr>
+<td style="text-align: left;">(var)</td>
+<td style="text-align: left;">映射变量(字典参数)</td>
+</tr>
+<tr>
+<td style="text-align: left;">m.n.</td>
+<td style="text-align: left;">m 是显示的最小总宽度,n 是小数点后的位数(如果可用的话)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-16">3. 格式化输出16进制，十进制，八进制整数</h3>
+<p><strong>#%x</strong> --- hex 十六进制</p>
+<p><strong>#%d</strong> --- dec 十进制</p>
+<p><strong>#%o</strong> --- oct 八进制</p>
+<pre><code class="language-python">&gt;&gt;&gt;nHex = 0xFF
+&gt;&gt;&gt; print(&quot;nHex = %x,nDec = %d,nOct = %o&quot; %(nHex,nHex,nHex))
+nHex = ff,nDec = 255,nOct = 377
+</code></pre>
+<h3 id="4float">4.格式化输出浮点数(float)</h3>
+<pre><code class="language-python">&gt;&gt;&gt;pi = 3.141592653  
+&gt;&gt;&gt; print('%10.3f' % pi) #字段宽10，精度3  
+     3.142  
+&gt;&gt;&gt; print(&quot;pi = %.*f&quot; % (3,pi)) #用*从后面的元组中读取字段宽度或精度  
+pi = 3.142  
+&gt;&gt;&gt; print('%010.3f' % pi) #用0填充空白  
+000003.142  
+&gt;&gt;&gt; print('%-10.3f' % pi) #左对齐  
+3.142       
+&gt;&gt;&gt; print('%+f' % pi) #显示正负号  
++3.141593
+</code></pre>
+<h3 id="5">5. 自动换行</h3>
+<p>print 会自动在行末加上回车, 如果不需回车，只需在 print 语句的结尾添加一个逗号 <strong>,</strong> 并设置分隔符参数 end，就可以改变它的行为。</p>
+<pre><code class="language-python">&gt;&gt;&gt;for i in range(0,6):
+...     print(i)
+... 
+0
+1
+2
+3
+4
+5
+&gt;&gt;&gt; for i in range(0,6):
+...     print(i, end=&quot; &quot;)
+... 
+0 1 2 3 4 5
+</code></pre>
+<h3 id="6-print">6. print 不换行</h3>
+<p>在 Python 中 print 默认是换行的:</p>
+<pre><code class="language-python">&gt;&gt;&gt;for i in range(0,3):
+...     print (i)
+... 
+0
+1
+2
+&gt;&gt;&gt;
+</code></pre>
+<p>要想不换行你应该写成 <code>print(i, end = '' )</code></p>
+<pre><code class="language-python">&gt;&gt;&gt;for i in range(0,3):
+...     print(i, end = '' )
+... 
+012
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

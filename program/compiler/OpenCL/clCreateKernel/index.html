@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>clCreateKernel - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../clBuildProgram%20%26%20clCompileProgram/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../cl%E7%BC%96%E8%AF%91%E6%88%90spirv/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><code>clCreateKernel</code> 是 OpenCL（Open Computing Language）中的一个重要函数，其作用是从程序对象里创建一个内核对象。OpenCL 是一种用于并行计算的开放标准，可让你在多种异构平台（像 CPU、GPU、FPGA 等）上执行代码。</p>
+<pre><code class="language-c">cl_kernel clCreateKernel(
+    cl_program program,
+    const char *kernel_name,
+    cl_int *errcode_ret
+);
+</code></pre>
+<h3 id="_1">参数解释</h3>
+<ul>
+<li><code>program</code>：一个已经构建好的 OpenCL 程序对象。使用三个clCreateProgramWith系列函数创建。</li>
+<li><code>kernel_name</code>：要创建内核的名称，它必须和 OpenCL 程序源文件里定义的内核函数名一致。</li>
+<li><code>errcode_ret</code>：用于返回错误码的指针，若不需要该信息，可将其设为 <code>NULL</code>。</li>
+</ul>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;CL/cl.h&gt;
+
+#define ARRAY_SIZE 1024
+
+// OpenCL kernel source code
+const char *kernelSource =
+    &quot;__kernel void simple_kernel(__global int *input, __global int *output) {\n&quot;
+    &quot;    int gid = get_global_id(0);\n&quot;
+    &quot;    output[gid] = input[gid] * 2;\n&quot;
+    &quot;}\n&quot;;
+
+int main() {
+    cl_platform_id platform_id = NULL;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_uint ret_num_platforms;
+    cl_int ret;
+
+    // Get platform and device information
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id, &amp;ret_num_devices);
+
+    // Create an OpenCL context
+    cl_context context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    // Create a command queue
+    cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &amp;ret);
+
+    // Create memory buffers on the device for the input and output arrays
+    int *input = (int *)malloc(ARRAY_SIZE * sizeof(int));
+    int *output = (int *)malloc(ARRAY_SIZE * sizeof(int));
+    for (int i = 0; i &lt; ARRAY_SIZE; i++) {
+        input[i] = i;
+    }
+    cl_mem input_buffer = clCreateBuffer(context, CL_MEM_READ_ONLY, ARRAY_SIZE * sizeof(int), NULL, &amp;ret);
+    cl_mem output_buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, ARRAY_SIZE * sizeof(int), NULL, &amp;ret);
+
+    // Copy the input array to the input buffer
+    ret = clEnqueueWriteBuffer(command_queue, input_buffer, CL_TRUE, 0, ARRAY_SIZE * sizeof(int), input, 0, NULL, NULL);
+
+    // Create a program from the kernel source code
+    cl_program program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernelSource, NULL, &amp;ret);
+
+    // Build the program
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    // Create the OpenCL kernel
+    cl_kernel kernel = clCreateKernel(program, &quot;simple_kernel&quot;, &amp;ret);
+    if (ret != CL_SUCCESS) {
+        printf(&quot;Error creating kernel: %d\n&quot;, ret);
+        return -1;
+    }
+
+    // Set the arguments of the kernel
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&amp;input_buffer);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&amp;output_buffer);
+
+    // Execute the OpenCL kernel on the list
+    size_t global_item_size = ARRAY_SIZE;
+    size_t local_item_size = 64;
+    ret = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &amp;global_item_size, &amp;local_item_size, 0, NULL, NULL);
+
+    // Read the memory buffer C on the device to the local variable C
+    ret = clEnqueueReadBuffer(command_queue, output_buffer, CL_TRUE, 0, ARRAY_SIZE * sizeof(int), output, 0, NULL, NULL);
+
+    // Display the result
+    for (int i = 0; i &lt; ARRAY_SIZE; i++) {
+        printf(&quot;output[%d] = %d\n&quot;, i, output[i]);
+    }
+
+    // Clean up
+    ret = clFlush(command_queue);
+    ret = clFinish(command_queue);
+    ret = clReleaseKernel(kernel);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(input_buffer);
+    ret = clReleaseMemObject(output_buffer);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+    free(input);
+    free(output);
+
+    return 0;
+}    
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

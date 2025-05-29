@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>Gpu - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../flow/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../tensorflow%20xla%20hlo%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8Cpass%20pipeline/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h4 id="r2100">以下代码以r2.10.0为例</h4>
+<p><code>GpuCompiler</code> &amp; <code>CpuCompiler</code>都继承于<code>LLVMCompiler</code>。</p>
+<pre><code class="language-c++">class GpuCompiler : public LLVMCompiler
+class CpuCompiler : public LLVMCompiler
+</code></pre>
+<p><code>RunBackend</code>会调用<code>CompileModuleTollvmIrImpl</code>去生成<code>LLVM IR</code>。</p>
+<pre><code class="language-c++">StatusOr&lt;std::unique_ptr&lt;Executable&gt;&gt; GpuCompiler::RunBackend(
+    std::unique_ptr&lt;HloModule&gt; module, se::StreamExecutor* stream_exec,
+    const CompileOptions&amp; options) {
+  VLOG(1) &lt;&lt; &quot;Starting to compile HLO module &quot; &lt;&lt; module-&gt;name();
+  XLA_SCOPED_LOGGING_TIMER(&quot;GpuCompiler::RunBackend&quot;);
+  ...
+  // hlo Module转成llvm ir
+  TF_RETURN_IF_ERROR(CompileModuleToLlvmIrImpl(
+      module.get(), &amp;llvm_context, target_triple_, data_layout_,
+      stream_exec-&gt;platform()-&gt;Name(), stream_exec-&gt;platform()-&gt;id(),
+      gpu_device_info,
+      stream_exec-&gt;GetDeviceDescription().cuda_compute_capability(),
+      stream_exec-&gt;GetDeviceDescription().rocm_compute_capability(),
+      GetCanShareBuffer(), pointer_size_, &amp;compile_module_results,
+      stream_exec));
+...
+}
+</code></pre>
+<pre><code class="language-c++">// The order of `thunk_sequence` corresponds to
+// `hlo_schedule-&gt;ThunkLaunchOrder()`.
+static Status CompileModuleToLlvmIrImpl(
+    HloModule* hlo_module, llvm::LLVMContext* llvm_context,
+    const std::string&amp; target_triple, const std::string&amp; data_layout,
+    const std::string&amp; platform_name, const se::Platform::Id platform_id,
+    GpuDeviceInfo gpu_device_info,
+    se::CudaComputeCapability cuda_compute_capability,
+    se::RocmComputeCapability rocm_compute_capability,
+    const HloDataflowAnalysis::CanShareBuffer&amp; can_share_buffer_function,
+    int pointer_size, CompileModuleResults* results,
+    se::StreamExecutor* stream_exec = nullptr) {
+  results-&gt;llvm_module = std::make_unique&lt;llvm::Module&gt;(&quot;&quot;, *llvm_context);
+  results-&gt;llvm_module-&gt;setTargetTriple(target_triple);
+  results-&gt;llvm_module-&gt;setDataLayout(data_layout);
+  ...
+
+
+  // hlo转化为MLIR的LHLO
+  TF_RETURN_IF_ERROR(
+      HloToLhloModule(*results-&gt;buffer_assignment, *hlo_module, *mlir_module));
+
+   if (DumpingEnabledForHloModule(*hlo_module)) {
+    DumpToFileInDirOrStdout(*hlo_module, &quot;lmhlo&quot;, mlir_module.get());
+  }
+  ...
+      TF_RETURN_IF_ERROR(ir_emitter-&gt;EmitLmhloRegion(&amp;entry_function.getBody()));  // 会调用EmitOp，将mlir转化为llvm ir。
+  ...
+</code></pre>
+<p>https://sketch2sky.com/2020/03/08/tensorflow-xla-service-buffer/#more-1820</p>
+<pre><code>-2- 从XLA Service通用层中选择适合GPU的Schedule策略
+-3- 基于Schedule策略，进行设备无关的Buffer优化，主要关注尽可能的减少Buffer的大小。注意，这里是设备无关的优化，是无法利用硬件Memory特性的。
+-4- 将HloModule转化为LLVM IR
+-5,6- 利用LLVM框架，将LLVM IR编译为二进制代码。
+</code></pre>
+<ul>
+<li>HloPassPipeline优化HLO IR之后，将创建xla.cpu.IrEmitter，进入图2中的第三个循环处理逻辑(loop for every computation of module)：将xla.HloModule中的每个xla.HloComputation转化为llvm IR表示，并创建对应的llvm.Module.</li>
+<li>至此，Hlo IR 到 llvm IR的转化阶段完成，后面进入llvm IR的处理阶段。</li>
+</ul>
+<pre><code class="language-c++"> IrEmitterContext ir_emitter_context(
+      module.get(), buffer_assignment.get(), stream_exec-&gt;platform(),
+      &amp;stream_exec-&gt;GetDeviceDescription(), &amp;llvm_module);
+
+  HloComputation* entry_computation = module-&gt;entry_computation();   // module is the HloModule*
+  IrEmitterUnnested ir_emitter(module-&gt;config(), entry_computation,
+                               &amp;ir_emitter_context);
+
+  TF_RETURN_IF_ERROR(ir_emitter.EmitConstantGlobals());
+
+  {
+    XLA_SCOPED_LOGGING_TIMER(&quot;NVPTXCompiler::RunBackend - IR emission&quot;);
+    TF_RETURN_IF_ERROR(entry_computation-&gt;Accept(&amp;ir_emitter));
+  }
+</code></pre>
+<pre><code> Emits LLVM IR for an &quot;unnested computation&quot;.
+</code></pre>
+<p>在tensorflow的源码中查找nvvm，可以对一个intrinsic等进行跟踪。IrEmitterUnnested</p>
+<p>选择根据<code>EmitLoop()</code> 会调用 <code>EmitIndexAndSetExitBasicBlock()</code></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

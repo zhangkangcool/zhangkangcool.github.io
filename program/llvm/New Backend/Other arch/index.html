@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Other arch - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../How%20to%20do/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../Other/Extend/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#arc" class="nav-link">ARC</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#riscv" class="nav-link">RISCV</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#clang-add-the-support-for-riscv" class="nav-link">clang add the support for RISCV</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#skip" class="nav-link">Skip</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#csky" class="nav-link">CSKY</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#use-patches" class="nav-link">Use patches</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>## Writing an LLVM Backend</p>
+<p>https://llvm.org/docs/WritingAnLLVMBackend.html</p>
+<h2 id="arc">ARC</h2>
+<p>一些Target添加代码后，并未启用。</p>
+<pre><code>llc -march=arc alu.ll  // llc: error: error: invalid target 'arc'.
+参考 D23560进行
+</code></pre>
+<hr />
+<h2 id="riscv">RISCV</h2>
+<p>查看RISCV owner <code>asb</code>在<code>github llvm-project</code>上的所有patch。</p>
+<p>https://github.com/llvm/llvm-project/commits?author=asb</p>
+<p>The patch to add new backend.</p>
+<pre><code>https://reviews.llvm.org/people/revisions/475/
+</code></pre>
+<pre><code class="language-c++">[RISCV 1/10] Recognise riscv32 and riscv64 in triple parsing code [Done] D23557
+[RISCV 2/10] Add RISC-V ELF defines [Todo] D23558
+[RISCV 3/10] Add stub backend [Todo] D23560   // llvm/CMakeLists.txt 加入LynGPU即可enable新的backend
+[RISCV 4/10] Add basic RISCV{InstrFormats,InstrInfo,RegisterInfo,}.td [Todo] D23561
+[RISCV 5/10] Add bare-bones RISC-V MCTargetDesc [Todo] D23562
+[RISCV] Fix RV32 datalayout string and ensure initAsmInfo is called  https://reviews.llvm.org/rGe4f731b
+[RISCV 6/10] Add basic RISCVAsmParser [Todo] D23563
+[RISCV 7/10] Add RISCVInstPrinter and basic MC assembler tests [Todo] D23564
+[RISCV 8/10] Add support for all RV32I instructions [Todo] D23566
+[RISCV 9/10] Add support for disassembly [Todo] D23567  
+[RISCV 11/n] Initial codegen support for ALU operations [Todo] D29933 添加RegisterInfo.cpp等文件
+</code></pre>
+<h2 id="clang-add-the-support-for-riscv">clang add the support for RISCV</h2>
+<pre><code class="language-c++">https://reviews.llvm.org/D39963    // [RISCV] Add initial RISC-V target and driver support
+</code></pre>
+<h2 id="skip">Skip</h2>
+<pre><code class="language-c++">D23563 
+  1a427291 [RISCV] Add basic RISCVAsmParser
+  04f06d92 [RISCV] Add basic RISCVAsmParser (missing files)
+
+</code></pre>
+<h3 id="can-get-the-asm">Can get the asm</h3>
+<pre><code>https://github.com/llvm/llvm-project/commit/60714f98 YES 2017.12.13
+https://github.com/llvm/llvm-project/commit/e2f664e1 YES 2017.11.21
+https://github.com/llvm/llvm-project/commit/a337675c YES 2017.11.08
+https://github.com/llvm/llvm-project/commit/cfa6291b YES 2017.11.08
+
+</code></pre>
+<hr />
+<h2 id="csky">CSKY</h2>
+<pre><code>https://reviews.llvm.org/people/revisions/20647/   Zixuan
+192.168.5.10: /home/zhangkang/CSKY
+
+
+
+1673653 commit e1c38dd55d9dab332ccabb7c83a80ca92c373af0
+1673654 Author: Zi Xuan Wu &lt;zixuan.wu@linux.alibaba.com&gt;
+1673655 Date:   Tue Sep 29 12:31:36 2020 +0800
+1673656
+1673657     [CSKY 1/n] Add basic stub or infra of csky backend
+1673658
+1673659     This patch introduce files that just enough for lib/Target/CSKY to compile.
+1673660     Notably a basic CSKYTargetMachine and CSKYTargetInfo.
+1673661
+1673662     Differential Revision: https://reviews.llvm.org/D88466
+
+
+
+All zixuan patch
+https://github.com/llvm/llvm-project/commits?author=zixuan-wu&amp;after=1d4e857acdd93a659387b9799fa262cce2370fb0+34
+</code></pre>
+<hr />
+<h2 id="use-patches">Use patches</h2>
+<pre><code>D23564
+</code></pre>
+<pre><code># List of all targets to be built by default:
+set(LLVM_ALL_TARGETS    # 默认全编译
+  AArch64
+  AMDGPU
+  ARM
+  AVR
+  BPF
+  Hexagon
+  Lanai
+  LoongArch
+  Mips
+  MSP430
+  NVPTX
+  PowerPC
+  RISCV
+  Sparc
+  SystemZ
+  VE
+  WebAssembly
+  X86
+  XCore
+  )
+
+set(LLVM_ALL_EXPERIMENTAL_TARGETS  # 默认不编译
+  ARC
+  CSKY
+  DirectX
+  M68k
+  SPIRV
+  Xtensa
+)
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

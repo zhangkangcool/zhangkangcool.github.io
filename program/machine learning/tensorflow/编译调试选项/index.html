@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>编译调试选项 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../%E4%BB%8E%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../2.0%20vs%201.0/Tensorflow%202.0%E5%BC%80%E5%8F%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#tensorflow-xla-debugprofiling-methods" class="nav-link">Tensorflow XLA Debug/Profiling Methods</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#timeline" class="nav-link">Timeline</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#tensorboard" class="nav-link">Tensorboard</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#dot-graphvis" class="nav-link">Dot + Graphvis</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">环境变量</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#bazel" class="nav-link">Bazel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#gdb" class="nav-link">使用GDB</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="tensorflow-xla-debugprofiling-methods">Tensorflow XLA Debug/Profiling Methods</h2>
+<p>Tensorflow 调试方式主要有以下几种</p>
+<ol>
+<li>Timeline初步分析性能瓶颈</li>
+<li>Tensorboard，Graphviz等对图信息进行可视化</li>
+<li>环境变量配置导出图信息</li>
+<li>使用bazel编译选项输出内部信息</li>
+<li>使用GDB进行细节问题定位</li>
+</ol>
+<h2 id="timeline">Timeline</h2>
+<p>可以直观的显示一个Step内Op粒度的执行时间， 为性能优化提供参考。Chrome中键入 <a href="chrome://tracing/">chrome://tracing/</a> ，即可通过Load按钮加载time.json， 使之图形化显示</p>
+<p>python tf_cnn_benchmarks.py --trace_file="time.json"  --save_summaries_steps=10 --summary_verbosity=1 --train_dir "./tmp"  --num_gpus=1 --batch_size=1 --model=alexnet</p>
+<ul>
+<li><img alt="img" src="https://i2.wp.com/sketch2sky.com/wp-content/uploads/2020/03/Screen-Shot-2020-03-18-at-22.15.00.png?fit=640%2C147&amp;ssl=1" /></li>
+</ul>
+<p>mpirun --allow-run-as-root -np 4 -H 10.54.32.198:4 python tf_cnn_benchmarks.py --xla="True" --trace_file="time.json" --num_gpus=1 --batch_size=32 --model=alexnet --variable_update=horovod</p>
+<ul>
+<li><img alt="img" src="https://i0.wp.com/sketch2sky.com/wp-content/uploads/2020/03/Screen-Shot-2020-03-18-at-23.26.15.png?fit=640%2C199&amp;ssl=1" /></li>
+</ul>
+<p>Timeline看起来很美好，但有几个问题一定要注意：</p>
+<ol>
+<li><strong>基本单位是Op</strong>。 Op内逻辑再简单，也一定会体现，Op内逻辑再复杂，也不会对其拆分。</li>
+<li><strong>是谁的执行流</strong>。Timeline体现的是CPU端启动Op的执行流，，上图中的GPU端的执行流看起来有多条，实际上到底有没有并行呢？这不一定，这张Timeline图本质只是对time.json进行了可视化，这里看到的GPU任务就对应time.json的 <code>"name": "/job:localhost/replica:0/task:0/device:GPU:0 Compute"</code> 而GPU的执行流编号就对应<code>"tid": 14,</code> 所以，问题就变成了：这里的<strong>“tid”</strong>能否表示实际在GPU中的执行流？我理解是不能的，在使用GPU做backend的场景，HorovodAllreduce底层调用NcclAllReduce，而NcclAllReduce本质是DMA引擎在做实际工作，而以DMA的工作方式，怎么会占用GPU的Compute流呢，所以，这里应该比较准确的理解应该是，TODO：<strong>在某一时刻，不断开启新的执行流去执行一个GPU Op，至于这些执行流是否真的在GPU内并行，这里并不能表达，需要使用GPU专属的工具。</strong></li>
+<li><strong>并行的欺骗性</strong>，本质上，这种误导是由于1和2导致的Timeline局限性，倒也称不上是错误。上图中使用Horovod进行分布式训练时，由于多个AllreduceOp并无相关性，也分属不同的执行流，看起来并行度很高，其实在其内部实现中，一方面Horovod会做融合，另一方面每个HorovodAllreduceOp只有一个后台线程真正的去做网络通信，最后，网络IO的能力上限取决于网卡，当网卡达到瓶颈时，更多的并行HorovodAllreduceOp是没有意义的。</li>
+<li><strong>和Step强相关</strong>，取一个Timeline的时候，通常会指定运行到某个Step来保存，这里的问题是，不同的Step可能执行的Timeline差异巨大，典型的问题就是开启XLA时，部分子图只会在Step1执行，同时，Step1进行的XlaCompile也会大大延长单Step时间，所以在测试的时候，使用的Step也是要小心设置的。</li>
+</ol>
+<h2 id="tensorboard">Tensorboard</h2>
+<p>Tensorboard用于传统TF Graph调试是比较容易理解的，这里讨论如何使用Tensorboard进行XLA的可视化。XLA可以将优化的各个阶段的子图导出为pbtxt或pb|dot，html等格式，如果是pbtxt，可以直接点击Tensorboard左侧Choose File 按钮上传。</p>
+<p>python tf_cnn_benchmarks.py --trace_file="time.json" --xla="True" --save_summaries_steps=10 --summary_verbosity=1 --train_dir "./tmp"  --num_gpus=1 --batch_size=1 --model=alexnet</p>
+<p>执行”./bazel-bin/tensorboard/tensorboard –logdir=”./logs” –port=9000″，浏览器输入”http://localhost:9000/“，点击上传mark_for_compilation_annotated_1.pbtxt即可看到子图：</p>
+<ul>
+<li><img alt="img" src="https://i2.wp.com/sketch2sky.com/wp-content/uploads/2020/03/Screen-Shot-2020-03-18-at-20.52.53.png?fit=640%2C120&amp;ssl=1" /></li>
+</ul>
+<h2 id="dot-graphvis">Dot + Graphvis</h2>
+<p>XLA的HLO PASS可以生成pb, html，dot等格式，这里的pb用import_pb_to_tensorboard或者自己写的脚本都没能成功转化成pbtxt，还没办法使用的Tensorboard查看，但相应的dot格式，显然可以使用Graphviz进行可视化。但鉴于graphviz的全量计算的方式，对于特别大神经网络，dot工具本身就会成为瓶颈。</p>
+<p>foo $ dot -Tsvg -o module_0002.after_optimizations.svg module_0002.after_optimizations.dot</p>
+<ul>
+<li><img alt="img" src="https://i0.wp.com/sketch2sky.com/wp-content/uploads/2020/03/module_0002.after_optimizations-copy.png?fit=640%2C115&amp;ssl=1" /></li>
+</ul>
+<h2 id="_1">环境变量</h2>
+<p><em>&gt; 这部分代码变化较频繁, 此处以1.14rc0为例.</em></p>
+<p><strong>TF_CPP_MIN_LOG_LEVEL:</strong>TF runtime的日志level, 分为 INFO, WARN, ERROR, FATAL 4级, 使用0, 1, 2, 3 进行控制, 缺省配置为INFO
+<strong>TF_CPP_MIN_VLOG_LEVEL:</strong>TF runtime中用于调试的日志, 在 TF_CPP_MIN_LOG_LEVEL = 0 时可用, 日志级别按照0, 1, 2 … 依次递增, 在2以上日志就已经非常多
+<strong>TF_DUMP_GRAPH_PREFIX:</strong>, 通过设置这个环境变量, 比如TF_DUMP_GRAPH_PREFIX=”/tmp/tf_dump_graph/”, 就可以在optimization优化的前后将整张图dump到/tmp/tf_dump_graph/下相应的pbtxt文件, 如果是tfop的图, 将其转换为events就可以通过tensorboard查看, 后文详述.
+<strong>TF_XLA_FLAGS:</strong> 是XLA的JIT 调试FLAG, 位于tensorflow/compiler/jit/flags.cc, 使用的方式： export TF_XLA_FLAGS=”–tf_xla_enable_lazy_compilation –tf_xla_print_cluster_outputs”</p>
+<p>以下不是全部，位于<code>tensorflow/compiler/jit/flags.cc</code>的<code>AllocateAndParseFlags()</code>的<code>flag_list</code>变量中。</p>
+<table>
+<thead>
+<tr>
+<th>iterm</th>
+<th>default value</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tf_xla_enable_lazy_compilation</td>
+<td>true</td>
+<td></td>
+</tr>
+<tr>
+<td>tf_xla_print_cluster_outputs</td>
+<td>false</td>
+<td>If true then insert Print nodes to print out values produced by XLA clusters</td>
+</tr>
+<tr>
+<td>tf_xla_compile_on_demand</td>
+<td>false</td>
+<td>Switch a device into ‘on-demand’ mode, where instead of autoclustering ops are compiled one by one just-in-time.</td>
+</tr>
+<tr>
+<td>tf_xla_always_defer_compilation</td>
+<td>false</td>
+<td></td>
+</tr>
+<tr>
+<td>tf_introduce_floating_point_jitter_to_tensors</td>
+<td>X</td>
+<td>he Tensors to add the jitter to.The tensors are named in the TensorId format of <node *name*>:<output *idx*>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>XLA_FLAGS:</strong> 是XLA HLO层的调试FLAG, 位于tensorflow/compiler/xla/debug_optitions_flags.cc</p>
+<table>
+<thead>
+<tr>
+<th>iterm</th>
+<th>default value</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xla_cpu_enable_fast_math</td>
+<td>true</td>
+<td>Enable unsafe fast-math optimizations in the CPU compiler;this may produce faster code at the expense of some accuracy.</td>
+</tr>
+<tr>
+<td>xla_cpu_fast_math_honor_nans</td>
+<td>X</td>
+<td>When xla_cpu_enable_fast_math is true then this controls whether weallow operations to produce NaNs.Ignored whenxla_cpu_enable_fast_math is false</td>
+</tr>
+<tr>
+<td>xla_cpu_fast_math_honor_infs</td>
+<td>X</td>
+<td>When xla_cpu_enable_fast_math is true then this controls whether weallow operations to produce infinites.Ignored whenxla_cpu_enable_fast_math is false</td>
+</tr>
+<tr>
+<td>xla_gpu_enable_fast_min_max</td>
+<td>true</td>
+<td>Enable fast floating point min/max lowering that does not propagateNaNs.</td>
+</tr>
+<tr>
+<td>xla_llvm_enable_alias_scope_metadata</td>
+<td>true</td>
+<td>In LLVM-based backends, enable the emission of !alias.scope metadata in the generated IR. xla_llvm_enable_noalias_metadata”, “In LLVM-based backends, enable the emission of !noalias metadata in the generated IR.</td>
+</tr>
+<tr>
+<td>xla_llvm_enable_noalias_metadata</td>
+<td>true</td>
+<td>In LLVM-based backends, enable the emission of !noalias metadata in the generated IR.</td>
+</tr>
+<tr>
+<td>xla_llvm_enable_invariant_load_metadata</td>
+<td>true</td>
+<td>In LLVM-based backends, enable the emission of !invariant.load metadata in the generated IR. xla_llvm_disable_expensive_passes”, “In LLVM-based backends, disable a custom set of expensive optimization passes.</td>
+</tr>
+<tr>
+<td>xla_llvm_disable_expensive_passes</td>
+<td>false</td>
+<td>In LLVM-based backends, disable a custom set of expensive optimization passes.</td>
+</tr>
+<tr>
+<td>xla_backend_optimization_level</td>
+<td>3</td>
+<td>Numerical optimization level for the XLA compiler backend.</td>
+</tr>
+<tr>
+<td>xla_disable_hlo_passes</td>
+<td>X</td>
+<td>Comma-separated list of hlo passes to be disabled. These names must exactly match the passes’ names; no whitespace around commas.</td>
+</tr>
+<tr>
+<td>xla_disable_all_hlo_passes</td>
+<td>false</td>
+<td>Disables all HLO passes.Notes that some passes are necessary for correctness and the invariants that must be satisfied by ‘fully optimized’ HLO are different for different devices and may change over time.The only ‘guarantee’, such as it is, is that if you compile XLA and dump the optimized HLO for some graph, you should be able to run it again on the same device with the same build of XLA. xla_embed_ir_in_executable”, “Embed the compiler IR as a string in the executable.</td>
+</tr>
+<tr>
+<td>xla_embed_ir_in_executable</td>
+<td>X</td>
+<td>Embed the compiler IR as a string in the executable.</td>
+</tr>
+<tr>
+<td>xla_eliminate_hlo_implicit_broadcast</td>
+<td>true</td>
+<td>Eliminate implicit broadcasts when lowering user computations to HLO instructions; use explicit broadcast instead.</td>
+</tr>
+<tr>
+<td>xla_cpu_multi_thread_eigen</td>
+<td>true</td>
+<td>When generating calls to Eigen in the CPU backend, use multi-threaded Eigen mode.</td>
+</tr>
+<tr>
+<td>xla_gpu_cuda_data_dir</td>
+<td>“./cuda_sdk_lib”</td>
+<td>If non-empty, speficies a local directory containing ptxas and nvvm libdevice files; otherwise we use those from runfile directories.</td>
+</tr>
+<tr>
+<td>xla_gpu_ftz</td>
+<td>X</td>
+<td>If true, flush-to-zero semantics are enabled in the code generated for GPUs.</td>
+</tr>
+<tr>
+<td>xla_gpu_disable_multi_streaming</td>
+<td>true</td>
+<td>If true, multi-streaming in the GPU backend is disabled.</td>
+</tr>
+<tr>
+<td>xla_gpu_max_kernel_unroll_factor</td>
+<td>4</td>
+<td>Specify the maximum kernel unroll factor for the GPU backend.</td>
+</tr>
+<tr>
+<td>xla_test_all_output_layouts</td>
+<td>X</td>
+<td>Let ClientLibraryTestBase::ComputeAndCompare* test all permutations of output layouts. For example, with a 3D shape, all permutations of the set {0, 1, 2} are tried.</td>
+</tr>
+<tr>
+<td>xla_test_all_input_layouts</td>
+<td>X</td>
+<td>Let ClientLibraryTestBase::ComputeAndCompare<em> test all permutations of </em><em>input</em>* layouts. For example, for 2 input arguments with 2D shape and 4D shape, the computation will run 2! * 4! times for every possible layouts</td>
+</tr>
+<tr>
+<td>xla_hlo_profile</td>
+<td>X</td>
+<td>Instrument the computation to collect per-HLO cycle counts</td>
+</tr>
+<tr>
+<td>xla_backend_extra_options</td>
+<td>X</td>
+<td>Extra options to pass to a backend; comma-separated list of ‘key=val’ strings (=val may be omitted); no whitespace around commas.</td>
+</tr>
+<tr>
+<td>xla_reduce_precision</td>
+<td>X</td>
+<td>Directions for adding reduce-precision operations. Format is ‘LOCATION=E,M:OPS;NAMES’ where LOCATION is the class of locations in which to insert the operations (e.g., ‘OP_OUTPUTS’), E and M are the exponent and matissa bit counts respectively, and OPS and NAMES are comma-separated (no spaces) lists of the operation types and names to which to attach the reduce-precision operations.The NAMES string and its preceding ‘;’ may be omitted.This option may be repeated to define multiple sets of added reduce-precision operations.</td>
+</tr>
+<tr>
+<td>xla_gpu_use_cudnn_batchnorm</td>
+<td>false</td>
+<td>Allows the GPU backend to implement batchnorm HLOs using cudnn, rather than expanding them to a soup of HLOs.</td>
+</tr>
+<tr>
+<td>xla_cpu_use_mkl_dnn</td>
+<td>true</td>
+<td>Generate calls to MKL-DNN in the CPU backend.</td>
+</tr>
+<tr>
+<td>xla_gpu_crash_on_verification_failures</td>
+<td>X</td>
+<td>Crashes the program on extra verification failures, e.g. cuDNN cross checking failures</td>
+</tr>
+<tr>
+<td>xla_gpu_disable_autotune</td>
+<td>X</td>
+<td>Disable GEMM and Convolution auto-tuning.</td>
+</tr>
+<tr>
+<td>xla_force_host_platform_device_count</td>
+<td>1</td>
+<td>Force the host platform to pretend that there are these many host \”devices\”. All of these host devices are backed by the samethreadpool.Setting this to anything other than 1 can increase overhead from context switching but we let the user override this behavior to help run tests on the host that run models in parallel across multiple devices.</td>
+</tr>
+<tr>
+<td>xla_gpu_disable_ptxas_optimizations</td>
+<td>X</td>
+<td>In XLA:GPU run ptxas in -O0 (default is -O3).</td>
+</tr>
+<tr>
+<td>xla_dump_to</td>
+<td>X</td>
+<td>Directory into which debugging data is written.If not specified but another dumping flag is passed, data will be written to stdout.To explicitly write to stdout, set this to \”-\”.The values \”sponge\” and \”test_undeclared_outputs_dir\” have a special meaning: They cause us to dump into the directory specified by the environment variable TEST_UNDECLARED_OUTPUTS_DIR.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_as_text</td>
+<td>X</td>
+<td>Dumps HLO modules as text before and after optimizations.Results are written to the –xla_dump_to dir, or, if no dir is specified, to stdout.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_as_proto</td>
+<td>X</td>
+<td>Dumps HLO modules as HloProtos to the directory specified by –xla_dump_to.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_as_dot</td>
+<td>X</td>
+<td>Dumps HLO modules rendered as dot files to the directory specified by –xla_dump_to.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_as_html</td>
+<td>X</td>
+<td>Dumps HLO modules rendered as HTML files to the directory specified by –xla_dump_to.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_as_url</td>
+<td>X</td>
+<td>Tries to dump HLO modules rendered as URLs to stdout (and also to the directory specified by –xla_dump_to). This is not implemented by default; you need to add a plugin which calls RegisterGraphToURLRenderer().</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_snapshots</td>
+<td>X</td>
+<td>Every time an HLO module is run, dumps an HloSnapshot to the directory specified by –xla_dump_to.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_module_re</td>
+<td>X</td>
+<td>Limits dumping only to modules which match this regular expression.Default is to dump all modules.</td>
+</tr>
+<tr>
+<td>xla_dump_hlo_pass_re</td>
+<td>X</td>
+<td>If specified, dumps HLO before and after optimization passes which match this regular expression, in addition to dumping at the very beginning and end of compilation.</td>
+</tr>
+<tr>
+<td>xla_hlo_graph_addresses</td>
+<td>X</td>
+<td>When rendering graphs (–xla_dump_hlo_as_{dot,html,url}), displays the address in memory of each HloInstruction object.</td>
+</tr>
+<tr>
+<td>xla_hlo_graph_sharding_color</td>
+<td>X</td>
+<td>Assign colors based on sharding assignments when generating the HLO graphs.</td>
+</tr>
+<tr>
+<td>xla_allow_excess_precision</td>
+<td>true</td>
+<td>Allow xla to increase the output precision of an instruction.</td>
+</tr>
+</tbody>
+</table>
+<p>在调试XLA的过程中, 下面是基本的配置, 主要是在/tmp/tf_dump_graph/下生成Optimization和/tmp/foo下生成的HLO的dump, 可以根据需求添加更多选项, 以及, 在源码中修改ToString()方法, 输出你想要dump的其他信息</p>
+<p>下面的环境，先设置，再来通过python3运行所写的代码。</p>
+<p><code>XLA_FLAGS</code>能用的选项在<code>tensorflow/compiler/xla/debug_options_flags.cc</code>中。r</p>
+<pre><code class="language-shell">export XLA_FLAGS=&quot;--xla_hlo_profile&quot; 不要设置，否则有段错误
+
+
+export TF_CPP_MIN_VLOG_LEVEL=2
+
+export XLA_FLAGS=&quot;--xla_dump_to=tmp/foo --xla_dump_hlo_as_text --xla_dump_hlo_as_dot --xla_dump_hlo_as_html --xla_dump_hlo_as_proto&quot;
+
+export TF_XLA_FLAGS=&quot;--tf_xla_clustering_debug&quot;
+
+export TF_DUMP_GRAPH_PREFIX=&quot;tmp/tf_dump_graph/&quot;  
+#在当前目录下生成tmp/tf_dump_graph
+
+</code></pre>
+<h2 id="bazel">Bazel</h2>
+<p>输出XLA Supported op</p>
+<pre><code>bazel run -c opt -- tensorflow/compiler/tf2xla:tf2xla_supported_ops --device=XLA_GPU_JIT
+</code></pre>
+<p>或XLA_CPU_JIT。 在源码中, XLA_GPU_JIT 是封装在宏 DEVICE_GPU_XLA_JIT 中的, 即 DEVICE_XLA_GPU 设备旗下的OpKernel使用的device_type. 具体参考”<em>Tensorflow XlaOpKernel机制详解</em>“</p>
+<p><strong>Supported operators </strong>for<strong> device: XLA_GPU_JIT</strong></p>
+<p>Operator | Type Constraint</p>
+<p>-------- | ---------------</p>
+<pre><code>Abs` | `T={bfloat16,double,float,half,int32,int64}
+Acos` | `T={bfloat16,complex64,double,float,half,int32,int64}
+Acosh` | `T={bfloat16,complex64,double,float,half}
+Add` | `T={bfloat16,complex64,double,float,half,int32,int64,int8,uint8}
+</code></pre>
+<p><code>AddN</code> | `T={bfloat16,complex64,double,float,half,int32,int64,int8,qint32,qint8,quint8,uint32,uin</p>
+<p>t64,uint8,variant}`</p>
+<pre><code>AdjustContrastv2` | `T={float,half}
+</code></pre>
+<p>--More--</p>
+<h2 id="gdb">使用GDB</h2>
+<p>Tensorflow编译结果只有一个.so, 添加符号表会大幅增加链接时间</p>
+<p>操作步骤:
+<strong>1. 修改编译命令行, 保留符号</strong></p>
+<p>Tensorflow 使用bazel 作为编译框架, bazel本身提供了非常丰富的编译选项, 但通常, 我们能修改的只有最外层workspace的选项, 这就意味着所用的选项不能与内部编译目标冲突. 为了添加debug符号, 我们需要添加”–copt=-g –strip=never”, 这里的”-g”是GCC的选项, 在Bazel下, 等价于”–compilation_mode dbg”或”-c dbg”, 最终, 选项如下:</p>
+<p>bazel --output_user_root="/dockerdata/.cache/bazel/" build --config=cuda --config=nccl --config=opt  --copt=-g  --strip=never //tensorflow/tools/pip_package:build_pip_package</p>
+<p><strong>2. 使用python3编译
+</strong>使用python3的原因主要是因为在开启debug会导致.so急剧增大, 超过python2制作wheel的int溢出:</p>
+<pre><code>Traceback (most recent call last):
+
+  File &quot;setup.py&quot;, line 300, **in** &lt;module&gt;
+
+​    keywords='tensorflow tensor machine learning',
+
+  File &quot;/usr/lib/python2.7/site-packages/setuptools/__init__.py&quot;, line 145, **in** setup
+
+​    **return** distutils.core.setup(**attrs)
+
+  File &quot;/usr/lib64/python2.7/distutils/core.py&quot;, line 152, **in** setup
+
+​    dist.run_commands()
+
+  File &quot;/usr/lib64/python2.7/distutils/dist.py&quot;, line 953, **in** run_commands
+
+​    self.run_command(cmd)
+
+  File &quot;/usr/lib64/python2.7/distutils/dist.py&quot;, line 972, **in** run_command
+
+​    cmd_obj.run()
+
+  File &quot;/usr/lib/python2.7/site-packages/wheel/bdist_wheel.py&quot;, line 250, **in** run
+
+​    wf.write_files(archive_root)
+
+  File &quot;/usr/lib/python2.7/site-packages/wheel/wheelfile.py&quot;, line 122, **in** write_files
+
+​    self.write(path, arcname)
+
+  File &quot;/usr/lib/python2.7/site-packages/wheel/wheelfile.py&quot;, line 136, **in** write
+
+​    self.writestr(zinfo, data, compress_type)
+
+  File &quot;/usr/lib/python2.7/site-packages/wheel/wheelfile.py&quot;, line 139, **in** writestr
+
+​    ZipFile.writestr(self, zinfo_or_arcname, bytes, compress_type)
+
+  File &quot;/usr/lib64/python2.7/zipfile.py&quot;, line 1220, **in** writestr
+
+​    zinfo.CRC = crc32(bytes) &amp; *0xffffffff*       # CRC-32 checksum
+
+OverflowError: size does not fit **in** an int
+</code></pre>
+<p>这个bug在python3中得到了解决, 当然, 可以去hack到python包来解决问题, 只是个人觉得比较ugly, 所以选择了改我的代码, 拥抱python3
+使用python3的方式很容易, 重新configure, 或直接修改.tf_configure.bazelrc + tools/python_bin_path.sh. centos下, 需要安装python3, python3-pip, python36-devel等几个组件
+编译好后, 可以通过”readelf -S /usr/local/lib/python3.6/site-packages/tensorflow/python/_pywrap_tensorflow_internal.so” 来确认debug信息, 可以看到多了很多代码段, 而且, so也大了很多:148MB -&gt; 6.1GB</p>
+<pre><code>...
+
+  [35] .debug_aranges    PROGBITS         *0000000000000000*  14b43bb0
+
+​       000000000060e800  *0000000000000000*           0     0     16
+
+  [36] .debug_info       PROGBITS         *0000000000000000*  151523b0
+
+​       00000000b34161e2  *0000000000000000*           0     0     1
+
+  [37] .debug_abbrev     PROGBITS         *0000000000000000*  c8568592
+
+​       00000000014ee980  *0000000000000000*           0     0     1
+
+  [38] .debug_line       PROGBITS         *0000000000000000*  c9a56f12
+
+​       000000000450988a  *0000000000000000*           0     0     1
+
+  [39] .debug_str        PROGBITS         *0000000000000000*  cdf6079c
+
+​       000000007717cf07  *0000000000000001*  MS       0     0     1
+
+  [40] .debug_loc        PROGBITS         *0000000000000000*  1450dd6a3
+
+​       0000000033874361  *0000000000000000*           0     0     1
+
+  [41] .debug_ranges     PROGBITS         *0000000000000000*  178951a04
+
+​       0000000002beed40  *0000000000000000*           0     0     1
+
+  [42] .shstrtab         STRTAB           *0000000000000000*  17b540744
+
+​       00000000000001cc  *0000000000000000*           0     0     1
+
+...
+</code></pre>
+<p><strong>3. 通过attach调试python
+</strong>Tensorflow将.so封装到Python package的方式被调用, 因此, 适用于简单程序的gdb python + set args + break + run这种方式就行不通, 因为python真正run之前还没有load TF包(tf.so), 所以也就无法捕获.so中的符号. 正确的做法是在python XXX.py执行起来之后, 即已经load了tf.so, 再通过gdb + attach的方式调试之. 实际操作中, 可以在python中加类似下面这句, 待attach(会load很多符号, 所以很慢)完成之后, 继续执行python代码.</p>
+<p>input("pid: " + str(os.getpid()) +", press enter after attached")</p>
+<p><strong>4. 设断点
+</strong>gdb attach之后, 即可以设置断点, 得益于编译时的-g选项, 函数符号都已经在.so中, 典型的, 是在runtime的Session入口设置断点:</p>
+<p>(gdb) break TF_NewSession</p>
+<p><strong>5. 设置源码目录</strong></p>
+<p>run到断点的时候, 就可以通过backstrace打印调用栈, 但若要通过list的当时查看源码, 还需要在gdb中添加源码目录用于检索上下文:</p>
+<p>(gdb) dir ../tensorflow/</p>
+<p>Source directories searched: /01_sources/../tensorflow:$cdir:$cwd</p>
+<p>之后就可以愉快调试了</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

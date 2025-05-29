@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Parser bb - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../Intrinsic/trap/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../LLVM%E5%88%86%E6%9E%90/1.%20%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><code>llvm/lib/AsmParser/LLParser.cpp</code></p>
+<pre><code class="language-c++">bool LLParser::ParseBasicBlock(PerFunctionState &amp;PFS) {
+  // If this basic block starts out with a name, remember it.
+  std::string Name;
+  int NameID = -1;
+  LocTy NameLoc = Lex.getLoc();
+  if (Lex.getKind() == lltok::LabelStr) {
+    Name = Lex.getStrVal();
+    Lex.Lex();
+  } else if (Lex.getKind() == lltok::LabelID) {
+    NameID = Lex.getUIntVal();
+    Lex.Lex();
+  }
+
+  BasicBlock *BB = PFS.DefineBB(Name, NameID, NameLoc);
+  if (!BB)
+    return true;
+
+  std::string NameStr;
+
+  // Parse the instructions in this block until we get a terminator.
+  Instruction *Inst;
+  do {
+    // This instruction may have three possibilities for a name: a) none
+    // specified, b) name specified &quot;%foo =&quot;, c) number specified: &quot;%4 =&quot;.
+    LocTy NameLoc = Lex.getLoc();
+    int NameID = -1;
+    NameStr = &quot;&quot;;
+
+    if (Lex.getKind() == lltok::LocalVarID) {
+      NameID = Lex.getUIntVal();
+      Lex.Lex();
+      if (ParseToken(lltok::equal, &quot;expected '=' after instruction id&quot;))
+        return true;
+    } else if (Lex.getKind() == lltok::LocalVar) {
+      NameStr = Lex.getStrVal();
+      Lex.Lex();
+      if (ParseToken(lltok::equal, &quot;expected '=' after instruction name&quot;))
+        return true;
+    }
+
+    switch (ParseInstruction(Inst, BB, PFS)) {
+    default: llvm_unreachable(&quot;Unknown ParseInstruction result!&quot;);
+    case InstError: return true;
+    case InstNormal:
+      BB-&gt;getInstList().push_back(Inst);
+
+      // With a normal result, we check to see if the instruction is followed by
+      // a comma and metadata.
+      if (EatIfPresent(lltok::comma))
+        if (ParseInstructionMetadata(*Inst))
+          return true;
+      break;
+    case InstExtraComma:
+      BB-&gt;getInstList().push_back(Inst);
+
+      // If the instruction parser ate an extra comma at the end of it, it
+      // *must* be followed by metadata.
+      if (ParseInstructionMetadata(*Inst))
+        return true;
+      break;
+    }
+
+    // Set the name on the instruction.
+    if (PFS.SetInstName(NameID, NameStr, NameLoc, Inst)) return true;
+  } while (!Inst-&gt;isTerminator());
+
+  return false;
+}
+</code></pre>
+<p>Terminal instruction</p>
+<h4 id="llvmincludellvmirinstructiondef"><code>llvm/include/llvm/IR/Instruction.def</code></h4>
+<pre><code class="language-c++">// Terminator Instructions - These instructions are used to terminate a basic
+// block of the program.   Every basic block must end with one of these
+// instructions for it to be a well formed basic block.
+//
+ FIRST_TERM_INST  ( 1)
+HANDLE_TERM_INST  ( 1, Ret           , ReturnInst)
+HANDLE_TERM_INST  ( 2, Br            , BranchInst)
+HANDLE_TERM_INST  ( 3, Switch        , SwitchInst)
+HANDLE_TERM_INST  ( 4, IndirectBr    , IndirectBrInst)
+HANDLE_TERM_INST  ( 5, Invoke        , InvokeInst)
+HANDLE_TERM_INST  ( 6, Resume        , ResumeInst)
+HANDLE_TERM_INST  ( 7, Unreachable   , UnreachableInst)
+HANDLE_TERM_INST  ( 8, CleanupRet    , CleanupReturnInst)
+HANDLE_TERM_INST  ( 9, CatchRet      , CatchReturnInst)
+HANDLE_TERM_INST  (10, CatchSwitch   , CatchSwitchInst)
+HANDLE_TERM_INST  (11, CallBr        , CallBrInst) // A call-site terminator
+  LAST_TERM_INST  (11)
+
+</code></pre>
+<h4 id="llvmincludellvmirinstructionh"><code>llvm/include/llvm/IR/Instruction.h</code></h4>
+<pre><code class="language-c++">  static inline bool isTerminator(unsigned OpCode) {
+    return OpCode &gt;= TermOpsBegin &amp;&amp; OpCode &lt; TermOpsEnd;
+  }
+</code></pre>
+<pre><code class="language-c++">  enum TermOps {       // These terminate basic blocks
+#define  FIRST_TERM_INST(N)             TermOpsBegin = N,
+#define HANDLE_TERM_INST(N, OPC, CLASS) OPC = N,
+#define   LAST_TERM_INST(N)             TermOpsEnd = N+1
+#include &quot;llvm/IR/Instruction.def&quot;
+  }
+</code></pre>
+<p>Below case is right, it will be 2 BB.</p>
+<pre><code class="language-shell">define dso_local signext i32 @main() {
+entry:
+  %0 = alloca i32, align 4
+  store i32 70, i32* %0, align 4
+  ret i32 0
+  store i32 84, i32* %0, align 4
+  ret i32 0
+}
+
+
+declare void @llvm.debugtrap()
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

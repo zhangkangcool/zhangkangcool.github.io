@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../../img/favicon.ico">
+        <title>6. JIT - My Docs</title>
+        <link href="../../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../5.%20mhlo%20%26%20hlo/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../7.%20JIT%E5%8E%9F%E7%90%86%E5%92%8C%E9%99%90%E5%88%B6/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#jit" class="nav-link">JIT编译条件</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#case" class="nav-link">case</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="jit">JIT编译条件</h2>
+<p>hat said, <code>jax.jit</code> does have limitations: in particular, it requires all arrays to have static shapes. That means that some JAX operations are incompatible with JIT compilation.</p>
+<p>For example, this operation can be executed in op-by-op mode:</p>
+<pre><code class="language-python">def get_negatives(x):
+  return x[x &lt; 0]
+
+x = jnp.array(np.random.randn(10))
+get_negatives(x)
+</code></pre>
+<pre><code class="language-python">DeviceArray([-0.10570311, -0.59403396, -0.8680282 , -0.23489487], dtype=float32)
+</code></pre>
+<p>But it returns an error if you attempt to execute it in jit mode:</p>
+<pre><code class="language-python">jit(get_negatives)(x)
+</code></pre>
+<pre><code class="language-python">---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+&lt;ipython-input-19-ec8799cf80d7&gt; in &lt;module&gt;()
+----&gt; 1 jit(get_negatives)(x)
+
+IndexError: Array boolean indices must be concrete.
+</code></pre>
+<p>JIX JIT编译需要有静态的shape</p>
+<h2 id="case">case</h2>
+<p><code>192.168.53.138:/home/ken/workspace/test/jax/test1</code></p>
+<p>需要设置<code>export JAX_DUMP_IR_TO=ir</code>,并事先建立好<code>ir</code>文件夹。</p>
+<p>实现函数fusion，输入三个参数a,b,c可以实现a+b-c，并对fusion进行即时编译（代码中+-均被JAX处理为原语，因此可以即时编译）：</p>
+<h3 id="jit_1">非jit编译</h3>
+<pre><code class="language-python">import jax
+import jax.numpy as jnp
+import os
+##################################################
+jax.config.update(&quot;jax_platform_name&quot;, 'cpu')
+current_platform = jax.default_backend()
+print(f'当前平台为{current_platform}')
+os.environ['JAX_DUMP_IR_TO'] = 'ir'
+##################################################
+
+a = jnp.array([1,2,3,4])
+b = jnp.array([1,3,4,4])
+c = jnp.array([1,2,3,5])
+
+def fusion(a,b,c):
+    return a+b-c
+
+fusion(a,b,c)
+
+</code></pre>
+<pre><code class="language-python">(jaxEnv) ken@lynxi:~/workspace/test/jax/test1/no_jit$ tree
+.
+├── ir
+│   ├── jax_ir0_jit_fn.mlir
+│   └── jax_ir1_jit__lambda_.mlir
+├── test.py
+└── tmp
+    └── foo
+        ├── module_0000.jit_fn.before_optimizations.dot
+        ├── module_0000.jit_fn.before_optimizations.hlo.pb
+        ├── module_0000.jit_fn.before_optimizations.html
+        ├── module_0000.jit_fn.before_optimizations.txt
+        ├── module_0000.jit_fn.cpu_after_optimizations-buffer-assignment.txt
+        ├── module_0000.jit_fn.cpu_after_optimizations.dot
+        ├── module_0000.jit_fn.cpu_after_optimizations.hlo.pb
+        ├── module_0000.jit_fn.cpu_after_optimizations.html
+        ├── module_0000.jit_fn.cpu_after_optimizations.txt
+        ├── module_0000.jit_fn.ir-no-opt.ll
+        ├── module_0000.jit_fn.ir-no-opt-noconst.ll
+        ├── module_0000.jit_fn.ir-with-opt.ll
+        ├── module_0000.jit_fn.ir-with-opt-noconst.ll
+        ├── module_0000.jit_fn.o
+        ├── module_0001.jit__lambda_.before_optimizations.dot
+        ├── module_0001.jit__lambda_.before_optimizations.hlo.pb
+        ├── module_0001.jit__lambda_.before_optimizations.html
+        ├── module_0001.jit__lambda_.before_optimizations.txt
+        ├── module_0001.jit__lambda_.cpu_after_optimizations-buffer-assignment.txt
+        ├── module_0001.jit__lambda_.cpu_after_optimizations.dot
+        ├── module_0001.jit__lambda_.cpu_after_optimizations.hlo.pb
+        ├── module_0001.jit__lambda_.cpu_after_optimizations.html
+        ├── module_0001.jit__lambda_.cpu_after_optimizations.txt
+        ├── module_0001.jit__lambda_.ir-no-opt.ll
+        ├── module_0001.jit__lambda_.ir-no-opt-noconst.ll
+        ├── module_0001.jit__lambda_.ir-with-opt.ll
+        ├── module_0001.jit__lambda_.ir-with-opt-noconst.ll
+        └── module_0001.jit__lambda_.o
+
+</code></pre>
+<p>得到两个ir文件：</p>
+<pre><code class="language-python">cat ir/jax_ir0_jit_fn.mlir
+#loc0 = loc(unknown)
+module @jit_fn {
+  func.func public @main(%arg0: tensor&lt;4xi32&gt; loc(unknown), %arg1: tensor&lt;4xi32&gt; loc(unknown)) -&gt; tensor&lt;4xi32&gt; {
+    %0 = mhlo.add %arg0, %arg1 : tensor&lt;4xi32&gt; loc(#loc1)
+    return %0 : tensor&lt;4xi32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(fn)/jit(main)/add&quot;(&quot;./test.py&quot;:17:1))
+
+
+cat ir/jax_ir1_jit__lambda_.mlir
+#loc0 = loc(unknown)
+module @jit__lambda_ {
+  func.func public @main(%arg0: tensor&lt;4xi32&gt; loc(unknown), %arg1: tensor&lt;4xi32&gt; loc(unknown)) -&gt; tensor&lt;4xi32&gt; {
+    %0 = mhlo.subtract %arg0, %arg1 : tensor&lt;4xi32&gt; loc(#loc1)
+    return %0 : tensor&lt;4xi32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(&lt;lambda&gt;)/jit(main)/sub&quot;(&quot;./test.py&quot;:17:1))
+</code></pre>
+<p><img alt="image-20221020141919413" src="../JIT.assets/image-20221020141919413.png" /></p>
+<p><img alt="image-20221020141935835" src="../JIT.assets/image-20221020141935835.png" /></p>
+<p>优化前后图是相同的</p>
+<h3 id="jit_2">使用jit编译</h3>
+<p><code>/home/ken/workspace/test/jax/test1/jit</code></p>
+<pre><code class="language-python">import jax
+import jax.numpy as jnp
+import os
+##################################################
+jax.config.update(&quot;jax_platform_name&quot;, 'cpu')
+current_platform = jax.default_backend()
+print(f'当前平台为{current_platform}')
+os.environ['JAX_DUMP_IR_TO'] = 'ir_jit'
+##################################################
+
+a = jnp.array([1,2,3,4])
+b = jnp.array([1,3,4,4])
+c = jnp.array([1,2,3,5])
+
+def fusion(a,b,c):
+    return a+b-c
+
+jit_fusion = jax.jit(fusion)
+jit_fusion(a,b,c)
+
+</code></pre>
+<pre><code class="language-python">.
+├── ir
+│   └── jax_ir0_jit_fusion.mlir
+├── test.py
+└── tmp
+    └── foo
+        ├── module_0000.jit_fusion.before_optimizations.dot
+        ├── module_0000.jit_fusion.before_optimizations.hlo.pb
+        ├── module_0000.jit_fusion.before_optimizations.html
+        ├── module_0000.jit_fusion.before_optimizations.txt
+        ├── module_0000.jit_fusion.cpu_after_optimizations-buffer-assignment.txt
+        ├── module_0000.jit_fusion.cpu_after_optimizations.dot
+        ├── module_0000.jit_fusion.cpu_after_optimizations.hlo.pb
+        ├── module_0000.jit_fusion.cpu_after_optimizations.html
+        ├── module_0000.jit_fusion.cpu_after_optimizations.txt
+        ├── module_0000.jit_fusion.ir-no-opt.ll
+        ├── module_0000.jit_fusion.ir-no-opt-noconst.ll
+        ├── module_0000.jit_fusion.ir-with-opt.ll
+        ├── module_0000.jit_fusion.ir-with-opt-noconst.ll
+        └── module_0000.jit_fusion.o
+
+</code></pre>
+<p>只得到一个JIT文件<code>ir_jit/jax_ir0_jit_fusion.mlir</code></p>
+<pre><code class="language-python">
+#loc0 = loc(unknown)
+module @jit_fusion {
+  func.func public @main(%arg0: tensor&lt;4xi32&gt; loc(unknown), %arg1: tensor&lt;4xi32&gt; loc(unknown), %arg2: tensor&lt;4xi32&gt; loc(unknown)) -&gt; tensor&lt;4xi32&gt; {
+    %0 = mhlo.add %arg0, %arg1 : tensor&lt;4xi32&gt; loc(#loc1)
+    %1 = mhlo.subtract %0, %arg2 : tensor&lt;4xi32&gt; loc(#loc2)
+    return %1 : tensor&lt;4xi32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(fusion)/jit(main)/add&quot;(&quot;./test.py&quot;:28:1))
+#loc2 = loc(&quot;jit(fusion)/jit(main)/sub&quot;(&quot;./test.py&quot;:28:1))
+
+</code></pre>
+<p><code>before_opt.png</code></p>
+<p><img alt="image-20221020135845495" src="../JIT.assets/image-20221020135845495.png" /></p>
+<p><code>after_opt.png</code></p>
+<p><img alt="image-20221020135902498" src="../JIT.assets/image-20221020135902498.png" /></p>
+<p>对于非JIT编译，算子“+”先作为一个原语被发送给XLA，生成了代表a+b的很小的计算子图，然后“-”作为另一个原语被发送给XLA，a+b的结果与c生成了另一个小的计算子图。</p>
+<p>如果对fusion即时编译，则会生成1个较大的计算图。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../../js/base.js"></script>
+        <script src="../../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

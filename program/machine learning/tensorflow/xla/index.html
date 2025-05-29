@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Xla - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../pip%20tensorflow%E5%AE%89%E8%A3%85/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E4%B8%BAXLA%E5%BC%80%E5%8F%91%E6%96%B0%E7%9A%84%E5%90%8E%E7%AB%AF/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#how-to" class="nav-link">How to</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">性能</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#just-in-timejit" class="nav-link">Just in time（JIT）</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#hlo" class="nav-link">HLO</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">编译</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#executable" class="nav-link">Executable</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>xla是tensorflow自带的一个可以支持llvm自定义后端的编译器。其实相当于clang前端。</p>
+<p>https://blog.slinuxer.com/2019/06/tensorflow-xla</p>
+<p>https://www.jianshu.com/p/1a4fa57d4588?u_atoken=c98bf7c9-d0c0-42fb-9ac1-dd6fb59053ad&amp;u_asession=011e2lP2omchOIdeZGkWtuPh_LfgmmjzlIy26_coCpmfO2KREyvCEXEETQBphvqlhQX0KNBwm7Lovlpxjd_P_q4JsKWYrT3W_NKPr8w6oU7K_SgRGBLKIpECTsmyCnLbx-Pn5sJEo90JdruCukG2OVYmBkFo3NEHBv0PZUm6pbxQU&amp;u_asig=05ReNMps794XZLa2116BvqUYPFmstJ58S6j1HgJfANpAlQvO8tAkUOqWL48od8FVQb4T33W3wJGKdEdayR2H64rH6ZPXaK68FF-kcNoqQJiEJgvE6Q32M2NpIl40yOVrOJ88dh-vxLyFErY8xw4WUUOmhvFIkhw5hadxXnlVD-4zn9JS7q8ZD7Xtz2Ly-b0kmuyAKRFSVJkkdwVUnyHAIJzWegaXXakMSqV4tiLderpbq2BJzI8pZq-_UteI-fo5HJLoLNx2oKfcIBo1yjPF0Bne3h9VXwMyh6PgyDIVSG1W9Pz0H8xKp94HbXWIb0PdUuRuWSBte70yVF-VuwV1s-7Smao2muW7RClUrCvrQEuEFFH1tbhDmxnH9PWvvoVvjqmWspDxyAEEo4kbsryBKb9Q&amp;u_aref=INq52jKIaY29vFMzMQMPXjReTo8%3D</p>
+<p><a href="https://www.tensorflow.org/xla/overview">关于XLA</a>，Tensorflow给出了比较简略的说明。XLA主要是用来提升计算速度、节省内存（显存）等。XLA的输入语言称为“HLO (High Level Optimizer)”，HLO定义了整个计算图。随后，XLA对HLO进行一些机器无关、高层的优化，然后用LLVM等进行机器相关、底层的优化并生成代码。这个流程如下图所示。</p>
+<ol>
+<li>描绘计算图HLO，这一步可以通过tf2xla、xla_client等完成</li>
+<li>对HLO进行广义优化（机器无关），如<a href="https://en.wikipedia.org/wiki/Common_subexpression_elimination">CSE</a>、<a href="https://en.wikipedia.org/wiki/Loop_fission_and_fusion">Loop Fusion</a>等编译常用<a href="https://en.wikipedia.org/wiki/Optimizing_compiler">优化策略</a></li>
+<li>针对特定设备，对HLO进行优化</li>
+<li>LLVM等生成可执行代码</li>
+</ol>
+<p><img alt="img" src="https://blog.slinuxer.com/wp-content/uploads/2019/06/how-does-xla-work.png" /></p>
+<p><a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwww.tensorflow.org%2Fxla">XLA</a>(Accelerated Linear Algebra)是专用于机器学习的编译器，机器学习的运算中99%都是向量乘以矩阵、矩阵乘以矩阵的计算，XLA是专门用来优化这些计算的。</p>
+<h1 id="how-to">How to</h1>
+<p>举个例子，运行在GPU上的<code>model_fn</code>函数会顺序调用<code>multiply</code>、<code>add</code>和<code>reduce_sum</code>这三个op，而且<code>multiply</code>，也就是<code>y * z</code>的计算结果会先从GPU拷贝回host，再拷贝到device作为<code>add</code>的input，同样的，add的计算结果也会以相同的方式传递给下一个op。</p>
+<pre><code class="language-python">def model_fn(x, y, z):
+  return tf.reduce_sum(x + y * z)
+</code></pre>
+<p>显然，对于整个函数来说，将中间变量在host和device间来回倒腾是没有意义的。因此，如果把函数看作一个op，那在计算中产生的中间结果就不必返回到host，少了数据传输的时间开销，就可以大幅提升运算效率。</p>
+<p>这种将多个op融合成一个op的方法就称为<code>fuse</code>，当前fuse的技术路线有：</p>
+<ul>
+<li>通过手写或codegen工具来开发fused op，例如在上述例子中就可以开发<code>tf.fused_reduce_sum(x, y, z)</code>。它的优点是代码可控性高，易于性能优化，但缺点是程序缺乏灵活性。像Pytorch这种动态图的框架走的就是这条路线，Nvidia的Apex提供有大量fused kernel，对fused kernel感兴趣的，可以读读<a href="https://www.jianshu.com/p/b6ab2128cea6">LayerNorm核心技术</a>。</li>
+<li>通过XLA等AI编译器将python函数编译成fused op。这样做的好处是灵活性强，可以fuse任何计算，弊端则是开发难度大，且性能通常会逊色于手写或codegen kernel。</li>
+</ul>
+<h1 id="_1">性能</h1>
+<p>XLA的优化当然不只是fuse，还有对计算图的优化，包括删除无效指令、减少内存占用、替换复杂指令等优化。下图是官方提供的性能报告，经XLA优化过后，Tensorflow BERT MLPerf的训练性能提升了~7倍。除了Tensorflow外，XLA还支持<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fgoogle%2Fjax">JAX</a>、<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FJuliaTPU%2FXLA.jl">Julia</a>、<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fpytorch%2Fxla">PyTorch</a>和<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Felixir-nx%2Fnx">Nx</a>等前端。</p>
+<p><img alt="img" src="https:////upload-images.jianshu.io/upload_images/13575947-22020c557652fa74.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" /></p>
+<p>https://www.tensorflow.org/xla</p>
+<h1 id="just-in-timejit">Just in time（JIT）</h1>
+<p><code>jit</code>是指在首次运行时将函数编译成二进制程序，后续再调用该函数时直接运行先前编译好的程序而非python code。<code>@tf.funciton</code>修饰的函数（包括它的子函数）会做<code>jit</code>。除非signature发生了变化，也就是input的shape或dtype和编译时不同，否则<code>get_MSE</code>是不需要重复编译的。</p>
+<pre><code class="language-tsx">@tf.function
+def get_MSE(y_true, y_pred):
+  print(&quot;compiling ...&quot;)
+  sq_diff = tf.pow(y_true - y_pred, 2)
+  return tf.reduce_mean(sq_diff)
+
+get_MSE(tf.constant(1.0), tf.constant(2.0)) # compile
+get_MSE(tf.constant(3.0), tf.constant(4.0)) # It won't recompile
+get_MSE(tf.ones([2, 2]), tf.ones([2, 2]) # compile again for new signature
+</code></pre>
+<p><code>@tf.function</code>将函数内的ops替换成一组（<code>XlaCompile</code>, <code>XlaRun</code>) ops，在运行时前者负责编译，并将编译结果--<code>executable</code>保存到cache，后者负责运行executable。如果cache里已经有编译好的程序就不需要编译了，例如<code>get_MSE(tf.constant(3.0), tf.constant(4.0))</code>。</p>
+<h1 id="hlo">HLO</h1>
+<p>XLA编译器支持的语言（IR）是HLO（High Level Operations），顾名思义这些语言是由一个个op组成，因此，我们在编译前需要先从python code中提取出所有ops，再将它们转换成HLO。</p>
+<p>JAX通过tracing的方式，从<code>@jax.jit</code>修饰的函数中提取ops，这些ops通过<code>jaxpr</code>来表示。然后再通过XLA client提供的API为ops生成相应的HLO。PyTorch/XLA也是采用类似的方法来生成HLO。</p>
+<p>Tensorflow的<code>tf2xla</code>为每个<code>Op</code>创建了一个同名的<code>XlaOp</code>用于生成HLO，<code>XlaOp</code>派生于<code>Op</code>，使用相同的注册机制，因此，只要把要编译的子图根据拓扑排序运行一遍就能生成它的HLO。</p>
+<h1 id="_2">编译</h1>
+<p>HLO先经过一系列<code>pass</code>优化后再将HLO lowering成ISA，最后将编译好的二进制封装到<code>executable</code>。</p>
+<p><img alt="img" src="https:////upload-images.jianshu.io/upload_images/13575947-5f547e4ad3269fb5.png?imageMogr2/auto-orient/strip|imageView2/2/w/427/format/webp" /></p>
+<p>https://www.tensorflow.org/xla/architecture</p>
+<h1 id="executable">Executable</h1>
+<p>除了二进制程序，它还包含运行该程序所需要的infos和options。调用<code>executable.run()</code>就可以执行计算图。</p>
+<p>作者：A君来了
+链接：https://www.jianshu.com/p/1a4fa57d4588
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

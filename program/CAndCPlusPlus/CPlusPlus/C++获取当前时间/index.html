@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>C++获取当前时间 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../C/useful_function/C%E8%AF%AD%E8%A8%80/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../STD/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gettimeofday-clock_gettime" class="nav-link">gettimeofday() 和 clock_gettime()函数 分析小结</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h3 id="1-timeb">1. 利用timeb得到毫秒</h3>
+<p>毫秒是整数</p>
+<p>1970年以来的UTC时间</p>
+<pre><code class="language-c++">
+#include &lt;time.h&gt;
+#include &lt;sys/timeb.h&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    long long time_last;
+    time_last = time(NULL);
+
+    struct timeb t1;
+    ftime(&amp;t1);
+    time_t ttt= t1.millitm+t1.time*1000;
+    std::cout &lt;&lt; t1.time &lt;&lt; &quot;.&quot; &lt;&lt; t1.millitm &lt;&lt; std::endl;
+    return 0;
+}
+
+// output: 1627010823.519
+
+</code></pre>
+<p>获得纳秒</p>
+<pre><code class="language-c++">
+#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+int main()
+{
+  struct timespec ts;
+  clock_gettime(CLOCK_REALTIME,&amp;ts);
+
+  std::cout &lt;&lt; ts.tv_sec * 1000000000 + ts.tv_nsec &lt;&lt; std::endl;
+  double seconds =  ts.tv_sec + (ts.tv_nsec / 1000000000.0);
+  std::cout &lt;&lt; std::setprecision(20) &lt;&lt; seconds &lt;&lt; std::endl;
+  return 0;
+}
+
+</code></pre>
+<h1 id="gettimeofday-clock_gettime">gettimeofday() 和 clock_gettime()函数 分析小结</h1>
+<p>https://zhuge.blog.csdn.net/article/details/109372643</p>
+<p>在上一篇文章《struct timeval 和 struct timespec 应用小结》我们分析了与linux系统时间相关的结构体定义，在linux系统C编程中，获取系统时间的api函数有两个，分别为：</p>
+<p>int gettimeofday(struct timeval <em>tv, struct timezone </em>tz)</p>
+<p>int clock_gettime(clockid_t, struct timespec *)
+我们逐个分析：</p>
+<p>1、gettimeofday()</p>
+<pre><code> 该函数把当前时间用 tv 结构体返回，当前时区的信息则放到tz所 指向的结构体。
+
+  我们在使用该函数时，第2个参数一般为空（NULL），因为 一般只需要获取当前时间， 而不用获取时区信息。
+
+  注意：返回的当前时间tv.tv_sec 是从1970年1月1日0 点开始的 “秒”数。
+</code></pre>
+<p>2、clock_gettime()</p>
+<pre><code>该函数是用于获取特定 时钟的时间，常用如下4种时钟：
+</code></pre>
+<p>CLOCK_REALTIME                  //系统当前时间，从1970年1.1日算起
+CLOCK_MONOTONIC                 //系统的启动后运行时间，不能被设置
+CLOCK_PROCESS_CPUTIME_ID        //本进程运行时间
+CLOCK_THREAD_CPUTIME_ID         //本线程运行时间
+  我们经常用到的是CLOCK_REALTIME和CLOCK_MONOTONIC，其中CLOCK_REALTIME 跟 gettimeofday 返回的秒是一致的，都是相对于1970年1月1日的秒数。</p>
+<p>区别：</p>
+<p>1、clock_gettime 相比 gettimeofday的精度更高一些，前者精度到 纳秒，而后者精度到微秒。</p>
+<p>2、clock_gettime可以通过 时钟选项而 得到不同参考下的时间，而gettimeofday则只有一种用途（获取当前系统时间）。</p>
+<p>常规应用下，使用gettimeofday 即可获取 当前系统时间，对精度要求高，而且有不同需求的，可以使用clock_gettime。
+————————————————
+版权声明：本文为CSDN博主「猪哥-嵌入式」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/u012351051/article/details/109372643</p>
+<p>https://www.cnblogs.com/zlshmily/p/10058427.html</p>
+<p>https://blog.csdn.net/code_peak/article/details/118199854</p>
+<h4 id="stdchrono">现在所有的时间都被统一到了<code>std::chrono</code>库</h4>
+<pre><code class="language-c++">
+#include &lt;chrono&gt;
+int main ()
+{
+  using namespace std::chrono;
+  typedef duration&lt;int,std::ratio&lt;60*60*24&gt;&gt; days_type;
+  time_point&lt;system_clock,days_type&gt; today = time_point_cast&lt;days_type&gt;(system_clock::now());
+  std::cout &lt;&lt; today.time_since_epoch().count() &lt;&lt; &quot; days since epoch&quot; &lt;&lt; std::endl;
+  return 0;
+}
+</code></pre>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+// 获得1000 * 1000，也就是微秒
+int main()
+{
+    typedef std::chrono::duration&lt;long long, std::ratio&lt;1, 1000 * 1000&gt;&gt; days_type;
+        //now 表示当前时间到格林威治标准时间的天数
+    std::chrono::time_point&lt;std::chrono::system_clock, days_type&gt; today = std::chrono::time_point_cast&lt;days_type&gt;(std::chrono::system_clock::now());
+    //std::chrono::system_clock::time_point等效于time_point&lt;std::chrono::system_clock&gt;
+    std::cout &lt;&lt; today.time_since_epoch().count() &lt;&lt; &quot; ms since epoch&quot; &lt;&lt; std::endl;
+    return 0;
+}
+
+</code></pre>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;iomanip&gt;
+
+int main()
+{
+    typedef std::chrono::duration&lt;long long, std::ratio&lt;1, 1000 * 1000&gt;&gt; us_type;
+        //now 表示当前时间到格林威治标准时间的天数
+    std::chrono::time_point&lt;std::chrono::system_clock, us_type&gt; today = std::chrono::time_point_cast&lt;us_type&gt;(std::chrono::system_clock::now());
+    //std::chrono::system_clock::time_point等效于time_point&lt;std::chrono::system_clock&gt;
+    std::cout &lt;&lt; std::setprecision(20) &lt;&lt; today.time_since_epoch().count() / (1000.0 * 1000) &lt;&lt; &quot; us since epoch&quot; &lt;&lt; std::endl;
+    return 0;
+}
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

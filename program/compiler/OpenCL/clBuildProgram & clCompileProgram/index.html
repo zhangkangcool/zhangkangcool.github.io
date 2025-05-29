@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>clBuildProgram & clCompileProgram - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../General_compiler/%E9%93%BE%E6%8E%A5%E5%BA%93/%E9%9D%99%E6%80%81%E5%BA%93/cmake/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../clCreateKernel/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><code>clCompileProgram</code> 和 <code>clBuildProgram</code> 是 OpenCL 中用于编译和构建程序的两个不同的 API 函数。它们的主要区别在于处理 OpenCL 程序的方式，以及它们的使用场景。</p>
+<h3 id="_1"><strong>主要区别</strong></h3>
+<ol>
+<li><strong><code>clCompileProgram</code></strong>：(相当于生成多个.o文件，然后用clInkProgram进行链接)</li>
+<li>用于将 OpenCL 源代码编译成中间表示（IR，Intermediate Representation），但不会生成可执行的二进制代码。</li>
+<li>它允许你对程序进行分步骤构建，适用于需要模块化编译和链接的复杂应用。</li>
+<li>
+<p>输出是编译后的对象文件（IR）。</p>
+</li>
+<li>
+<p><strong><code>clBuildProgram</code></strong>：(相当于一步完成编译和链接的工作)</p>
+</li>
+<li>直接从 OpenCL 源代码生成可执行的二进制程序。</li>
+<li>适用于单一阶段完成编译和链接的简单应用。</li>
+<li>输出是可执行的程序，可以直接在设备上运行。</li>
+</ol>
+<h3 id="_2"><strong>使用场景</strong></h3>
+<ul>
+<li><strong><code>clCompileProgram</code></strong>：适用于需要模块化程序设计的场景。你可以先用 <code>clCompileProgram</code> 编译多个模块，然后通过 <code>clLinkProgram</code> 将它们链接在一起，生成最终的可执行程序。</li>
+<li><strong><code>clBuildProgram</code></strong>：适用于简单的程序开发，直接从 OpenCL 源代码到设备可执行程序的构建。</li>
+</ul>
+<hr />
+<h3 id="_3"><strong>具体例子</strong></h3>
+<h4 id="1-clbuildprogram"><strong>1. 使用 <code>clBuildProgram</code> 的简单示例</strong></h4>
+<p>假设你有一个简单的 OpenCL 内核代码，用于计算两个数组的加法：</p>
+<pre><code class="language-c">const char* kernelSource = 
+    &quot;__kernel void add_arrays(__global float* a, __global float* b, __global float* c) {&quot;
+    &quot;    int id = get_global_id(0);&quot;
+    &quot;    c[id] = a[id] + b[id];&quot;
+    &quot;}&quot;;
+</code></pre>
+<p>你可以直接使用 <code>clBuildProgram</code> 构建程序并运行：</p>
+<pre><code class="language-c">cl_program program = clCreateProgramWithSource(context, 1, &amp;kernelSource, NULL, &amp;err);
+err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
+
+if (err != CL_SUCCESS) {
+    size_t logSize;
+    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 0, NULL, &amp;logSize);
+    char* buildLog = (char*)malloc(logSize);
+    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, logSize, buildLog, NULL);
+    printf(&quot;Build Log:\n%s\n&quot;, buildLog);
+    free(buildLog);
+}
+</code></pre>
+<p>在这个例子中，<code>clBuildProgram</code> 会直接从源代码生成设备可执行的二进制程序，可以用来创建内核并直接执行。</p>
+<hr />
+<h4 id="2-clcompileprogram-cllinkprogram"><strong>2. 使用 <code>clCompileProgram</code> 和 <code>clLinkProgram</code> 的模块化示例</strong></h4>
+<p>假设你有两个模块：
+- <strong>Module 1</strong>：定义了一个辅助函数，用于平方一个数。
+- <strong>Module 2</strong>：定义了主内核，调用辅助函数。</p>
+<pre><code class="language-c">// Module 1: square_function.cl
+const char* module1Source = 
+    &quot;float square(float x) {&quot;
+    &quot;    return x * x;&quot;
+    &quot;}&quot;;
+</code></pre>
+<pre><code class="language-c">// Module 2: main_kernel.cl
+const char* module2Source = 
+    &quot;#include \&quot;square_function.cl\&quot;&quot;
+    &quot;__kernel void compute_square(__global float* input, __global float* output) {&quot;
+    &quot;    int id = get_global_id(0);&quot;
+    &quot;    output[id] = square(input[id]);&quot;
+    &quot;}&quot;;
+</code></pre>
+<p>你可以分步骤编译和链接：</p>
+<ol>
+<li><strong>编译模块 1 和模块 2</strong>：</li>
+</ol>
+<pre><code class="language-c">// 编译模块 1
+cl_program program1 = clCreateProgramWithSource(context, 1, &amp;module1Source, NULL, &amp;err);
+err = clCompileProgram(program1, 1, &amp;device, NULL, 0, NULL, NULL, NULL, NULL);
+
+// 编译模块 2
+cl_program program2 = clCreateProgramWithSource(context, 1, &amp;module2Source, NULL, &amp;err);
+err = clCompileProgram(program2, 1, &amp;device, NULL, 0, NULL, NULL, NULL, NULL);
+</code></pre>
+<ol>
+<li><strong>链接模块</strong>：</li>
+</ol>
+<pre><code class="language-c">// 链接两个已编译的模块
+cl_program linkedProgram = clLinkProgram(context, 1, &amp;device, NULL, 2, 
+                                         (const cl_program[]){program1, program2}, 
+                                         NULL, NULL, &amp;err);
+
+if (err != CL_SUCCESS) {
+    size_t logSize;
+    clGetProgramBuildInfo(linkedProgram, device, CL_PROGRAM_BUILD_LOG, 0, NULL, &amp;logSize);
+    char* buildLog = (char*)malloc(logSize);
+    clGetProgramBuildInfo(linkedProgram, device, CL_PROGRAM_BUILD_LOG, logSize, buildLog, NULL);
+    printf(&quot;Link Log:\n%s\n&quot;, buildLog);
+    free(buildLog);
+}
+</code></pre>
+<ol>
+<li><strong>运行内核</strong>：</li>
+</ol>
+<p>通过链接生成的 <code>linkedProgram</code>，你可以创建内核并运行它：</p>
+<pre><code class="language-c">cl_kernel kernel = clCreateKernel(linkedProgram, &quot;compute_square&quot;, &amp;err);
+</code></pre>
+<hr />
+<h3 id="_4"><strong>总结</strong></h3>
+<ul>
+<li><strong><code>clBuildProgram</code></strong>：适用于简单的程序开发，从源代码直接生成可执行程序。</li>
+<li><strong><code>clCompileProgram</code> 和 <code>clLinkProgram</code></strong>：适用于复杂的模块化开发，允许你将不同的模块编译和链接在一起。</li>
+</ul>
+<p>使用 <code>clCompileProgram</code> 和 <code>clLinkProgram</code> 提供了更大的灵活性，但也增加了复杂性。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>三个clCreateProgramWith函数 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../cl%E7%BC%96%E8%AF%91%E6%88%90spirv/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E4%B8%A4%E4%B8%AAclCreateKernel%E5%87%BD%E6%95%B0/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<hr />
+<p><code>clCreateProgramWithIL</code>、<code>clCreateProgramWithSource</code> 和 <code>clCreateProgramWithBinary</code> 是 OpenCL 中用于创建程序对象的三种不同方法。以下是它们的区别和作用：</p>
+<hr />
+<h3 id="1-clcreateprogramwithil">1. <strong><code>clCreateProgramWithIL</code></strong></h3>
+<pre><code class="language-c++">cl_program clCreateProgramWithIL(
+    cl_context context,
+    const void *il,
+    size_t length,
+    cl_int *errcode_ret
+);
+</code></pre>
+<h4 id="_1">参数说明</h4>
+<ul>
+<li><code>context</code>：一个有效的 OpenCL 上下文，指定了程序将在哪个环境中执行。</li>
+<li><code>il</code>：指向包含中间语言代码的内存区域的指针。</li>
+<li><code>length</code>：中间语言代码的字节长度。</li>
+<li><code>errcode_ret</code>：指向一个整数的指针，用于返回函数执行的错误码。如果不需要错误码，可以传入 <code>NULL</code>。</li>
+</ul>
+<h4 id="_2">返回值</h4>
+<p>如果函数执行成功，返回一个新创建的 <code>cl_program</code> 对象；如果失败，返回 <code>NULL</code>。</p>
+<ul>
+<li><strong>作用</strong>: 从中间语言 (Intermediate Language, IL) 创建程序对象。</li>
+<li><strong>输入</strong>: 接收中间语言的二进制数据（例如 SPIR-V）。</li>
+<li><strong>特点</strong>:<ul>
+<li>中间语言是一种高级的设备无关格式，可以跨平台使用。</li>
+<li>使用中间语言允许更灵活地将程序移植到不同的设备上，因为中间语言可以被设备的编译器进一步优化。</li>
+<li>通常用于更现代的 OpenCL 版本（如 OpenCL 2.1 及以上）。</li>
+</ul>
+</li>
+<li><strong>典型场景</strong>:<ul>
+<li>从高层语言（如 OpenCL C 或 OpenCL C++ kernel）编译成中间语言后加载到设备。</li>
+<li>整合工具链（如使用 LLVM 编译成 SPIR-V）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong>:</p>
+<p><code>c
+cl_program program = clCreateProgramWithIL(context, il_binary, il_size, &amp;err);</code></p>
+<p>这个用例假设我们有一个中间语言（IL），例如 SPIR-V 二进制数据。以下代码展示如何从 IL 创建 OpenCL 程序。</p>
+<pre><code class="language-c">#include &lt;CL/cl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    // 假设 context 和 device 已经创建
+    cl_context context = ...;
+    cl_device_id device = ...;
+    cl_int err;
+
+    // SPIR-V 二进制数据 (这只是示例，需替换为实际的 SPIR-V 数据)
+    const unsigned char spirv_binary[] = {
+        0x03, 0x02, 0x23, 0x07, // SPIR-V header (示例数据)
+        /* 后续为实际的 SPIR-V 数据 */
+    };
+    size_t spirv_size = sizeof(spirv_binary);
+
+    // 创建程序对象
+    cl_program program = clCreateProgramWithIL(context, spirv_binary, spirv_size, &amp;err);
+    if (err != CL_SUCCESS) {
+        printf(&quot;Failed to create program with IL: %d\n&quot;, err);
+        return -1;
+    }
+
+    // 构建程序
+    err = clBuildProgram(program, 1, &amp;device, NULL, NULL, NULL);
+    if (err != CL_SUCCESS) {
+        printf(&quot;Failed to build program: %d\n&quot;, err);
+        return -1;
+    }
+
+    printf(&quot;Program created and built successfully with IL!\n&quot;);
+
+    // 清理
+    clReleaseProgram(program);
+    clReleaseContext(context);
+
+    return 0;
+}
+</code></pre>
+<hr />
+<h3 id="2-clcreateprogramwithsource">2. <strong><code>clCreateProgramWithSource</code></strong></h3>
+<pre><code class="language-c++">cl_program clCreateProgramWithSource(
+    cl_context context,
+    cl_uint count,
+    const char **strings,
+    const size_t *lengths,
+    cl_int *errcode_ret
+);
+</code></pre>
+<h4 id="_3">参数说明</h4>
+<ul>
+<li><code>context</code>：一个有效的 OpenCL 上下文，指定了程序将在哪个环境中执行。</li>
+<li><code>count</code>：<code>strings</code> 数组中的字符串数量。</li>
+<li><code>strings</code>：指向包含 OpenCL 程序源代码的字符串数组的指针。</li>
+<li><code>lengths</code>：指向一个数组的指针，该数组包含 <code>strings</code> 数组中每个字符串的长度。如果传入 <code>NULL</code>，则函数会自动计算字符串的长度。</li>
+<li><code>errcode_ret</code>：指向一个整数的指针，用于返回函数执行的错误码。如果不需要错误码，可以传入 <code>NULL</code>。</li>
+</ul>
+<h4 id="_4">返回值</h4>
+<p>如果函数执行成功，返回一个新创建的 <code>cl_program</code> 对象；如果失败，返回 <code>NULL</code>。</p>
+<ul>
+<li><strong>作用</strong>: 从源代码字符串创建程序对象。</li>
+<li><strong>输入</strong>: 接收以字符串形式表示的 OpenCL C 内核源代码。</li>
+<li><strong>特点</strong>:<ul>
+<li>这是最常见的创建程序的方法，尤其是在开发和调试阶段。</li>
+<li>源代码会在运行时由 OpenCL 平台的编译器编译成设备可执行的二进制代码。</li>
+<li>编译过程可能会因目标设备的不同而有所不同。</li>
+</ul>
+</li>
+<li><strong>典型场景</strong>:<ul>
+<li>开发阶段，直接加载内核的源代码。</li>
+<li>动态生成内核代码。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong>:</p>
+<p><code>c
+const char* source = "__kernel void my_kernel(...) { ... }";
+cl_program program = clCreateProgramWithSource(context, 1, &amp;source, NULL, &amp;err);</code></p>
+<p>这是最常见的用法，直接从 OpenCL 内核的源代码字符串创建程序对象。</p>
+<pre><code class="language-c">#include &lt;CL/cl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    // 假设 context 和 device 已经创建
+    cl_context context = ...;
+    cl_device_id device = ...;
+    cl_int err;
+
+    // OpenCL 内核源代码
+    const char* source = 
+        &quot;__kernel void vector_add(__global const float* a, __global const float* b, __global float* c) {&quot;
+        &quot;   int id = get_global_id(0);&quot;
+        &quot;   c[id] = a[id] + b[id];&quot;
+        &quot;}&quot;;
+
+    // 创建程序对象
+    cl_program program = clCreateProgramWithSource(context, 1, &amp;source, NULL, &amp;err);
+    if (err != CL_SUCCESS) {
+        printf(&quot;Failed to create program with source: %d\n&quot;, err);
+        return -1;
+    }
+
+    // 构建程序
+    err = clBuildProgram(program, 1, &amp;device, NULL, NULL, NULL);
+    if (err != CL_SUCCESS) {
+        printf(&quot;Failed to build program: %d\n&quot;, err);
+
+        // 输出构建日志
+        char buffer[2048];
+        clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, NULL);
+        printf(&quot;Build log:\n%s\n&quot;, buffer);
+        return -1;
+    }
+
+    printf(&quot;Program created and built successfully with source!\n&quot;);
+
+    // 清理
+    clReleaseProgram(program);
+    clReleaseContext(context);
+
+    return 0;
+}
+</code></pre>
+<hr />
+<h3 id="3-clcreateprogramwithbinary">3. <strong><code>clCreateProgramWithBinary</code></strong></h3>
+<pre><code class="language-c++">cl_program clCreateProgramWithBinary(
+    cl_context context,
+    cl_uint num_devices,
+    const cl_device_id *device_list,
+    const size_t *lengths,
+    const unsigned char **binaries,
+    cl_int *binary_status,
+    cl_int *errcode_ret
+);
+</code></pre>
+<h4 id="_5">参数说明</h4>
+<ul>
+<li><code>context</code>：一个有效的 OpenCL 上下文，指定了程序将在哪个环境中执行。</li>
+<li><code>num_devices</code>：<code>device_list</code> 数组中的设备数量。</li>
+<li><code>device_list</code>：指向包含设备 ID 的数组的指针，这些设备将使用该二进制程序。</li>
+<li><code>lengths</code>：指向一个数组的指针，该数组包含 <code>binaries</code> 数组中每个二进制代码的长度。</li>
+<li><code>binaries</code>：指向包含预编译二进制代码的数组的指针。</li>
+<li><code>binary_status</code>：指向一个整数数组的指针，用于返回每个设备的二进制代码加载状态。如果不需要状态信息，可以传入 <code>NULL</code>。</li>
+<li><code>errcode_ret</code>：指向一个整数的指针，用于返回函数执行的错误码。如果不需要错误码，可以传入 <code>NULL</code>。</li>
+</ul>
+<h4 id="_6">返回值</h4>
+<p>如果函数执行成功，返回一个新创建的 <code>cl_program</code> 对象；如果失败，返回 <code>NULL</code>。</p>
+<ul>
+<li><strong>作用</strong>: 从已编译的二进制文件（设备特定的二进制）创建程序对象。</li>
+<li><strong>输入</strong>: 接收程序的设备特定二进制文件。</li>
+<li><strong>特点</strong>:<ul>
+<li>二进制文件是在某设备上提前编译的（通过 <code>clGetProgramInfo</code> 获取或离线工具生成）。</li>
+<li>适用于运行时加载预编译的程序，避免运行时编译，从而减少启动时间。</li>
+<li>设备二进制文件是特定于设备的，不能跨平台使用。</li>
+</ul>
+</li>
+<li><strong>典型场景</strong>:<ul>
+<li>部署阶段，直接加载之前已编译的二进制文件。</li>
+<li>在运行时减少编译时间。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong>:</p>
+<p><code>c
+size_t binary_size = ...;
+unsigned char* binary = ...;
+cl_program program = clCreateProgramWithBinary(context, 1, &amp;device, &amp;binary_size, (const unsigned char**)&amp;binary, NULL, &amp;err);</code></p>
+<p>这个用例展示如何从设备特定的二进制文件创建程序对象。二进制文件通常通过离线编译工具生成，或者通过 <code>clGetProgramInfo</code> 从已有的程序提取。</p>
+<pre><code class="language-c">#include &lt;CL/cl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    // 假设 context 和 device 已经创建
+    cl_context context = ...;
+    cl_device_id device = ...;
+    cl_int err;
+
+    // 从文件读取二进制数据
+    FILE* file = fopen(&quot;kernel.bin&quot;, &quot;rb&quot;);
+    if (!file) {
+        printf(&quot;Failed to open binary file.\n&quot;);
+        return -1;
+    }
+
+    fseek(file, 0, SEEK_END);
+    size_t binary_size = ftell(file);
+    rewind(file);
+
+    unsigned char* binary = (unsigned char*)malloc(binary_size);
+    fread(binary, 1, binary_size, file);
+    fclose(file);
+
+    // 创建程序对象
+    cl_program program = clCreateProgramWithBinary(context, 1, &amp;device, &amp;binary_size, 
+                                                   (const unsigned char**)&amp;binary, NULL, &amp;err);
+    free(binary);
+
+    if (err != CL_SUCCESS) {
+        printf(&quot;Failed to create program with binary: %d\n&quot;, err);
+        return -1;
+    }
+
+    // 构建程序
+    err = clBuildProgram(program, 1, &amp;device, NULL, NULL, NULL);
+    if (err != CL_SUCCESS) {
+        printf(&quot;Failed to build program: %d\n&quot;, err);
+
+        // 输出构建日志
+        char buffer[2048];
+        clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, NULL);
+        printf(&quot;Build log:\n%s\n&quot;, buffer);
+        return -1;
+    }
+
+    printf(&quot;Program created and built successfully with binary!\n&quot;);
+
+    // 清理
+    clReleaseProgram(program);
+    clReleaseContext(context);
+
+    return 0;
+}
+</code></pre>
+<hr />
+<h3 id="_7"><strong>总结对比</strong></h3>
+<ol>
+<li><strong><code>clCreateProgramWithIL</code> 示例</strong>:</li>
+<li>假设使用 SPIR-V 数据作为输入。</li>
+<li>
+<p>必须确保设备支持中间语言（如 SPIR-V），通常需要 OpenCL 2.1 或更高版本。</p>
+</li>
+<li>
+<p><strong><code>clCreateProgramWithSource</code> 示例</strong>:</p>
+</li>
+<li>最常见的用法，从源码字符串直接创建和编译。</li>
+<li>
+<p>适合开发阶段和动态代码生成。</p>
+</li>
+<li>
+<p><strong><code>clCreateProgramWithBinary</code> 示例</strong>:</p>
+</li>
+<li>需要准备设备特定的二进制文件，文件可以通过离线工具生成或通过 <code>clGetProgramInfo</code> 提取。</li>
+<li>适合部署阶段，避免运行时编译。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>输入类型</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>clCreateProgramWithIL</code></td>
+<td>中间语言（如 SPIR-V）</td>
+<td>可移植性和优化性强，支持现代 OpenCL 特性</td>
+<td>需要支持 IL 的设备和工具链</td>
+<td>高级优化、跨平台开发</td>
+</tr>
+<tr>
+<td><code>clCreateProgramWithSource</code></td>
+<td>源代码字符串</td>
+<td>开发和调试方便，动态生成代码灵活</td>
+<td>运行时编译耗时，性能模型依赖设备</td>
+<td>开发和调试，动态代码生成</td>
+</tr>
+<tr>
+<td><code>clCreateProgramWithBinary</code></td>
+<td>设备特定二进制</td>
+<td>启动快，无需运行时编译</td>
+<td>设备依赖性强，无法跨平台</td>
+<td>部署阶段，固定设备的应用场景</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_8"><strong>实际开发中的使用建议</strong></h3>
+<ol>
+<li><strong>开发阶段</strong>：</li>
+<li>
+<p>使用 <code>clCreateProgramWithSource</code>，直接加载源代码调试。</p>
+</li>
+<li>
+<p><strong>优化和跨平台部署</strong>：</p>
+</li>
+<li>
+<p>使用 <code>clCreateProgramWithIL</code>，生成中间语言以提高移植性和效率。</p>
+</li>
+<li>
+<p><strong>固定设备的高效部署</strong>：</p>
+</li>
+<li>使用 <code>clCreateProgramWithBinary</code>，提前编译好设备二进制文件，减少运行时开销。</li>
+</ol>
+<p>通过合理选择这些方法，可以在开发效率、跨平台兼容性和运行性能之间找到平衡。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

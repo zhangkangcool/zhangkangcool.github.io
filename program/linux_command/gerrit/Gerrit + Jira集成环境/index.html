@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>一、目标 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../compress/tar_more/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Gerrit%20%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E5%AE%A1%E6%A0%B8%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97v0.1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">一、目标</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">二、实施步骤记录</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#21-its-jirajar" class="nav-link">2.1 拷贝 its-jira.jar 插件</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#22-jira" class="nav-link">2.2 配置 JIRA 连接</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#23-gerritconfig" class="nav-link">2.3 修改 gerrit.config</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#24-actionsconfig" class="nav-link">2.4 配置 actions.config</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#25-projectconfig-its-jira" class="nav-link">2.5 配置 project.config使能 its-jira</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerritjira" class="nav-link">三、 Gerrit+jira 联动使用说明</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#31-gerrit-jira" class="nav-link">3.1 Gerrit 链接Jira</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#32-jiragerrit-pushmerged" class="nav-link">3.2 Jira中可看到Gerrit push/merged等信息</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_3" class="nav-link">四、常见问题</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_4" class="nav-link">五、参考链接</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">一、目标</h1>
+<p><strong>1）自动化工作流优化</strong></p>
+<ul>
+<li>在 Gerrit 代码评审过程中，自动与 Jira 任务进行关联，提高代码变更的可追溯性。</li>
+<li>代码提交时自动更新 Jira 任务状态，减少手动操作，提高工作效率。</li>
+</ul>
+<p><strong>2）提高代码审核和任务管理的协同效率</strong></p>
+<ul>
+<li>在 Gerrit Web 界面上显示 Jira 任务链接，使审核人员快速了解相关需求背景。</li>
+<li>在 Jira 任务中自动添加 Gerrit 变更的评论，确保所有相关信息集中管理。</li>
+</ul>
+<p><strong>3）增强代码变更的可追溯性和合规性</strong></p>
+<ul>
+<li>确保所有代码提交都能关联到特定的 Jira 任务，便于后续问题排查和审计。</li>
+<li>遵循开发流程要求，确保开发、审核、测试等环节无缝衔接。</li>
+</ul>
+<p><strong>4）自动化规则触发</strong></p>
+<ul>
+<li>当 Gerrit 代码变更发生特定事件（如 <code>Change Merged</code>、<code>Change Abandoned</code>）时，自动触发相应的 Jira 更新操作（如添加评论、变更任务状态）。</li>
+<li>允许自定义规则，灵活适配不同团队的开发流程。</li>
+</ul>
+<h1 id="_2">二、实施步骤记录</h1>
+<h2 id="21-its-jirajar">2.1 <strong>拷贝</strong> <strong><code>its-jira.jar</code></strong> <strong>插件</strong></h2>
+<p><strong>将插件添加到 Gerrit 的容器</strong></p>
+<pre><code class="language-SQL">#1. 找到运行 Gerrit 的 Docker 容器：
+docker ps | grep gerrit   #记下容器 ID 或名称。
+
+#2. 将插件文件复制到容器的 plugins/ 目录中：
+docker cp &lt;path-to-plugin&gt;.jar &lt;container-id&gt;:/var/gerrit/plugins/
+
+#3. 为了加载新插件，必须重启 Gerrit 容器
+docker restart &lt;container-id&gt;
+</code></pre>
+<h2 id="22-jira"><strong>2.2 配置 JIRA 连接</strong></h2>
+<p>在部署gerrit服务器中， 找到/opt/env_devops/gerrit/docker/gerrit/etc 目录下的<code>gerrit.config</code>, </p>
+<p>在 <code>gerrit.config</code> 中添加：</p>
+<pre><code class="language-bash">[its-jira]
+  enabled = true
+  url = http://172.18.1.251:50050
+  username = gerrit
+  password = 123456
+
+说明：
+url：替换为你的 JIRA 服务器地址，例如 http://jira.mycompany.com
+username 和 password：建议使用 API Token 而不是明文密码
+如果你的 JIRA 服务器使用 JIRA Cloud，你需要在 JIRA API Tokens 生成一个 API Token
+然后用：
+username = admin@example.com
+password = your-api-token
+</code></pre>
+<h2 id="23-gerritconfig">2.3 <strong>修改</strong> <strong><code>gerrit.config</code></strong></h2>
+<p>在 /opt/env_devops/gerrit/docker/gerrit/etc 目录下的<code>gerrit.config</code>中修改 <code>commitlink</code> 规则如下：</p>
+<pre><code class="language-bash">[commentlink &quot;its-jira&quot;]
+  match = ([A-Z0-9]+-[0-9]+)
+  link = http://172.18.1.251:50050/browse/$1
+
+  ### jira 问题对应链接 
+  # http://172.18.1.251:50050/browse/GER-1
+  # http://172.18.1.251:50050/browse/GPUEXC-7
+</code></pre>
+<h2 id="24-actionsconfig"><strong>2.4 配置</strong> <strong><code>actions.config</code></strong></h2>
+<p><strong>规则优先级</strong>：项目专属规则优先于通用规则。如果某个项目定义了自己的规则，则通用规则不适用于该项目。</p>
+<p>例如：</p>
+<ul>
+<li><strong>全局通用规则</strong> 应定义在 <code>gerrit_site/etc/its/actions.config</code> 文件中，以适用于所有启用 ITS 的项目。</li>
+<li><strong>全局插件专属规则</strong> 应定义在 <code>gerrit_site/etc/its/actions-its-jira.config</code> 文件中，以适用于所有启用了 <code>its-jira</code> 集成的项目。</li>
+<li><strong>项目专属规则</strong>（如 <code>P</code> 项目）存储在 <code>refs/meta/config</code> 分支的 <code>actions.config</code> 文件中，以适用于该项目的所有 ITS 集成。</li>
+<li><strong>项目插件专属规则</strong>（如 <code>P</code> 项目）存储在 <code>refs/meta/config</code> 分支的 <code>actions-its-jira.config</code> 文件中，仅适用于该项目的 <code>its-jira</code> 集成。</li>
+</ul>
+<pre><code class="language-java"># 通用 actions.config 配置，适用于 its-jira 插件
+[rule &quot;patchset-created&quot;]
+    event-type = patchset-created
+    action = add-standard-comment
+
+[rule &quot;change-merged&quot;]
+    event-type = change-merged
+    action = add-standard-comment
+    #action = transition Resolved  # 在 Jira 中将关联 issue 置为 &quot;Resolved&quot;
+
+[rule &quot;change-abandoned&quot;]
+    event-type = change-abandoned
+    action = add-standard-comment
+    #action = transition Rejected  # 在 Jira 中将 issue 状态更改为 &quot;Rejected&quot;
+
+[rule &quot;change-restored&quot;]
+    event-type = change-restored
+    action = add-standard-comment
+    #action = transition In Progress  # 变更恢复时，将 Jira issue 置为 &quot;In Progress&quot;
+
+
+####暂时没有添加
+[rule &quot;negative-code-review&quot;]
+    event-type = comment-added
+    approvalCodeReview = -2,-1
+    action = add-comment A negative code review has been added in Gerrit.
+
+[rule &quot;positive-code-review&quot;]
+    event-type = comment-added
+    approvalCodeReview = +2
+    action = add-comment The change received a +2 Code-Review in Gerrit.
+
+[rule &quot;work-in-progress&quot;]
+    event-type = work-in-progress-state-changed
+    action = add-comment The Gerrit change was marked as Work In Progress.
+    action = transition In Progress  # 在 Jira 中同步变更状态
+
+[rule &quot;private-state-changed&quot;]
+    event-type = private-state-changed
+    action = add-comment The Gerrit change visibility was modified.
+
+[rule &quot;ref-updated&quot;]
+    event-type = ref-updated
+    action = add-comment A reference update occurred in Gerrit.
+
+[rule &quot;comment-added&quot;]
+    event-type = comment-added
+    action = add-comment A new comment was added in Gerrit.
+
+
+
+说明：
+event-type = change-merged: 当变更被合并时，添加标准评论，并在 Jira 中将 issue 置为 Resolved。
+event-type = change-abandoned: 变更被放弃时，添加评论，并在 Jira 中将 issue 状态改为 Rejected。
+event-type = change-restored: 变更恢复时，添加评论，并将 Jira issue 置为 In Progress。
+event-type = comment-added: 当评论被添加时：
+如果 Code-Review 评分为 -2 或 -1，则添加一条负面评审的评论。
+如果 Code-Review 评分为 +2，则添加一条正面评审的评论。
+event-type = patchset-created: 当新的 patchset 被上传时，添加评论。
+event-type = work-in-progress-state-changed: 当 Gerrit 变更被标记为 Work In Progress 时，在 Jira 同步状态。
+event-type = private-state-changed: 当 Gerrit 变更的可见性发生变化时，记录评论。
+event-type = ref-updated: 记录 Gerrit 代码库的 ref 变更。
+event-type = comment-added: 任何评论的新增都会触发 Jira 记录。
+你可以根据你的具体需求调整 transition 的状态名，例如 Resolved、Rejected、In Progress，以匹配 Jira 的工作流配置。
+</code></pre>
+<h2 id="25-projectconfig-its-jira"><strong>2.5 配置</strong> <strong><code>project.config</code></strong><strong>使能 its-jira</strong></h2>
+<p>使能its-jira: To enable the Jira integration for a project the project must have the following entry in its <code>project.config</code> file:</p>
+<pre><code class="language-Plain">[plugin &quot;its-jira&quot;]
+    enabled = true
+</code></pre>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114155.assets" /></p>
+<p>具体修改操作流程：</p>
+<pre><code class="language-Plain">git clone &quot;ssh://root@172.18.1.251:29418/All-Projects&quot; &amp;&amp; (cd &quot;All-Projects&quot; &amp;&amp; mkdir -p `git rev-parse --git-dir`/hooks/ &amp;&amp; curl -Lo `git rev-parse --git-dir`/hooks/commit-msg http://172.18.1.251:50071/tools/hooks/commit-msg &amp;&amp; chmod +x `git rev-parse --git-dir`/hooks/commit-msg)
+cd All-Projects
+git fetch origin refs/meta/config:refs/remotes/origin/meta/config
+git checkout meta/config
+
+# 修改project.config
+增加如下字符：
+[plugin &quot;its-jira&quot;]
+    enabled = true
+
+
+ # 保持 提交
+git add .
+git commit -m &quot;Add its-jira&quot;
+git push origin HEAD:refs/meta/config
+</code></pre>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114149.assets" /></p>
+<h1 id="gerritjira">三、 Gerrit+jira 联动使用说明</h1>
+<h2 id="31-gerrit-jira">3.1  Gerrit 链接Jira</h2>
+<p>在提交的commit message 中包含对应的Jira-ID:</p>
+<p>\1) Jira-ID可以从jira 页面中找到</p>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114150.assets" /></p>
+<p>\2) 提交的commit message包含Jira-ID</p>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114151.assets" /></p>
+<p>3）提交到gerrit 中进行审核，可以在gerrit 页面看到对应Jira-ID问题链接</p>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114152.assets" /></p>
+<h2 id="32-jiragerrit-pushmerged">3.2  Jira中可看到Gerrit push/merged等信息</h2>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114153.assets" /></p>
+<h1 id="_3">四、常见问题</h1>
+<p>1）gerrit error_log中提示没有its-jira 配置或者配置不对</p>
+<p>/var/log/gerrit/error_log</p>
+<p><img alt="img" src="../Gerrit%20%2B%20Jira%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83.assets/-1745980626114154.assets" /></p>
+<p>原因：<strong><code>gerrit.config</code></strong><strong>中没有成功配置its-jira 连接配置</strong></p>
+<pre><code class="language-java">[its-jira]
+  enabled = true
+  url = http://172.18.1.251:50050
+  username = gerrit
+  password = 123456
+
+[commentlink &quot;its-jira&quot;]
+  match = ([A-Z0-9]+-[0-9]+)
+  link = http://172.18.1.251:50050/browse/$1
+</code></pre>
+<p>2）一定要配置<strong><code>project.config</code></strong>使能 its-jira</p>
+<p>要配置<strong><code>project.config</code></strong>使能 its-jira，增加如下配置， 否则<code>actions.config</code>不生效， 无法在jira中添加comment.</p>
+<h1 id="_4">五、参考链接</h1>
+<p>https://www.jianshu.com/p/860eb0502bfc</p>
+<p>https://help.gitkraken.com/git-integration-for-jira-cloud/gerrit-gij-cloud/</p>
+<p>https://github.com/GerritCodeReview/plugins_its-jira</p>
+<p>https://gerrit.googlesource.com/plugins/its-jira/</p>
+<p>https://blog.csdn.net/scm002/article/details/84830945</p>
+<p>官方gerrit:</p>
+<p>https://gerrit-review.googlesource.com/admin/repos</p>
+<p>官方插件仓库</p>
+<p>https://www.gerritcodereview.com/plugins.html</p>
+<p>插件下载：</p>
+<p>https://blog.csdn.net/qq_15371293/article/details/128844347</p>
+<p>官方编译下载</p>
+<p>https://gerrit-ci.gerritforge.com/job/plugin-its-jira-bazel-master-stable-3.10/1/console</p>
+<p>官方配置流：</p>
+<p>https://community.cirata.com/s/article/Guide-to-ITS-Jira-plugin-with-Gerrit</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

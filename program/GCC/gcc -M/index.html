@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>参数详解 - My Docs</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../build/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../lto/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">参数详解</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">例子</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">参数详解</h1>
+<p>可用来查看，所使用的头文件，以及各种文件间的依赖关系。</p>
+<ul>
+<li>
+<p>-M
+  不是输出预编译过程的结果，而是输出一个用于make的规则，该规则描述了这个源文件的依赖关系。预编译器输出的这个make规则包含名字与原文件相同的目标文件，冒号和所有include文件的名字。只输出信息，不会进行编译。</p>
+</li>
+<li>
+<p>-MM
+  与-M相似，只是不包含系统头文件</p>
+</li>
+<li>
+<p>-MF file
+  将依赖关系写到文件file中</p>
+</li>
+<li>
+<p>-MT target / -MQ target
+  重新定义目标对象名</p>
+</li>
+<li>
+<p>-MD
+  等同于-M -MF file</p>
+</li>
+</ul>
+<h1 id="_2">例子</h1>
+<pre><code class="language-c">/* main.c */
+#include &lt;stdio.h&gt;
+#include &quot;main.h&quot;
+
+void main(void)
+{
+    printf(&quot;%s\n&quot;, PRINT_STR);
+}
+</code></pre>
+<pre><code class="language-c">/* main.h */
+#define PRINT_STR &quot;Hello World&quot;
+</code></pre>
+<ul>
+<li>-M 参数实例 - 完整的头文件依赖关系</li>
+</ul>
+<pre><code class="language-shell">$ gcc -M main.c 
+main.o: main.c /usr/include/stdc-predef.h /usr/include/stdio.h \ 
+/usr/include/features.h /usr/include/i386-linux-gnu/sys/cdefs.h \ 
+/usr/include/i386-linux-gnu/bits/wordsize.h \ 
+/usr/include/i386-linux-gnu/gnu/stubs.h \ 
+/usr/include/i386-linux-gnu/gnu/stubs-32.h \ 
+/usr/lib/gcc/i686-linux-gnu/4.8/include/stddef.h \ 
+/usr/include/i386-linux-gnu/bits/types.h \ 
+/usr/include/i386-linux-gnu/bits/typesizes.h /usr/include/libio.h \ 
+/usr/include/_G_config.h /usr/include/wchar.h \ 
+/usr/lib/gcc/i686-linux-gnu/4.8/include/stdarg.h \ 
+/usr/include/i386-linux-gnu/bits/stdio_lim.h \ 
+/usr/include/i386-linux-gnu/bits/sys_errlist.h main.h
+</code></pre>
+<ul>
+<li>-MM 参数实例 - 不包含系统头文件的依赖关系</li>
+</ul>
+<pre><code class="language-shell">$ gcc -MM main.c
+main.o: main.c main.h
+</code></pre>
+<ul>
+<li>-MF 参数实例 - 依赖关系被写入main.d中</li>
+</ul>
+<pre><code class="language-shell">$ gcc -MM main.c -MF main.d
+$ cat main.d
+main.o: main.c main.h
+</code></pre>
+<ul>
+<li>-MT 参数实例 - 目标对象由main.o变为了hello.o</li>
+</ul>
+<pre><code class="language-shell">$ gcc -MM main.c -MT hello.o
+hello.o: main.c main.h
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

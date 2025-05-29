@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>一、 总体设计流程 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../gerrit%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E8%AF%B4%E6%98%8E/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../git/cherry-pick/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">一、 总体设计流程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">二、 代码提交操作</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerrit-jenkins" class="nav-link">三、 Gerrit 触发 jenkins 自动构建</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#jenkins-job-gerrit" class="nav-link">四、 jenkins job 反馈到gerrit</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerrit" class="nav-link">五、 Gerrit 触发静态代码检查工具</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerrit_1" class="nav-link">六、 Gerrit 进行人工审核</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gerrit-merge-gitlab" class="nav-link">七、 Gerrit merge 代码同步到gitlab</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_3" class="nav-link">八、待讨论问题</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_4" class="nav-link">九、参考文档</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="_1">一、 总体设计流程</h1>
+<h1 id="_2">二、 代码提交操作</h1>
+<p>在gitlab上创建的项目设置成Private，普通用户对这个项目就只有pull权限，不能直接进行push。</p>
+<p>开发人员通过git pull gitlab 仓库代码修改，修改完成后必须先push到Gerrit远程仓库的refs/for/*分支上，等待审核。</p>
+<pre><code class="language-Bash">### 代码开发提交实例
+
+# 1. 克隆 GitLab 仓库
+
+git clone https://gitlab.com/your_project/repo.git
+
+# 2. 添加 Gerrit 作为远程仓库
+cd repo  #进入项目目录
+git remote add gerrit https://gerrit.yourcompany.com/your_project/repo.git
+git remote -v # git remote -v 命令可以检查是否添加成功
+
+# 3. 提交代码到 Gerrit 进行评审
+# 完成开发后，可以将本地的修改推送到 Gerrit 进行代码评审。Gerrit 通常会使用 refs/for/ 前缀将修改提交到特定分支进行审核，而不是直接合并。
+#假设要提交到 master 分支，可以这样操作：
+git push gerrit HEAD:refs/for/master #这条命令会将当前分支的更改推送到 Gerrit 的 refs/for/master，然后触发代码评审流程。
+</code></pre>
+<h1 id="gerrit-jenkins">三、 Gerrit 触发 jenkins 自动构建</h1>
+<p>需要Gerrit + jenkins 集成，使用如下插件：</p>
+<h3 id="31-gerrit-trigger-plugin">3.1. <strong>Gerrit Trigger Plugin</strong></h3>
+<p>Gerrit Trigger Plugin 是 Gerrit 和 Jenkins 集成的核心插件，主要用于在 Gerrit 中发生某些事件时触发 Jenkins 构建任务。</p>
+<ul>
+<li>功能：</li>
+<li>监听 Gerrit 的事件，如代码提交、变更更新、代码评审状态等。</li>
+<li>根据特定的 Gerrit 项目和分支自动触发 Jenkins 构建任务。</li>
+<li>支持多种触发条件，如提交到特定分支、代码提交人、提交内容等。</li>
+</ul>
+<h3 id="32-git-plugin">3.2. <strong>Git Plugin</strong></h3>
+<p>Git Plugin 是 Jenkins 中的核心插件，用于在构建任务中从 Git 仓库（如 Gerrit 或 GitLab）中拉取代码。</p>
+<h3 id="33-gerrit-code-review-plugin">3.3. <strong>Gerrit Code Review Plugin</strong></h3>
+<p>Gerrit Code Review Plugin 允许 Jenkins 直接与 Gerrit 进行交互，如将 Jenkins 构建的结果反馈到 Gerrit 的代码评审系统中。</p>
+<ul>
+<li>功能：</li>
+<li>构建完成后，Jenkins 可以将测试结果自动提交到 Gerrit，更新评审的状态（如验证通过/未通过）。</li>
+<li>Jenkins 可以自动在 Gerrit 中给代码变更打标签（如 "+1 Verified" 或 "-1 Verified"）。</li>
+</ul>
+<h1 id="jenkins-job-gerrit">四、 jenkins job 反馈到gerrit</h1>
+<p>Jenkins执行构建并反馈结果：</p>
+<ul>
+<li>Jenkins 执行构建任务（如编译、单元测试等）。</li>
+<li>构建完成后，Jenkins 使用 Gerrit Trigger Plugin、Gerrit Code Review Plugin 将构建结果（如 "+1 Verified" 或 "-1 Verified"）反馈到 Gerrit 的代码评审中。</li>
+</ul>
+<h1 id="gerrit">五、 Gerrit 触发静态代码检查工具</h1>
+<h1 id="gerrit_1">六、 Gerrit 进行人工审核</h1>
+<p>当jenkin 自动构建成功后，将由人工进行审核，审核通过后，将投票进行merge。</p>
+<h1 id="gerrit-merge-gitlab">七、 Gerrit merge 代码同步到gitlab</h1>
+<p>需要使用<strong>Gerrit replication plugin插件：</strong></p>
+<p>插件功能：</p>
+<ul>
+<li>在 Gerrit 中的代码变更（如合并）后，自动将变更推送到 GitLab。</li>
+<li>支持通过 SSH 或 HTTP 将代码推送到 GitLab 远程仓库。</li>
+<li>可以配置多个远程 Git 仓库同步，适用于需要同步到多个目标仓库的场景。</li>
+</ul>
+<pre><code class="language-Bash">#  Step1: SSH 配置 Gerrit 和 gitlab 互信：
+# 确保 Gerrit 服务器有正确的 SSH 凭据，用于访问 GitLab 仓库。
+# 将 Gerrit 的 SSH 公钥添加到 GitLab 项目的 Deploy Keys，以便 Gerrit 可以通过 SSH 推送代码到 GitLab。
+
+
+# step2: 配置 replication.config 文件：
+# 在 Gerrit 的配置目录下（通常位于 $GERRIT_SITE/etc/replication.config），配置同步到 GitLab 的目标仓库。
+# 示例 replication.config 配置文件内容：
+
+[remote &quot;gitlab&quot;]url = git@gitlab.com:your_group/your_repo.git  # GitLab 仓库的 SSH 地址
+  push = +refs/heads/*:refs/heads/*  # 将 Gerrit 中的所有分支推送到 GitLab。
+  push = +refs/tags/*:refs/tags/*
+  mirror = true   # 将所有本地的推送反映到 GitLab，确保代码完全同步。
+  timeout = 30
+  threads = 3
+  authGroup = Registered-Users #定义哪些用户的提交会触发同步
+
+# step3: 测试同步：
+# 完成配置后，当在 Gerrit 中合并代码时，replication 插件会自动触发，将代码同步推送到 GitLab。
+</code></pre>
+<h1 id="_3">八、待讨论问题</h1>
+<ul>
+<li>Gerrit 和 Gitlab 服务器同一网段</li>
+</ul>
+<p>部署服务器现在有125 和251 两个网段，需要解决跨网段访问？</p>
+<ul>
+<li>Gerrit 和Gitlab 是否部署在不同的实体机， 实现代码冗余备份？</li>
+<li>目前的方案很依赖于Gerrit</li>
+</ul>
+<h1 id="_4">九、参考文档</h1>
+<p>Gerrit+jenkins 集成: https://blog.csdn.net/qq_37733540/article/details/124059401</p>
+<p>​                             https://www.cnblogs.com/kevingrace/p/5651447.html</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>PPCGenRegisterInfo.inc - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../CallingConv/CallingConv%20def%20%26%20use/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Register%20def/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#ppcgenregisterinfoinc" class="nav-link">PPCGenRegisterInfo.inc</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#ppcregisterinfotdppc" class="nav-link">PPCRegisterInfo.td(可以看到PPC所有支持的寄存器)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="ppcgenregisterinfoinc">PPCGenRegisterInfo.inc</h1>
+<p>可在对应的inc文件中看到详细的寄存器定义</p>
+<p>/home/shkzhang/llvm/build/lib/Target/PowerPC/PPCGenRegisterInfo.inc</p>
+<pre><code class="language-asm">1333 namespace {     // Register classes...
+1334   // VSSRC Register Class...
+1335   const MCPhysReg VSSRC[] = {
+1336     PPC::F0, PPC::F1, PPC::F2, PPC::F3, PPC::F4, PPC::F5, PPC::F6, PPC::F7, PPC::F8, PPC::F9, PPC::F10, PPC::F11,      PPC::F12, PPC::F13, PPC::F31, PPC::F30, PPC::F29, PPC::F28, PPC::F27, PPC::F26, PPC::F25, PPC::F24, PPC::F23, PP     C::F22, PPC::F21, PPC::F20, PPC::F19, PPC::F18, PPC::F17, PPC::F16, PPC::F15, PPC::F14, PPC::VF2, PPC::VF3, PPC::     VF4, PPC::VF5, PPC::VF0, PPC::VF1, PPC::VF6, PPC::VF7, PPC::VF8, PPC::VF9, PPC::VF10, PPC::VF11, PPC::VF12, PPC::     VF13, PPC::VF14, PPC::VF15, PPC::VF16, PPC::VF17, PPC::VF18, PPC::VF19, PPC::VF31, PPC::VF30, PPC::VF29, PPC::VF2     8, PPC::VF27, PPC::VF26, PPC::VF25, PPC::VF24, PPC::VF23, PPC::VF22, PPC::VF21, PPC::VF20,
+1337   };
+1338
+1339   // VSSRC Bit set.
+1340   const uint8_t VSSRCBits[] = {
+1341     0x00, 0x00, 0xe0, 0xff, 0xff, 0xff, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0     x00, 0x00, 0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0x7f,
+1342   };
+1343
+1344   // GPRC Register Class...
+1345   const MCPhysReg GPRC[] = {
+1346     PPC::R2, PPC::R3, PPC::R4, PPC::R5, PPC::R6, PPC::R7, PPC::R8, PPC::R9, PPC::R10, PPC::R11, PPC::R12, PPC::R3     0, PPC::R29, PPC::R28, PPC::R27, PPC::R26, PPC::R25, PPC::R24, PPC::R23, PPC::R22, PPC::R21, PPC::R20, PPC::R19,      PPC::R18, PPC::R17, PPC::R16, PPC::R15, PPC::R14, PPC::R13, PPC::R31, PPC::R0, PPC::R1, PPC::FP, PPC::BP,
+1347   };
+1348
+1349   // GPRC Bit set.
+1350   const uint8_t GPRCBits[] = {
+1351     0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0x7f,
+1352   };
+1353
+1354   // GPRC_NOR0 Register Class...
+1355   const MCPhysReg GPRC_NOR0[] = {
+1356     PPC::R2, PPC::R3, PPC::R4, PPC::R5, PPC::R6, PPC::R7, PPC::R8, PPC::R9, PPC::R10, PPC::R11, PPC::R12, PPC::R3     0, PPC::R29, PPC::R28, PPC::R27, PPC::R26, PPC::R25, PPC::R24, PPC::R23, PPC::R22, PPC::R21, PPC::R20, PPC::R19,      PPC::R18, PPC::R17, PPC::R16, PPC::R15, PPC::R14, PPC::R13, PPC::R31, PPC::R1, PPC::FP, PPC::BP, PPC::ZERO,
+1357   };
+1358
+1359   // GPRC_NOR0 Bit set.
+1360   const uint8_t GPRC_NOR0Bits[] = {
+1361     0x12, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x7f,
+1362   };
+1363
+1364   // GPRC_and_GPRC_NOR0 Register Class...
+1365   const MCPhysReg GPRC_and_GPRC_NOR0[] = {
+1366     PPC::R2, PPC::R3, PPC::R4, PPC::R5, PPC::R6, PPC::R7, PPC::R8, PPC::R9, PPC::R10, PPC::R11, PPC::R12, PPC::R3     0, PPC::R29, PPC::R28, PPC::R27, PPC::R26, PPC::R25, PPC::R24, PPC::R23, PPC::R22, PPC::R21, PPC::R20, PPC::R19,      PPC::R18, PPC::R17, PPC::R16, PPC::R15, PPC::R14, PPC::R13, PPC::R31, PPC::R1, PPC::FP, PPC::BP,
+1367   };
+
+1374   // CRBITRC Register Class...
+1375   const MCPhysReg CRBITRC[] = {
+1376     PPC::CR2LT, PPC::CR2GT, PPC::CR2EQ, PPC::CR2UN, PPC::CR3LT, PPC::CR3GT, PPC::CR3EQ, PPC::CR3UN, PPC::CR4LT, P     PC::CR4GT, PPC::CR4EQ, PPC::CR4UN, PPC::CR5LT, PPC::CR5GT, PPC::CR5EQ, PPC::CR5UN, PPC::CR6LT, PPC::CR6GT, PPC::C     R6EQ, PPC::CR6UN, PPC::CR7LT, PPC::CR7GT, PPC::CR7EQ, PPC::CR7UN, PPC::CR1LT, PPC::CR1GT, PPC::CR1EQ, PPC::CR1UN,      PPC::CR0LT, PPC::CR0GT, PPC::CR0EQ, PPC::CR0UN,
+1377   };
+1378
+1379   // CRBITRC Bit set.
+1380   const uint8_t CRBITRCBits[] = {
+1381     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0     x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,      0x00, 0x00, 0xff, 0xff, 0xff, 0xff,
+1382   };
+1383
+1384   // F4RC Register Class...
+1385   const MCPhysReg F4RC[] = {
+1386     PPC::F0, PPC::F1, PPC::F2, PPC::F3, PPC::F4, PPC::F5, PPC::F6, PPC::F7, PPC::F8, PPC::F9, PPC::F10, PPC::F11,      PPC::F12, PPC::F13, PPC::F31, PPC::F30, PPC::F29, PPC::F28, PPC::F27, PPC::F26, PPC::F25, PPC::F24, PPC::F23, PP     C::F22, PPC::F21, PPC::F20, PPC::F19, PPC::F18, PPC::F17, PPC::F16, PPC::F15, PPC::F14,
+1387   };
+1388
+1389   // F4RC Bit set.
+1390   const uint8_t F4RCBits[] = {
+1391     0x00, 0x00, 0xe0, 0xff, 0xff, 0xff, 0x1f,
+1392   };
+1393
+1394   // CRRC Register Class...
+1395   const MCPhysReg CRRC[] = {
+1396     PPC::CR0, PPC::CR1, PPC::CR5, PPC::CR6, PPC::CR7, PPC::CR2, PPC::CR3, PPC::CR4,
+1397   };
+
+1445   const MCPhysReg VSFRC[] = {
+1446     PPC::F0, PPC::F1, PPC::F2, PPC::F3, PPC::F4, PPC::F5, PPC::F6, PPC::F7, PPC::F8, PPC::F9, PPC:     :F10, PPC::F11, PPC::F12, PPC::F13, PPC::F31, PPC::F30, PPC::F29, PPC::F28, PPC::F27, PPC::F26, PP     C::F25, PPC::F24, PPC::F23, PPC::F22, PPC::F21, PPC::F20, PPC::F19, PPC::F18, PPC::F17, PPC::F16,      PPC::F15, PPC::F14, PPC::VF2, PPC::VF3, PPC::VF4, PPC::VF5, PPC::VF0, PPC::VF1, PPC::VF6, PPC::VF7     , PPC::VF8, PPC::VF9, PPC::VF10, PPC::VF11, PPC::VF12, PPC::VF13, PPC::VF14, PPC::VF15, PPC::VF16,      PPC::VF17, PPC::VF18, PPC::VF19, PPC::VF31, PPC::VF30, PPC::VF29, PPC::VF28, PPC::VF27, PPC::VF26     , PPC::VF25, PPC::VF24, PPC::VF23, PPC::VF22, PPC::VF21, PPC::VF20,
+1447   };
+1448
+1449   // VSFRC Bit set.
+1450   const uint8_t VSFRCBits[] = {
+1451     0x00, 0x00, 0xe0, 0xff, 0xff, 0xff, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00     , 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0x7f,
+1452   };
+</code></pre>
+<hr />
+<h1 id="ppcregisterinfotdppc">PPCRegisterInfo.td(可以看到PPC所有支持的寄存器)</h1>
+<p><code>XER</code> <code>CARRY</code> <code>RM</code></p>
+<pre><code class="language-c++">235 def XER: SPR&lt;1, &quot;xer&quot;&gt;, DwarfRegNum&lt;[76]&gt;;
+236
+237 // Carry bit.  In the architecture this is really bit 0 of the XER register
+238 // (which really is SPR register 1);  this is the only bit interesting to a
+239 // compiler.
+240 def CARRY: SPR&lt;1, &quot;xer&quot;&gt;, DwarfRegNum&lt;[76]&gt; {
+241   let Aliases = [XER];
+242 }
+243
+244 // FP rounding mode:  bits 30 and 31 of the FP status and control register
+245 // This is not allocated as a normal register; it appears only in
+246 // Uses and Defs.  The ABI says it needs to be preserved by a function,
+247 // but this is not achieved by saving and restoring it as with
+248 // most registers, it has to be done in code; to make this work all the
+249 // return and call instructions are described as Uses of RM, so instructions
+250 // that do nothing but change RM will not get deleted.
+251 def RM: PPCReg&lt;&quot;**ROUNDING MODE**&quot;&gt;;
+</code></pre>
+<p>向量寄存器只支持128(个数 * 位数)位</p>
+<p>VSFRC包括F8RC和VFRC</p>
+<pre><code class="language-asm">// Allocate volatiles first, then non-volatiles in reverse order. With the SVR4
+// ABI the size of the Floating-point register save area is determined by the
+// allocated non-volatile register with the lowest register number, as FP
+// register N is spilled to offset 8 * (32 - N) below the back chain word of the
+// previous stack frame. By allocating non-volatiles in reverse order we make
+// sure that the Floating-point register save area is always as small as
+// possible because there aren't any unused spill slots.
+def F8RC : RegisterClass&lt;&quot;PPC&quot;, [f64], 64, (add (sequence &quot;F%u&quot;, 0, 13),
+                                                (sequence &quot;F%u&quot;, 31, 14))&gt;;
+def F4RC : RegisterClass&lt;&quot;PPC&quot;, [f32], 32, (add F8RC)&gt;;
+
+def VRRC : RegisterClass&lt;&quot;PPC&quot;,
+                         [v16i8,v8i16,v4i32,v2i64,v1i128,v4f32,v2f64, f128],
+                         128,
+                         (add V2, V3, V4, V5, V0, V1, V6, V7, V8, V9, V10, V11,
+                             V12, V13, V14, V15, V16, V17, V18, V19, V31, V30,
+                             V29, V28, V27, V26, V25, V24, V23, V22, V21, V20)&gt;;
+
+// VSX register classes (the allocation order mirrors that of the corresponding
+// subregister classes).
+def VSLRC : RegisterClass&lt;&quot;PPC&quot;, [v4i32,v4f32,v2f64,v2i64], 128,
+                          (add (sequence &quot;VSL%u&quot;, 0, 13),
+                               (sequence &quot;VSL%u&quot;, 31, 14))&gt;;
+def VSRC  : RegisterClass&lt;&quot;PPC&quot;, [v4i32,v4f32,v2f64,v2i64], 128,
+                          (add VSLRC, VRRC)&gt;;
+
+// Register classes for the 64-bit &quot;scalar&quot; VSX subregisters.
+def VFRC :  RegisterClass&lt;&quot;PPC&quot;, [f64], 64,
+                          (add VF2, VF3, VF4, VF5, VF0, VF1, VF6, VF7,
+                               VF8, VF9, VF10, VF11, VF12, VF13, VF14,
+                               VF15, VF16, VF17, VF18, VF19, VF31, VF30,
+                               VF29, VF28, VF27, VF26, VF25, VF24, VF23,
+                               VF22, VF21, VF20)&gt;;
+def VSFRC : RegisterClass&lt;&quot;PPC&quot;, [f64], 64, (add F8RC, VFRC)&gt;;
+
+// Allow spilling GPR's into caller-saved VSR's.
+def SPILLTOVSRRC : RegisterClass&lt;&quot;PPC&quot;, [i64, f64], 64, (add G8RC, (sub VSFRC,
+                (sequence &quot;VF%u&quot;, 31, 20),
+                (sequence &quot;F%u&quot;, 31, 14)))&gt;;
+
+// Register class for single precision scalars in VSX registers
+def VSSRC : RegisterClass&lt;&quot;PPC&quot;, [f32], 32, (add VSFRC)&gt;;
+
+
+</code></pre>
+<p>PPC不支持的类型如<code>v2i32</code>不会出现在td文件中。</p>
+<p>如果想处理的类型不是支持的最基本类型，必须将结果做Lowering（Type Legalize）</p>
+<p>不支持的类型，在指令选择时是无法使用的，这些类型不会出现在指令选择的td文件中。</p>
+<p>如： <code>setOperationAction(ISD::VECREDUCE_ADD, MVT::v2i32, Custom);</code></p>
+<p>void PPCTargetLowering::ReplaceNodeResults()</p>
+<p>setOperationAction(ISD::VECREDUCE_ADD, MVT::v2i32, Custom);</p>
+<hr />
+<h3 id="vrrc-vsrc-vsfrc"><code>VRRC</code>, <code>VSRC</code> &amp; <code>VSFRC</code>区别</h3>
+<p><code>./lib/Target/PowerPC/PPCRegisterInfo.td</code></p>
+<pre><code class="language-asm">// 只用于整数向量
+def VRRC : RegisterClass&lt;&quot;PPC&quot;,
+                         [v16i8,v8i16,v4i32,v2i64,v1i128,v4f32,v2f64, f128],
+                         128,
+                         (add V2, V3, V4, V5, V0, V1, V6, V7, V8, V9, V10, V11,
+                             V12, V13, V14, V15, V16, V17, V18, V19, V31, V30,
+                             V29, V28, V27, V26, V25, V24, V23, V22, V21, V20)&gt;;
+
+// 用于Int和Vevtor,
+def VSRC  : RegisterClass&lt;&quot;PPC&quot;, [v4i32,v4f32,v2f64,v2i64], 128,
+                          (add VSLRC, VRRC)&gt;;
+
+// 只用于FP向量
+// Register classes for the 64-bit &quot;scalar&quot; VSX subregisters.
+def VFRC :  RegisterClass&lt;&quot;PPC&quot;, [f64], 64,
+                          (add VF2, VF3, VF4, VF5, VF0, VF1, VF6, VF7,
+                               VF8, VF9, VF10, VF11, VF12, VF13, VF14,
+                               VF15, VF16, VF17, VF18, VF19, VF31, VF30,
+                               VF29, VF28, VF27, VF26, VF25, VF24, VF23,
+                               VF22, VF21, VF20)&gt;;
+
+// 用于Fp和Vevtor,
+def VSFRC : RegisterClass&lt;&quot;PPC&quot;, [f64], 64, (add F8RC, VFRC)&gt;;
+
+
+你说的是真的把类型转换成向量，而不是通过 
+
+直接insert，然后patter
+有新指令的话，pattern认insert
+insert-&gt;(pattern insert)
+
+</code></pre>
+<p>VSX 是新的</p>
+<p>AltiVector是老的</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

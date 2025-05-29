@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../../img/favicon.ico">
+        <title>2. 调试用选项 - My Docs</title>
+        <link href="../../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../13.%20%E5%8D%97%E6%B9%96case/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../3.%20LAX/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>下述选项会在当前目录产生<code>tmp/foo</code>文件夹，下面会有ll txt html dot等文件。</p>
+<p>以下设置不能有函数调用，否则报段错误</p>
+<pre><code class="language-shell">export XLA_FLAGS=&quot;--xla_hlo_profile&quot; 不要设置，否则可能会有段错误，该选项用于收集性能 
+
+
+产生PB中间文件中下面的选项
+xla_dump_hlo_as_proto
+
+# 将MLIR导出到ir文件夹，该文件夹需要事先建好，tmp文件夹不必提前建
+export JAX_DUMP_IR_TO=ir
+
+export TF_CPP_MIN_VLOG_LEVEL=1
+
+export TF_CPP_MIN_VLOG_LEVEL=0 
+
+export XLA_FLAGS=&quot;--xla_dump_to=tmp/foo --xla_dump_hlo_as_text --xla_dump_hlo_as_dot --xla_dump_hlo_as_html --xla_dump_hlo_as_proto&quot;
+
+export TF_XLA_FLAGS=&quot;--tf_xla_clustering_debug&quot;
+
+export TF_DUMP_GRAPH_PREFIX=&quot;tmp/tf_dump_graph/&quot;  
+
+#在当前目录下生成tmp/tf_dump_graph
+</code></pre>
+<h3 id="jaxpr">输出jaxpr</h3>
+<p><code>192.168.53.138:/home/ken/workspace/test/jax/test2/jaxpr</code></p>
+<pre><code class="language-python">import jax
+
+def f(x):
+    return jax.numpy.sin(jax.numpy.cos(x))
+
+print(jax.make_jaxpr(f)(3.0)) 
+#{ lambda ; a:f32[]. let b:f32[] = cos a; c:f32[] = sin b in (c,) }
+</code></pre>
+<h3 id="log">输出各种log</h3>
+<p><code>192.168.53.138:/home/ken/workspace/test/jax/test2/log</code></p>
+<pre><code class="language-python">import jax
+
+def f(x):
+    return jax.numpy.sin(jax.numpy.cos(x))
+
+print(f(3.0))   #这里要有输出，并设置env，才会得到log，但设置env后，会有seg fault。
+</code></pre>
+<p>可以得到以下Log:</p>
+<pre><code class="language-python">├── ir
+│   └── jax_ir0_jit__lambda_.mlir
+├── test.py
+└── tmp
+    └── foo
+        ├── module_0000.jit__lambda_.before_optimizations.dot
+        ├── module_0000.jit__lambda_.before_optimizations.hlo.pb
+        ├── module_0000.jit__lambda_.before_optimizations.html
+        ├── module_0000.jit__lambda_.before_optimizations.txt
+        ├── module_0000.jit__lambda_.cpu_after_optimizations-buffer-assignment.txt
+        ├── module_0000.jit__lambda_.cpu_after_optimizations.dot
+        ├── module_0000.jit__lambda_.cpu_after_optimizations.hlo.pb
+        ├── module_0000.jit__lambda_.cpu_after_optimizations.html
+        ├── module_0000.jit__lambda_.cpu_after_optimizations.txt
+        ├── module_0000.jit__lambda_.ir-no-opt.ll
+        ├── module_0000.jit__lambda_.ir-no-opt-noconst.ll
+        ├── module_0000.jit__lambda_.ir-with-opt.ll
+        ├── module_0000.jit__lambda_.ir-with-opt-noconst.ll
+        └── module_0000.jit__lambda_.o
+
+</code></pre>
+<p>after.png</p>
+<p><img alt="image-20220929114323520" src="../%E8%B0%83%E8%AF%95%E7%94%A8%E9%80%89%E9%A1%B9.assets/image-20220929114323520.png" /></p>
+<h3 id="case">case</h3>
+<p>https://jax.readthedocs.io/en/latest/jax.stages.html#module-jax.stages</p>
+<pre><code class="language-python">import jax
+import jax.numpy as jnp
+import numpy as np
+
+def f(x, y): return 2 * x + y
+x, y = 3, 4
+
+lowered = jax.jit(f).lower(x, y)
+
+# Print lowered MHLO
+print(lowered.as_text()) # print(lowered.as_text(&quot;mhlo&quot;))
+'''
+# 输出的mhlo
+module @jit_f {
+  func.func public @main(%arg0: tensor&lt;i32&gt;, %arg1: tensor&lt;i32&gt;) -&gt; tensor&lt;i32&gt; {
+    %0 = mhlo.constant dense&lt;2&gt; : tensor&lt;i32&gt;
+    %1 = mhlo.multiply %0, %arg0 : tensor&lt;i32&gt;
+    %2 = mhlo.add %1, %arg1 : tensor&lt;i32&gt;
+    return %2 : tensor&lt;i32&gt;
+  }
+}
+'''
+
+print(lowered.as_text(&quot;hlo&quot;)) 
+'''
+# 输出的hlo
+HloModule jit_f, entry_computation_layout={(s32[],s32[])-&gt;s32[]}
+
+ENTRY main.6 {
+  Arg_0.1 = s32[] parameter(0)
+  constant.3 = s32[] constant(2)
+  multiply.4 = s32[] multiply(Arg_0.1, constant.3)
+  Arg_1.2 = s32[] parameter(1)
+  ROOT add.5 = s32[] add(multiply.4, Arg_1.2)
+}
+
+'''
+
+
+compiled = lowered.compile()
+
+#compiled.cost_analysis()[0]['flops']
+
+# 输出 hlo
+print(compiled.as_text()) 
+'''
+不管24、26行是什么，下面的输出都是一样的
+以下是 module_0000.jit_f.cpu_after_optimizations.txt的内容
+也就是print(compiled.as_text()) 的内容
+HloModule jit_f, entry_computation_layout={(s32[],s32[])-&gt;s32[]}
+
+%fused_computation (param_0.1: s32[], param_1.1: s32[]) -&gt; s32[] {
+  %param_1.1 = s32[] parameter(1)
+  %constant.0 = s32[] constant(2)
+  %multiply.0 = s32[] multiply(s32[] %param_1.1, s32[] %constant.0), metadata={op_name=&quot;jit(f)/jit(main)/mul&quot; source_file=&quot;as_text.py&quot; source_line=5}
+  %param_0.1 = s32[] parameter(0)
+  ROOT %add.0 = s32[] add(s32[] %multiply.0, s32[] %param_0.1), metadata={op_name=&quot;jit(f)/jit(main)/add&quot; source_file=&quot;as_text.py&quot; source_line=5}
+}
+
+ENTRY %main.6 (Arg_0.1: s32[], Arg_1.2: s32[]) -&gt; s32[] {
+  %Arg_1.2 = s32[] parameter(1)
+  %Arg_0.1 = s32[] parameter(0)
+  ROOT %fusion = s32[] fusion(s32[] %Arg_1.2, s32[] %Arg_0.1), kind=kLoop, calls=%fused_computation, metadata={op_name=&quot;jit(f)/jit(main)/add&quot; source_file=&quot;as_text.py&quot; source_line=5}
+}
+
+'''
+
+</code></pre>
+<p>module_0000.jit__lambda_.cpu_after_optimizations.html</p>
+<p><img alt="image-20220929140733154" src="../%E8%B0%83%E8%AF%95%E7%94%A8%E9%80%89%E9%A1%B9.assets/image-20220929140733154.png" /></p>
+<p>after.html</p>
+<p><img alt="image-20220929140854532" src="../%E8%B0%83%E8%AF%95%E7%94%A8%E9%80%89%E9%A1%B9.assets/image-20220929140854532.png" /></p>
+<pre><code>export JAX_DUMP_IR_TO=ir    # 必须在当前目录下有ir这个文件夹
+否则会有下述错误
+
+
+ File &quot;/home/ken/virtualEnv/jaxEnv/lib/python3.7/site-packages/jax/_src/dispatch.py&quot;, line 1050, in _dump_ir_to_file
+</code></pre>
+<h3 id="case_1">case</h3>
+<pre><code class="language-python">
+from jax import lax
+from jax._src import api
+
+def multiply_add_lax(x, y, z):
+  &quot;&quot;&quot;Implementation of multiply-add using the jax.lax primitives.&quot;&quot;&quot;
+  return lax.add(lax.mul(x, y), z)
+
+
+def square_add_lax(a, b):
+  &quot;&quot;&quot;A square-add function using the newly defined multiply-add.&quot;&quot;&quot;
+  return multiply_add_lax(a, a, b)
+
+print(&quot;square_add_lax = &quot;, square_add_lax(2., 10.))
+# Differentiate w.r.t. the first argument
+print(&quot;grad(square_add_lax) = &quot;, api.grad(square_add_lax, argnums=0)(2.0, 10.))
+
+</code></pre>
+<p>output</p>
+<pre><code>square_add_lax =  14.0
+grad(square_add_lax) =  4.0
+
+</code></pre>
+<p>ir文件夹</p>
+<pre><code>jax_ir0_jit_prim_fun.mlir
+jax_ir1_jit_prim_fun.mlir
+jax_ir2_jit_prim_fun.mlir
+</code></pre>
+<pre><code class="language-python">cat jax_ir0_jit_prim_fun.mlir
+#loc0 = loc(unknown)
+module @jit_prim_fun {
+  func.func public @main(%arg0: tensor&lt;f32&gt; loc(unknown), %arg1: tensor&lt;f32&gt; loc(unknown)) -&gt; tensor&lt;f32&gt; {
+    %0 = mhlo.multiply %arg0, %arg1 : tensor&lt;f32&gt; loc(#loc1)  # multiply
+    return %0 : tensor&lt;f32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(mul)/jit(main)/mul&quot;(&quot;./trace_lax.py&quot;:7:1))
+
+
+cat jax_ir1_jit_prim_fun.mlir
+#loc0 = loc(unknown)
+module @jit_prim_fun {
+  func.func public @main(%arg0: tensor&lt;f32&gt; loc(unknown), %arg1: tensor&lt;f32&gt; loc(unknown)) -&gt; tensor&lt;f32&gt; {
+    %0 = mhlo.add %arg0, %arg1 : tensor&lt;f32&gt; loc(#loc1)   # add
+    return %0 : tensor&lt;f32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(add)/jit(main)/add&quot;(&quot;./trace_lax.py&quot;:7:1))
+
+cat jax_ir2_jit_prim_fun.mlir
+#loc0 = loc(unknown)
+module @jit_prim_fun {
+  func.func public @main(%arg0: tensor&lt;f32&gt; loc(unknown)) -&gt; tensor&lt;f32&gt; {
+    %0 = mhlo.convert %arg0 : tensor&lt;f32&gt; loc(#loc1)
+    return %0 : tensor&lt;f32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(convert_element_type)/jit(main)/convert_element_type[new_dtype=float32 weak_type=True]&quot;(&quot;./trace_lax.py&quot;:16:1))
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../../js/base.js"></script>
+        <script src="../../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

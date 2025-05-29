@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>How to use pipestat - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../diff%20github/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../rsync%20%26%20fwatch/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#how-to-use-pipestat" class="nav-link">How to use pipestat</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#pipestat-manualrecycler" class="nav-link">pipestat manual(recycler)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#1-genearte-itraceget-the-vgi-file" class="nav-link">1. Genearte itrace(get the vgi file)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2-itrace-qtrace" class="nav-link">2. itrace —&gt; qtrace</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#3-trace-grainedrecycler-has-the-tool" class="nav-link">3 trace-grained(recycler has the tool)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="how-to-use-pipestat">How to use pipestat</h1>
+<p>https://ltc3.linux.ibm.com/wiki/LoP_Toolchain/howto/valgrind-itrace</p>
+<h1 id="pipestat-manualrecycler">pipestat manual(recycler)</h1>
+<p>/opt/ibm/pipestat/pkg/doc/pipestat.pdf</p>
+<h3 id="2019_p10workshop_pipestatpdf">2019_P10workshop_pipestat.pdf</h3>
+<p>https://ibm.ent.box.com/file/458693881230</p>
+<h2 id="1-genearte-itraceget-the-vgi-file">1. Genearte itrace(get the vgi file)</h2>
+<p>If your case is c++, you must use <code>--demangle=no</code></p>
+<p><code>num-K-insns-to-collect=10</code>, it will spend 10 mins.</p>
+<pre><code class="language-shell">/opt/at12.0/bin/valgrind --demangle=no  --num-K-insns-to-collect=10 --tool=itrace --trace-extent=function --fn-start=_ZN7Playout3runER9FastStateb --binary-outfile=valgrind.diffmail.vgi  numactl --localalloc --physcpubind=0 ../run_peak_refrate_clang_default.0000/leela_r_peak.clang_default ref.sgf
+
+/opt/at12.0/bin/valgrind --demangle=no  --num-K-insns-to-collect=10 --tool=itrace --trace-extent=function --fn-start=_ZN7Playout3runER9FastStateb --binary-outfile=valgrind.diffmail.vgi [the cmd to execute the program]
+
+
+/opt/at12.0/bin/valgrind --demangle=no  --num-K-insns-to-collect=10 --tool=itrace --trace-extent=function --fn-start=_ZN7Playout3runER9FastStateb --binary-outfile=valgrind.diffmail.vgi  ../run_peak_refrate_clang_default.0000/leela_r_peak.clang_default ref.sgf
+</code></pre>
+<pre><code>If anyone has issues on using valgrind itrace to collect traces, please try using the valgrind from at13.0 /opt/at13.0/bin/valgrind.
+In my case, my command
+ valgrind --tool=itrace --fnname=foo --trace-extent=function --trace-children=yes --demangle=no --num-K-insns-to-collect=1000 ./a.out
+fails to collect traces by using valgrind from at12.0 (no trace collected), but it works by using the at13.0 valgrind.
+</code></pre>
+<p>1 mins</p>
+<pre><code class="language-shell">/home/shkzhang/spec_clang_result_0531_pipestat/benchspec/CPU/541.leela_r/run/run_peak_refrate_clang_default.0000
+
+/opt/at12.0/bin/valgrind --demangle=no  --num-K-insns-to-collect=1000 --tool=itrace --trace-extent=function --fn-start=_ZN7Playout3runER9FastStateb --binary-outfile=valgrind.diffmail.vgi  ../run_peak_refrate_clang_default.0000/leela_r_peak.clang_default ref.sgf
+</code></pre>
+<pre><code class="language-shell">/opt/at12.0/bin/valgrind --demangle=no  --num-K-insns-to-collect=10 --tool=itrace --trace-extent=function --fn-start=__ZN7Playout3runER9FastStateb --binary-outfile=valgrind.diffmail.FastStateb.vgi  ../run_peak_refrate_clang_default.0000/leela_r_peak.clang_default ref.sgf
+
+
+/opt/at12.0/bin/vgi2qt -f valgrind.diffmail.FastStateb.vgi -o trace.FastStateb.qt
+
+// 5 mins
+/opt/ibm/pipestat/pkg/bin/pipestat  -v  trace.FastStateb.qt -o log.FastStateb
+</code></pre>
+<p>2 mins</p>
+<pre><code class="language-shell">/opt/at12.0/bin/valgrind --demangle=no  --num-K-insns-to-collect=100000 --tool=itrace --trace-extent=function --fn-start=_ZN9FastBoard17update_board_fastEii --binary-outfile=valgrind.diffmail.update_board_fastEii.vgi  ../run_peak_refrate_clang_default.0000/leela_r_peak.clang_default ref.sgf
+
+
+/opt/at12.0/bin/vgi2qt -f valgrind.diffmail.update_board_fastEii.vgi -o trace.update_board_fastEii.qt
+
+// 5 mins
+
+/opt/ibm/pipestat/pkg/bin/pipestat  -v  trace.update_board_fastEii.qt -o log.update_board_fastEii
+</code></pre>
+<hr />
+<h2 id="2-itrace-qtrace">2. itrace —&gt; qtrace</h2>
+<pre><code class="language-shell">/opt/at12.0/bin/vgi2qt -f valgrind.diffmail.vgi -o trace.zeson.qt
+</code></pre>
+<hr />
+<h2 id="3-trace-grainedrecycler-has-the-tool">3 trace-grained(recycler has the tool)</h2>
+<h3 id="31-no-cycler">3.1 no cycler</h3>
+<pre><code class="language-shell">/opt/ibm/pipestat/pkg/bin/pipestat  -v  trace.zeson.qt -o log.zeson
+</code></pre>
+<h3 id="32-have-cycledetail">3.2 have cycle(detail)</h3>
+<p>The less instruction, we can get the less pipe file. <code>10000</code> will get 5M pipe file.</p>
+<pre><code class="language-shell">## get the output_pipe.pipe file, if the file is very huge, the VPA cann't open it
+/opt/m1-p9/run_timer trace.zeson.qt 1000000000 10000 0  output_pipe -d_prefetch 1 -scroll_pipe 1 -scroll_begin 0 -scroll_end 1000000000
+
+## get the detail file
+/opt/ibm/pipestat/pkg/bin/pipestat  -v output.pipe -o output_pipe.detail
+
+
+
+# About 3 mins
+# More suitable amount
+/opt/m1-p9/run_timer trace.zeson.qt 1000000000 10000 0  output_pipe -d_prefetch 1 -scroll_pipe 1 -scroll_begin 0 -scroll_end 1000000000
+
+</code></pre>
+<p><img alt="image-20190605163710552" src="assets/image-20190605163710552.png" /></p>
+<pre><code class="language-shell">Collect the mount of insts. 
+ arch inst 64007  time 74935.000000
+ trace 0 completed arch 64007
+ arch inst 65000  time 75975.000000
+ trace 0 completed arch 65000
+ arch inst 66007  time 77010.000000
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

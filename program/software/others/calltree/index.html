@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Calltree - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../call%20hierarchy/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../clang-format/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://www.cnblogs.com/mylinux/p/6145625.html </p>
+<p>https://www.cnblogs.com/zengkefu/p/5569577.html</p>
+<p>https://blog.csdn.net/breaksoftware/article/details/75441751</p>
+<p>make INS_BASE=/home/ken/software/calltree-2.3 install
+https://blog.csdn.net/breaksoftware/article/details/75441751</p>
+<p>ppc le上未成功</p>
+<h3 id="calltree">calltree看代码调用图</h3>
+<p>calltree是在linux下面看c代码（尤其是复杂的内核代码）的神器。</p>
+<p>推荐  calltree+vim + ctags + cscope + taglist 【 vim: 搭建vim看代码的环境   http://www.cnblogs.com/mylinux/p/5013588.html】</p>
+<p>或者 calltree + source insight</p>
+<p>source insight能方便地查看向上和向下的函数（变量等）调用关系，并且支持多种语言，几乎是无可替代的。但调用深度太大的时候，人就记不住了，这个时候calltree可以生成一个全局的调用图，便于很快掌握代码框架。</p>
+<p>如想看内核代码start_kernel干了些什么：</p>
+<pre><code>#calltree -np -b  list=start_kernel    depth=3 `find ./init/ ./kernel/ -name &quot;*.c&quot;` &gt; maps
+
+#vi maps
+</code></pre>
+<pre><code>start_kernel:
+|   WARN
+|   acpi_early_init
+|   anon_vma_init
+|   boot_cpu_init
+|   |   set_cpu_active
+|   |   |   cpumask_clear_cpu
+|   |   |   cpumask_set_cpu
+|   |   |   to_cpumask
+|   |   set_cpu_online
+|   |   |   cpumask_clear_cpu
+|   |   |   cpumask_set_cpu
+|   |   |   to_cpumask
+|   |   set_cpu_possible
+|   |   |   cpumask_clear_cpu
+|   |   |   cpumask_set_cpu
+|   |   |   to_cpumask
+|   |   set_cpu_present
+|   |   |   cpumask_clear_cpu
+|   |   |   cpumask_set_cpu
+|   |   |   to_cpumask
+|   |   smp_processor_id
+|   boot_init_stack_canary
+|   buffer_init
+|   build_all_zonelists
+|   calibrate_delay
+|   |   calibrate_delay_converge
+|   |   |   __delay
+|   |   calibrate_delay_direct
+|   |   |   printk
+|   |   |   read_current_timer
+|   |   |   time_before_eq
+|   |   calibrate_delay_is_known
+</code></pre>
+<h3 id="_1">下载：</h3>
+<pre><code>    calltree-2.3.tar.bz2 http://download.chinaunix.net/download.php?id=2245&amp;ResourceID=1172 
+    sudo apt-get install graphviz
+</code></pre>
+<h3 id="_2">使用：</h3>
+<pre><code>    calltree -help
+    calltree -np -gb -m *.c 
+    calltree -np -gb lf=send_query *.c 
+    calltree -np -b  list=start_kernel    depth=4 `find ./init/ -name &quot;*.c&quot;` &gt; maps
+    calltree -np -b  list=raw_spin_lock_irqsave  `find . -name &quot;*.c&quot;`
+    calltree -np -gb lf=raw_spin_lock_irqsave    `find . -name &quot;*.c&quot;`
+</code></pre>
+<p>还可以生成一个调用图，以kernel为例</p>
+<pre><code>    calltree -np -b -dot list=start_kernel ./init/*.c &gt; ~/start_kernel.dot
+    dot -T png start_kernel.dot -o ./testhaha.png
+</code></pre>
+<pre><code>下面介绍一下各选项：
+-b 就是那个竖线了，很直观地显示缩进层次。
+-g 打印内部函数的所属文件名及行号，外部函数所属文件名和行号也是可打印的，详man
+-np 不要调用c预处理器，这样打印出的界面不会很杂乱，但也可能会产生错误哦，如果我们只看函数的调用关系的话，不会有大问题。
+-m 告诉程序从main开始
+还有一个重要的选项是listfunction ，缩写是lf，用来只打印某个函数中的调用，用法是： lf=your_function
+depth=#选项： 例如： calltree -gb -np -m bind9/bin/named/*.[c.h] depth=2 &gt; codecalltree.txt
+</code></pre>
+<p>注意：</p>
+<p>调用关系一般比较复杂，最好设置好（1）想要关心的函数（2）调用深度（3）关心的目录，否则又会引入过多无关选项，干扰视线。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

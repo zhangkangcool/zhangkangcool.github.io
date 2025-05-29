@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>CallingConv def & use - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../../Remove/remove/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../Register%20%26%20RA/PPC%20llvm%20register/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1" class="nav-link">1. 通常情况</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#1-callingconv" class="nav-link">1. 定义CallingConv使用规则</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2-callingconv" class="nav-link">2. 使用CallingConv规则</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-riscv" class="nav-link">2. 例外RISCV</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<pre><code>CCDelegateTo尝试找到一个指定的子调用约定，如果找到匹配的，它将被唤醒。
+CCIfCC是一个尝试匹配给定的名称和当下调用约定的接口。
+CCIf&lt;predicate，action&gt;：如果判定匹配，运用这个操作。
+CCIflnReg&lt;action&gt;：如果参数有“inreg’’属性，运用这个操作。
+CCIfNest&lt;action&gt;：如果参数有“nest”属性，运用这个操作。
+CCIfNotVarArg&lt;action&gt;：如果当前的函数不接受可变数的参数，那么运用这个操作。
+CCAssignToRegWithShadow&lt;registerList．shadowList&gt;：．跟CCAssignToReg相似，但有是用于影子寄存器列表。
+CCPassByVal&lt;size，align&gt;：将最小的指定的size和alignment赋值给stack slot 
+CCPromoteToType&lt;type&gt;：将当前值推送到指定的类型。
+CallingConv&lt;[actions]&gt;一Define each calling convention that is supposed．定义每个支持的调用约定。
+</code></pre>
+<h1 id="1">1. 通常情况</h1>
+<h2 id="1-callingconv">1. 定义CallingConv使用规则</h2>
+<h3 id="11-xcorecallingconvtd">1.1 XCoreCallingConv.td</h3>
+<pre><code class="language-c++"> 12 // XCore Return Value Calling Convention
+ 13 //===----------------------------------------------------------------------===//
+ 14 def RetCC_XCore : CallingConv&lt;[
+ 15   // i32 are returned in registers R0, R1, R2, R3
+ 16   CCIfType&lt;[i32], CCAssignToReg&lt;[R0, R1, R2, R3]&gt;&gt;,
+ 17
+ 18   // Integer values get stored in stack slots that are 4 bytes in
+ 19   // size and 4-byte aligned.
+ 20   CCIfType&lt;[i32], CCAssignToStack&lt;4, 4&gt;&gt;
+ 21 ]&gt;;
+ 22
+ 23 //===----------------------------------------------------------------------===//
+ 24 // XCore Argument Calling Conventions
+ 25 //===----------------------------------------------------------------------===//
+ 26 def CC_XCore : CallingConv&lt;[
+ 27   // Promote i8/i16 arguments to i32.
+ 28   CCIfType&lt;[i8, i16], CCPromoteToType&lt;i32&gt;&gt;,
+ 29
+ 30   // The 'nest' parameter, if any, is passed in R11.
+ 31   CCIfNest&lt;CCAssignToReg&lt;[R11]&gt;&gt;,
+ 32
+ 33   // The first 4 integer arguments are passed in integer registers.
+ 34   CCIfType&lt;[i32], CCAssignToReg&lt;[R0, R1, R2, R3]&gt;&gt;,
+ 35
+ 36   // Integer values get stored in stack slots that are 4 bytes in
+ 37   // size and 4-byte aligned.
+ 38   CCIfType&lt;[i32], CCAssignToStack&lt;4, 4&gt;&gt;
+ 39 ]&gt;;
+
+</code></pre>
+<h3 id="12-xcoregencallingconvinc">1.2 XCoreGenCallingConv.inc</h3>
+<p>上述<code>td</code>文件会产生以下<code>inc</code>文件。以下代码中可以具体查看<code>CallingConv</code>是如何运作的。</p>
+<pre><code class="language-c++">  9 static bool CC_XCore(unsigned ValNo, MVT ValVT,
+ 10                      MVT LocVT, CCValAssign::LocInfo LocInfo,
+ 11                      ISD::ArgFlagsTy ArgFlags, CCState &amp;State);
+ 12 static bool RetCC_XCore(unsigned ValNo, MVT ValVT,
+ 13                         MVT LocVT, CCValAssign::LocInfo LocInfo,
+ 14                         ISD::ArgFlagsTy ArgFlags, CCState &amp;State);
+
+...
+
+ 59 static bool RetCC_XCore(unsigned ValNo, MVT ValVT,
+ 60                         MVT LocVT, CCValAssign::LocInfo LocInfo,
+ 61                         ISD::ArgFlagsTy ArgFlags, CCState &amp;State) {
+ 62
+ 63   if (LocVT == MVT::i32) {
+ 64     static const MCPhysReg RegList1[] = {
+ 65       XCore::R0, XCore::R1, XCore::R2, XCore::R3
+ 66     };
+ 67     if (unsigned Reg = State.AllocateReg(RegList1)) {
+ 68       State.addLoc(CCValAssign::getReg(ValNo, ValVT, Reg, LocVT, LocInfo));
+ 69       return false;
+ 70     }
+ 71   }
+ 72
+ 73   if (LocVT == MVT::i32) {
+ 74     unsigned Offset2 = State.AllocateStack(4, Align(4));
+ 75     State.addLoc(CCValAssign::getMem(ValNo, ValVT, Offset2, LocVT, LocInfo));
+ 76     return false;
+ 77   }
+ 78
+ 79   return true;  // CC didn't match.
+ 80 }
+</code></pre>
+<h2 id="2-callingconv">2. 使用CallingConv规则</h2>
+<p><code>XCoreISelLowering.cpp</code>会包含上述<code>XCoreGenCallingConv.inc</code>文件，这样就可以调用<code>CC_XCore()</code>和<code>RetCC_XCore()</code>。</p>
+<pre><code class="language-c++">// XCoreISelLowering.cpp
+1421 bool XCoreTargetLowering::
+1422 CanLowerReturn(CallingConv::ID CallConv, MachineFunction &amp;MF,
+1423                bool isVarArg,
+1424                const SmallVectorImpl&lt;ISD::OutputArg&gt; &amp;Outs,
+1425                LLVMContext &amp;Context) const {
+1426   SmallVector&lt;CCValAssign, 16&gt; RVLocs;
+1427   CCState CCInfo(CallConv, isVarArg, MF, RVLocs, Context);
+1428   if (!CCInfo.CheckReturn(Outs, RetCC_XCore))
+1429     return false;
+1430   if (CCInfo.getNextStackOffset() != 0 &amp;&amp; isVarArg)
+1431     return false;
+1432   return true;
+1433 }
+
+</code></pre>
+<p>在<code>ISelLowering.cpp</code>中的<code>LowerFormalArguments（）</code>和<code>LowerCall()</code>均会调用<code>CCAssignFnForCall</code>以处理参数调用问题。</p>
+<p>以下代码来自<code>CSKY</code>:</p>
+<pre><code class="language-c++">CCAssignFn *CSKYTargetLowering::CCAssignFnForCall(CallingConv::ID CC,
+                                                  bool IsVarArg) const {
+  if (Subtarget.useSoftFloat())
+    return CC_CSKY_ABIV2_SOFT;
+
+  if (Subtarget.hasFPUv2DoubleFloat() || Subtarget.hasFPUv3DoubleFloat())
+    return CC_CSKY_ABIV2_DF;
+  if (Subtarget.hasFPUv2SingleFloat() || Subtarget.hasFPUv3SingleFloat())
+    return CC_CSKY_ABIV2_SF;
+
+  return CC_CSKY_ABIV2_SOFT;
+}
+
+CCAssignFn *CSKYTargetLowering::CCAssignFnForReturn(CallingConv::ID CC) const {
+  if (Subtarget.useSoftFloat())
+    return RetCC_CSKY_ABIV2_SOFT;
+
+  if (Subtarget.hasFPUv2DoubleFloat() || Subtarget.hasFPUv3DoubleFloat())
+    return RetCC_CSKY_ABIV2_DF;
+  if (Subtarget.hasFPUv2SingleFloat() || Subtarget.hasFPUv3SingleFloat())
+        return RetCC_CSKY_ABIV2_SF;
+
+  return RetCC_CSKY_ABIV2_SOFT;
+}
+</code></pre>
+<p>在<code>ISelLowering.cpp</code>中的<code>LowerCallResult（）</code>、<code>LowerReturn()</code>和   <code>CanLowerReturn</code>均会调用<code>CCAssignFnForReturn()</code>以处理返回数的问题。</p>
+<hr />
+<h1 id="2-riscv">2. 例外RISCV</h1>
+<p><code>RISCV</code>的<code>CC_RISCV</code>和<code>RetCC_RISCV</code>没有在<code>RISCVCallingConv.td</code>中实现。而在<code>RISCVISelLowering.cpp</code>直接进行实现并使用。</p>
+<pre><code class="language-c++">// RISCVCallingConv.td
+ 13 // The RISC-V calling convention is handled with custom code in
+ 14 // RISCVISelLowering.cpp (CC_RISCV).
+
+</code></pre>
+<pre><code class="language-c++">// RISCVISelLowering.cpp
+1903 // FastCC has less than 1% performance improvement for some particular
+1904 // benchmark. But theoretically, it may has benenfit for some cases.
+1905 static bool CC_RISCV_FastCC(unsigned ValNo, MVT ValVT, MVT LocVT,
+1906                             CCValAssign::LocInfo LocInfo,
+1907                             ISD::ArgFlagsTy ArgFlags, CCState &amp;State) {
+}
+
+
+1504 static bool CC_RISCVAssign2XLen(unsigned XLen, CCState &amp;State, CCValAssign VA1,
+1505                                 ISD::ArgFlagsTy ArgFlags1, unsigned ValNo2,
+1506                                 MVT ValVT2, MVT LocVT2,
+1507                                 ISD::ArgFlagsTy ArgFlags2) {
+}
+
+
+
+1541 // Implements the RISC-V calling convention. Returns true upon failure.
+1542 static bool CC_RISCV(const DataLayout &amp;DL, RISCVABI::ABI ABI, unsigned ValNo,
+1543                      MVT ValVT, MVT LocVT, CCValAssign::LocInfo LocInfo,
+1544                      ISD::ArgFlagsTy ArgFlags, CCState &amp;State, bool IsFixed,
+1545                      bool IsRet, Type *OrigTy) {
+}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

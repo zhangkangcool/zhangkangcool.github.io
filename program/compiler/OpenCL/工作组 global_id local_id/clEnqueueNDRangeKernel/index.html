@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>clEnqueueNDRangeKernel - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../pocl/%E7%BC%96%E8%AF%91/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E5%B7%A5%E4%BD%9C%E7%BB%84/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><code>clEnqueueNDRangeKernel</code> 是 OpenCL 中最常用的函数之一，用于将内核调度到设备上执行。它的作用是定义工作项的分布（全局工作区和局部工作组），并将内核任务加入到命令队列中。</p>
+<p>以下是该函数的完整参数说明以及用法。</p>
+<hr />
+<h3 id="_1"><strong>函数原型</strong></h3>
+<pre><code class="language-c">cl_int clEnqueueNDRangeKernel(
+    cl_command_queue command_queue,  // 命令队列
+    cl_kernel kernel,                // 要执行的内核对象
+    cl_uint work_dim,                // 工作区的维度 (1D, 2D, 3D)
+    const size_t *global_work_offset,// 全局偏移量 (通常为 NULL)
+    const size_t *global_work_size,  // 全局工作区大小
+    const size_t *local_work_size,   // 局部工作区大小 (工作组大小)
+    cl_uint num_events_in_wait_list, // 等待的事件数
+    const cl_event *event_wait_list, // 等待的事件列表
+    cl_event *event                  // 返回的事件对象
+);
+</code></pre>
+<hr />
+<h3 id="_2"><strong>参数说明</strong></h3>
+<h4 id="1-command_queue"><strong>1. <code>command_queue</code></strong></h4>
+<ul>
+<li>类型：<code>cl_command_queue</code></li>
+<li>描述：指定命令队列，表示在哪个设备和上下文中执行内核。</li>
+<li>命令队列是通过 <code>clCreateCommandQueue</code> 创建的，绑定到某个设备。</li>
+</ul>
+<h4 id="2-kernel"><strong>2. <code>kernel</code></strong></h4>
+<ul>
+<li>类型：<code>cl_kernel</code></li>
+<li>描述：指定要执行的内核对象。</li>
+<li>内核对象是通过 <code>clCreateKernel</code> 从编译好的程序对象中创建的。</li>
+<li>在调用此函数之前，必须通过 <code>clSetKernelArg</code> 设置内核的参数。</li>
+</ul>
+<h4 id="3-work_dim"><strong>3. <code>work_dim</code></strong></h4>
+<ul>
+<li>类型：<code>cl_uint</code></li>
+<li>描述：指定工作区的维度，可以是 1、2 或 3，表示 1D、2D 或 3D 的工作区。</li>
+<li>例如：</li>
+<li><code>work_dim = 1</code>：表示 1D 工作区。</li>
+<li><code>work_dim = 2</code>：表示 2D 工作区。</li>
+<li><code>work_dim = 3</code>：表示 3D 工作区。</li>
+</ul>
+<h4 id="4-global_work_offset"><strong>4. <code>global_work_offset</code></strong></h4>
+<ul>
+<li>类型：<code>const size_t *</code></li>
+<li>描述：全局工作区的偏移量数组，指定全局 ID 的起始偏移值。</li>
+<li>通常设置为 <code>NULL</code>，表示从 <code>(0, 0, 0)</code> 开始。</li>
+<li>如果设置非 <code>NULL</code>，会将全局 ID 偏移。例如，如果偏移为 <code>(2, 2)</code>，则 <code>get_global_id(0)</code> 的值从 2 开始。</li>
+</ul>
+<h4 id="5-global_work_size"><strong>5. <code>global_work_size</code></strong></h4>
+<ul>
+<li>类型：<code>const size_t *</code></li>
+<li>描述：全局工作区的大小数组，指定每个维度上工作项的总数。</li>
+<li>必须是一个长度为 <code>work_dim</code> 的数组。</li>
+<li>例如：</li>
+<li>如果 <code>work_dim = 1</code>，<code>global_work_size[0] = 1024</code>，表示 1D 工作区有 1024 个工作项。</li>
+<li>如果 <code>work_dim = 2</code>，<code>global_work_size = {16, 16}</code>，表示 2D 工作区大小为 16x16，总共 256 个工作项。</li>
+<li><strong>注意：全局工作区大小通常是局部工作区大小的整数倍。</strong></li>
+</ul>
+<h4 id="6-local_work_size"><strong>6. <code>local_work_size</code></strong></h4>
+<ul>
+<li>类型：<code>const size_t *</code></li>
+<li>描述：局部工作区（工作组）的大小数组，指定每个工作组中工作项的数量。</li>
+<li>例如：</li>
+<li>如果 <code>work_dim = 1</code>，<code>local_work_size[0] = 64</code>，表示每个工作组包含 64 个工作项。</li>
+<li>如果 <code>work_dim = 2</code>，<code>local_work_size = {4, 4}</code>，表示每个工作组大小为 4x4。</li>
+<li><strong>注意：</strong></li>
+<li>如果设置为 <code>NULL</code>，OpenCL 会自动决定局部工作组大小。</li>
+<li>如果指定非 <code>NULL</code> 值，则 <code>global_work_size</code> 必须是 <code>local_work_size</code> 的整数倍，否则会报错。</li>
+</ul>
+<h4 id="7-num_events_in_wait_list"><strong>7. <code>num_events_in_wait_list</code></strong></h4>
+<ul>
+<li>类型：<code>cl_uint</code></li>
+<li>描述：指定事件等待列表中的事件数量。</li>
+<li>如果设置为 <code>0</code>，表示不需要等待任何事件。</li>
+</ul>
+<h4 id="8-event_wait_list"><strong>8. <code>event_wait_list</code></strong></h4>
+<ul>
+<li>类型：<code>const cl_event *</code></li>
+<li>描述：事件等待列表，表示本次内核执行需要等待的事件。</li>
+<li>如果 <code>num_events_in_wait_list = 0</code>，此参数必须为 <code>NULL</code>。</li>
+<li>如果指定非 <code>NULL</code> 值，则内核执行会在等待列表中的事件完成后开始。</li>
+</ul>
+<h4 id="9-event"><strong>9. <code>event</code></strong></h4>
+<ul>
+<li>类型：<code>cl_event *</code></li>
+<li>描述：用于返回与内核执行相关联的事件对象。</li>
+<li>如果不需要事件，可设置为 <code>NULL</code>。</li>
+<li>返回的事件可用于查询内核执行状态或作为其他命令的依赖条件。</li>
+</ul>
+<hr />
+<h3 id="_3"><strong>返回值</strong></h3>
+<ul>
+<li>类型：<code>cl_int</code></li>
+<li>描述：返回错误代码，常见返回值如下：</li>
+<li><code>CL_SUCCESS</code>：函数调用成功。</li>
+<li><code>CL_INVALID_COMMAND_QUEUE</code>：无效的命令队列。</li>
+<li><code>CL_INVALID_KERNEL</code>：内核对象无效。</li>
+<li><code>CL_INVALID_CONTEXT</code>：命令队列和内核对象不属于同一上下文。</li>
+<li><code>CL_INVALID_WORK_DIMENSION</code>：工作区维度无效（超出设备支持的范围）。</li>
+<li><code>CL_INVALID_GLOBAL_WORK_SIZE</code>：全局工作区大小无效。</li>
+<li><code>CL_INVALID_WORK_GROUP_SIZE</code>：局部工作区大小不符合设备限制。</li>
+<li><code>CL_OUT_OF_RESOURCES</code>：设备资源不足，无法执行命令。</li>
+<li><code>CL_OUT_OF_HOST_MEMORY</code>：主机内存不足。</li>
+</ul>
+<hr />
+<h3 id="_4"><strong>工作区参数之间的关系</strong></h3>
+<ul>
+<li>
+<p><strong>全局工作区大小 (<code>global_work_size</code>)</strong>：
+  总的工作项数量，决定计算任务的规模。</p>
+</li>
+<li>
+<p><strong>局部工作区大小 (<code>local_work_size</code>)</strong>：
+  每个工作组中的工作项数量，决定工作组的划分方式。</p>
+</li>
+<li>
+<p><strong>工作组数量</strong>：
+  工作组数量可以通过以下公式计算：
+  <code>plaintext
+  num_work_groups = global_work_size / local_work_size</code>
+  例如：</p>
+</li>
+<li>如果 <code>global_work_size = 1024</code>，<code>local_work_size = 64</code>，则工作组数量为 <code>1024 / 64 = 16</code>。</li>
+</ul>
+<hr />
+<h3 id="_5"><strong>示例代码</strong></h3>
+<h4 id="1"><strong>1. 一维工作区示例</strong></h4>
+<pre><code class="language-c">size_t global_work_size = 1024; // 全局工作区大小
+size_t local_work_size = 64;   // 每个工作组大小
+
+cl_int err = clEnqueueNDRangeKernel(
+    command_queue, kernel, 1, NULL,
+    &amp;global_work_size, &amp;local_work_size,
+    0, NULL, NULL
+);
+
+if (err != CL_SUCCESS) {
+    printf(&quot;Error: %d\n&quot;, err);
+}
+</code></pre>
+<h4 id="2"><strong>2. 二维工作区示例</strong></h4>
+<pre><code class="language-c">size_t global_work_size[2] = {16, 16}; // 全局工作区大小
+size_t local_work_size[2] = {4, 4};   // 局部工作组大小
+
+cl_int err = clEnqueueNDRangeKernel(
+    command_queue, kernel, 2, NULL,
+    global_work_size, local_work_size,
+    0, NULL, NULL
+);
+
+if (err != CL_SUCCESS) {
+    printf(&quot;Error: %d\n&quot;, err);
+}
+</code></pre>
+<h4 id="3"><strong>3. 自动选择局部工作组大小</strong></h4>
+<pre><code class="language-c">size_t global_work_size[2] = {16, 16}; // 全局工作区大小
+
+cl_int err = clEnqueueNDRangeKernel(
+    command_queue, kernel, 2, NULL,
+    global_work_size, NULL,
+    0, NULL, NULL
+);
+
+if (err != CL_SUCCESS) {
+    printf(&quot;Error: %d\n&quot;, err);
+}
+</code></pre>
+<hr />
+<h3 id="_6"><strong>注意事项</strong></h3>
+<ol>
+<li><strong>设备限制</strong></li>
+<li>
+<p>局部工作组大小不能超过设备的最大工作组大小，可以通过 <code>clGetDeviceInfo</code> 查询：
+     <code>c
+     clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_GROUP_SIZE, ...);</code></p>
+</li>
+<li>
+<p><strong>性能优化</strong></p>
+</li>
+<li>局部工作组大小应尽量与设备计算单元对齐（如 GPU 的线程块）。</li>
+<li>
+<p>常用的局部工作组大小是 32、64、128 等。具体选择需要根据设备架构优化。</p>
+</li>
+<li>
+<p><strong>边界处理</strong></p>
+</li>
+<li>如果 <code>global_work_size</code> 不是 <code>local_work_size</code> 的整数倍，可能需要在内核代码中处理越界问题。</li>
+</ol>
+<hr />
+<p><code>clEnqueueNDRangeKernel</code> 是 OpenCL 中的关键函数，设置正确的工作区参数对于性能优化和代码正确性至关重要。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

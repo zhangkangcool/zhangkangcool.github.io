@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Opt level - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Clang%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Other%20arch/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#with-version-38-the-passes-are-as-follow" class="nav-link">With version 3.8 the passes are as follow:</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#how-to-use" class="nav-link">How to use</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="with-version-38-the-passes-are-as-follow">With version 3.8 the passes are as follow:</h2>
+<p>https://stackoverflow.com/questions/15548023/clang-optimization-levels
+http://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-O1</p>
+<ul>
+<li>
+<h4 id="baseline-o0-default">baseline (-O0): default</h4>
+</li>
+</ul>
+<p>opt sets : -targetlibinfo -tti -verify
+clang adds : -mdisable-fp-elim -mrelax-all</p>
+<ul>
+<li>
+<h4 id="-o1-is-based-on-o0">－O1 is based on -O0</h4>
+</li>
+</ul>
+<p>opt adds: -globalopt -demanded-bits -branch-prob -inferattrs -ipsccp -dse -loop-simplify -scoped-noalias -barrier -adce -deadargelim -memdep -licm -globals-aa -rpo-functionattrs -basiccg -loop-idiom -forceattrs -mem2reg -simplifycfg -early-cse -instcombine -sccp -loop-unswitch -loop-vectorize -tailcallelim -functionattrs -loop-accesses -memcpyopt -loop-deletion -reassociate -strip-dead-prototypes -loops -basicaa -correlated-propagation -lcssa -domtree -always-inline -aa -block-freq -float2int -lower-expect -sroa -loop-unroll -alignment-from-assumptions -lazy-value-info -prune-eh -jump-threading -loop-rotate -indvars -bdce -scalar-evolution -tbaa -assumption-cache-tracker
+  clang adds : -momit-leaf-frame-pointer
+  clang drops : -mdisable-fp-elim -mrelax-all</p>
+<ul>
+<li>
+<h4 id="-o2-is-based-on-o1">-O2 is based on -O1</h4>
+</li>
+</ul>
+<p>opt adds: -elim-avail-extern -mldst-motion -slp-vectorizer -gvn -inline -globaldce -constmerge
+opt drops: -always-inline
+clang adds: -vectorize-loops -vectorize-slp</p>
+<ul>
+<li>
+<h4 id="-o3-is-based-on-o2">-O3 is based on -O2</h4>
+</li>
+</ul>
+<p>opt adds: -argpromotion
+-Ofast is based on -O3, valid in clang but not in opt</p>
+<p>clang adds: -fno-signed-zeros -freciprocal-math -ffp-contract=fast -menable-unsafe-fp-math -menable-no-nans -menable-no-infs</p>
+<ul>
+<li>
+<h4 id="-os-is-the-same-as-o2">-Os is the same as -O2</h4>
+</li>
+<li>
+<h4 id="-oz-is-based-on-os">-Oz is based on -Os</h4>
+</li>
+</ul>
+<p>opt drops: -slp-vectorizer
+clang drops: -vectorize-loops</p>
+<pre><code>–Ox flags: Specify which optimization level to use. -O0 means &quot;no optimization&quot;:
+this level compiles the fastest and generates the most debuggable code. -O2 is a
+moderate level of optimization which enables most optimizations. -Os is like -O2
+with extra optimizations to reduce code size. -Oz is like -Os (and thus -O2), but
+reduces code size further. -O3 is like -O2, except that it enables optimizations that
+take longer to perform or that may generate larger code (in an attempt to make the
+program run faster). On supported platforms, -O4 enables link-time optimization;
+object files are stored in the LLVM bitcode file format and whole program
+optimization is done at link time. -O1 is somewhere between -O0 and -O2.
+</code></pre>
+<pre><code class="language-shell">
+
+    -O0 Means “no optimization”: this level compiles the fastest and generates the most debuggable code.
+
+    -O1 Somewhere between -O0 and -O2.
+
+    -O2 Moderate level of optimization which enables most optimizations.
+
+    -O3 Like -O2, except that it enables optimizations that take longer to perform or that may generate larger code (in an attempt to make the program run faster).
+
+    -Ofast Enables all the optimizations from -O3 along with other aggressive optimizations that may violate strict compliance with language standards.
+
+    -Os Like -O2 with extra optimizations to reduce code size.
+
+    -Oz Like -Os (and thus -O2), but reduces code size further.
+
+    -Og Like -O1. In future versions, this option might disable different optimizations in order to improve debuggability.
+
+    -O Equivalent to -O2.
+
+    -O4 and higher
+
+        Currently equivalent to -O3
+
+
+</code></pre>
+<p><code>gcc -O</code> is equal <code>gcc -O1</code>. </p>
+<h1 id="how-to-use">How to use</h1>
+<p>the <code>opt</code> is defaut use the ll file or bc file. And the output is bc file. If you want to the output is ll file, you should use the <code>-S</code>.</p>
+<pre><code>opt -O3 sum.ll -o sum.O3.ll
+opt -O3 sum.ll -o sum.O3.ll -S
+</code></pre>
+<pre><code class="language-asm">
+  --O0                                               - Optimization level 0. Similar to clang -O0
+  --O1                                               - Optimization level 1. Similar to clang -O1
+  --O2                                               - Optimization level 2. Similar to clang -O2
+  --O3                                               - Optimization level 3. Similar to clang -O3
+  --Os                                               - Like -O2 with extra optimizations for size. Similar to clang -Os
+  --Oz                                               - Like -Os but reduces code size further. Similar to clang -Oz
+  -S                                                 - Write output as LLVM assembly
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

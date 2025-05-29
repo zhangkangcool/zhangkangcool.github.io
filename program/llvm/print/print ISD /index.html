@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>print ISD  - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../pass/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AApass/%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AApass/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../type/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>输出机器相关ISD</p>
+<pre><code class="language-c++">DAG.getMachineFunct.ion().getFunction().dump();
+</code></pre>
+<p>机器相关REG</p>
+<pre><code class="language-asm">17510 bb.0 (%ir-block.2):                                                                                            |  17606 bb.0 (%ir-block.2):
+  17511   successors: %bb.15(0x006cdd21), %bb.1(0x7f9322df); %bb.15(0.33%), %bb.1(99.67%)                              |  17607   successors: %bb.17(0x006cdd21), %bb.1(0x7f9322df); %bb.17(0.33%), %bb.1(99.67%)
+  17512   LIFETIME_START %stack.2                                                                                      |  17608   LIFETIME_START %stack.2
+  17513   ADJCALLSTACKDOWN 32, 0, implicit-def dead $r1, implicit $r1                                                  |  17609   ADJCALLSTACKDOWN 32, 0, implicit-def dead $r1, implicit $r1
+  17514   %32:g8rc = ADDI8 %stack.2, 0                                                                                 |  17610   %63:g8rc = ADDI8 %stack.2, 0
+  17515   $x3 = COPY %30:g8rc                                                                                          |  17611   $x3 = COPY %61:g8rc
+  17516   $x4 = COPY %31:g8rc                                                                                          |  17612   $x4 = COPY %62:g8rc
+  17517   $x5 = COPY %32:g8rc                                                                                          |  17613   $x5 = COPY %63:g8rc
+  17518   BL8 @MAIN_parseCommandLine, &lt;regmask $cr2 $cr3 $cr4 $f14 $f15 $f16 $f17 $f18 $f19 $f20 $f21 $f22 $f23 $f24 $f|  17614   BL8 @MAIN_parseCommandLine, &lt;regmask $cr2 $cr3 $cr4 $f14 $f15 $f16 $f17 $f18 $f19 $f20 $f21 $f22 $f23 $f24 $
+  17519   ADJCALLSTACKUP 32, 0, implicit-def dead $r1, implicit $r1                                                    |  17615   ADJCALLSTACKUP 32, 0, implicit-def dead $r1, implicit $r1
+  17520   LIFETIME_START %stack.0                                                                                      |  17616   LIFETIME_START %stack.0
+  17521   ADJCALLSTACKDOWN 32, 0, implicit-def dead $r
+</code></pre>
+<p>输出机器无关ISD</p>
+<pre><code class="language-c++">DAG.getMachineFunction().dump();
+</code></pre>
+<p>机器无关REG</p>
+<pre><code class="language-asm">18039 define dso_local signext i32 @main(i32 signext %0, i8** nocapture readonly %1) local_unnamed_addr       #11 !prof !105 !section_prefix !96 {
+18040   %3 = alloca [3 x [32 x i8]], align 1
+18041   %4 = alloca [3 x [32 x i8]], align 1
+18042   %5 = alloca %struct.MAIN_Param, align 8
+18043   %6 = bitcast %struct.MAIN_Param* %5 to i8*
+18044   call void @llvm.lifetime.start.p0i8(i64 32, i8* nonnull %6) #12
+18045   call fastcc void @MAIN_parseCommandLine(i32 signext %0, i8** %1, %struct.MAIN_Param* nonnull %5      )
+18046   %7 = bitcast [3 x [32 x i8]]* %3 to i8*
+18047   call void @llvm.lifetime.start.p0i8(i64 96, i8* nonnull %7) #12
+18048   call void @llvm.memcpy.p0i8.p0i8.i64(i8* nonnull align 1 dereferenceable(96) %7, i8* nonnull al      ign 1 dereferenceable(96) getelementptr inbounds ([3 x [32 x i8]], [3 x [32 x i8]]* @__const.MAIN      _printInfo.actionString, i64 0, i64 0, i64 0), i64 96, i1 false) #12
+18049   %8 = bitcast [3 x [32 x i8]]* %4 to i8*
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

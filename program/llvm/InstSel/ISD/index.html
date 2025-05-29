@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>./lib/CodeGen/TargetLoweringBase.cpp - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../ISD%20inst%20to%20PPC%20inst/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Instruction%20Format/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#libcodegentargetloweringbasecpp" class="nav-link">./lib/CodeGen/TargetLoweringBase.cpp</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#includellvmtargettargetselectiondagtd" class="nav-link">./include/llvm/Target/TargetSelectionDAG.td</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#isd-instruction" class="nav-link">ISD instruction</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#isd-node" class="nav-link">ISD Node</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="libcodegentargetloweringbasecpp">./lib/CodeGen/TargetLoweringBase.cpp</h1>
+<p>http://llvm.org/doxygen/namespacellvm_1_1ISD.html</p>
+<p>此文件中有IR Opcode到ISD的转换</p>
+<pre><code class="language-c++">1446 int TargetLoweringBase::InstructionOpcodeToISD(unsigned Opcode) const {
+1447   enum InstructionOpcodes {
+1448 #define HANDLE_INST(NUM, OPCODE, CLASS) OPCODE = NUM,
+1449 #define LAST_OTHER_INST(NUM) InstructionOpcodesCount = NUM
+1450 #include &quot;llvm/IR/Instruction.def&quot;
+1451   };
+1452   switch (static_cast&lt;InstructionOpcodes&gt;(Opcode)) {
+1453   case Ret:            return 0;
+...
+1492   case Trunc:          return ISD::TRUNCATE;
+1493   case ZExt:           return ISD::ZERO_EXTEND;
+1494   case SExt:           return ISD::SIGN_EXTEND;
+1495   case FPToUI:         return ISD::FP_TO_UINT;
+1496   case FPToSI:         return ISD::FP_TO_SINT;
+1497   case UIToFP:         return ISD::UINT_TO_FP;
+1498   case SIToFP:         return ISD::SINT_TO_FP;
+1499   case FPTrunc:        return ISD::FP_ROUND;
+1500   case FPExt:          return ISD::FP_EXTEND;
+1501   case PtrToInt:       return ISD::BITCAST;
+1502   case IntToPtr:       return ISD::BITCAST;
+1503   case BitCast:        return ISD::BITCAST;
+1504   case AddrSpaceCast:  return ISD::ADDRSPACECAST;
+</code></pre>
+<h1 id="includellvmtargettargetselectiondagtd">./include/llvm/Target/TargetSelectionDAG.td</h1>
+<pre><code class="language-c++">124 def SDTIntBinHiLoOp : SDTypeProfile&lt;2, 2, [ // mulhi, mullo, sdivrem, udivrem
+ 125   SDTCisSameAs&lt;0, 1&gt;, SDTCisSameAs&lt;0, 2&gt;, SDTCisSameAs&lt;0, 3&gt;,SDTCisInt&lt;0&gt;
+ 126 ]&gt;;
+
+352 def sdiv       : SDNode&lt;&quot;ISD::SDIV&quot;      , SDTIntBinOp&gt;;
+ 353 def udiv       : SDNode&lt;&quot;ISD::UDIV&quot;      , SDTIntBinOp&gt;;
+ 354 def srem       : SDNode&lt;&quot;ISD::SREM&quot;      , SDTIntBinOp&gt;;
+ 355 def urem       : SDNode&lt;&quot;ISD::UREM&quot;      , SDTIntBinOp&gt;;
+ 356 def sdivrem    : SDNode&lt;&quot;ISD::SDIVREM&quot;   , SDTIntBinHiLoOp&gt;;
+</code></pre>
+<h1 id="isd-instruction">ISD instruction</h1>
+<h3 id="vector">VECTOR</h3>
+<h4 id="1-vector_shuffle">1 VECTOR_SHUFFLE</h4>
+<pre><code>VECTOR_SHUFFLE(VEC1, VEC2) - Returns a vector, of the same type as VEC1/VEC2.
+
+A VECTOR_SHUFFLE node also contains an array of constant int values that indicate which value (or undef) each result element will get. These constant ints are accessible through the ShuffleVectorSDNode class. This is quite similar to the Altivec 'vperm' instruction, except that the indices must be constants and are in terms of the element size of VEC1/VEC2, not in terms of bytes.
+</code></pre>
+<p>将VEC1与VEC2进行连接，然后选取VEC1_VEC2中的元素组成新的VEC，会根据MASK进行选择。</p>
+<p>MASK可以是任意的长度。</p>
+<pre><code class="language-shell">t10: v4f32 = vector_shuffle&lt;5,0,2,7&gt; t9, t4
+
+t9 = &lt;1.0, 2.0, 3.0, 4.0&gt;
+t4 = &lt;5.0, 6.0, 7.0, 8.0&gt;
+mask = &lt;5, 0, 2, 7&gt;
+t9_t4 = &lt;1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0&gt;
+vector_shuffle&lt;5,0,2,7&gt; t9, t4 = &lt;6.0, 1.0, 3.0, 8.0&gt;
+</code></pre>
+<h4 id="ir">对就的IR是</h4>
+<pre><code>&lt;result&gt; = shufflevector&lt;4 x i32&gt;%v1, &lt;4 x i32&gt;%v2, &lt;4 x i32&gt;&lt;i32 0, i32 4, i32 1, i32 5&gt;
+&lt;result&gt; = shufflevector v1, v2, MASK
+</code></pre>
+<pre><code class="language-shell">define void @VMRGLW_xx(&lt;16 x i8&gt;* %A) {
+entry:
+  %tmp = load &lt;16 x i8&gt;, &lt;16 x i8&gt;* %A, align 16
+  %tmp2 = shufflevector &lt;16 x i8&gt; %tmp, &lt;16 x i8&gt; %tmp, &lt;16 x i32&gt; &lt;i32 0, i32 1, i32 2, i32 3, i32 0, i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 4, i32 5, i32 6, i32 7&gt;
+  store &lt;16 x i8&gt; %tmp2, &lt;16 x i8&gt;* %A, align 16
+  ret void
+}
+
+tmp = &lt;0到15&gt;
+tmp2=&lt;0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7&gt; ==&gt; vmrglw
+</code></pre>
+<hr />
+<h3 id="ppcisd">PPCISD</h3>
+<hr />
+<h2 id="isd-node">ISD Node</h2>
+<h4 id="selectsetccselect_ccvselect">SELECT/SETCC/SELECT_CC/VSELECT</h4>
+<ul>
+<li>SELECT(CC, TRUEVAL, FALSEVAL).</li>
+</ul>
+<p>If the type of the boolean COND is not i1 then the high bits must conform to getBooleanContents.</p>
+<p><code>ret: i64 = select seteq:ch t0, t1</code></p>
+<ul>
+<li>SELECT_CC(Cond, LHS, RHS, TrueEval, FalseEval, CC)</li>
+</ul>
+<p><code>ret: i64 = select_cc  t0, t1, t2, t3, seteq:ch</code></p>
+<ul>
+<li>SETCC(LHS, RHS, CC)</li>
+</ul>
+<p><code>ret: i1 = setcc  t0, t1, seteq:ch</code></p>
+<h5 id="fp_exend">FP_EXEND</h5>
+<pre><code>488 ISEL: Starting selection on root node: t17: f64 = fp_extend t4
+ 489 ISEL: Starting pattern match
+ 490   Initial Opcode index to 99638
+ 491   TypeSwitch[f64] from 99639 to 99642
+ 492 Creating constant: t26: i32 = TargetConstant&lt;11&gt;
+ 493   Morphed node: t17: f64 = COPY_TO_REGCLASS t4, TargetConstant:i32&lt;11&gt;
+ 494 ISEL: Match complete!
+</code></pre>
+<p>FP_EXTEND会变成<code>COPY_TO_REGCLASS</code>，fp32变为fp64，不需要加任何指令。</p>
+<h3 id="insert_vector_elt-scalar_to_vector">insert_vector_elt &amp; scalar_to_vector</h3>
+<pre><code>Legalizing: t19: v2i64 = insert_vector_elt undef:v2i64, t16, Constant:i32&lt;0&gt;
+Trying to expand node
+Creating new node: t27: v2i64 = scalar_to_vector t16
+Successfully expanded node
+ ... replacing: t19: v2i64 = insert_vector_elt undef:v2i64, t16, Constant:i32&lt;0&gt;
+     with:      t27: v2i64 = scalar_to_vector t16
+</code></pre>
+<h3 id="xxpermdi-xt-xa-xb-dm">XXPERMDI XT, XA, XB, DM</h3>
+<p>从XA,XB中各取一个元素</p>
+<p>XA中选一个要求DMbit[0]选一个元素作为XT.dword[0]，</p>
+<p>XB中选一个要求DMbit[1]选一个元素作为XT.dword[1]。</p>
+<p>DM = 0xnm</p>
+<p>DMbit[0] = 0，则 XT.dword[0] = XA.dword[0]，否则XT.dword[0] = XA.dword[1].</p>
+<p>DMbit[1] = 0，则 XT.dword[1] = XB.dword[0]，否则XT.dword[1] = XB.dword[1].</p>
+<pre><code>src1 = VSR[XA]
+ --------------------------------
+|  dword[0] = a  |  dword[1] = b |
+ --------------------------------
+
+
+src1 = VSR[XB]
+ --------------------------------
+|  dword[0] = c  |  dword[1] = d |
+ --------------------------------
+
+
+
+tgt = VSR[XT]
+ --------------------------------
+|  dword[0]      |  dword[1]     |
+ --------------------------------
+
+XA: ab
+XB: cd
+
+xxspltd T, A, 0  &lt;===&gt; xxpermdi T, A, A, 0b00 ==&gt; aa
+xxspltd T, A, 1  &lt;===&gt; xxpermdi T, A, A, 0b11 ==&gt; bb
+xxmghd  T, A, B  &lt;===&gt; xxpermdi T, A, B, 0b00 ==&gt; ac
+xxmgld  T, A, B  &lt;===&gt; xxpermdi T, A, B, 0b11 ==&gt; bd
+xxswapd T, A     &lt;===&gt; xxpermdi T, A, A, 0b10 ==&gt; ad （交换dword[1]）
+</code></pre>
+<pre><code>SDValue Ef64 = DAG.getNode(ISD::UNDEF, dl, MVT::f64);
+SDValue TVVec = DAG.getNode(ISD::BUILD_VECTOR, dl, MVT::v2f64, Ef64, TV);
+
+===&gt; 使用t43中低位向量2次，组成新向量
+t28: v2f64 = XXPERMDI t43, t43, TargetConstant:i32&lt;0&gt;
+</code></pre>
+<h3 id="fpextend">类型转换FPEXTEND</h3>
+<p>fp32-&gt;fp64，不会产生任何指令，fp64-&gt;fp128会产生一条<code>sxcvdpqp</code>指令。</p>
+<pre><code>  def : Pat&lt;(f64 (fpextend f32:$src)),
+            (COPY_TO_REGCLASS $src, VSFRC)&gt;;
+
+// Convert DP -&gt; QP
+  def XSCVDPQP  : X_VT5_XO5_VB5_TyVB&lt;63, 22, 836, &quot;xscvdpqp&quot;, vfrc,
+                                     [(set f128:$vT, (fpextend f64:$vB))]&gt;;
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

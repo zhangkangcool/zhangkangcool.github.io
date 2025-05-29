@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Traverse - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../llvm%20dir/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E6%9F%A5%E7%9C%8B%E4%B8%AA%E4%BA%BA%E5%9C%A8github%E4%B8%8A%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BB%A3%E7%A0%81/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#machinefunction" class="nav-link">通过MachineFunction遍历指令</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#functionbasicblock" class="nav-link">通过 Function遍历BasicBlock</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#basicblockbasicblock" class="nav-link">通过某一BasicBlock遍历所有BasicBlock</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">遍历指令</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#basicblock" class="nav-link">在BasicBlock中迭代指令</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#basicblock_1" class="nav-link">在BasicBlock中迭代指令</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">迭代函数中的指令</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_3" class="nav-link">遍历所有后继</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#iteration-value" class="nav-link">iteration &amp; value</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_4" class="nav-link">遍历的对象不能修改</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="machinefunction">通过<code>MachineFunction</code>遍历指令</h2>
+<pre><code>  for (MachineFunction::const_iterator MFI = MF.begin(), MFE = MF.end();
+       MFI!=MFE; ++MFI) {
+
+    for (MachineBasicBlock::const_instr_iterator MBBI = MFI-&gt;instr_begin(),
+           MBBE = MFI-&gt;instr_end(); MBBI != MBBE; ++MBBI) {
+      dbgs() &lt;&lt; __LINE__ &lt;&lt; &quot; &quot; &lt;&lt; *MBBI;
+    }
+  }
+</code></pre>
+<h2 id="functionbasicblock">通过 <code>Function遍历BasicBlock</code></h2>
+<p>您需要遍历构成Function的所有BasicBlocks。 以下是打印BasicBlock的名称及其包含的Instructions个数的示例:</p>
+<pre><code>// func is a pointer to a Function instance
+for (Function::iterator i = func-&gt;begin(), e = func-&gt;end(); i != e; ++i)
+  // Print out the name of the basic block if it has one, and then the
+  // number of instructions that it contains
+  errs() &lt;&lt; &quot;Basic block (name=&quot; &lt;&lt; i-&gt;getName() &lt;&lt; &quot;) has &quot;
+             &lt;&lt; i-&gt;size() &lt;&lt; &quot; instructions.\n&quot;;
+</code></pre>
+<h2 id="basicblockbasicblock">通过某一BasicBlock遍历所有BasicBlock</h2>
+<p>遍历所有前驱</p>
+<pre><code>#include &quot;llvm/Support/CFG.h&quot;
+BasicBlock *BB = ...;
+
+for (pred_iterator PI = pred_begin(BB), E = pred_end(BB); PI != E; ++PI) {
+  BasicBlock *Pred = *PI;
+  // ...
+}
+</code></pre>
+<p>同样，为了迭代继承者，使用succ_iterator/succ_begin/succ_end。</p>
+<h1 id="_1">遍历指令</h1>
+<h2 id="basicblock">在BasicBlock中迭代指令</h2>
+<pre><code>// blk是一个指向BasicBlock实例的指针
+for (BasicBlock::iterator i = blk-&gt;begin(), e = blk-&gt;end(); i != e; ++i)
+   // 下一个语句工作，因为运算符&lt;&lt;（ostream＆，...）重载了指令&amp;
+   errs() &lt;&lt; *i &lt;&lt; &quot;\n&quot;;
+
+</code></pre>
+<h2 id="basicblock_1">在BasicBlock中迭代指令</h2>
+<pre><code> for (const MachineInstr &amp;MI : MBB.instrs()) {
+</code></pre>
+<h2 id="_2">迭代函数中的指令</h2>
+<pre><code>#include &quot;llvm/IR/InstIterator.h&quot;
+
+Function *F;
+// F是一个指向Function实例的指针
+for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I)
+  errs() &lt;&lt; *I &lt;&lt; &quot;\n&quot;;
+</code></pre>
+<h1 id="_3">遍历所有后继</h1>
+<pre><code>for (auto I = CmpBB-&gt;succ_begin(), E = CmpBB-&gt;succ_end(); I != E; ++I)
+</code></pre>
+<pre><code>MachineFunction::iterator MBBIter = ++MBB-&gt;getIterator();
+</code></pre>
+<h1 id="iteration-value">iteration &amp; value</h1>
+<pre><code class="language-shell">MachineBasicBlock::pred_iterator PI
+(*PI)-&gt;getParent();
+
+MachineBasicBlock *MBPtr = *PI;
+普陀山
+</code></pre>
+<h1 id="_4">遍历的对象不能修改</h1>
+<h4 id="-dllvm_enable_expensive_checkson"><code>-DLLVM_ENABLE_EXPENSIVE_CHECKS=On</code>用此选项进行检测</h4>
+<pre><code class="language-shell">-          for (MachineBasicBlock::pred_iterator PI = TBB-&gt;pred_begin(),
+-               PE = TBB-&gt;pred_end(); PI != PE; PI++)
+-            (*PI)-&gt;ReplaceUsesOfBlockWith(TBB, ChainBB);
+
++          while (!TBB-&gt;pred_empty()) {
++            MachineBasicBlock *Pred = *(TBB-&gt;pred_end()-1);
++            Pred-&gt;ReplaceUsesOfBlockWith(TBB, ChainBB);
++          }
+
+          ChainBB-&gt;removeSuccessor(TBB);
+// jump to self
+          // Update the CFG.
+          while (!TBB-&gt;pred_empty()) {
+            MachineBasicBlock *Pred = *(TBB-&gt;pred_end() - 1);
+            Pred-&gt;ReplaceUsesOfBlockWith(TBB, ChainBB);
+          }
+
+          while (!TBB-&gt;succ_empty()) {
+            MachineBasicBlock *Succ = *(TBB-&gt;succ_end() - 1);
+            ChainBB-&gt;addSuccessor(Succ, MBPI-&gt;getEdgeProbability(TBB, Succ));
+            TBB-&gt;removeSuccessor(Succ);
+          }
+</code></pre>
+<pre><code>431  BasicBlock *BeginBB;
+     BeginBB-&gt;getTerminator() 的类型型是 Instruction *
+     BeginBB-&gt;getTerminator()-&gt;dump();
+432   auto LoopSet = std::prev(BeginBB-&gt;getTerminator()-&gt;getIterator());
+</code></pre>
+<pre><code>  MachineBasicBlock::iterator I(MI);
+  removeDeadCode(I, std::next(I));
+</code></pre>
+<h3 id="mioperands">迭代mi.operands</h3>
+<pre><code>for (unsigned i = getDesc().getNumOperands(), e = getNumOperands(); i!= e; ++i)
+  MachineOperand &amp;MO = getOperand(i);
+
+for (unsigned i = Desc.getNumOperands(), e = OldMI.getNumOperands();
+
+
+
+for (const MachineOperand &amp;MO : MI-&gt;operands())
+for (const MachineOperand &amp;MO : MI.implicit_operands())
+for (MachineOperand &amp;MO : MI.explicit_operands())
+for (MachineOperand &amp;MO : reverse(MI.explicit_uses()))
+for (const MachineOperand &amp;MO : MI-&gt;defs())
+for (MachineOperand &amp;MO : MI.uses())
+
+for (const MachineBasicBlock &amp;MBB : MF) 
+for (const MachineBasicBlock *Succ : MBB-&gt;successors())
+for (const MachineBasicBlock *Pred : MBB-&gt;predecessors()) 
+
+MachineFunction::const_iterator MBBI = std::next(MBB-&gt;getIterator());
+
+</code></pre>
+<h3 id="calculate-the-liveness">Calculate the liveness</h3>
+<pre><code class="language-c++">做一个pass,计算并修正liveness
+#include &quot;llvm/CodeGen/LivePhysRegs.h&quot;  
+
+bool runOnMachineFunction(MachineFunction &amp;MF) override {
+  LivePhysRegs LPR;
+  for (MachineFunction::reverse_iterator MFI = MF.rbegin(), MFE = MF.rend();
+       MFI!=MFE; ++MFI) {
+    MFI-&gt;clearLiveIns();
+    computeAndAddLiveIns(LPR, *MFI);
+  //  MFI-&gt;dump();
+  }
+  dbgs() &lt;&lt; __LINE__ &lt;&lt; &quot; zhangkang\n&quot;;
+  MF.dump();
+  assert(false);
+  return false;
+}
+
+
+bool runOnMachineFunction(MachineFunction &amp;MF) override {
+  LivePhysRegs LPR;
+  for (MachineBasicBlock &amp;MBB : make_range(MF.rbegin(), MF.rend())) {
+    MBB.clearLiveIns();
+    computeAndAddLiveIns(LPR, MBB);
+  //  MFI-&gt;dump();
+  }
+  dbgs() &lt;&lt; __LINE__ &lt;&lt; &quot; zhangkang\n&quot;;
+  MF.dump();
+  assert(false);
+  return false;
+}
+
+for (MachineBasicBlock &amp;MBB : make_range(MF.rbegin(), MF.rend())) {
+</code></pre>
+<pre><code class="language-c++">void LiveVariables::analyzePHINodes(const MachineFunction&amp; Fn) {
+  for (const auto &amp;MBB : Fn)
+    for (const auto &amp;BBI : MBB) {
+      if (!BBI.isPHI())
+        break;
+      for (unsigned i = 1, e = BBI.getNumOperands(); i != e; i += 2)
+        if (BBI.getOperand(i).readsReg())
+          PHIVarInfo[BBI.getOperand(i + 1).getMBB()-&gt;getNumber()]
+            .push_back(BBI.getOperand(i).getReg());
+    }
+}
+</code></pre>
+<pre><code class="language-c++">for (const MachineInstr &amp;MI : MBB.instrs()) 
+</code></pre>
+<pre><code class="language-c++">for (SpecsTy::reverse_iterator I = Specs.rbegin(), E = Specs.rend();
+for (auto MI = MBB.rbegin(), E = MBB.rend(); MI != E; ++MI) {
+</code></pre>
+<pre><code>#include &quot;llvm/Support/CFG.h&quot;
+BasicBlock *BB = ...;
+
+for (pred_iterator PI = pred_begin(BB), E = pred_end(BB); PI != E; ++PI) {
+  BasicBlock *Pred = *PI;
+  // ...
+}
+
+</code></pre>
+<pre><code> LI = &amp;getAnalysis&lt;LoopInfoWrapperPass&gt;().getLoopInfo();
+</code></pre>
+<pre><code class="language-c++">237   for (LoopInfo::iterator I = LI-&gt;begin(), E = LI-&gt;end(); I != E; ++I) {
+238     Loop *L = *I;
+239     if (!L-&gt;getParentLoop())
+240       TryConvertLoop(L);
+241   }
+242
+
+
+375   BasicBlock *Header = L-&gt;getHeader();
+376   BasicBlock *Latch = L-&gt;getLoopLatch(); // only one latch
+377
+378   // The loop has only one BasicBlock.
+379   if (Latch &amp;&amp; Latch == Header) {
+380    for (auto &amp;I : *Header) {
+381      I.dump();
+382    }
+383   }
+384 }
+385
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

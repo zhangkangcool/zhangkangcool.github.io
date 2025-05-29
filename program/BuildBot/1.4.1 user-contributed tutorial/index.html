@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>1 Builder - My Docs</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../1.3%20A%20Quick%20Tour/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../2.1%20Instruction%20arch/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-builder" class="nav-link">1 Builder</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#schedulers" class="nav-link">Schedulers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#change-sources" class="nav-link">Change sources</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="1-builder">1 Builder</h1>
+<p>弄一个Builder，使用BuildFactory</p>
+<p>Which control exactly <em>how</em> each build is performed (with a series of <code>BuildStep</code>s, configured in a <code>BuildFactory</code>). Each <code>Build</code> is run on a single worker.</p>
+<pre><code class="language-python">from buildbot.plugins import steps, util
+
+# first, let's create the individual step objects
+
+# step 1: make clean; this fails if the worker has no local copy, but
+# is harmless and will only happen the first time
+makeclean = steps.ShellCommand(name=&quot;make clean&quot;,
+                               command=[&quot;make&quot;, &quot;clean&quot;],
+                               description=&quot;make clean&quot;)
+
+# step 2: svn update (here updates trunk, see the docs for more
+# on how to update a branch, or make it more generic).
+checkout = steps.SVN(baseURL='svn://myrepo/projects/coolproject/trunk',
+                     mode=&quot;update&quot;,
+                     username=&quot;foo&quot;,
+                     password=&quot;bar&quot;,
+                     haltOnFailure=True)
+
+# step 3: make all
+makeall = steps.ShellCommand(name=&quot;make all&quot;,
+                             command=[&quot;make&quot;, &quot;all&quot;],
+                             haltOnFailure=True,
+                             description=&quot;make all&quot;)
+
+# step 4: make packages
+makepackages = steps.ShellCommand(name=&quot;make packages&quot;,
+                                  command=[&quot;make&quot;, &quot;packages&quot;],
+                                  haltOnFailure=True,
+                                  description=&quot;make packages&quot;)
+
+# step 5: upload packages to central server. This needs passwordless ssh
+# from the worker to the server (set it up in advance as part of worker setup)
+uploadpackages = steps.ShellCommand(
+    name=&quot;upload packages&quot;,
+    description=&quot;upload packages&quot;,
+    command=&quot;scp packages/*.rpm packages/*.deb packages/*.tgz someuser@somehost:/repository&quot;,
+    haltOnFailure=True)
+
+# create the build factory and add the steps to it
+f_simplebuild = util.BuildFactory()
+f_simplebuild.addStep(makeclean)
+f_simplebuild.addStep(checkout)
+f_simplebuild.addStep(makeall)
+f_simplebuild.addStep(makepackages)
+f_simplebuild.addStep(uploadpackages)
+
+# finally, declare the list of builders. In this case, we only have one builder
+c['builders'] = [
+    util.BuilderConfig(name=&quot;simplebuild&quot;, workernames=['worker1', 'worker2', 'worker3'],
+                       factory=f_simplebuild)
+]
+</code></pre>
+<h1 id="schedulers">Schedulers</h1>
+<p>什么时候运行Builder，可设置间隔，切换分支等，使用上面定义的<code>simplebuild</code>。</p>
+<p>Which decide when builds should be performed. They collect <code>Change</code>s into <code>BuildRequest</code>s, which are then queued for delivery to <code>Builders</code> until a worker is available.</p>
+<pre><code class="language-python">from buildbot.plugins import schedulers
+
+# define the dynamic scheduler for trunk
+trunkchanged = schedulers.SingleBranchScheduler(name=&quot;trunkchanged&quot;,
+                                                change_filter=util.ChangeFilter(branch=None),
+                                                treeStableTimer=300,
+                                                builderNames=[&quot;simplebuild-trunk&quot;])
+
+# define the dynamic scheduler for the 7.2 branch
+branch72changed = schedulers.SingleBranchScheduler(
+    name=&quot;branch72changed&quot;,
+    change_filter=util.ChangeFilter(branch='branches/7.2'),
+    treeStableTimer=300,
+    builderNames=[&quot;simplebuild-72&quot;])
+
+# define the available schedulers
+c['schedulers'] = [trunkchanged, branch72changed]
+</code></pre>
+<h1 id="change-sources">Change sources</h1>
+<p>源代码修改时，每五分钟拉一次代码</p>
+<p>Which create a Change object each time something is modified in the VC repository. Most <code>ChangeSource</code>s listen for messages from a hook script of some sort. Some sources actively poll the repository on a regular basis. All <code>Change</code>s are fed to the schedulers.</p>
+<pre><code class="language-python">c['change_source'] = []
+c['change_source'].append(changes.GitPoller(
+        'git://github.com/zhangkangcool/hello-world.git',
+        workdir='gitpoller-workdir', branch='master',
+        pollInterval=300))
+</code></pre>
+<p>看到一次change后，等一段时间再build，因为开发人员可能会提交几个change，这样就可以一起测试，节约资源了。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>Debug pass - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../clang%E8%BE%93%E5%87%BA%E6%89%80%E7%BB%8F%E8%BF%87%E7%9A%84pass/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E8%BE%93%E5%87%BA%E5%90%84%E7%A7%8Dpass/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#debug_type-options" class="nav-link">DEBUG_TYPE &amp; Options</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="debug_type-options"><code>DEBUG_TYPE</code> &amp; Options</h2>
+<p><code>./lib/Target/PowerPC/PPCMIPeephole.cpp</code></p>
+<p><code>DEBUG_TYPE</code> is the pass name for debug, and <code>opt&lt;bool&gt;</code> is the option to debug.</p>
+<p>You can use:</p>
+<pre><code class="language-shell">llc run-pass ppc-mi-peepholes -ppc-convert-rr-to-ri  -o run-pass.mir convert-simplify.mir
+llc run-pass ppc-mi-peepholes -ppc-convert-rr-to-ri=false  -o run-pass.mir convert-simplify.mir
+
+llc  early-ret2.ll -enable-shrink-wrap=false -O1
+</code></pre>
+<p>某些pass受opt level和option共同控制，</p>
+<pre><code class="language-c++">452   if (EnableBranchCoalescing &amp;&amp; getOptLevel() != CodeGenOpt::None)
+453     addPass(createPPCBranchCoalescingPass());
+454   TargetPassConfig::addMachineSSAOptimization();
+</code></pre>
+<p><code>llc -enable-ppc-branch-coalesce -debug-pass=Structure -stop-before=ppc-branch-coalescing test.ll</code> </p>
+<p>同时用<code>-enable-ppc-branch-coalesce-stop-before=ppc-branch-coalescing</code>.</p>
+<h3 id="initialize_pass_begindebug_typerunpass">INITIALIZE_PASS_BEGIN中使用的DEBUG_TYPE或者直接是名字，可以用来传给runpass等。</h3>
+<pre><code class="language-c++">1645 INITIALIZE_PASS_BEGIN(PPCMIPeephole, DEBUG_TYPE,
+1646                       &quot;PowerPC MI Peephole Optimization&quot;, false, false)
+  ./MIRCanonicalizerPass.cpp:INITIALIZE_PASS_BEGIN(MIRCanonicalizer, &quot;mir-canonicalizer&quot;,
+</code></pre>
+<pre><code class="language-c++">#define DEBUG_TYPE &quot;ppc-mi-peepholes&quot;
+
+STATISTIC(RemoveTOCSave, &quot;Number of TOC saves removed&quot;);
+STATISTIC(MultiTOCSaves,
+          &quot;Number of functions with multiple TOC saves that must be kept&quot;);
+STATISTIC(NumEliminatedSExt, &quot;Number of eliminated sign-extensions&quot;);
+STATISTIC(NumEliminatedZExt, &quot;Number of eliminated zero-extensions&quot;);
+STATISTIC(NumOptADDLIs, &quot;Number of optimized ADD instruction fed by LI&quot;);
+STATISTIC(NumConvertedToImmediateForm,
+          &quot;Number of instructions converted to their immediate form&quot;);
+STATISTIC(NumFunctionsEnteredInMIPeephole,
+          &quot;Number of functions entered in PPC MI Peepholes&quot;);
+STATISTIC(NumFixedPointIterations,
+          &quot;Number of fixed-point iterations converting reg-reg instructions &quot;
+          &quot;to reg-imm ones&quot;);
+
+static cl::opt&lt;bool&gt;
+FixedPointRegToImm(&quot;ppc-reg-to-imm-fixed-point&quot;, cl::Hidden, cl::init(true),
+                   cl::desc(&quot;Iterate to a fixed point when attempting to &quot;
+                            &quot;convert reg-reg instructions to reg-imm&quot;));
+
+static cl::opt&lt;bool&gt;
+ConvertRegReg(&quot;ppc-convert-rr-to-ri&quot;, cl::Hidden, cl::init(true),
+              cl::desc(&quot;Convert eligible reg+reg instructions to reg+imm&quot;));
+
+static cl::opt&lt;bool&gt;
+    EnableSExtElimination(&quot;ppc-eliminate-signext&quot;,
+                          cl::desc(&quot;enable elimination of sign-extensions&quot;),
+                          cl::init(false), cl::Hidden);
+
+static cl::opt&lt;bool&gt;
+    EnableZExtElimination(&quot;ppc-eliminate-zeroext&quot;,
+                          cl::desc(&quot;enable elimination of zero-extensions&quot;),
+                          cl::init(false), cl::Hidden);
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

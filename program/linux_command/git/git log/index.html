@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>1 git reflog - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../git%20format-patch/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../git%20merge/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-git-reflog" class="nav-link">1 git reflog</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-git-logcommitcommit" class="nav-link">2 git log查看两次commit之间的commit</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#3-git-log" class="nav-link">3 git log查看记录信息</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="1-git-reflog">1 git reflog</h1>
+<p>该命令可以查看最近所有的HEAD变化，一般用于恢复。查看git reset的用法md</p>
+<h1 id="2-git-logcommitcommit">2 git log查看两次commit之间的commit</h1>
+<p>https://blog.csdn.net/robertsong2004/article/details/46893211</p>
+<pre><code class="language-shell">git log --pretty=oneline tagA...tagB // 中间是3个句号
+如：
+git log --pretty=oneline efb9e45d6bc5dda4d3131701df24cf764e99d544...3ecab8e4555aee0b4aa10c413696a67f55948c39
+3ecab8e4555aee0b4aa10c413696a67f55948c39 Reapply r372285 &quot;GlobalISel: Don't materialize immarg arguments to intrinsics&quot;
+e0900f285bb532790ed494df901f87c5c8b904da [MCA] Improved cost computation for loop carried dependencies in the bottleneck analysis.
+7cb60fb00f545dae7e161d8b7c24d674d7d008f9 Make appendCallNB lambda mutable
+7decdbf2db8fcf78233f40195f6d5c5b7c396224 X86: Add missing test for vshli SimplifyDemandedBitsForTargetNode
+
+从tagA到tagB排序，从上往下。最好tagA是最新的，tagB是比较老的 
+</code></pre>
+<p>显示分支合并情况等信息</p>
+<pre><code class="language-shell">git log --pretty=format:&quot;%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]&quot; --decorate --date=short --graph cf6aafa47c3771e4f353bfbdeb8157347b305339...19d96ca63f8480ae705a377cd98c072916d33590
+</code></pre>
+<p>If you just wanted commits reachable from tagB but not tagA:</p>
+<pre><code class="language-shell">git log --pretty=oneline tagA..tagB    
+</code></pre>
+<p>或</p>
+<pre><code class="language-shell">git log --pretty=oneline ^tagA tagB
+</code></pre>
+<h1 id="3-git-log">3 git log查看记录信息</h1>
+<p>默认git log 出来的格式并不是特别直观，很多时候想要更简便的输出更多或者更少的信息，这里列出几个git log的format。
+可以根据自己的需要定制。</p>
+<p>git log命令可一接受一个--pretty选项，来确定输出的格式.</p>
+<p>比如 ：</p>
+<p>如果我们只想输出hash.</p>
+<pre><code class="language-shell">git log --pretty=format:&quot;%h %an %s %cd&quot; 
+这里的时间可以自己进行定制
+</code></pre>
+<p>详细 命令 ：</p>
+<ul>
+<li>%H: commit hash</li>
+<li>%h: 缩短的commit hash</li>
+<li>%T: tree hash</li>
+<li>%t: 缩短的 tree hash</li>
+<li>%P: parent hashes</li>
+<li>%p: 缩短的 parent hashes</li>
+<li>%an: 作者名字</li>
+<li>%aN: mailmap的作者名字 (.mailmap对应，详情参照<a href="http://linux.die.net/man/1/git-shortlog">git-shortlog(1)</a>或者<a href="http://linux.die.net/man/1/git-blame">git-blame(1)</a>)</li>
+<li>%ae: 作者邮箱</li>
+<li>%aE: 作者邮箱 (.mailmap对应，详情参照<a href="http://linux.die.net/man/1/git-shortlog">git-shortlog(1)</a>或者<a href="http://linux.die.net/man/1/git-blame">git-blame(1)</a>)</li>
+<li>%ad: 日期 (--date= 制定的格式)</li>
+<li>%aD: 日期, RFC2822格式</li>
+<li>%ar: 日期, 相对格式(1 day ago)</li>
+<li>%at: 日期, UNIX timestamp</li>
+<li>%ai: 日期, ISO 8601 格式</li>
+<li>%cn: 提交者名字</li>
+<li>%cN: 提交者名字 (.mailmap对应，详情参照<a href="http://linux.die.net/man/1/git-shortlog">git-shortlog(1)</a>或者<a href="http://linux.die.net/man/1/git-blame">git-blame(1)</a>)</li>
+<li>%ce: 提交者 email</li>
+<li>%cE: 提交者 email (.mailmap对应，详情参照<a href="http://linux.die.net/man/1/git-shortlog">git-shortlog(1)</a>或者<a href="http://linux.die.net/man/1/git-blame">git-blame(1)</a>)</li>
+<li>%cd: 提交日期 (--date= 制定的格式)</li>
+<li>%cD: 提交日期, RFC2822格式</li>
+<li>%cr: 提交日期, 相对格式(1 day ago)</li>
+<li>%ct: 提交日期, UNIX timestamp</li>
+<li>%ci: 提交日期, ISO 8601 格式</li>
+<li>%d: ref名称</li>
+<li>%e: encoding</li>
+<li>%s: commit信息标题</li>
+<li>%f: sanitized subject line, suitable for a filename</li>
+<li>%b: commit信息内容</li>
+<li>%N: commit notes</li>
+<li>%gD: reflog selector, e.g., refs/stash@{1}</li>
+<li>%gd: shortened reflog selector, e.g., stash@{1}</li>
+<li>%gs: reflog subject</li>
+<li>%Cred: 切换到红色</li>
+<li>%Cgreen: 切换到绿色</li>
+<li>%Cblue: 切换到蓝色</li>
+<li>%Creset: 重设颜色</li>
+<li>%C(...): 制定颜色, as described in color.branch.* config option</li>
+<li>%m: left, right or boundary mark</li>
+<li>%n: 换行</li>
+<li>%%: a raw %</li>
+<li>%x00: print a byte from a hex code</li>
+<li>%w([[,[,]]]): switch line wrapping, like the -w option of git-shortlog(1)</li>
+</ul>
+<h4 id="merge">merge时所使用的命令，查看分支的合并情况</h4>
+<pre><code class="language-shell">git log --pretty=format:&quot;%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]&quot; --decorate --date=short --graph
+
+git log --pretty=format:&quot;%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]&quot; --decorate --date=short --graph latest...last
+
+查看两个之间的情况
+git log --pretty=format:&quot;%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]&quot; --decorate --date=short --graph cf6aafa47c3771e4f353bfbdeb8157347b305339...19d96ca63f8480ae705a377cd98c072916d33590
+</code></pre>
+<pre><code class="language-shell">[shkzhang@recycler:~/llvm]$ git log --pretty=format:&quot;%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]&quot; --decorate --date=short --graph
+
+*   d61cf5585b0\ 2019-12-30 (HEAD -&gt; wyvern_dev, origin/wyvern_dev, origin/wyehia/merge_d1b51c5de7a0)\ merge d1b51c5de7a0b7a7d81c3b520614a139eb0160d2 into wyvern_dev\ [Wael Yehia]
+|\
+| * d1b51c5de7a\ 2019-12-28\ [PowerPC] Modify the hasSideEffects of some VSX instructions from 1 to 0\ [Kang Zhang]
+* | 776b5fbc5c6\ 2019-12-30\ Revert &quot;Merge 'd1b51c5de7a0b7a7d81c3b520614a139eb0160d2' &quot; (#979)\ [GitHub Enterprise]
+* | 0408d2385a7\ 2019-12-30\ Merge 'd1b51c5de7a0b7a7d81c3b520614a139eb0160d2' into shkzhang_wyvern_dev_D71391_conflict\ [GitHub Enterprise]
+* |   b5659428406\ 2019-12-28\ Merge commit 'a3f896481329f64aac845e03cfda8f1154ce6079' into wyvern_dev\ [xlcit]
+|\ \
+| |/
+| * a3f89648132\ 2019-12-27\ [TargetLowering] Update comment to reference the correct compiler-rt function the code is based on. NFC\ [Craig Topper]
+| * f83a8efe879\ 2019-12-27\ [mlir] Merge the successor operand count into BlockOperand.\ [River Riddle]
+| * 0bc7665d988\ 2019-12-27\ [ADT] Fix FoldingSet documentation typos\ [Brian Gesiak]
+| * 044cc919f4b\ 2019-12-27\ Delete setjmp_undefined_for_msvc workaround after llvm.setjmp was removed\ [Fangrui Song]
+| * f7910496c83\ 2019-12-27\ [Intrinsic] Delete tablegen rules of llvm.{sig,}{setjmp,longjmp}\ [Fangrui Song]
+| * 22f34c7f34a\ 2019-12-27\ lld: Remove explicit copy ops from AssociatedIterator, relying on implicit operators\ [David Blaikie]
+| * c51b45e32ef\ 2019-12-27\ DebugInfo: Fix rangesBaseAddress DICompileUnit bitcode serialization/deserialization\ [David Blaikie]
+| * a33cab0f06e\ 2019-12-27\ AMDGPU: Adjust test so it will work with GlobalISel\ [Matt Arsenault]
+| * dce7a362bed\ 2019-12-27\ [ELF] Improve the condition to create .interp\ [Fangrui Song]
+| * 33a1b3d8fce\ 2019-12-27\ [sanitizer] Link Sanitizer-x86_64-Test-Nolibc with -static\ [Fangrui Song]
+| * 5ce2ca524e9\ 2019-12-27\ AMDGPU/GlobalISel: Use SReg_32 for readfirstlane constraining\ [Matt Arsenault]
+| * e9775bb5d81\ 2019-08-17\ Hexagon: Fix missing tablegen mode comment\ [Matt Arsenault]
+| * e29ae3799ba\ 2019-12-27\ TII: Fix using Register for a subregister index argument\ [Matt Arsenault]
+| * 9acd9544db9\ 2019-12-27\ AMDGPU: Use Register\ [Matt Arsenault]
+| * b30d87a90ba\ 2019-12-27\ [mlir][spirv] Add basic definitions for supporting availability\ [Lei Zhang]
+| * c3dbd782f1e\ 2019-12-27\ Revert &quot;[ELF] Improve the condition to create .interp&quot;\ [Reid Kleckner]
+| * 1d891a32cf4\ 2019-12-27\ Support powerpc and sparc when building without init_array.\ [Sterling Augustine]
+* |   2eacb31febe\ 2019-12-27\ Merge commit 'e8c5600de8b43b2ac22a5aab6ce51e3810f8a4a6' into wyvern_dev\ [xlcit]
+|\ \
+| |/
+| * e8c5600de8b\ 2019-12-27\ [PowerPC][LoopVectorize]Add floating point reg usage test\ [Jinsong Ji]
+| * 596012b2567\ 2019-12-27\ [mlir][spirv] Update docs regarding how to define new ops and types\ [Lei Zhang]
+| * d8018233d1e\ 2019-12-27\ Revert &quot;CWG2352: Allow qualification conversions during reference binding.&quot;\ [David Blaikie]
+| * c3d3569d4ca\ 2019-12-25\ [mlir] Convert std.and/std.or ops to spv.LogicalAnd/spv.LogicalOr\ [MaheshRavishankar]
+| * ef7a659c21f\ 2019-12-27\ Reland &quot;[msan] Intercept qsort, qsort_r.&quot;\ [Reid Kleckner]
+| * 8fcce5ac73d\ 2019-12-27\ Revert &quot;[msan] Intercept qsort, qsort_r.&quot;\ [Reid Kleckner]
+| * 3213ce966b6\ 2019-12-27\ TailDuplication: Clear NoPHIs property\ [Matt Arsenault]
+| * 780d30660e9\ 2019-12-27\ [VFS] Don't run symlink test on Windows, it may pass or fail\ [Reid Kleckner]
+| * 84afd9c5368\ 2019-12-27\ [compiler-rt] [netbsd] Add support for versioned statvfs interceptors\ [Kamil Rytarowski]
+| * b35c585a9a8\ 2019-12-27\ [ConstantRange] Respect destination bitwidth for cast results.\ [Florian Hahn]
+| * 752220ea266\ 2019-12-27\ [OpenCL] Fixed printing of __private in AMDGPU test\ [Anastasia Stulova]
+| * 134ef0fb4b9\ 2019-12-19\ [OpenCL] Fix inconsistency between opencl and c11 atomic fetch max/min\ [Yaxun (Sam) Liu]
+| * dc2c9b0fcf2\ 2019-12-27\ [Matrix] Propagate and use shape info for binary operators.\ [Florian Hahn]
+| * f0722333dd1\ 2019-12-18\ Allow newlines in AST Matchers in clang-query files\ [Stephen Kelly]
+| * 2abda66848e\ 2019-12-27\ [NFC][DA] Remove duplicate code in checkSrcSubscript and checkDstSubscript\ [Danilo Carvalho Grael]
+</code></pre>
+<h4 id="commitcommitcommit">查看父commit,本commit的上一个commit</h4>
+<p>一般用于merge</p>
+<pre><code>git checkout master
+git log --pretty=%P -n 1 f09d54ed2a75b62960b35258136435d7c8d418e1
+294f37561ab155e363be0fca5fa43528d8b29d18
+</code></pre>
+<h3 id="4-git-log-author">4. git log --author</h3>
+<pre><code>git log --author=&quot;zhang kang&quot;
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

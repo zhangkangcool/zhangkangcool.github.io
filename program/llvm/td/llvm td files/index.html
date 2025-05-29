@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>1 include/llvm/IR/IntrinsicsPowerPC.td - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../create%20td%20files/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../llvm-mc/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-includellvmirintrinsicspowerpctd" class="nav-link">1 include/llvm/IR/IntrinsicsPowerPC.td</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-libtargetpowerpcppcinstrinfotd" class="nav-link">2 lib/Target/PowerPC/PPCInstrInfo.td</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#ppcregisterinfotdppc" class="nav-link">PPCRegisterInfo.td(可以看到PPC所有支持的寄存器)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#hassideeffects" class="nav-link">hasSideEffects</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="1-includellvmirintrinsicspowerpctd">1 include/llvm/IR/IntrinsicsPowerPC.td</h1>
+<p>http://www.voidcn.com/article/p-tnhyorey-bmq.html</p>
+<h3 id="11-mem-properties">1.1 Mem properties</h3>
+<p>./include/llvm/IR/Intrinsics.td</p>
+<pre><code class="language-c++">  23 // Intr*Mem - Memory properties.  If no property is set, the worst case
+  24 // is assumed (it may read and write any memory it can get access to and it may
+  25 // have other side effects).
+  26
+  27 // IntrNoMem - The intrinsic does not access memory or have any other side
+  28 // effects.  It may be CSE'd deleted if dead, etc. （no memory, no ch, no gule）
+  29 def IntrNoMem : IntrinsicProperty;
+  30
+  31 // IntrReadMem - This intrinsic only reads from memory. It does not write to
+  32 // memory and has no other side effects. Therefore, it cannot be moved across
+  33 // potentially aliasing stores. However, it can be reordered otherwise and can
+  34 // be deleted if dead.
+  35 def IntrReadMem : IntrinsicProperty;
+  36
+  37 // IntrWriteMem - This intrinsic only writes to memory, but does not read from
+  38 // memory, and has no other side effects. This means dead stores before calls
+  39 // to this intrinsics may be removed.
+  40 def IntrWriteMem : IntrinsicProperty;
+  41
+  42 // IntrArgMemOnly - This intrinsic only accesses memory that its pointer-typed
+  43 // argument(s) points to, but may access an unspecified amount. Other than
+  44 // reads from and (possibly volatile) writes to memory, it has no side effects.
+  45 def IntrArgMemOnly : IntrinsicProperty;
+  46
+  47 // IntrInaccessibleMemOnly -- This intrinsic only accesses memory that is not
+  48 // accessible by the module being compiled. This is a weaker form of IntrNoMem.
+  49 def IntrInaccessibleMemOnly : IntrinsicProperty;
+  50
+  51 // IntrInaccessibleMemOrArgMemOnly -- This intrinsic only accesses memory that
+  52 // its pointer-typed arguments point to or memory that is not accessible
+  53 // by the module being compiled. This is a weaker form of IntrArgMemOnly.
+  54 def IntrInaccessibleMemOrArgMemOnly : IntrinsicProperty;
+  55
+  56 // Commutative - This intrinsic is commutative: X op Y == Y op X.
+  57 def Commutative : IntrinsicProperty;
+  58
+  59 // Throws - This intrinsic can throw.
+  60 def Throws : IntrinsicProperty;
+  61
+  62 // NoCapture - The specified argument pointer is not captured by the intrinsic.
+  63 class NoCapture&lt;int argNo&gt; : IntrinsicProperty {
+  64   int ArgNo = argNo;
+  65 }
+  66
+  67 // Returned - The specified argument is always the return value of the
+  68 // intrinsic.
+  69 class Returned&lt;int argNo&gt; : IntrinsicProperty {
+  70   int ArgNo = argNo;
+  71 }
+  72
+  73 // ReadOnly - The specified argument pointer is not written to through the
+  74 // pointer by the intrinsic.
+  75 class ReadOnly&lt;int argNo&gt; : IntrinsicProperty {
+  76   int ArgNo = argNo;
+  77 }
+  78
+  79 // WriteOnly - The intrinsic does not read memory through the specified
+  80 // argument pointer.
+  81 class WriteOnly&lt;int argNo&gt; : IntrinsicProperty {
+  82   int ArgNo = argNo;
+  83 }
+  84
+  85 // ReadNone - The specified argument pointer is not dereferenced by the
+  86 // intrinsic.
+  87 class ReadNone&lt;int argNo&gt; : IntrinsicProperty {
+  88   int ArgNo = argNo;
+  89 }
+  90
+  91 def IntrNoReturn : IntrinsicProperty;
+  92
+  93 // IntrCold - Calls to this intrinsic are cold.
+  94 // Parallels the cold attribute on LLVM IR functions.
+  95 def IntrCold : IntrinsicProperty;
+  96
+  97 // IntrNoduplicate - Calls to this intrinsic cannot be duplicated.
+  98 // Parallels the noduplicate attribute on LLVM IR functions.
+  99 def IntrNoDuplicate : IntrinsicProperty;
+ 100
+ 101 // IntrConvergent - Calls to this intrinsic are convergent and may not be made
+ 102 // control-dependent on any additional values.
+ 103 // Parallels the convergent attribute on LLVM IR functions.
+ 104 def IntrConvergent : IntrinsicProperty;
+ 105
+ 106 // This property indicates that the intrinsic is safe to speculate.
+ 107 def IntrSpeculatable : IntrinsicProperty;
+ 108
+ 109 // This property can be used to override the 'has no other side effects'
+ 110 // language of the IntrNoMem, IntrReadMem, IntrWriteMem, and IntrArgMemOnly
+ 111 // intrinsic properties.  By default, intrinsics are assumed to have side
+ 112 // effects, so this property is only necessary if you have defined one of
+ 113 // the memory properties listed above.
+ 114 // For this property, 'side effects' has the same meaning as 'side effects'
+ 115 // defined by the hasSideEffects property of the TableGen Instruction class.
+ 116 def IntrHasSideEffects : IntrinsicProperty;
+</code></pre>
+<p>属性越具体越好
+- If the intrinsic only is only one IR and use register and immediate, you can set it <code>IntrNoMem</code>.  No memory, no side effect(no chain, no glue), only data dep.
+- If your builtin fuction use pointer parameter or ld store, you can not use this flag. 
+- <code>X-Form</code> instruction must access the memory, for example <code>dcbtst</code>.</p>
+<h3 id="12-three-builtin-type">1.2 Three builtin type</h3>
+<p>include/llvm/CodeGen/ISDOpcodes.h
+- INTRINSIC_WO_CHAIN</p>
+<pre><code>RESULT = INTRINSIC_WO_CHAIN(INTRINSICID, arg1, arg2,...)，
+</code></pre>
+<p>表示没有副作用的目标机器固有函数。第一个操作数是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。该节点返回该固有函数的结果。</p>
+<p>When you def the Intrinsic, you use the flag <code>IntrNoMem</code>:</p>
+<pre><code>  46   // Intrinsics for [double]word extended forms of divide instructions
+  47   def int_ppc_divwe : GCCBuiltin&lt;&quot;__builtin_divwe&quot;&gt;,
+  48                       Intrinsic&lt;[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty],
+  49                                 [IntrNoMem]&gt;;
+  50   def int_ppc_divweu : GCCBuiltin&lt;&quot;__builtin_divweu&quot;&gt;,
+  51                        Intrinsic&lt;[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty],
+  52                                  [IntrNoMem]&gt;;
+  53   def int_ppc_divde : GCCBuiltin&lt;&quot;__builtin_divde&quot;&gt;,
+  54                       Intrinsic&lt;[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty],
+  55                                 [IntrNoMem]&gt;;
+  56   def int_ppc_divdeu : GCCBuiltin&lt;&quot;__builtin_divdeu&quot;&gt;,
+  57                        Intrinsic&lt;[llvm_i64_ty], [llvm_i64_ty, llvm_i64_ty],
+  58                                  [IntrNoMem]&gt;;
+
+</code></pre>
+<ul>
+<li>INTRINSIC_W_CHAIN</li>
+</ul>
+<pre><code>RESULT, OUTCHAIN = INTRINSIC_W_CHAIN(INCHAIN,INTRINSICID, arg1, ...)
+</code></pre>
+<p>表示返回一个结果的有副作用的目标机器固有函数。第一个操作数是链指针，第二个是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。该节点返回两个结果，该固有函数的结果与输出链。</p>
+<p>When you def the Intrinsic which has return vaule, and not use the flag <code>IntrNoMem</code></p>
+<pre><code>1158 // Extended mnemonics
+1159 def int_ppc_tendall : GCCBuiltin&lt;&quot;__builtin_tendall&quot;&gt;,
+1160       Intrinsic&lt;[llvm_i32_ty], [], []&gt;;
+1161 def int_ppc_tresume : GCCBuiltin&lt;&quot;__builtin_tresume&quot;&gt;,
+1162       Intrinsic&lt;[llvm_i32_ty], [], []&gt;;
+1163 def int_ppc_tsuspend : GCCBuiltin&lt;&quot;__builtin_tsuspend&quot;&gt;,
+1164       Intrinsic&lt;[llvm_i32_ty], [], []&gt;;
+</code></pre>
+<ul>
+<li>INTRINSIC_VOID</li>
+</ul>
+<pre><code>OUTCHAIN = INTRINSIC_VOID(INCHAIN, INTRINSICID, arg1,arg2, ...)
+</code></pre>
+<p>表示不返回值、有副作用的目标机器固有函数。第一个操作数是链指针，第二个是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。</p>
+<p>使用上述三个类型封装固有函数调用，无疑将极大地简化对固有函数的处理，除非必要，我们都无需操心固有函数的语义。因此，这里我们无需它们生成对应的SDNodeInfo对象，而是要记住它们的Record对象，因为它们是什么，我们很清楚。
+When you def the Intrinsic which has return vaule, and not use the flag <code>IntrNoMem</code></p>
+<pre><code>1149 def int_ppc_set_texasr : GCCBuiltin&lt;&quot;__builtin_set_texasr&quot;&gt;,
+1150       Intrinsic&lt;[], [llvm_i64_ty], []&gt;;
+1151 def int_ppc_set_texasru : GCCBuiltin&lt;&quot;__builtin_set_texasru&quot;&gt;,
+1152       Intrinsic&lt;[], [llvm_i64_ty], []&gt;;
+1153 def int_ppc_set_tfhar : GCCBuiltin&lt;&quot;__builtin_set_tfhar&quot;&gt;,
+1154       Intrinsic&lt;[], [llvm_i64_ty], []&gt;;
+1155 def int_ppc_set_tfiar : GCCBuiltin&lt;&quot;__builtin_set_tfiar&quot;&gt;,
+1156       Intrinsic&lt;[], [llvm_i64_ty], []&gt;;
+</code></pre>
+<h3 id="_1"></h3>
+<p>1.3 Intrinsic Definitons</p>
+<pre><code>265 //===----------------------------------------------------------------------===//
+ 266 // Intrinsic Definitions.
+ 267 //===----------------------------------------------------------------------===//
+ 268
+ 269 // Intrinsic class - This is used to define one LLVM intrinsic.  The name of the
+ 270 // intrinsic definition should start with &quot;int_&quot;, then match the LLVM intrinsic
+ 271 // name with the &quot;llvm.&quot; prefix removed, and all &quot;.&quot;s turned into &quot;_&quot;s.  For
+ 272 // example, llvm.bswap.i16 -&gt; int_bswap_i16.
+ 273 //
+ 274 //  * RetTypes is a list containing the return types expected for the
+ 275 //    intrinsic.
+ 276 //  * ParamTypes is a list containing the parameter types expected for the
+ 277 //    intrinsic.
+ 278 //  * Properties can be set to describe the behavior of the intrinsic.
+ 279 //
+ 280 class Intrinsic&lt;list&lt;LLVMType&gt; ret_types,
+ 281                 list&lt;LLVMType&gt; param_types = [],
+ 282                 list&lt;IntrinsicProperty&gt; intr_properties = [],
+ 283                 string name = &quot;&quot;,
+ 284                 list&lt;SDNodeProperty&gt; sd_properties = []&gt; : SDPatternOperator {
+ 285   string LLVMName = name;
+ 286   string TargetPrefix = &quot;&quot;;   // Set to a prefix for target-specific intrinsics.
+ 287   list&lt;LLVMType&gt; RetTypes = ret_types;
+ 288   list&lt;LLVMType&gt; ParamTypes = param_types;
+ 289   list&lt;IntrinsicProperty&gt; IntrProperties = intr_properties;
+ 290   let Properties = sd_properties;
+ 291
+ 292   bit isTarget = 0;
+ 293 }
+ 294
+ 295 /// GCCBuiltin - If this intrinsic exactly corresponds to a GCC builtin, this
+ 296 /// specifies the name of the builtin.  This provides automatic CBE and CFE
+ 297 /// support.
+ 298 class GCCBuiltin&lt;string name&gt; {
+ 299   string GCCBuiltinName = name;
+ 300 }
+</code></pre>
+<h1 id="2-libtargetpowerpcppcinstrinfotd">2 lib/Target/PowerPC/PPCInstrInfo.td</h1>
+<p>https://www.smwenku.com/a/5b8387032b71776c51e3752f/zh-cn/</p>
+<p>https://blog.csdn.net/wuhui_gdnt/article/details/65629125</p>
+<p>XXXInstrInfo.td文件中定义的是目标机的指令格式。这种td文件会被TableGen自动生成c++类型文件。下面主要是要讨论该文件中的代码含义。
+/home/ken/llvm/build/lib/Target/PowerPC/PPCGenDAGISel.inc</p>
+<pre><code class="language-c++">38154 /* 95846*/  /*SwitchOpcode*/ 8, TARGET_VAL(PPCISD::MFFS),// -&gt;95857
+38155 /* 95849*/    OPC_CheckPatternPredicate, 7, // (PPCSubTarget-&gt;hasFPU())
+38156 /* 95851*/    OPC_MorphNodeTo1, TARGET_VAL(PPC::MFFS), 0,
+38157                   MVT::f64, 0/*#Ops*/,
+38158               // Src: (PPCmffs:{ *:[f64] }) - Complexity = 3
+38159               // Dst: (MFFS:{ *:[f64] })
+</code></pre>
+<p><code>MTCTR</code>结点有3个输入，Chain, f64, glue(<code>OPFL_Chain|OPFL_GlueInput|OPFL_GlueOutput</code>)</p>
+<pre><code class="language-c++">27904 /* 66393*/  /*SwitchOpcode*/ 27, TARGET_VAL(PPCISD::MTCTR),// -&gt;66423
+27905 /* 66396*/    OPC_RecordNode, // #0 = 'PPCmtctr' chained node
+27906 /* 66397*/    OPC_CaptureGlueInput,
+27907 /* 66398*/    OPC_RecordChild1, // #1 = $rS
+27908 /* 66399*/    OPC_Scope, 10, /*-&gt;66411*/ // 2 children in Scope
+27909 /* 66401*/      OPC_CheckChild1Type, MVT::i32,
+27910 /* 66403*/      OPC_EmitMergeInputChains1_0,
+27911 /* 66404*/      OPC_MorphNodeTo1, TARGET_VAL(PPC::MTCTR), 0|OPFL_Chain|OPFL_GlueInput|OPFL_GlueOutput,
+27912                     MVT::i32, 1/*#Ops*/, 1,
+27913                 // Src: (PPCmtctr i32:{ *:[i32] }:$rS) - Complexity = 3
+27914                 // Dst: (MTCTR:{ *:[i32] } i32:{ *:[i32] }:$rS)
+27915 /* 66411*/    /*Scope*/ 10, /*-&gt;66422*/
+</code></pre>
+<p>C++类SDNode是构成LLVM的指令选择器所使用的DAG的节点。在Tablegen根据TD文件为指令选择生成的代码中，其核心函数SelectCode就具有原型：SDNode<em>SelectCode(SDNode </em>N)，参数N是要进行指令选择的IR形式的DAG，返回值也是SDNode类型，即选中的指令。</p>
+<p>TableGen不能直接使用C++类，与之对应，它也有自己的SDNode定义。它主要作为dag值的操作符，描述这个dag所代表的操作、操作数，SDNode派生自TD类SDPatternOperator（这是一个空类）。（在LLVM里，SDNode的定义出现在两处：一是在SelectDAGNodes.h里，是一个C++类。另一处在TargetSelectionDAG.td。每个SelectionDAG节点类型都有一个对应的SDNode定义）。</p>
+<p>./include/llvm/Target/TargetSelectionDAG.td</p>
+<h3 id="sdnodeproperty">SDNodeProperty</h3>
+<pre><code>276      classSDNodeProperty;
+
+277      def SDNPCommutative:SDNodeProperty;   // X op Y == Y op X
+
+278      def SDNPAssociative:SDNodeProperty;   // (X op Y) op Z == X op (Y op Z)
+
+279      def SDNPHasChain:SDNodeProperty;   // R/W chain operand and result
+
+280      def SDNPOutGlue:SDNodeProperty;   // Write a flag result
+
+281      def SDNPInGlue: SDNodeProperty;   // Read a flagoperand
+
+282      def SDNPOptInGlue:SDNodeProperty;   // Optionally read a flag operand
+
+283      def SDNPMayStore:SDNodeProperty;   // May write to memory, sets 'mayStore'.
+
+284      def SDNPMayLoad:SDNodeProperty;   // May read memory, sets 'mayLoad'.
+
+285      def SDNPSideEffect:SDNodeProperty;   // Sets 'HasUnmodelledSideEffects'.
+
+286      def SDNPMemOperand:SDNodeProperty;   // Touches memory, has assoc MemOperand
+
+287      def SDNPVariadic:SDNodeProperty;   // Node has variable arguments.
+
+288      def SDNPWantRoot:SDNodeProperty;   // ComplexPattern gets the root of match
+
+289      defSDNPWantParent: SDNodeProperty;   // ComplexPattern gets the parent
+--------------------- 
+作者：wuhui_gdnt 
+来源：CSDN 
+原文：https://blog.csdn.net/wuhui_gdnt/article/details/65629125 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+</code></pre>
+<h3 id="22-def">2.2 Def</h3>
+<h4 id="221-sdnode">2.2.1 SDNode</h4>
+<pre><code>def CPU0Ret               :    SDNode&lt;&quot;CPU0ISD::Ret&quot;, SDTNone, [SDNPHasChain,SDNoptInGlue,SDNPVariadic]&gt;;
+</code></pre>
+<p>每个SelectionDAG节点类型都有一个对应的SDNode定义。该函数的原型在llvm/include/llvm/Target/TargetSelectionDAG.td中。
+- 第一个参数"CPU0ISD::Ret"指的是这个Node结点的名称。
+- 第二个参数是SDTypeProfile类型，它描述了该结点的一些类型要求，详细介绍见下一小节。上面的SDTNone指没有什么要求。
+- 第三个参数指的是该结点所应该具有的属性。上面代码中SDNPHasChai的意思是R/W chain operand and result(具体含义自行理解）; SDNPVariadic的含义则是说该结点有可变参数。其余的属性都可以在TargetSelectioDAG.td中找到。上面这段代码应该是定义了一个返回类型的SDNode结点。</p>
+<h4 id="222-sdtypeprofile">2.2.2 SDTypeProfile</h4>
+<pre><code>def  SDT_Cp0Ret        :    SDTypeProfile&lt;0, 1, [SDTCisInt&lt;0&gt;]&gt;;
+
+// 每0个是返回值
+// v4i32 = Inst v16i8, v4i32
+ 68 def SDT_PPCVecReduce4SBS : SDTypeProfile&lt;1, 2, [ SDTCisVT&lt;0,v4i32&gt;,
+  69   SDTCisVT&lt;1,v16i8&gt;, SDTCisVT&lt;2,v4i32&gt;
+  71 ]&gt;;
+
+</code></pre>
+<p>SDTypeProfile的原型也在TargetSelectionDAG.td中。
+前两个参数是指有几个结果和几个操作数，因为一个SDNode结点里包括有这些内容。如果第二个参数为-1则说明该操作数个数不定。第三个参数是对操作数类型的约束。如这里的SDTCisInt就说明操作数应该是整型的，0则是代表约束的是第一个操作数。</p>
+<h4 id="223-operand">2.2.3 Operand<i32></h4>
+<pre><code>def simm8    ：    Operand&lt;i32&gt;{ let DecoderMethod = &quot;DecodeSimm8&quot;; }
+</code></pre>
+<p>Operand的原型在llvm/include/llvm/Target/Target.td中。
+个人理解是把simm8这个标识当作一个32位的操作数。例如有个8位的数，但是该系统只支持32位的，所以就要进行扩展，这在LLVM中就是SelectionDAG的legalize。</p>
+<h4 id="224-operand">2.2.4 Operand<iPTR></h4>
+<pre><code>      def men    :    Operand&lt;iPTR&gt;{   
+
+                            let PrintMethod = &quot;printMemOperand&quot;;
+
+                            let MIOperandInfo = (ops Cpu0Regs, simm8);
+
+                            let EncoderMethod = &quot;getMemEncoding&quot;; }
+</code></pre>
+<p>这是定义了对内存的操作。（？？？）我推测MIOperandInfo定义的是一种寻址方式，如这里就是一个寄存器（CPURegs)加一个立即数（simm8）的方式。</p>
+<h4 id="225-patleaf">2.2.5 PatLeaf</h4>
+<pre><code>def immSExt8    :    PatLeaf&lt;(imm),[ return isInt&lt;8&gt;(N-&gt;getSExtValue()); }]&gt;
+</code></pre>
+<p>原型在<code>TargetSelectionDAG.td</code>。(imm)是dag类型；N是一个操作数结点，后面就判断该N结点是否为8位的整型，是的话才返回。(但这个的含义也不懂）。给一个8位的立即操作数，之后返回一个常量结点。这样这个常量结点便可以代表这个8位立即数了。至于它是不是8位的立即数就得进行一下判断了。</p>
+<h4 id="226-def-addr">2.2.6 def addr</h4>
+<pre><code>def addr    :    ComplexPattern&lt;iPTR, 2, &quot;SelectAddr&quot;, [frameindex],[SDNPWantParent]&gt;
+</code></pre>
+<p>原型在TargetSelectionDAG.td。这应该是为了处理地址模式比较复杂的情况。2是指SelectAddr方法所返回的操作数个数。SelectAddr似乎定义在了XXXDAGToDAGISel。</p>
+<h1 id="ppcregisterinfotdppc">PPCRegisterInfo.td(可以看到PPC所有支持的寄存器)</h1>
+<p>向量寄存器只支持128(个数 * 位数)位</p>
+<p>VSFRC包括f8rc和VFRC</p>
+<pre><code>// Allocate volatiles first, then non-volatiles in reverse order. With the SVR4
+// ABI the size of the Floating-point register save area is determined by the
+// allocated non-volatile register with the lowest register number, as FP
+// register N is spilled to offset 8 * (32 - N) below the back chain word of the
+// previous stack frame. By allocating non-volatiles in reverse order we make
+// sure that the Floating-point register save area is always as small as
+// possible because there aren't any unused spill slots.
+def F8RC : RegisterClass&lt;&quot;PPC&quot;, [f64], 64, (add (sequence &quot;F%u&quot;, 0, 13),
+                                                (sequence &quot;F%u&quot;, 31, 14))&gt;;
+def F4RC : RegisterClass&lt;&quot;PPC&quot;, [f32], 32, (add F8RC)&gt;;
+
+def VRRC : RegisterClass&lt;&quot;PPC&quot;,
+                         [v16i8,v8i16,v4i32,v2i64,v1i128,v4f32,v2f64, f128],
+                         128,
+                         (add V2, V3, V4, V5, V0, V1, V6, V7, V8, V9, V10, V11,
+                             V12, V13, V14, V15, V16, V17, V18, V19, V31, V30,
+                             V29, V28, V27, V26, V25, V24, V23, V22, V21, V20)&gt;;
+
+// VSX register classes (the allocation order mirrors that of the corresponding
+// subregister classes).
+def VSLRC : RegisterClass&lt;&quot;PPC&quot;, [v4i32,v4f32,v2f64,v2i64], 128,
+                          (add (sequence &quot;VSL%u&quot;, 0, 13),
+                               (sequence &quot;VSL%u&quot;, 31, 14))&gt;;
+def VSRC  : RegisterClass&lt;&quot;PPC&quot;, [v4i32,v4f32,v2f64,v2i64], 128,
+                          (add VSLRC, VRRC)&gt;;
+
+// Register classes for the 64-bit &quot;scalar&quot; VSX subregisters.
+def VFRC :  RegisterClass&lt;&quot;PPC&quot;, [f64], 64,
+                          (add VF2, VF3, VF4, VF5, VF0, VF1, VF6, VF7,
+                               VF8, VF9, VF10, VF11, VF12, VF13, VF14,
+                               VF15, VF16, VF17, VF18, VF19, VF31, VF30,
+                               VF29, VF28, VF27, VF26, VF25, VF24, VF23,
+                               VF22, VF21, VF20)&gt;;
+def VSFRC : RegisterClass&lt;&quot;PPC&quot;, [f64], 64, (add F8RC, VFRC)&gt;;
+
+// Allow spilling GPR's into caller-saved VSR's.
+def SPILLTOVSRRC : RegisterClass&lt;&quot;PPC&quot;, [i64, f64], 64, (add G8RC, (sub VSFRC,
+                (sequence &quot;VF%u&quot;, 31, 20),
+                (sequence &quot;F%u&quot;, 31, 14)))&gt;;
+
+// Register class for single precision scalars in VSX registers
+def VSSRC : RegisterClass&lt;&quot;PPC&quot;, [f32], 32, (add VSFRC)&gt;;
+
+
+
+1404   // CRBITRC Register Class...
+1405   const MCPhysReg CRBITRC[] = {
+1406     PPC::CR2LT, PPC::CR2GT, PPC::CR2EQ, PPC::CR2UN, PPC::CR3LT, PPC::CR3GT, PPC::CR3EQ, PPC::CR3UN     , PPC::CR4LT, PPC::CR4GT, PPC::CR4EQ, PPC::CR4UN, PPC::CR5LT, PPC::CR5GT, PPC::CR5EQ, PPC::CR5UN,      PPC::CR6LT, PPC::CR6GT, PPC::CR6EQ, PPC::CR6UN, PPC::CR7LT, PPC::CR7GT, PPC::CR7EQ, PPC::CR7UN, PP     C::CR1LT, PPC::CR1GT, PPC::CR1EQ, PPC::CR1UN, PPC::CR0LT, PPC::CR0GT, PPC::CR0EQ, PPC::CR0UN,
+1407   };
+</code></pre>
+<p>PPC不支持的类型如<code>v2i32</code>不会出现在td文件中。</p>
+<p>如果想处理的类型不是支持的最基本类型，必须将结果做Lowering（Type Legalize）</p>
+<p>不支持的类型，在指令选择时是无法使用的，这些类型不会出现在指令选择的td文件中。</p>
+<p>如： <code>setOperationAction(ISD::VECREDUCE_ADD, MVT::v2i32, Custom);</code></p>
+<p>void PPCTargetLowering::ReplaceNodeResults()</p>
+<p>setOperationAction(ISD::VECREDUCE_ADD, MVT::v2i32, Custom);</p>
+<h2 id="hassideeffects">hasSideEffects</h2>
+<p>td文件中的hasSideEffects是机器指令属性，他可以在ABI中查找，每个指令后面的有<code>Special Registers Altered</code>表明某条指令是否有side effects。那些<code>Special Registers Altered</code>是空的指令,如<code>VEXTRACTUB</code>的hasSideEffects应该为false。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

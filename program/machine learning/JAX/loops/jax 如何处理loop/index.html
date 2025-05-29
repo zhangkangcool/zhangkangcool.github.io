@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>Jax 如何处理loop - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../jax%20introduce/markdown%E6%A0%BC%E5%BC%8F%E6%96%87%E4%BB%B6/9.%20hlo%E4%B8%8Emhlo%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../matrix/BCOO%20%26%20COO/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#control-flow-operators" class="nav-link">Control flow operators</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#1-jax" class="nav-link">1. JAX是怎么处理循环的？</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#2-control-flow-api" class="nav-link">2. Control Flow API</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#3" class="nav-link">3 总结</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<pre><code class="language-python">(jaxEnv) ken@lynxi:~/workspace/jax-jax-v0.3.17/jax/_src/lax/control_flow$ tree
+.
+├── common.py
+├── conditionals.py
+├── for_loop.py
+├── __init__.py
+├── loops.py
+└── solves.py
+
+</code></pre>
+<h2 id="control-flow-operators">Control flow operators</h2>
+<table>
+<thead>
+<tr>
+<th><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.associative_scan.html#jax.lax.associative_scan"><code>associative_scan</code></a>(fn, elems[, reverse, axis])</th>
+<th>Performs a scan with an associative binary operation, in parallel.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.cond.html#jax.lax.cond"><code>cond</code></a>(pred, true_fun, false_fun, *operands[, ...])</td>
+<td>Conditionally apply <code>true_fun</code> or <code>false_fun</code>.</td>
+</tr>
+<tr>
+<td><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html#jax.lax.fori_loop"><code>fori_loop</code></a>(lower, upper, body_fun, init_val)</td>
+<td>Loop from <code>lower</code> to <code>upper</code> by reduction to <a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.while_loop.html#jax.lax.while_loop"><code>jax.lax.while_loop()</code></a>.</td>
+</tr>
+<tr>
+<td><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.map.html#jax.lax.map"><code>map</code></a>(f, xs)</td>
+<td>Map a function over leading array axes.</td>
+</tr>
+<tr>
+<td><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html#jax.lax.scan"><code>scan</code></a>(f, init, xs[, length, reverse, unroll])</td>
+<td>Scan a function over leading array axes while carrying along state.</td>
+</tr>
+<tr>
+<td><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.switch.html#jax.lax.switch"><code>switch</code></a>(index, branches, *operands[, operand])</td>
+<td>Apply exactly one of <code>branches</code> given by <code>index</code>.</td>
+</tr>
+<tr>
+<td><a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.while_loop.html#jax.lax.while_loop"><code>while_loop</code></a>(cond_fun, body_fun, init_val)</td>
+<td>Call <code>body_fun</code> repeatedly in a loop while <code>cond_fun</code> is True.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-jax">1. JAX是怎么处理循环的？</h2>
+<p>在JAX中，python的循环控制是被完全展开的，因此当你的loop循环比较大的时候，XLA就要显式地编译每个循环的步骤。但实际从逻辑上，每次循环都应该只是一个重复的“小函数” f = x + i。</p>
+<pre><code class="language-python">import jax
+
+def f(x):
+    for i in range(5):
+      x += i
+    return x
+
+jax.make_jaxpr(f)(0)
+
+-----------------------------------
+  out:
+  { lambda ; a:i32[]. let
+    b:i32[] = add a 0
+    c:i32[] = add b 1
+    d:i32[] = add c 2
+    e:i32[] = add d 3
+    f:i32[] = add e 4
+  in (f,) }
+</code></pre>
+<p>为了减少jit的编译时间，一种解决办法是使用jax.vmap，把循环向量化操作。</p>
+<p>另外一个解决办法就是用JAX内置的loop或条件性loop控制的API函数。</p>
+<hr />
+<h2 id="2-control-flow-api">2. Control Flow API</h2>
+<p>Control Flow的4种jax.lax的API：cond、while_loop、fori_loop、scan。以下我将每一个举生动的例子进行说明。</p>
+<h3 id="21-cond">2.1 cond 判断分支控制</h3>
+<p><code>~/workspace/test/jax/loop_cond/cond</code></p>
+<p>由于分支判断中涉及到了状态参数（True、False）。因此在jax.jit中编译必须将状态参数显式传递。</p>
+<p><strong>python代码等价于：</strong></p>
+<pre><code class="language-python">def cond(pred, true_fun, false_fun, operand):
+    if pred:
+         return true_fun(operand)
+    else:
+         return false_fun(operand)
+</code></pre>
+<p>cond需要传递4个必须参数：</p>
+<ul>
+<li>pred：状态参数（True、False）</li>
+<li>true_fun：如果为True状态，执行的函数</li>
+<li>false_fun：如果为False状态，执行的函数</li>
+<li>operands：输入的变量。</li>
+</ul>
+<p>举个使用例子：</p>
+<pre><code class="language-python">import jax
+from jax import lax
+import jax.numpy as jnp
+def f(state, operand):
+    return lax.cond(state, lambda x: x+1, lambda x: x-1, operand)
+
+
+operand = jnp.array([0.])
+print(jax.make_jaxpr(f)(True, operand))
+print(jax.jit(f)(True, operand))
+
+lowered = jax.jit(f).lower(True, operand)
+
+# Print lowered MHLO
+#print(lowered.as_text())  # eqaul to print(lowered.as_text(&quot;mhlo&quot;))
+print(lowered.as_text(&quot;hlo&quot;))
+
+</code></pre>
+<p>使用lax.cond可以无痛使用jit！无需在注意将状态函数声明静态参数：</p>
+<pre><code class="language-python"># print(jax.make_jaxpr(f)(True, operand)) 输出结果
+{ lambda ; a:bool[] b:f32[1]. let
+    c:i32[] = convert_element_type[new_dtype=int32 weak_type=False] a
+    d:f32[1] = cond[
+      branches=(
+        { lambda ; e:f32[1]. let f:f32[1] = sub e 1.0 in (f,) }
+        { lambda ; g:f32[1]. let h:f32[1] = add g 1.0 in (h,) }
+      )
+      linear=(False,)
+    ] c b
+  in (d,) }
+
+# print(jax.jit(f)(True, operand)) 输出结果
+[1.]
+
+
+# print(lowered.as_text(&quot;hlo&quot;))输出
+HloModule jit_f, entry_computation_layout={(pred[],f32[1]{0})-&gt;f32[1]{0}}
+
+region_0.4 {
+  Arg_.5 = f32[1]{0} parameter(0)
+  constant.6 = f32[1]{0} constant({1})
+  ROOT subtract.7 = f32[1]{0} subtract(Arg_.5, constant.6)
+}
+
+region_1.8 {
+  Arg_.9 = f32[1]{0} parameter(0)
+  constant.10 = f32[1]{0} constant({1})
+  ROOT add.11 = f32[1]{0} add(Arg_.9, constant.10)
+}
+
+ENTRY main.13 {
+  Arg_0.1 = pred[] parameter(0)
+  convert.3 = s32[] convert(Arg_0.1)
+  Arg_1.2 = f32[1]{0} parameter(1)
+  ROOT conditional.12 = f32[1]{0} conditional(convert.3, Arg_1.2, Arg_1.2), branch_computations={region_0.4, region_1.8}   
+}
+
+</code></pre>
+<p>从tracing的角度可见，state参数(a)是布尔型变量被traced，因此jit只要编译一次就够，反而如何使用静态参数声明，当变量状态变化时，jit就要重新编译一次了。因此cond大大减少了编译所需的次数和时间。</p>
+<p><code>lax.cond</code> -&gt;  <code>hlo::conditional</code>  -&gt;<code>mhlo.case</code>:</p>
+<pre><code class="language-python">~/workspace/test/jax/loop_cond/cond$ cat ir/jax_ir0_jit_f.mlir
+#loc0 = loc(unknown)
+module @jit_f {
+  func.func public @main(%arg0: tensor&lt;i1&gt; loc(unknown), %arg1: tensor&lt;1xf32&gt; loc(unknown)) -&gt; tensor&lt;1xf32&gt; {
+    %0 = mhlo.convert(%arg0) : (tensor&lt;i1&gt;) -&gt; tensor&lt;i32&gt; loc(#loc1)
+    %1 = &quot;mhlo.case&quot;(%0) ({
+      %2 = mhlo.constant dense&lt;1.000000e+00&gt; : tensor&lt;f32&gt; loc(#loc2)
+      %3 = &quot;mhlo.broadcast_in_dim&quot;(%2) {broadcast_dimensions = dense&lt;&gt; : tensor&lt;0xi64&gt;} : (tensor&lt;f32&gt;) -&gt; tensor&lt;1xf32&gt; loc(#loc3)
+      %4 = mhlo.subtract %arg1, %3 : tensor&lt;1xf32&gt; loc(#loc3)
+      mhlo.return %4 : tensor&lt;1xf32&gt; loc(#loc2)
+    }, {
+      %2 = mhlo.constant dense&lt;1.000000e+00&gt; : tensor&lt;f32&gt; loc(#loc2)
+      %3 = &quot;mhlo.broadcast_in_dim&quot;(%2) {broadcast_dimensions = dense&lt;&gt; : tensor&lt;0xi64&gt;} : (tensor&lt;f32&gt;) -&gt; tensor&lt;1xf32&gt; loc(#loc4)
+      %4 = mhlo.add %arg1, %3 : tensor&lt;1xf32&gt; loc(#loc4)
+      mhlo.return %4 : tensor&lt;1xf32&gt; loc(#loc2)
+    }) : (tensor&lt;i32&gt;) -&gt; tensor&lt;1xf32&gt; loc(#loc2)
+    return %1 : tensor&lt;1xf32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+
+</code></pre>
+<p><img src="jax 如何处理loop.assets/image-20221025175903193.png" alt="image-20221025175903193" style="zoom:40%;" /></p>
+<p><img src="jax 如何处理loop.assets/image-20221025175943325.png" alt="image-20221025175943325" style="zoom:50%;" /></p>
+<h3 id="22-while_loop">2.2 while_loop循环控制</h3>
+<p>while_loop顾名思义，循环直到满足某个x变量状态后停止循环，但缺点是，只能有一个init_val，循环的处理函数也只依赖于这个变量。</p>
+<p><strong>python代码等价于：</strong></p>
+<pre><code class="language-python">def while_loop(cond_fun, body_fun, init_val):
+    val = init_val
+    while cond_fun(val):
+      val = body_fun(val)
+    return val
+</code></pre>
+<p>while_loop需要传递3个必须参数：</p>
+<ul>
+<li>cond_fun：判断终止的函数</li>
+<li>body_fun：执行函数</li>
+<li>init_val：变量初始值</li>
+</ul>
+<p>举个简单的例子, <strong>这里cond_fun由于jax在tracing的时候无法根据自身的输入变量进行分支控制，因此需要使用匿名函数处理。</strong></p>
+<pre><code class="language-python">init_val = 0
+cond_fun = lambda x: x&lt;10
+body_fun = lambda x: x+1r
+jax.lax.while_loop(cond_fun, body_fun, init_val)
+-----------------------------------------------
+  output: 
+  DeviceArray(10, dtype=int32, weak_type=True)
+</code></pre>
+<p>与jit一起使用也是可以的：</p>
+<pre><code class="language-python">import jax
+from jax import lax
+import jax.numpy as jnp
+
+init_val = 0
+
+def f(init_val):
+    cond_fun = lambda x: x&lt;10
+    body_fun = lambda x: x+1
+    return jax.lax.while_loop(cond_fun, body_fun, init_val)
+
+print(jax.make_jaxpr(f)(init_val))
+print(jax.jit(f)(init_val))
+
+lowered = jax.jit(f).lower(init_val)
+print(lowered.as_text(&quot;hlo&quot;))
+
+</code></pre>
+<p>看看内部处理机制：使用了while语句，并没有把循环显式地展开！</p>
+<pre><code class="language-python"># print(jax.make_jaxpr(f)(init_val)) 
+{ lambda ; a:i32[]. let
+    b:i32[] = while[
+      body_jaxpr={ lambda ; c:i32[]. let d:i32[] = add c 1 in (d,) }
+      body_nconsts=0
+      cond_jaxpr={ lambda ; e:i32[]. let f:bool[] = lt e 10 in (f,) }
+      cond_nconsts=0
+    ] a
+  in (b,) }
+
+# print(jax.jit(f)(init_val))
+10
+
+# print(lowered.as_text(&quot;hlo&quot;))
+HloModule jit_f, entry_computation_layout={(s32[])-&gt;s32[]}
+
+region_0.2 {
+  Arg_.3 = s32[] parameter(0)
+  constant.4 = s32[] constant(1)
+  ROOT add.5 = s32[] add(Arg_.3, constant.4)
+}
+
+region_1.6 {
+  Arg_.7 = s32[] parameter(0)
+  constant.8 = s32[] constant(10)
+  ROOT compare.9 = pred[] compare(Arg_.7, constant.8), direction=LT
+}
+
+ENTRY main.11 {
+  Arg_0.1 = s32[] parameter(0)
+  ROOT while.10 = s32[] while(Arg_0.1), condition=region_1.6, body=region_0.2
+}
+</code></pre>
+<p><code>jax.lax.while_loop</code> -&gt; <code>hlo:while</code> -&gt; <code>mhlo.while cond do</code></p>
+<pre><code class="language-python">(jaxEnv) ken@lynxi:~/workspace/test/jax/while_loop$ cat ir/jax_ir0_jit_f.mlir
+#loc0 = loc(unknown)
+module @jit_f {
+  func.func public @main(%arg0: tensor&lt;i32&gt; loc(unknown)) -&gt; tensor&lt;i32&gt; {
+    %0 = mhlo.while(%iterArg = %arg0) : tensor&lt;i32&gt;
+     cond {
+      %1 = mhlo.constant dense&lt;10&gt; : tensor&lt;i32&gt; loc(#loc1)
+      %2 = mhlo.compare  LT, %iterArg, %1,  SIGNED : (tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i1&gt; loc(#loc2)
+      mhlo.return %2 : tensor&lt;i1&gt; loc(#loc1)
+    } do {
+      %1 = mhlo.constant dense&lt;1&gt; : tensor&lt;i32&gt; loc(#loc1)
+      %2 = mhlo.add %iterArg, %1 : tensor&lt;i32&gt; loc(#loc3)
+      mhlo.return %2 : tensor&lt;i32&gt; loc(#loc1)
+    } loc(#loc1)
+    return %0 : tensor&lt;i32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+
+</code></pre>
+<p><img src="jax 如何处理loop.assets/image-20221025184147869.png" alt="image-20221025184147869" style="zoom:50%;" /></p>
+<p><img src="jax 如何处理loop.assets/image-20221025184209385.png" alt="image-20221025184209385" style="zoom:50%;" /></p>
+<h3 id="23-fori_loop">2.3 fori_loop循环控制</h3>
+<p><code>/home/ken/workspace/test/jax/fori_loop</code></p>
+<p>fori_loop就很类似于python的for i in range的写法了。</p>
+<p><strong>python代码等价于：</strong></p>
+<pre><code class="language-python">def fori_loop(start, stop, body_fun, init_val):
+    val = init_val
+    for i in range(start, stop):
+        val = body_fun(i, val)
+    return val
+</code></pre>
+<p>fori_loop需要传递4个必须参数：</p>
+<ul>
+<li>start：起始数值</li>
+<li>stop：停止数值</li>
+<li>body_fun：循环的函数</li>
+<li>init_val：输入的初始参数</li>
+</ul>
+<pre><code class="language-python">import jax
+from jax import lax
+import jax.numpy as jnp
+
+start = 0
+stop = 10
+init_val = 0
+
+def f(start, stop, init_val):
+    body_fun = lambda i,x: x+i
+    return jax.lax.fori_loop(start, stop, body_fun, init_val)
+
+
+print(jax.make_jaxpr(f)(start, stop, init_val))
+print(jax.jit(f)(start, stop, init_val))
+
+lowered = jax.jit(f).lower(start, stop, init_val)
+print(lowered.as_text(&quot;hlo&quot;))
+</code></pre>
+<p>同样可以配合jit使用：</p>
+<pre><code class="language-python"># print(jax.make_jaxpr(f)(start, stop, init_val))
+{ lambda ; a:i32[] b:i32[] c:i32[]. let
+    _:i32[] _:i32[] d:i32[] = while[
+      body_jaxpr={ lambda ; e:i32[] f:i32[] g:i32[]. let
+          h:i32[] = add e 1
+          i:i32[] = add g e
+        in (h, f, i) }
+      body_nconsts=0
+      cond_jaxpr={ lambda ; j:i32[] k:i32[] l:i32[]. let
+          m:bool[] = lt j k
+        in (m,) }
+      cond_nconsts=0
+    ] a b c
+  in (d,) }
+# print(jax.jit(f)(start, stop, init_val))
+
+45
+HloModule jit_f, entry_computation_layout={(s32[],s32[],s32[])-&gt;s32[]}
+
+# print(lowered.as_text(&quot;hlo&quot;))
+region_0.5 {
+  arg_tuple.6 = (s32[], s32[], s32[]) parameter(0)
+  get-tuple-element.7 = s32[] get-tuple-element(arg_tuple.6), index=0
+  constant.10 = s32[] constant(1)
+  add.11 = s32[] add(get-tuple-element.7, constant.10)
+  get-tuple-element.8 = s32[] get-tuple-element(arg_tuple.6), index=1
+  add.12 = s32[] add(get-tuple-element.8, get-tuple-element.7)
+  get-tuple-element.9 = s32[] get-tuple-element(arg_tuple.6), index=2
+  ROOT tuple.13 = (s32[], s32[], s32[]) tuple(add.11, add.12, get-tuple-element.9)
+}
+
+region_1.14 {
+  arg_tuple.15 = (s32[], s32[], s32[]) parameter(0)
+  get-tuple-element.17 = s32[] get-tuple-element(arg_tuple.15), index=1
+  get-tuple-element.16 = s32[] get-tuple-element(arg_tuple.15), index=0
+  get-tuple-element.18 = s32[] get-tuple-element(arg_tuple.15), index=2
+  ROOT compare.19 = pred[] compare(get-tuple-element.16, get-tuple-element.18), direction=LT
+}
+
+ENTRY main.24 {
+  Arg_0.1 = s32[] parameter(0)
+  Arg_2.3 = s32[] parameter(2)
+  Arg_1.2 = s32[] parameter(1)
+  tuple.4 = (s32[], s32[], s32[]) tuple(Arg_0.1, Arg_2.3, Arg_1.2)
+  while.20 = (s32[], s32[], s32[]) while(tuple.4), condition=region_1.14, body=region_0.5
+  get-tuple-element.21 = s32[] get-tuple-element(while.20), index=0
+  ROOT get-tuple-element.22 = s32[] get-tuple-element(while.20), index=1
+  get-tuple-element.23 = s32[] get-tuple-element(while.20), index=2
+}
+</code></pre>
+<p><code>jax.lax.fori_loop</code> -&gt; <code>mho::while</code> -&gt; <code>mlir::while cond compare</code></p>
+<pre><code class="language-python">#loc0 = loc(unknown)
+module @jit_f {
+  func.func public @main(%arg0: tensor&lt;i32&gt; loc(unknown), %arg1: tensor&lt;i32&gt; loc(unknown), %arg2: tensor&lt;i32&gt; loc(unknown)) -&gt; tensor&lt;i32&gt; {
+    %0:3 = mhlo.while(%iterArg = %arg0, %iterArg_0 = %arg1, %iterArg_1 = %arg2) : tensor&lt;i32&gt;, tensor&lt;i32&gt;, tensor&lt;i32&gt;
+     cond {
+      %1 = mhlo.compare  LT, %iterArg, %iterArg_0,  SIGNED : (tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i1&gt; loc(#loc2)
+      mhlo.return %1 : tensor&lt;i1&gt; loc(#loc1)
+    } do {
+      %1 = mhlo.constant dense&lt;1&gt; : tensor&lt;i32&gt; loc(#loc1)
+      %2 = mhlo.add %iterArg, %1 : tensor&lt;i32&gt; loc(#loc3)
+      %3 = mhlo.add %iterArg_1, %iterArg : tensor&lt;i32&gt; loc(#loc4)
+      mhlo.return %2, %iterArg_0, %3 : tensor&lt;i32&gt;, tensor&lt;i32&gt;, tensor&lt;i32&gt; loc(#loc1)
+    } loc(#loc1)
+    return %0#2 : tensor&lt;i32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(f)/jit(main)/while[cond_nconsts=0 body_nconsts=0]&quot;(&quot;fori_loop.py&quot;:11:1))
+#loc2 = loc(&quot;jit(f)/jit(main)/while/cond/lt&quot;(&quot;fori_loop.py&quot;:11:1))
+#loc3 = loc(&quot;jit(f)/jit(main)/while/body/add&quot;(&quot;fori_loop.py&quot;:11:1))
+#loc4 = loc(&quot;jit(f)/jit(main)/while/body/add&quot;(&quot;fori_loop.py&quot;:10:1))
+
+</code></pre>
+<p><img alt="image-20221025190125433" src="../jax%20%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86loop.assets/image-20221025190125433.png" /></p>
+<p><img alt="image-20221025190137792" src="../jax%20%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86loop.assets/image-20221025190137792.png" /></p>
+<p>该函数的实现中，如果<code>lower</code>和<code>upper</code>都是<code>ConcretArrary</code>，则会使用<code>scan</code>进行，否则用<code>while_loop</code>。</p>
+<h3 id="24-scanfor">2.4 scan：通用for循环控制</h3>
+<p><code>scan</code>会调用<code>for-loop</code>。</p>
+<p>前面讲的2种循环控制都是只能依赖于单一变量的，而scan可以存在2个变量，并且它特有的累计属性carry。</p>
+<p>python代码等价于：差不多等价于带状态的for循环。</p>
+<pre><code class="language-python"># carry是用来记录上一次的调用f(carry, x)时的状态的，该状态会给下一次调f是使用。不关系的话，可以让转台一直不变。
+def scan(f, init, xs, length=None):
+    if xs is None:
+        xs = [None] * length
+    carry = init
+    # core:
+    ys = []
+    for x in xs:
+        carry, y = f(carry, x)
+        ys.append(y)
+    return carry, np.stack(ys)
+</code></pre>
+<p>fori_loop需要传递的必须参数：</p>
+<ul>
+<li>f: 处理的函数</li>
+<li>init: carry的初始值</li>
+<li>xs: 输入的变量</li>
+<li>length: 控制scan的次数（可选）</li>
+<li><strong>reverse：是否从后开始倒序？</strong>（可选）</li>
+</ul>
+<p>当你不需要状态累计时，scan直接等于for循环xs中每一个数据！输出carry和堆叠之后f(x)，看以下的例子：</p>
+<pre><code class="language-python">import jax
+from jax import lax
+import jax.numpy as jnp
+
+
+def g(xs):
+    def f(carry, x):
+        x = x*2
+        carry = 0
+        return carry, x
+
+    return jax.lax.scan(f, 0, xs)
+
+
+xs = jnp.array([0, 1, 2, 3,])
+
+
+print(jax.make_jaxpr(g)(xs))
+print(jax.jit(g)(xs))
+
+lowered = jax.jit(g).lower(xs)
+print(lowered.as_text(&quot;hlo&quot;))
+
+</code></pre>
+<p>因此使用scan的时候，carry的变量也是需要显式地定义在函数中，并且是<strong>return的第一个变量*</strong>*。</p>
+<p>当需要进行数据累加时：6就是xs中累加的值。</p>
+<pre><code class="language-python"># print(jax.make_jaxpr(g)(xs))
+{ lambda ; a:i32[4]. let
+    b:i32[] c:i32[4] = scan[
+      jaxpr={ lambda ; d:i32[] e:i32[]. let f:i32[] = mul e 2 in (0, f) }
+      length=4
+      linear=(False, False)
+      num_carry=1
+      num_consts=0
+      reverse=False
+      unroll=1
+    ] 0 a
+  in (b, c) }
+
+# print(jax.jit(g)(xs))
+(DeviceArray(0, dtype=int32, weak_type=True), DeviceArray([0, 2, 4, 6], dtype=int32))
+HloModule jit_g, entry_computation_layout={(s32[4]{0})-&gt;(s32[], s32[4]{0})}
+
+#print(lowered.as_text(&quot;hlo&quot;))
+region_0.6 {
+  arg_tuple.7 = (s32[], s32[4]{0}, s32[4]{0}) parameter(0)
+  get-tuple-element.8 = s32[] get-tuple-element(arg_tuple.7), index=0
+  constant.11 = s32[] constant(1)
+  add.26 = s32[] add(get-tuple-element.8, constant.11)
+  get-tuple-element.9 = s32[4]{0} get-tuple-element(arg_tuple.7), index=1
+  get-tuple-element.10 = s32[4]{0} get-tuple-element(arg_tuple.7), index=2
+  constant.14 = s32[] constant(0)
+  compare.15 = pred[] compare(get-tuple-element.8, constant.14), direction=LT
+  constant.13 = s32[] constant(4)
+  add.16 = s32[] add(get-tuple-element.8, constant.13)
+  select.17 = s32[] select(compare.15, add.16, get-tuple-element.8)
+  dynamic-slice.18 = s32[1]{0} dynamic-slice(get-tuple-element.10, select.17), dynamic_slice_sizes={1}
+  reshape.19 = s32[] reshape(dynamic-slice.18)
+  constant.12 = s32[] constant(2)
+  multiply.20 = s32[] multiply(reshape.19, constant.12)
+  reshape.21 = s32[1]{0} reshape(multiply.20)
+  compare.22 = pred[] compare(get-tuple-element.8, constant.14), direction=LT
+  add.23 = s32[] add(get-tuple-element.8, constant.13)
+  select.24 = s32[] select(compare.22, add.23, get-tuple-element.8)
+  dynamic-update-slice.25 = s32[4]{0} dynamic-update-slice(get-tuple-element.9, reshape.21, select.24)
+  ROOT tuple.27 = (s32[], s32[4]{0}, s32[4]{0}) tuple(add.26, dynamic-update-slice.25, get-tuple-element.10)
+}
+
+region_1.28 {
+  arg_tuple.29 = (s32[], s32[4]{0}, s32[4]{0}) parameter(0)
+  get-tuple-element.31 = s32[4]{0} get-tuple-element(arg_tuple.29), index=1
+  get-tuple-element.32 = s32[4]{0} get-tuple-element(arg_tuple.29), index=2
+  get-tuple-element.30 = s32[] get-tuple-element(arg_tuple.29), index=0
+  constant.33 = s32[] constant(4)
+  ROOT compare.34 = pred[] compare(get-tuple-element.30, constant.33), direction=LT
+}
+
+ENTRY main.40 {
+  constant.4 = s32[] constant(0)
+  constant.2 = s32[] constant(0)
+  broadcast.3 = s32[4]{0} broadcast(constant.2), dimensions={}
+  Arg_0.1 = s32[4]{0} parameter(0)
+  tuple.5 = (s32[], s32[4]{0}, s32[4]{0}) tuple(constant.4, broadcast.3, Arg_0.1)
+  while.35 = (s32[], s32[4]{0}, s32[4]{0}) while(tuple.5), condition=region_1.28, body=region_0.6
+  get-tuple-element.36 = s32[] get-tuple-element(while.35), index=0
+  get-tuple-element.38 = s32[4]{0} get-tuple-element(while.35), index=2
+  get-tuple-element.37 = s32[4]{0} get-tuple-element(while.35), index=1
+  ROOT tuple.39 = (s32[], s32[4]{0}) tuple(constant.4, get-tuple-element.37)
+}
+
+
+</code></pre>
+<p><code>while compare</code></p>
+<pre><code class="language-python">#loc0 = loc(unknown)
+module @jit_g {
+  func.func public @main(%arg0: tensor&lt;4xi32&gt; loc(unknown)) -&gt; (tensor&lt;i32&gt;, tensor&lt;4xi32&gt;) {
+    %0 = mhlo.constant dense&lt;0&gt; : tensor&lt;i32&gt; loc(#loc0)
+    %1 = mhlo.constant dense&lt;0&gt; : tensor&lt;i32&gt; loc(#loc1)
+    %2 = &quot;mhlo.broadcast_in_dim&quot;(%1) {broadcast_dimensions = dense&lt;&gt; : tensor&lt;0xi64&gt;} : (tensor&lt;i32&gt;) -&gt; tensor&lt;4xi32&gt; loc(#loc2)
+    %3 = mhlo.constant dense&lt;0&gt; : tensor&lt;i32&gt; loc(#loc3)
+    %4:4 = mhlo.while(%iterArg = %arg0, %iterArg_0 = %3, %iterArg_1 = %0, %iterArg_2 = %2) : tensor&lt;4xi32&gt;, tensor&lt;i32&gt;, tensor&lt;i32&gt;, tensor&lt;4xi32&gt;
+     cond {
+      %5 = mhlo.constant dense&lt;4&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %6 = mhlo.compare  LT, %iterArg_0, %5,  SIGNED : (tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i1&gt; loc(#loc5)
+      mhlo.return %6 : tensor&lt;i1&gt; loc(#loc4)
+    } do {
+      %5 = mhlo.constant dense&lt;0&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %6 = mhlo.compare  LT, %iterArg_0, %5,  SIGNED : (tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i1&gt; loc(#loc6)
+      %7 = mhlo.convert %iterArg_0 : tensor&lt;i32&gt; loc(#loc7)
+      %8 = mhlo.constant dense&lt;4&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %9 = mhlo.add %7, %8 : tensor&lt;i32&gt; loc(#loc8)
+      %10 = &quot;mhlo.select&quot;(%6, %9, %iterArg_0) : (tensor&lt;i1&gt;, tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i32&gt; loc(#loc9)
+      %11 = &quot;mhlo.dynamic_slice&quot;(%iterArg, %10) {slice_sizes = dense&lt;1&gt; : tensor&lt;1xi64&gt;} : (tensor&lt;4xi32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;1xi32&gt; loc(#loc10)
+      %12 = mhlo.reshape %11 : (tensor&lt;1xi32&gt;) -&gt; tensor&lt;i32&gt; loc(#loc11)
+      %13 = mhlo.constant dense&lt;2&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %14 = mhlo.multiply %12, %13 : tensor&lt;i32&gt; loc(#loc12)
+      %15 = &quot;mhlo.broadcast_in_dim&quot;(%14) {broadcast_dimensions = dense&lt;&gt; : tensor&lt;0xi64&gt;} : (tensor&lt;i32&gt;) -&gt; tensor&lt;1xi32&gt; loc(#loc13)
+      %16 = mhlo.constant dense&lt;0&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %17 = mhlo.compare  LT, %iterArg_0, %16,  SIGNED : (tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i1&gt; loc(#loc6)
+      %18 = mhlo.convert %iterArg_0 : tensor&lt;i32&gt; loc(#loc7)
+      %19 = mhlo.constant dense&lt;4&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %20 = mhlo.add %18, %19 : tensor&lt;i32&gt; loc(#loc8)
+      %21 = &quot;mhlo.select&quot;(%17, %20, %iterArg_0) : (tensor&lt;i1&gt;, tensor&lt;i32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;i32&gt; loc(#loc9)
+      %22 = mhlo.dynamic_update_slice %iterArg_2, %15, %21 : (tensor&lt;4xi32&gt;, tensor&lt;1xi32&gt;, tensor&lt;i32&gt;) -&gt; tensor&lt;4xi32&gt; loc(#loc14)
+      %23 = mhlo.constant dense&lt;1&gt; : tensor&lt;i32&gt; loc(#loc4)
+      %24 = mhlo.add %iterArg_0, %23 : tensor&lt;i32&gt; loc(#loc8)
+      %25 = mhlo.constant dense&lt;0&gt; : tensor&lt;i32&gt; loc(#loc4)
+      mhlo.return %iterArg, %24, %25, %22 : tensor&lt;4xi32&gt;, tensor&lt;i32&gt;, tensor&lt;i32&gt;, tensor&lt;4xi32&gt; loc(#loc4)
+    } loc(#loc4)
+    return %4#2, %4#3 : tensor&lt;i32&gt;, tensor&lt;4xi32&gt; loc(#loc0)
+  } loc(#loc0)
+} loc(#loc0)
+#loc1 = loc(&quot;jit(g)/jit(main)/empty[dtype=int32]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc2 = loc(&quot;jit(g)/jit(main)/broadcast_in_dim[shape=(4,) broadcast_dimensions=()]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc3 = loc(&quot;jit(g)/jit(main)/scan[reverse=False length=4 num_consts=0 num_carry=1 linear=(False, False) unroll=1]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc4 = loc(&quot;jit(g)/jit(main)/while[cond_nconsts=0 body_nconsts=1]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc5 = loc(&quot;jit(g)/jit(main)/while/cond/lt&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc6 = loc(&quot;jit(g)/jit(main)/while/body/lt&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc7 = loc(&quot;jit(g)/jit(main)/while/body/convert_element_type[new_dtype=int32 weak_type=False]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc8 = loc(&quot;jit(g)/jit(main)/while/body/add&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc9 = loc(&quot;jit(g)/jit(main)/while/body/select_n&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc10 = loc(&quot;jit(g)/jit(main)/while/body/dynamic_slice[slice_sizes=(1,)]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc11 = loc(&quot;jit(g)/jit(main)/while/body/squeeze[dimensions=(0,)]&quot;(&quot;./while_loop.py&quot;:12:1))
+#loc12 = loc(&quot;jit(g)/jit(main)/while/body/mul&quot;(&quot;./while_loop.py&quot;:8:1))
+#loc13 = loc(&quot;jit(g)/jit(main)/while/body/broadcast_in_dim[shape=(1,) broadcast_dimensions=()]&quot;(&quot;./while_loop.py&quot;:12:1))
+
+
+</code></pre>
+<p><img alt="image-20221025192628807" src="../jax%20%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86loop.assets/image-20221025192628807.png" /></p>
+<p><img alt="image-20221025192638245" src="../jax%20%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86loop.assets/image-20221025192638245.png" /></p>
+<h2 id="3">3 总结</h2>
+<p>**Our slogan is, "always scan when you can!"</p>
+<p><img alt="image-20221025161839752" src="../jax%20%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86loop.assets/image-20221025161839752.png" /></p>
+<p>总结：</p>
+<ul>
+<li>在使用jit时，if是绝对不用（加上静态变量基本等于没编译）；</li>
+<li>使用for循环或while时，判断条件不能是和输入变量x有关；</li>
+<li><strong>jax.lax内置的cond，while_loop，fori_loop和scan完美和jit兼容，但停止条件如果和输入有关，那需要使用匿名函数处理。</strong></li>
+<li>所有的<code>body function</code>不能改变输入的<code>shape</code>，否则jit报错；</li>
+<li>能用<code>scan</code>不用<code>for</code>；</li>
+<li>能用<code>fori_loop</code>不用<code>for i range</code>，因为后者会被展开 。</li>
+</ul>
+<p>参考资料：</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//jax.readthedocs.io/en/latest/notebooks/Common_Gotchas_in_JAX.html%23control-flow">https://jax.readthedocs.io/en/latest/notebooks/Common_Gotchas_in_JAX.html#control-flow</a></p>
+<p><a href="https://link.zhihu.com/?target=https%3A//jax.readthedocs.io/en/latest/notebooks/Common_Gotchas_in_JAX.html%23structured-control-flow-primitives">https://jax.readthedocs.io/en/latest/notebooks/Common_Gotchas_in_JAX.html#structured-control-flow-primitives</a></p>
+<p><a href="https://link.zhihu.com/?target=https%3A//stackoverflow.com/questions/69070804/how-to-reduce-jax-compile-time-when-using-for-loop">https://stackoverflow.com/questions/69070804/how-to-reduce-jax-compile-time-when-using-for-loop</a></p>
+<p><a href="https://link.zhihu.com/?target=https%3A//ericmjl.github.io/dl-workshop/02-jax-idioms/02-loopy-carry.html">https://ericmjl.github.io/dl-workshop/02-jax-idioms/02-loopy-carry.html</a></p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/google/jax/discussions/3850">https://github.com/google/jax/d</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

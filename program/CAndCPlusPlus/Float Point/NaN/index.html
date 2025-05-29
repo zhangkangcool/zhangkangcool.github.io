@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>NaN - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../LLVM%20IR/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../clang/Clang%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">目录</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">浮点数[编辑]</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#canonical-nan" class="nav-link">Canonical-NaN</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><strong>NaN</strong>（<strong>N</strong>ot <strong>a</strong> <strong>N</strong>umber，非数）是<a href="https://zh.wikipedia.org/wiki/计算机科学">计算机科学</a>中数值<a href="https://zh.wikipedia.org/wiki/數據類型">数据类型</a>的一类值，表示未定义或不可表示的值。常在<a href="https://zh.wikipedia.org/wiki/浮点数">浮点数</a>运算中使用。首次引入NaN的是1985年的<a href="https://zh.wikipedia.org/wiki/IEEE_754">IEEE 754</a>浮点数标准。</p>
+<h2 id="_1">目录</h2>
+<ul>
+<li>1浮点数</li>
+<li><a href="https://zh.wikipedia.org/wiki/NaN#返回NaN的运算">1.1返回NaN的运算</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/NaN#整数的NaN">2整数的NaN</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/NaN#注释">3注释</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/NaN#参考文献">4参考文献</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/NaN#外部链接">5外部链接</a></li>
+</ul>
+<h2 id="_2">浮点数[<a href="https://zh.wikipedia.org/w/index.php?title=NaN&amp;action=edit&amp;section=1">编辑</a>]</h2>
+<p>在浮点数运算中，NaN与<a href="https://zh.wikipedia.org/wiki/无穷">无穷大</a>的概念不同，尽管两者均是以浮点数表示实数时的特殊值。无效操作（Invalid Operation）同样也不同于<a href="https://zh.wikipedia.org/wiki/算術溢出">算术溢出</a>（可能返回无穷大）和算术下溢出（可能返回最小的一般数值、特殊数值、零等）。</p>
+<p><a href="https://zh.wikipedia.org/w/index.php?title=IEEE_754-1985&amp;action=edit&amp;redlink=1">IEEE 754-1985</a>中，用指数部分全为1、小数部分非零表示NaN。以32位IEEE单精度浮点数的NaN为例，按位表示即：S111 1111 1AXX XXXX XXXX XXXX XXXX XXXX，<strong>S为符号位，符号位S的取值无关紧要</strong>；A是小数部分的最高位（the most significant bit of the significand），其取值表示了NaN的类型：X不能全为0，并被称为NaN的payload；[<a href="https://zh.wikipedia.org/wiki/NaN#cite_note-1">注 1]</a></p>
+<ul>
+<li>
+<p>大多数处理器，包括<a href="https://zh.wikipedia.org/wiki/Intel">Intel</a>与<a href="https://zh.wikipedia.org/wiki/AMD">AMD</a>的<a href="https://zh.wikipedia.org/wiki/X86">x86</a>系列、<a href="https://zh.wikipedia.org/wiki/Motorola">Motorola</a> <a href="https://zh.wikipedia.org/w/index.php?title=68000系列&amp;action=edit&amp;redlink=1">68000系列</a>、<a href="https://zh.wikipedia.org/wiki/AIM联盟">AIM</a> <a href="https://zh.wikipedia.org/wiki/PowerPC">PowerPC</a>系列、<a href="https://zh.wikipedia.org/wiki/ARM架構">ARM</a>系列、<a href="https://zh.wikipedia.org/wiki/昇陽電腦">Sun</a> <a href="https://zh.wikipedia.org/wiki/SPARC">SPARC</a>系列，采取了A为'is_quiet'标记位。即，如果A = 1，则该数是quiet NaN（QNaN）；如果A为零、其余X部分非零，则是signaling NaN（SNaN）。<strong>IEEE 754-2008</strong>标准采纳了这一方案。</p>
+</li>
+<li>
+<p><a href="https://zh.wikipedia.org/wiki/PA-RISC">PA-RISC</a>与<a href="https://zh.wikipedia.org/wiki/MIPS架構">MIPS</a>处理器，采取了A为'is_signaling'标记位。恰与上述相反。</p>
+</li>
+</ul>
+<p>SNaN会设异常寄存器。</p>
+<h3 id="nan">返回NaN的运算[<a href="https://zh.wikipedia.org/w/index.php?title=NaN&amp;action=edit&amp;section=2">编辑</a>]</h3>
+<p>返回NaN的运算有如下三种[<a href="https://zh.wikipedia.org/wiki/NaN#cite_note-2">1]</a>：</p>
+<ul>
+<li>
+<p>至少有一个<a href="https://zh.wikipedia.org/wiki/参数">参数</a>是NaN的运算</p>
+</li>
+<li>
+<p>不定式</p>
+</li>
+<li>
+<p>下列<a href="https://zh.wikipedia.org/wiki/除法">除法</a>运算：0/0、<a href="https://zh.wikipedia.org/wiki/∞">∞</a>/∞、∞/(−∞)、(−∞)/∞、(−∞)/(−∞)</p>
+</li>
+<li>下列<a href="https://zh.wikipedia.org/wiki/乘法">乘法</a>运算：0×∞、0×−∞</li>
+<li>下列<a href="https://zh.wikipedia.org/wiki/加法">加法</a>运算：∞ + (−∞)、(−∞) + ∞</li>
+<li>下列<a href="https://zh.wikipedia.org/wiki/减法">减法</a>运算：∞ - ∞、(−∞) - (−∞)</li>
+<li>
+<p>下列<a href="https://zh.wikipedia.org/wiki/指数">指数</a>运算：0^0、∞^0、1^∞、∞^(−∞)</p>
+</li>
+<li>
+<p>产生</p>
+</li>
+</ul>
+<p>复数</p>
+<p>结果的实数运算。例如：</p>
+<ul>
+<li>对<a href="https://zh.wikipedia.org/wiki/负数">负数</a>进行<a href="https://zh.wikipedia.org/wiki/開方">开偶次方</a>的运算</li>
+<li>对负数（包含−∞）进行<a href="https://zh.wikipedia.org/wiki/对数">对数</a>运算</li>
+<li>对<a href="https://zh.wikipedia.org/wiki/正弦">正弦</a>或<a href="https://zh.wikipedia.org/wiki/餘弦">余弦</a><a href="https://zh.wikipedia.org/wiki/到达域">到达域</a>以外的数进行<a href="https://zh.wikipedia.org/wiki/反正弦">反正弦</a>或<a href="https://zh.wikipedia.org/wiki/反餘弦">反余弦</a>运算</li>
+</ul>
+<pre><code>For single-precision values:
+
+Positive infinity is represented by the bit pattern 7F800000
+Negative infinity is represented by the bit pattern FF800000
+A signalling NaN (NANS) is represented by any bit pattern
+between 7F800001 and 7FBFFFFF or between FF800001 and FFBFFFFF
+
+A quiet NaN (QNaN) is represented by any bit pattern
+between 7FC00000 and 7FFFFFFF or between FFC00000 and FFFFFFFF
+For double-precision values:
+
+Positive infinity is represented by the bit pattern 7FF0000000000000
+Negative infinity is represented by the bit pattern FFF0000000000000
+A signalling NaN is represented by any bit pattern
+between 7FF0000000000001 and 7FF7FFFFFFFFFFFF or
+between FFF0000000000001 and FFF7FFFFFFFFFFFF
+
+A quiet NaN is represented by any bit pattern
+between 7FF8000000000000 and 7FFFFFFFFFFFFFFF or
+between FFF8000000000000 and FFFFFFFFFFFFFFFF
+</code></pre>
+<h2 id="canonical-nan">Canonical-NaN</h2>
+<p>https://webassembly.github.io/spec/core/syntax/values.html</p>
+<p>A <em>canonical NaN</em> is a floating-point value ±<a href="https://webassembly.github.io/spec/core/syntax/values.html#syntax-float">𝗇𝖺𝗇</a>(<a href="https://webassembly.github.io/spec/core/syntax/values.html#aux-canon">canon</a>N)±nan(canon<sub>N</sub>) where canon<sub>N</sub>is a payload whose most significant bit is 11 while all others are 00:</p>
+<p>canon<sub>N</sub>=2<sup>signif(N)−1</sup></p>
+<p>An <em>arithmetic NaN</em> is a floating-point value ±<a href="https://webassembly.github.io/spec/core/syntax/values.html#syntax-float">𝗇𝖺𝗇</a>(n)±nan(n) with n≥<a href="https://webassembly.github.io/spec/core/syntax/values.html#aux-canon">canon</a>Nn≥canonN, such that the most significant bit is 11 while all others are arbitrary. QNaN.</p>
+<p>https://blog.csdn.net/weixin_33898233/article/details/86023108</p>
+<p>Risc-V架构规定，如果浮点运算的结果是一个NaN数，那么使用一个固定的NaN数，将之命名为Canonical-NaN。单精度浮点对应的Canonical-NaN数值为0x7fc00000,双精度浮点对应Canonical-NaN数值为0x7ff80000_00000000</p>
+<pre><code>0x7fc00000 = 0111 1111 1111 11       00 0000 0000 0000 0000 0000 
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

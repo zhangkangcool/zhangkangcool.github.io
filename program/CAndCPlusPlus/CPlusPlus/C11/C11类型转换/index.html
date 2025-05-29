@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>C11类型转换 - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../ADT/map/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://www.cnblogs.com/coder2012/archive/2013/04/20/3032072.html</p>
+<p><strong>什么是类型转换？</strong>　　</p>
+<p>类型转换的含义是通过改变一个变量的类型为别的类型从而改变该变量的表示方式。为了类型转换一个简单对象为另一个对象你会使用传统的类型转换操作符。</p>
+<p><strong>C与C++的类型转换</strong></p>
+<p>C中：</p>
+<pre><code>(T)element 或者 T（element）
+</code></pre>
+<p>c++中：</p>
+<pre><code>reinterpret_cast&lt;T*&gt; (expression)
+dynamic_cast&lt;T*&gt;     (expression)
+static_cast&lt;T*&gt;      (expression)
+const_cast&lt;T*&gt;       (expression)
+</code></pre>
+<p>C++的四种强制转型形式每一种适用于特定的目的： </p>
+<p>·dynamic_cast 主要用于执行“安全的向下转型（safe downcasting）”，也就是说，要确定一个对象是否是一个继承体系中的一个特定类型。它是唯一不能用旧风格语法执行的强制转型，也是唯一可能有重大运行时代价的强制转型。</p>
+<p>·static_cast 可以被用于强制隐型转换（例如，non-const 对象转型为 const 对象，int 转型为 double，等等），它还可以用于很多这样的转换的反向转换（例如，void* 指针转型为有类型指针，基类指针转型为派生类指针），但是它不能将一个 const 对象转型为 non-const 对象（只有 const_cast 能做到），它最接近于C-style的转换。</p>
+<p>·const_cast 一般用于强制消除对象的常量性。它是唯一能做到这一点的 C++ 风格的强制转型。 </p>
+<p>·reinterpret_cast 是特意用于底层的强制转型，导致实现依赖（implementation-dependent）（就是说，不可移植）的结果，例如，将一个指针转型为一个整数。这样的强制转型在底层代码以外应该极为罕见。</p>
+<p>通俗的解释：</p>
+<table>
+<thead>
+<tr>
+<th>dynamic_cast</th>
+<th>通常在基类和派生类之间转换时使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>static_cast</td>
+<td>一般的转换，如果你不知道该用哪个，就用这</td>
+</tr>
+<tr>
+<td>const_cast</td>
+<td>主要针对const和volatile的转换</td>
+</tr>
+<tr>
+<td>reinterpret_cast</td>
+<td>用于进行没有任何关联之间的转换，比如一个字符指针转换为一个整形数</td>
+</tr>
+</tbody>
+</table>
+<p>具体分析：</p>
+<p>1）static_cast<T*>(a) 编译器在编译期处理</p>
+<ul>
+<li>将地址a转换成类型T，T和a必须是指针、引用、算术类型或枚举类型。</li>
+<li>表达式static_cast<T*>(a), a的值转换为模板中指定的类型T。</li>
+<li>在运行时转换过程中，不进行类型检查来确保转换的安全性。</li>
+<li>static_cast它能在内置的数据类型间互相转换，对于类只能在有联系的指针类型间进行转换。可以在继承体系中把指针转换来、转换去，但是不能转换成继承体系外的一种类型</li>
+</ul>
+<pre><code>class A { ... };
+class B { ... };
+class D : public B { ... };
+void f(B* pb, D* pd)
+{
+    D* pd2 = static_cast&lt;D*&gt;(pb);        // 不安全, pb可能只是B的指针
+    B* pb2 = static_cast&lt;B*&gt;(pd);        // 安全的
+    A* pa2 = static_cast&lt;A*&gt;(pb);        //错误A与B没有继承关系
+    ...
+}
+</code></pre>
+<p>2）dynamic_cast<T*>(a) 在运行期，会检查这个转换是否可能</p>
+<ul>
+<li>完成类层次结构中的提升。T必须是一个指针、引用或无类型的指针。a必须是决定一个指针或引用的表达式。</li>
+<li>dynamic_cast 仅能应用于指针或者引用，不支持内置数据类型</li>
+<li>表达式dynamic_cast<T*>(a) 将a值转换为类型为T的对象指针。如果类型T不是a的某个基类型，该操作将返回一个空指针。</li>
+<li>它不仅仅像static_cast那样，检查转换前后的两个指针是否属于同一个继承树，它还要检查被指针引用的对象的实际类型，确定转换是否可行。</li>
+<li>如果可以，它返回一个新指针，甚至计算出为处理多继承的需要的必要的偏移量。如果这两个指针间不能转换，转换就会失败，此时返回空指针（NULL）。</li>
+<li>很明显，为了让dynamic_cast能正常工作，必须让编译器支持运行期类型信息（RTTI）。</li>
+</ul>
+<pre><code>class Base { virtual dummy() {} };
+class Derived : public Base {};
+
+Base* b1 = new Derived;
+Base* b2 = new Base;
+
+Derived* d1 = dynamic_cast&lt;Derived *&gt;(b1);          // succeeds
+Derived* d2 = dynamic_cast&lt;Derived *&gt;(b2);          // fails: returns 'NULL'
+</code></pre>
+<p>3）const_cast<T*>(a)编译器在编译期处理</p>
+<ul>
+<li>去掉类型中的常量，除了const或不稳定的变址数，T和a必须是相同的类型。</li>
+<li>表达式const_cast<T*>(a)被用于从一个类中去除以下这些属性：const, volatile, 和 __unaligned。</li>
+<li>对于本身定义时为const的类型，即使你去掉const性，在你操作这片内容时候也要小心，只能r不能w操作，否则还是会出错</li>
+<li>const_cast操作不能在不同的种类间转换。相反，它仅仅把一个它作用的表达式转换成常量。它可以使一个本来不是const类型的数据转换成const类型的，或者把const属性去掉。</li>
+</ul>
+<pre><code>class A { ... };
+void f()
+{
+    const A *pa = new A;//const对象
+    A *pb;//非const对象
+    //pb = pa; // 这里将出错，不能将const对象指针赋值给非const对象
+    pb = const_cast&lt;A*&gt;(pa); // 现在OK了
+    ...
+}
+
+const char* p = &quot;123&quot;; 
+char* c = const_cast&lt;char*&gt;(p); 
+c[0] = 1;   //表面上通过编译去掉了const性，但是操作其地址时系统依然不允许这么做。
+</code></pre>
+<p>4）reinterpret_cast<T*>(a)编译器在编译期处理</p>
+<ul>
+<li>任何指针都可以转换成其它类型的指针，T必须是一个指针、引用、算术类型、指向函数的指针或指向一个类成员的指针。</li>
+<li>表达式reinterpret_cast<T*>(a)能够用于诸如char<em> 到 int</em>，或者One_class<em> 到 Unrelated_class</em>等类似这样的转换，因此可能是不安全的。</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>GDB - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../bugpoint/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../../Use-define/use-define/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#gdb" class="nav-link">GDB</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#llvm" class="nav-link">llvm</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#print-in-clang-llvm" class="nav-link">print in clang &amp; llvm</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#clang-and-llvm-use" class="nav-link">Clang and llvm use.</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#print-reg" class="nav-link">Print Reg</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="gdb">GDB</h1>
+<h3 id="print-idump">print I.dump()</h3>
+<h1 id="llvm">llvm</h1>
+<pre><code class="language-shell">#include &quot;llvm/Support/Debug.h&quot;
+
+dbgs() &lt;&lt; __LINE__ &lt;&lt; &quot; zhangkang\n&quot;;
+</code></pre>
+<h1 id="print-in-clang-llvm">print in clang &amp; llvm</h1>
+<pre><code class="language-CPP">#include &quot;llvm/Support/Debug.h&quot;
+#include &quot;llvm/Support/raw_ostream.h&quot;
+</code></pre>
+<p>llvm::dbgs() &lt;&lt; "test\n";</p>
+<pre><code>Value *val
+llvm::dbgs() &lt;&lt; *Val;
+Val-&gt;dump();
+</code></pre>
+<pre><code>CallExpr *E
+E-&gt;dump();
+dbgs() &lt;&lt; *E();   //Error
+errs() &lt;&lt; &quot;test&quot;;
+</code></pre>
+<p>不同层次的缩进表示可执行的顺序，同一层次的缩进可以相互调换顺序。</p>
+<pre><code class="language-c++">SelectionDAG has 23 nodes:
+  t0: ch = EntryToken
+            t2: f64,ch = CopyFromReg t0, Register:f64 %0
+            t4: f64,ch = CopyFromReg t0, Register:f64 %1
+          t16: i64 = setcc nnan ninf nsz arcp contract afn reassoc t2, t4, seteq:ch
+        t17: v2i64 = scalar_to_vector t16
+            t6: f64,ch = CopyFromReg t0, Register:f64 %2
+          t27: v2f64 = scalar_to_vector t6
+        t28: v2f64 = vector_shuffle&lt;u,0&gt; t27, undef:v2f64
+            t8: f64,ch = CopyFromReg t0, Register:f64 %3
+          t24: v2f64 = scalar_to_vector t8
+        t26: v2f64 = vector_shuffle&lt;u,0&gt; t24, undef:v2f64
+      t21: v2f64 = vselect nnan ninf nsz arcp contract afn reassoc t17, t28, t26
+    t23: f64 = extract_vector_elt t21, Constant:i32&lt;0&gt;
+  t13: ch,glue = CopyToReg t0, Register:f64 $f1, t23
+  t14: ch = PPCISD::RET_FLAG t13, Register:f64 $f1, t13:1
+</code></pre>
+<h2 id="clang-and-llvm-use">Clang and llvm use.</h2>
+<h3 id="llvmerrs">llvm::errs()</h3>
+<h2 id="print-reg">Print Reg</h2>
+<pre><code>MCPhysReg LiveInReg;
+dbgs() &lt;&lt; TRI-&gt;getName(LiveInReg);
+
+
+
+unsigned Reg = Register::index2VirtReg(i);
+dbgs() &lt;&lt; &quot;Reg: &quot; &lt;&lt; printReg(Reg) &lt;&lt; &quot;\n&quot;;
+
+MCPhysReg PReg
+printReg(PReg, TRI)
+
+
+Register Reg
+dbgs() &lt;&lt; &quot; &quot; &lt;&lt; printReg(Reg, TRI);
+dbgs() &lt;&lt; printReg(Reg);
+</code></pre>
+<h3 id="debug-the-specify-func">Debug the specify func</h3>
+<pre><code class="language-c++">   bool runOnMachineFunction(MachineFunction &amp;MF) override {
+      if (MF.getName() != &quot;_ZN9benchmark8internal17BenchmarkFamilies14FindBenchmarksERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPSt6vectorINS0_9Benchmark8InstanceESaISC_EEPSo&quot;)
+        return false;
+      dbgs() &lt;&lt; __LINE__ &lt;&lt; &quot;zhangkang\n&quot;;
+      MF.dump();
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

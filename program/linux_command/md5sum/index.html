@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>Md5sum - My Docs</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../ls%E9%A2%9C%E8%89%B2%E9%97%AE%E9%A2%98/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../mount/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-md5sum" class="nav-link">1. md5sum</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-sha512sum" class="nav-link">2. sha512sum</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>比<em>md5</em>更安全的校验<em><a href="http://lib.csdn.net/base/datastructure"><strong>算法</strong></a></em>还有<em>SHA</em>*系列如<code>sha512sum</code></p>
+<h1 id="1-md5sum">1. md5sum</h1>
+<h3 id="11">1.1 用法</h3>
+<pre><code class="language-shell">用法：md5sum [选项]... [文件]...
+显示或检查 MD5(128-bit) 校验和。
+若没有文件选项，或者文件处为&quot;-&quot;，则从标准输入读取。
+
+  -b, --binary          以二进制模式读取
+  -c, --check           从文件中读取MD5 的校验值并予以检查
+  -t, --text            以纯文本模式读取(默认)
+
+以下三个选项在进行校验时非常有用：
+      --quiet           不为校验成功的文件输出OK
+      --status          不输出任何内容，使用退出状态号显示成功
+  -w, --warn            对格式不准确的校验和行进行警告
+
+      --strict         with --check, exit non-zero for any invalid input
+      --help            显示此帮助信息并退出
+      --version         显示版本信息并退出
+
+校验和会按照RFC 1321 规范生成。当进行检查时，给出的输入格式应该和程序的输出
+样板格式相同。默认的输出模式时输出一行校验和的校验结果，并有一个字符来
+表示文件类型(&quot;*&quot;代表二进制，&quot; &quot;代表纯文本)，并同时显示每个文件的名称。
+</code></pre>
+<h3 id="12">1.2 例子</h3>
+<h5 id="1">例1</h5>
+<pre><code class="language-shell">[root@linux ~] md5sum -b test            #以二进制进行读取
+832df9d3d18471d80d67bee644eebb8a *test
+</code></pre>
+<h5 id="2">例2</h5>
+<pre><code class="language-shell">[root@zhangwei scripts] md5sum zzz &gt; zzz.md5        # 生成md5加密检验和    
+[root@zhangwei scripts] md5sum -c zzz.md5           # 检验与文件是否一致
+</code></pre>
+<pre><code class="language-shell">[root@server software]# md5sum lua-5.3.4.tar.gz 
+53a9c68bcc0eda58bdc2095ad5cdfc63  lua-5.3.4.tar.gz
+[root@server software]# md5sum lua-5.3.4.tar.gz &gt; lua-md5.txt
+[root@server software]# md5sum -c lua-md5.txt 
+lua-5.3.4.tar.gz: OK
+</code></pre>
+<h1 id="2-sha512sum">2. sha512sum</h1>
+<p><code>sha1sum/sha224sum/sha256sum/sha384sum/sha512sum</code></p>
+<pre><code class="language-shell">[root@server software]# sha1sum lua-5.3.4.tar.gz 
+79790cfd40e09ba796b01a571d4d63b52b1cd950  lua-5.3.4.tar.gz
+[root@server software]# sha1sum lua-5.3.4.tar.gz &gt; lua-5.3.4.txt
+[root@server software]# sha1sum -c lua-5.3.4.txt 
+lua-5.3.4.tar.gz: OK
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

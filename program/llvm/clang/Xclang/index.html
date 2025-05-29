@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Xclang - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../build/%E5%BA%93%E4%BE%9D%E8%B5%96/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../mllvm/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>在 Clang 中，<code>-Xclang</code> 选项用于将特定的命令行选项传递给 <strong>Clang 前端</strong>（即 Clang 本身），而不是传递给整个编译器工具链。它允许你向 Clang 提供一些 <strong>Clang 特定的选项</strong>，而这些选项并不是通常通过 <code>gcc</code> 等命令行工具传递给后端工具的。简单来说，<code>-Xclang</code> 是用来为 Clang 的内部操作传递额外的参数。</p>
+<h3 id="_1">用法：</h3>
+<p><code>-Xclang</code> 后面跟着 Clang 前端可以识别的选项。它可以让你对 Clang 的行为进行细粒度的控制，这些选项通常对普通的用户透明，主要用于调试和开发。</p>
+<h3 id="_2">语法：</h3>
+<pre><code class="language-bash">clang -Xclang &lt;option&gt; &lt;additional_arguments&gt;
+</code></pre>
+<h3 id="_3">示例：</h3>
+<ul>
+<li><strong>调试 Pass 信息</strong>： <code>-Xclang -debug-pass=Structure</code> 允许你查看 Clang 在编译过程中执行的 Pass 信息。</li>
+</ul>
+<p><code>bash
+  clang -S -emit-llvm -Xclang -debug-pass=Structure source.c -o output.ll</code></p>
+<p>这里，<code>-Xclang -debug-pass=Structure</code> 是传递给 Clang 的调试选项，而其他命令行选项（如 <code>-S</code> 和 <code>-emit-llvm</code>）是传递给整个编译器的。</p>
+<ul>
+<li><strong>启用 Clang 特定的警告</strong>： <code>-Xclang</code> 也可以用来启用 Clang 前端的特定警告：</li>
+</ul>
+<p><code>bash
+  clang -Xclang -Wall -S -emit-llvm source.c -o output.ll</code></p>
+<p>这里，<code>-Wall</code> 是 Clang 前端的一个选项，用于开启所有警告，<code>-Xclang</code> 确保它只传递给 Clang，而不是其他工具。</p>
+<h3 id="-xclang">为什么使用 <code>-Xclang</code>？</h3>
+<ol>
+<li><strong>特殊前端选项</strong>：有些选项是 Clang 前端独有的，它们不被其他编译工具（如 <code>gcc</code>）识别。例如，<code>-debug-pass=Structure</code> 这样的调试选项仅对 Clang 有意义，而不会被传递到 LLVM 后端工具。</li>
+<li><strong>控制 Clang 的行为</strong>：通过 <code>-Xclang</code>，你可以对 Clang 的编译过程、优化 Pass、警告等行为进行细粒度控制。</li>
+<li><strong>避免与后端工具冲突</strong>：通常，后端工具（如 <code>llvm-as</code>、<code>llvm-link</code> 等）有自己独立的选项，使用 <code>-Xclang</code> 确保这些选项仅作用于 Clang 本身，而不影响其他工具。</li>
+</ol>
+<h3 id="_4">总结：</h3>
+<p><code>-Xclang</code> 是 Clang 的一个特殊命令行选项，允许你向 Clang 传递额外的参数，而不会影响其他工具链（如 LLVM 后端或汇编器等）。它通常用于调试、优化、或调整 Clang 的行为，尤其是在进行深入分析时。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>编译时显示详细命令 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../ninja/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../cmake/cmake%20configure_file/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-make" class="nav-link">1. make</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-cmake" class="nav-link">2. cmake</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#3-makefile" class="nav-link">3. 直接修性makefile文件</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>.</p>
+<h1 id="1-make">1. make</h1>
+<p>先用</p>
+<pre><code>执行命令cmake时追加：-DCMAKE_VERBOSE_MAKEFILE=ON
+在CMakeLists.txt中添加：set(CMAKE_VERBOSE_MAKEFILE ON)
+</code></pre>
+<h3 id="11-make">1.1 make编译打印详细日志（部分有效，可以先试试）</h3>
+<p>特定方法，适用于使用autotools产生的库makefile文件</p>
+<p>使用autotools（你必须发布./configure）产生的库makefile文件常常有一个verbose选项，所以基本上，使用</p>
+<p>make VERBOSE=1 或 make V=1</p>
+<p>你将获取到全部命令。但是这取决于makefile产生的方式。</p>
+<p>make命令的-d选项可能会有帮助的，但是会有很长的输出，而且也不是实际运行的命令，而是大量的调试信息。</p>
+<p>-d 选项</p>
+<p>Print lots of debugging information</p>
+<pre><code class="language-shell">make clean
+常用的是 make V=1
+make V=0    quiet build (default)
+make V=1    verbose build
+make V=2    give reason for rebuild of target
+
+make VERBOSE=1   // 已试可用
+make VERBOSE=2   // 已试可用
+</code></pre>
+<h3 id="12-make">1.2 make打印命令行不编译</h3>
+<pre><code>make clean
+make -n   // 已试可用
+
+make -n V=1
+
+
+
+使用dry run，如下
+
+　　　　$ make -n
+
+这将显示make 命令正在试图做的事情。
+
+通过 $ make -h 命令，查看帮助可知，make -n实际并不运行任何命令，只是把make试图做的事情显示出来。
+
+同一命令的等价参数
+
+-n, --just-print, --dry-run, --recon
+
+         Don’t actually run any commands; just print them.
+</code></pre>
+<h1 id="2-cmake">2. cmake</h1>
+<pre><code>执行命令cmake时追加：-DCMAKE_VERBOSE_MAKEFILE=ON
+在CMakeLists.txt中添加：set(CMAKE_VERBOSE_MAKEFILEON ON)
+cmake --trace
+cmake --trace-expand
+</code></pre>
+<h2 id="3-makefile">3. 直接修性makefile文件</h2>
+<pre><code>在全局的地方（定义之后，最后一次修改之后即可），写以下内容
+详细到CC1和头文件，不是想要的gcc，而是cc1as等，可以用gcc -v test.cpp，就知道输出是什么
+CFLAGS    += -v
+CXXFLAGS  += -v
+LDFLAGS   += -v
+PFLAGS    += -v
+</code></pre>
+<pre><code>cmake .. -DCMAKE_C_FLAGS=&quot;-O0 -g3&quot;  -DCMAKE_CXX_FLAGS=&quot;-O0 -g3&quot;
+make --trace
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>Cmake configure file - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../%E7%BC%96%E8%AF%91%E6%97%B6%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E5%91%BD%E4%BB%A4/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../cmake%20exe%20case/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#cmakeconfigure_file" class="nav-link">Cmake命令之configure_file介绍</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_1" class="nav-link">一、命令格式</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_2" class="nav-link">二、命令解析</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_5" class="nav-link">三、举例说明</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#_6" class="nav-link">四、更多细节</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#define-var" class="nav-link">define @var@</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#define-var_1" class="nav-link">define "VAR"</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#define-var_2" class="nav-link">define @var@</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#define-var_3" class="nav-link">define \"VAR\"</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://www.jianshu.com/p/2946eeec2489</p>
+<ol>
+<li><a href="https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Flatest%2Fcommand%2Fconfigure_file.html">https://cmake.org/cmake/help/latest/command/configure_file.html</a></li>
+</ol>
+<h1 id="cmakeconfigure_file">Cmake命令之configure_file介绍</h1>
+<h1 id="_1">一、命令格式</h1>
+<blockquote>
+<h4 id="configure_fileinput-output-options">configure_file(input output options)</h4>
+<h4 id="inputoutputoptions"><em>将一个文件(由<code>input</code>参数指定)拷贝到指定位置(由<code>output</code>参数指定)，并根据<code>options</code>修改其内容。</em></h4>
+</blockquote>
+<h1 id="_2">二、命令解析</h1>
+<h4 id="configure_fileconfigure_fileoptionsinputcmakedefine">configure_file命令一般用于自定义编译选项或者自定义宏的场景。configure_file命令会根据<code>options</code>指定的规则，自动对<code>input</code>文件中<code>cmakedefine</code>关键字及其内容进行转换。</h4>
+<h4 id="_3">具体来说，会做如下几个替换：</h4>
+<h4 id="1-inputvarvarcmake">1. 将input文件中的<code>@var@</code>或者<code>${var}</code>替换成cmake中指定的值。</h4>
+<h4 id="2-inputcmakedefine-vardefine-varundef-varcmakevar">2. 将input文件中的<code>#cmakedefine var</code>关键字替换成<code>#define var</code>或者<code>#undef var</code>，取决于cmake是否定义了var。</h4>
+<h4 id="_4"></h4>
+<h1 id="_5">三、举例说明</h1>
+<h4 id="2confighininputcmakeliststxtoutput">需要准备2个文件，config.h.in（input）、CMakeLists.txt，（output是自动生成的）内容如下：</h4>
+<h4 id="confighin">config.h.in</h4>
+<pre><code class="language-objc">#cmakedefine var1
+#cmakedefine var2 &quot;@var2@&quot; #注意：@@之间的名称要与cmakedefine后的变量名一样
+#cmakedefine var3 &quot;${var3}&quot; #注意：${}之间的名称要与cmakedefine后的变量名一样
+#ifdef _@var4@_${var5}_
+#endif
+</code></pre>
+<h4 id="cmakeliststxt">CMakeLists.txt</h4>
+<pre><code class="language-bash">cmake_mininum_required(VERSION 2.8)
+project (configure_file_test)
+option (var1 &quot;use var1...&quot; ON)  #定义var1，也可以使用cmake -Dvar1=ON替代
+set (var2 13) #指定var2的值
+set (var3 &quot;var3string&quot;) #指定var3的值
+set (var4 &quot;VARTEST4&quot;)
+set (var5 &quot;VARTEST5&quot;)
+
+configure_file (config.h.in config.h)
+</code></pre>
+<h4 id="cmake">执行cmake命令</h4>
+<pre><code class="language-undefined">cmake .
+</code></pre>
+<h4 id="configh">自动生成的config.h文件内容</h4>
+<pre><code class="language-cpp">#define var1
+#define var2 &quot;13&quot;
+#define var3 &quot;var3string&quot;
+#ifdef _VARTEST4_VARTEST5_
+#endif
+</code></pre>
+<h1 id="_6">四、更多细节</h1>
+<ul>
+<li>
+<h4 id="_7">参数详解</h4>
+</li>
+</ul>
+<h5 id="input-cmake_current_source_dir"><strong><code>input</code></strong> - 输入文件的路径，它是一个相对路径，以<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Fv3.14%2Fvariable%2FCMAKE_CURRENT_SOURCE_DIR.html%23variable%3A%22CMAKE_CURRENT_SOURCE_DIR%22"><code>CMAKE_CURRENT_SOURCE_DIR</code></a>为路径前缀。此外，<img alt="\color{red}{它必须是一个文件，不能是目录}" src="cmake configure_file.assets/math-20230706161016888" />。</h5>
+<h5 id="output-cmake_current_binary_diroutputinputinputinputfileoutputcurrentdircurrentdirinputfile"><strong><code>output</code></strong> - 输出文件或目录，它也是一个相对路径，以<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Fv3.14%2Fvariable%2FCMAKE_CURRENT_BINARY_DIR.html%23variable%3ACMAKE_CURRENT_BINARY_DIR"><code>CMAKE_CURRENT_BINARY_DIR</code></a>为前缀。如果output的名称与已存在的目录名称相同，则会在该目录下生成一个与input文件名相同的文件。举个例子：如果input的文件名是inputfile，output是一个目录currentdir，那么生成的文件为currentdir/inputfile。</h5>
+<h5 id="options-"><strong><code>options</code></strong> - 参数选项</h5>
+<blockquote>
+<ol>
+<li><code>COPYONLY</code>：简单的把<code>input</code>文件拷贝到<code>output</code>，不做任何替换。注意，<img alt="\color{red}{该选项与}" src="cmake configure_file.assets/math-20230706161016937" /><code>NEWLINE_STYLE</code><img alt="\color{red}{冲突，不能同时使用}" src="cmake configure_file.assets/math" />。</li>
+<li><code>ESCAPE_QUOTES</code>：忽略反斜杠（C语言风格）的转义。
+     举个例子，不加<code>ESCAPE_QUOTES</code>的情况，也就是默认会对反斜杠进行转义：</li>
+</ol>
+<p>```cpp
+config.h.in文件：</p>
+<h1 id="define-var">define @var@</h1>
+<p>CMakeLists.txt文件：
+set (var "\"VAR\"")
+configure_file (config.h.in config.h)</p>
+<p>生成的config.h文件：</p>
+<h1 id="define-var_1">define "VAR"</h1>
+<p>```</p>
+<p>加<code>ESCAPE_QUOTES</code>的情况，不对反斜杠进行转义：</p>
+<p>```csharp
+config.h.in文件：</p>
+<h1 id="define-var_2">define @var@</h1>
+<p>CMakeLists.txt文件：
+set (var "\"VAR\"")
+configure_file (config.h.in config.h ESCAPE_QUOTES)</p>
+<p>生成的config.h文件：</p>
+<h1 id="define-var_3">define \"VAR\"</h1>
+<p>```</p>
+<ol>
+<li><code>@ONLY</code>：只替换<code>@var@</code>，不替换<code>${var}</code>。<code>${var}</code>在脚本语言中有语义含义（替换会导致含义发生变化），因此在处理这类文件的时候，该选项很有用。</li>
+<li><code>NEWLINE_STYLE</code>：指定<code>output</code>文件的换行风格，例如linux以\n作为换行，windows以\r\n作为换行。该参数后面要指明换行的规则，如<code>UNIX|DOS|WIN32|LF|CRLF</code>。</li>
+</ol>
+</blockquote>
+<ul>
+<li>
+<h4 id="cmakedefine01">cmakedefine01命令</h4>
+</li>
+</ul>
+<h5 id="cmakedefine01-var"><code>#cmakedefine01 var</code></h5>
+<h5 id="vardefine-var-1vardefine-var-0">如果var有定义，则实际生成的效果为：<code>#define var 1</code>；如果var未定义，生成的效果为：<code>#define var 0</code>。</h5>
+<pre><code class="language-dart">config.h.in文件：
+#cmakedefine01 var
+
+CMakeLists.txt文件：
+option(var &quot;use var...&quot; ON) # 实际也可以用cmake -Dvar=ON或者cmake -Dvar=OFF来定义或者不定义
+#set (var XXX) # 用set来定义var也可以，验证发现XXX为0的时候相当于var未定义，XXX为非0的时候效果相当于var有定义
+
+生成的config.h文件：
+#define var 1 # 当var有定义
+#define var 0 # 当var未定义
+</code></pre>
+<ul>
+<li>
+<h4 id="_8">其他注意事项</h4>
+</li>
+</ul>
+<blockquote>
+<ol>
+<li>对于<code>#cmakedefine var @var@</code>或#<code>cmakedefine var ${var}</code>，@@之间或${}内的变量名称要与cmakedefine后的变量名称一样，否则替换不成功。</li>
+<li><code>configure_file</code>要放在变量定义之后（验证发现<code>OPTION</code>定义的变量可以在configure_file之后）。</li>
+</ol>
+</blockquote></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

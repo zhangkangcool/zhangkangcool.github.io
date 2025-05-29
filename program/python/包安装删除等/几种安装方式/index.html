@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Python安装包的几种常用方式 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../subprocess/subprocess/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../%E5%88%A0%E9%99%A4%E5%AE%89%E8%A3%85%E5%8C%85/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#python" class="nav-link">Python安装包的几种常用方式</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-pip" class="nav-link">1. pip安装</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-whl" class="nav-link">2. whl</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#3-easy_install" class="nav-link">3. easy_install</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="python">Python安装包的几种常用方式</h1>
+<p>https://cloud.tencent.com/developer/article/1494677</p>
+<p>在学习和使用Python开发过程中，经常需要安装各种依赖包，对于很多新手而言，如果可以通过pip来安装，还是比较容易的，一旦pip无法安装时，会导致一堆懵逼的姿势出来。</p>
+<p>​        下面介绍Python几种安装包的方式：</p>
+<ol>
+<li>pip安装方式</li>
+<li>whl安装方式</li>
+<li>easy_install安装方式</li>
+<li>源码安装方式</li>
+</ol>
+<h1 id="1-pip">1. pip安装</h1>
+<p>pip 是一个现代的，通用的 Python 包管理工具。提供了对 Python 包的查找、下载、安装、卸载的功能。</p>
+<p>首推安装方式，首先升级pip至最新版本，命令如下：</p>
+<pre><code>pip install --upgrade pip    
+</code></pre>
+<p>安装python包格式为如下</p>
+<pre><code>pip install  xxx
+pip install  numpy
+</code></pre>
+<h1 id="2-whl">2. whl</h1>
+<p>wheel文件本质上就是zip或者rar,只不过他更加方便python的安装以及使用。如何安装.whl格式的包？</p>
+<p>​        首先要明确，为什么要使用whl，因为有些时候python官方并未提供合适的解决方案的包时，这个时候就迫不得已采用whl方式来安装了，先看看看如何使用whl来安装需要的包：</p>
+<ol>
+<li>确定Python版本</li>
+<li>找到该Python版本对应的.whl格式的包,这个链接有常用的whl格式的包：http://www.lfd.uci.edu/~gohlke/pythonlibs/</li>
+<li>下载该.whl格式的包，使用以下命令进行安装 &gt; pip install xxx.whl</li>
+</ol>
+<p>​        注：xxx.whl 指具体的.whl包所在路径</p>
+<p>​        你没看错，还是使用pip来安装whl包</p>
+<h1 id="3-easy_install">3. easy_install</h1>
+<p>easy_install是由PEAK(Python Enterprise Application Kit)开发的setuptools包里带的一个命令，所以使用easy_install实际上是在调用setuptools来完成安装模块的工作。</p>
+<h3 id="windows"><strong>windows 下</strong></h3>
+<p>​        找到一个 与你python 版本对于的setuptools 版本。比如</p>
+<p>​        setuptools-0.6c9.win32-py2.5.exe ，下载安装即可。</p>
+<p>​        安装后需要配置环境变量：在系统变量path中添加F:\Python27\Scripts\，</p>
+<p>​        F:\Python27是你Python的安装路径</p>
+<h3 id="linux"><strong>linux 下</strong></h3>
+<p>​        如果是ubuntu 的话，可以sudo apt-get install python-setuptools 来安装</p>
+<p>​        如果是其他发行版本，可以下载后ez_setup. py，然后python ez_setup. py 安装</p>
+<p>​        使用格式如下：</p>
+<p>​        &gt; easy_install xxx</p>
+<p>​        例如安装requests</p>
+<p>​        &gt; easy_install requests</p>
+<p>​        例如卸载requests, 则用-m选项即可</p>
+<p>​        &gt; easy_install -m requests</p>
+<h4 id="4">4. 源码安装</h4>
+<p>​        源码安装则是在上述方式都不行的情况下，可以出的绝招了，只要有源码，就可自己手动来安装，必备技能，一般的python第三方包，都会提供手工安装模式，一般会有一个setup.py的文件用于从源码安装的能力，下载要安装的源码，安装方式如下：</p>
+<p>​        &gt; python setup.py install </p>
+<p>不管是哪种方式，不可避免的事，在安装过程一定会出现一些问题，根据实际的异常输出去解决即可，一般请直接搜索对应的异常关键词来找对应的解决方案。</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

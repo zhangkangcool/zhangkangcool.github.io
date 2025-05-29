@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>编译和使用 - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../SPIRV-LLVM-Translator/%E7%BC%96%E8%AF%91%E5%92%8C%E4%BD%BF%E7%94%A8/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../pocl/CTS/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#1" class="nav-link">1. 单独编译(不推荐)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#2-llvm9spirv" class="nav-link">2 在llvm9中增加对SPIRV的编译支持</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#3-llvm17spirv" class="nav-link">3 在llvm17中增加对SPIRV的编译支持</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#4" class="nav-link">4. 工具的使用</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>该项目会编译出libSPIRV-Tools-shared.so和spirv-as, spirv-dis等工具。</p>
+<h2 id="1">1. 单独编译(不推荐)</h2>
+<p>此种方式不讲SPIRV-Tools放于llvm/tools目录更好，</p>
+<pre><code class="language-shell">cd SPIRV-Tools
+python3 utils/git-sync-deps   # 从github下载依赖如spirv-headers放与external目录
+
+cmake -B build \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=install
+cd build
+make -j12
+make install
+</code></pre>
+<pre><code class="language-shell">ken@llvm-gw001m1aftf:~/workspace/SPIRV-Tools/install$ ls bin/
+spirv-as  spirv-cfg  spirv-dis  spirv-lesspipe.sh  spirv-link  spirv-lint  spirv-opt  spirv-reduce  spirv-val
+
+ken@llvm-gw001m1aftf:~/workspace/SPIRV-Tools/install$ ls lib/
+cmake  libSPIRV-Tools.a  libSPIRV-Tools-diff.a  libSPIRV-Tools-link.a  libSPIRV-Tools-lint.a  libSPIRV-Tools-opt.a  libSPIRV-Tools-reduce.a  libSPIRV-Tools-shared.so  pkgconfig
+
+ken@llvm-gw001m1aftf:~/workspace/SPIRV-Tools/install$ ls include/
+spirv-tools
+</code></pre>
+<h2 id="2-llvm9spirv">2 在llvm9中增加对SPIRV的编译支持</h2>
+<p>将下载好的<code>SPIRV-Tools</code>放于llvm/tools/spirv-tools。</p>
+<pre><code class="language-diff">diff --git a/llvm/tools/CMakeLists.txt b/llvm/tools/CMakeLists.txt
+index c6116ac81d12..d2046eaae1a7 100644
+--- a/llvm/tools/CMakeLists.txt
++++ b/llvm/tools/CMakeLists.txt
+@@ -35,6 +35,8 @@ add_llvm_tool_subdirectory(llvm-config)
+ add_llvm_tool_subdirectory(llvm-lto)
+ add_llvm_tool_subdirectory(llvm-profdata)
+
++add_llvm_tool_subdirectory(spirv-tools)  # 编译spirv-as spirv-dis等工具
++
+ # Projects supported via LLVM_EXTERNAL_*_SOURCE_DIR need to be explicitly
+ # specified.
+ add_llvm_external_project(clang)
+</code></pre>
+<h2 id="3-llvm17spirv">3 在llvm17中增加对SPIRV的编译支持</h2>
+<p>LLVM17已经集成了该项目编译LLVM时需要打开SPIRV编译</p>
+<pre><code class="language-SHELL">mkdir build
+mkdir install
+
+cmake  ../llvm -DCMAKE_INSTALL_PREFIX=../install -DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RELEASE -DLLVM_ENABLE_PROJECTS=&quot;clang;clang-tools-extra&quot;  -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=&quot;SPIRV&quot; -DLLVM_INCLUDE_SPIRV_TOOLS_TESTS=ON | tee cmake.log
+
+
+make -j16 --trace VERBOSE=2 | tee make.log
+make install | tee install.log
+</code></pre>
+<h2 id="4">4. 工具的使用</h2>
+<h3 id="41-spirv-as">4.1 spirv-as</h3>
+<p><code>spirv-as</code> 是 SPIRV-Tools 中的一个工具，其用途是把文本格式的 SPIR-V 代码（即 <code>.spvasm</code> 文件）转换为二进制格式的 SPIR-V 代码（即 <code>.spv</code> 文件）。下面为你详细介绍其使用方法和命令行示例。</p>
+<pre><code class="language-shell">spirv-as - Create a SPIR-V binary module from SPIR-V assembly text
+
+Usage: spirv-as [options] [&lt;filename&gt;]
+
+The SPIR-V assembly text is read from &lt;filename&gt;.  If no file is specified,
+or if the filename is &quot;-&quot;, then the assembly text is read from standard input.
+The SPIR-V binary module is written to file &quot;out.spv&quot;, unless the -o option
+is used.
+
+Options:
+
+  -h, --help      Print this help.
+
+  -o &lt;filename&gt;   Set the output filename. Use '-' to mean stdout.
+  --version       Display assembler version information.
+  --preserve-numeric-ids
+                  Numeric IDs in the binary will have the same values as in the
+                  source. Non-numeric IDs are allocated by filling in the gaps,
+                  starting with 1 and going up.
+  --target-env    {vulkan1.1spv1.4|vulkan1.0|vulkan1.1|vulkan1.2|vulkan1.3
+                   |spv1.0|spv1.1|spv1.2|spv1.3|spv1.4|spv1.5|spv1.6
+                   |opencl1.2embedded|opencl1.2|opencl2.0embedded|opencl2.0
+                   |opencl2.1embedded|opencl2.1|opencl2.2embedded|opencl2.2
+                   |opengl4.0|opengl4.1|opengl4.2|opengl4.3|opengl4.5}
+                  Use specified environment.
+</code></pre>
+<h5 id="1-spir-v">示例 1：将文本格式的 SPIR-V 代码转换为二进制格式</h5>
+<p>假定你有一个名为 <code>example.spvasm</code> 的文本格式 SPIR-V 文件，要把它转换为二进制格式的 <code>example.spv</code> 文件，可使用如下命令：</p>
+<p>spvasm格式就是dis格式</p>
+<pre><code class="language-shell">spirv-as example.spvasm -o example.spv
+</code></pre>
+<pre><code class="language-shell">spirv-as result_spv.dis --target-env spv1.5 -o test.spv
+spirv-dis test.spv -o test.dis
+假设result_spv.dis是1.4版本的，这样就将其 转化成了1.5版本的test.dis
+</code></pre>
+<h5 id="2">示例 2：指定目标环境</h5>
+<p>若要将 <code>example.spvasm</code> 文件转换为适用于 Vulkan 1.1 环境的二进制格式，可使用以下命令：</p>
+<pre><code class="language-shell">spirv-as --target-env vulkan1.1 example.spvasm -o example.spv
+</code></pre>
+<pre><code class="language-shell"># 第一步：将 LLVM IR 转换为 LLVM 位码
+llc -march=spirv -filetype=obj example.ll -o example.bc
+
+# 第二步：将 LLVM 位码转换为 SPIR-V 文本格式
+llvm-spirv example.bc -o example.spvasm
+
+# 第三步：将 SPIR-V 文本格式转换为二进制 SPV 格式
+spirv-as example.spvasm -o example.spv
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

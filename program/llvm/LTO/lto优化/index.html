@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>Lto优化 - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../LLVM%E5%88%86%E6%9E%90/7.%20%E5%90%8E%E7%AB%AF%E6%B5%81%E7%A8%8B/%E6%8C%87%E4%BB%A4%E9%80%89%E6%8B%A9/InstSel/%E6%8C%87%E4%BB%A4%E9%80%89%E9%A1%B9%E6%96%B9%E5%BC%8F/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../option/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-no-lto" class="nav-link">1 No lto</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-has-lto" class="nav-link">2 Has lto</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://blog.csdn.net/zhajio/article/details/79640155</p>
+<p>https://reviews.llvm.org/D77231</p>
+<h1 id="1-no-lto">1 No lto</h1>
+<pre><code class="language-shell">[shkzhang@recycler:~/testcpp/linker/test/nolto]$ clang++ foo.cpp main.cpp -Wl,-plugin-opt=save-temps
+
+[shkzhang@recycler:~/testcpp/linker/test/nolto]$ ls
+a.out  a.out.resolution.txt  foo.cpp  main.cpp
+
+[shkzhang@recycler:~/testcpp/linker/test/nolto]$ file a.*
+a.out:                ELF 64-bit LSB executable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), dynamically linked, interpreter /lib64/ld64.so.2, for GNU/Linux 3.10.0, not stripped
+a.out.resolution.txt: empty
+</code></pre>
+<p>For some simple case, <code>a.out.resolution.txt</code> is empty.</p>
+<h1 id="2-has-lto">2 Has lto</h1>
+<h3 id="21-no-emit-asm">2.1 no emit-asm</h3>
+<h3 id="uee-flto-wl-plugin-optsave-temps-to-get-the-temp-files">Uee <code>-flto  -Wl,-plugin-opt=save-temps</code> to get the temp files.</h3>
+<pre><code class="language-shell">[shkzhang@recycler:~/testcpp/linker/test/nolto]$ clang++ foo.cpp main.cpp -Wl,-plugin-opt=save-temps -flto
+
+
+[shkzhang@recycler:~/testcpp/linker/test/nolto]$ file a.*
+a.out:                    ELF 64-bit LSB executable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), dynamically linked, interpreter /lib64/ld64.so.2, for GNU/Linux 3.10.0, not stripped
+a.out.0.0.preopt.bc:      LLVM IR bitcode
+a.out.0.2.internalize.bc: LLVM IR bitcode
+a.out.0.4.opt.bc:         LLVM IR bitcode
+a.out.0.5.precodegen.bc:  LLVM IR bitcode
+a.out.lto.o:              ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), not stripped
+a.out.resolution.txt:     ASCII text
+
+
+[shkzhang@recycler:~/testcpp/linker/test/nolto]$ ls
+a.out                a.out.0.2.internalize.bc  a.out.0.5.precodegen.bc  a.out.resolution.txt  main.cpp
+a.out.0.0.preopt.bc  a.out.0.4.opt.bc          a.out.lto.o              foo.cpp
+</code></pre>
+<p>LTO merges the IR for all files being linked and optimizes them as a 
+single monolithic module. </p>
+<ol>
+<li>preopt.b: the merged IR just after merging and before performing any LTO optimizations.</li>
+<li>internalize.bc is after performing whole program internalization. </li>
+<li>opt.bc is after the optimization pipeline,</li>
+<li>precodegen.bc is immediately before native </li>
+<li>code generation.</li>
+</ol>
+<h3 id="get-the-asm">Get the asm</h3>
+<p>Below command is equal</p>
+<p><code>-plugin-opt=emit-asm</code> is qual to <code>--lto-emit-asm</code>.</p>
+<pre><code class="language-shell">clang++ foo.cpp main.cpp -Wl,-plugin-opt=save-temps -flto -Wl,-plugin-opt=emit-asm
+clang++ foo.cpp main.cpp -Wl,-plugin-opt=save-temps -flto -Wl,--lto-emit-asm
+</code></pre>
+<pre><code class="language-shell">[shkzhang@recycler:~/testcpp/linker/test/test]$ clang++ foo.cpp main.cpp -Wl,-plugin-opt=save-temps -flto -Wl,-plugin-opt=emit-asm
+
+
+[shkzhang@recycler:~/testcpp/linker/test/test]$ ls
+a.out                a.out.0.2.internalize.bc  a.out.0.5.precodegen.bc  a.out.resolution.txt  main.cpp
+a.out.0.0.preopt.bc  a.out.0.4.opt.bc          a.out.lto.o              foo.cpp
+
+
+[shkzhang@recycler:~/testcpp/linker/test/test]$ file a.*
+a.out:                    assembler source, ASCII text
+a.out.0.0.preopt.bc:      LLVM IR bitcode
+a.out.0.2.internalize.bc: LLVM IR bitcode
+a.out.0.4.opt.bc:         LLVM IR bitcode
+a.out.0.5.precodegen.bc:  LLVM IR bitcode
+a.out.lto.o:              assembler source, ASCII text
+a.out.resolution.txt:     ASCII text
+</code></pre>
+<p><code>a.out</code> and <code>a.out.lto.o</code> will be same and they are the assembly file.</p>
+<p>在SPEC的peak中，.o文件是bitcode，可以使用下面的命令得到assembly:</p>
+<pre><code class="language-shell"> /home/shkzhang/Wrappers_SPEC_cpu2017/bin/clang++    -L/opt/at12.0//lib64 -Wl,-rpath=/opt/at12.0//lib64 -lhugetlbfs -Wl,-dynamic-linker /opt/at12.0//lib64/ld64.so.2   -mllvm -aggressive-late-full-unroll -O3 -mcpu=native -fexperimental-new-pass-manager -mllvm -enable-ppc-gen-scalar-mass -mllvm -vector-library=MASSV  -fprofile-generate  -DSPEC_LP64     FullBoard.o KoState.o Playout.o TimeControl.o UCTSearch.o GameState.o Leela.o SGFParser.o Timing.o Utils.o FastBoard.o Matcher.o SGFTree.o TTable.o Zobrist.o FastState.o GTP.o MCOTable.o Random.o SMP.o UCTNode.o                  -L/xl_le/compgpfs/builds/continuous.dev/ppc64le/ubuntu16/mass.dev.le/latest/leppc/ -lxlopt -lmass    -o a.dis -Wl,--lto-emit-asm
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

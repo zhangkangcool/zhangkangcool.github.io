@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>一些概念和注释 - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../tensorflow%20xla%20hlo%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8Cpass%20pipeline/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../PB%E6%96%87%E4%BB%B6/%E4%BF%9D%E5%AD%98%E4%B8%BApb%E6%96%87%E4%BB%B6/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#hlomodule" class="nav-link">HloModule</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#hlocomputation" class="nav-link">HloComputation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#iremitter" class="nav-link">IrEmitter</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#iremitterunnested" class="nav-link">IrEmitterUnnested</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#iremitternested" class="nav-link">IrEmitterNested</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="hlomodule">HloModule</h2>
+<pre><code>// HLO instructions are the atomic unit of the high-level compiler's IR.
+//
+// HloInstructions live inside of an HloComputation, which is analogous to a
+// function in other programming languages.  Nodes have no total order within
+// their computation.  Instead, they have a partial ordering determined by their
+// data and control dependencies.
+//
+// HLO does not have basic blocks or explicit &quot;branch&quot; instructions.  Instead,
+// certain HloInstructions -- namely, kWhile, kConditional, and kCall -- encode
+// control flow.  For example, the kConditional HLO executes one of two possible
+// computations, depending on the runtime value of a predicate.
+//
+// HLO is pure (mostly).  It has no concept of mutable state.  Instead, data
+// values are produced by one HLO and flow into consumers across dependency
+// edges.
+</code></pre>
+<h2 id="hlocomputation">HloComputation</h2>
+<pre><code>// Describes a computation at the HLO level.
+//
+
+// You can think of an HloComputation like a function.  It has some inputs
+// (parameters) and returns exactly one value (the value of its root node).  If
+// you want to return multiple values, you can return a tuple.
+//
+// The instructions inside of a computation do not have an explicit total order.
+// Instead, they have a partial order determined by their data and control
+// dependencies.
+//
+// An HloModule contains one &quot;entry computation&quot; -- this is like main() in a C
+// program.  Every other computation inside of a module is attached to one or
+// more HloInstructions, as a &quot;nested computation&quot;.  For example, the kMap
+// instruction has a nested computation and &quot;applies&quot; it to every element of its
+// input, elementwise.  (That is, the input [x, y, z] is transformed to [f(x),
+// f(y), f(z)].)
+class HloComputation {
+</code></pre>
+<h2 id="iremitter">IrEmitter</h2>
+<pre><code>// Abstract base class for translating HLO graphs to LLVM IR for a GPU.
+//
+// There are two concrete subclasses of IrEmitter: IrEmitterNested and
+// IrEmitterUnnested.  In the unnested variety, each HLO gets its own kernel
+// function, whereas in the nested version the whole computation is emitted as
+// one *non-kernel* function.
+//
+// In XLA, kernel functions never call other kernel functions.  This means that
+// if we have a kernel -- e.g. implementing a kReduce HLO -- that wants to use
+// an HLO computation as a &quot;subroutine&quot; -- e.g. the HLO computation that
+// specifies how to reduce two elements -- then the subroutine computation must
+// be emitted using IrEmitterNested.
+//
+// Fusion nodes are a special case.  A fusion node is emitted using
+// IrEmitterUnnested, but the code is generated using FusedIrEmitter, which is
+// not a subclass of gpu::IrEmitter, and in fact is better understood as an IR
+// generator generator.  See comments on that class.
+class IrEmitter : public DfsHloVisitorWithDefault,
+                  public IrBuilderMixin&lt;IrEmitter&gt; 
+</code></pre>
+<h2 id="iremitterunnested">IrEmitterUnnested</h2>
+<pre><code>// Emits LLVM IR for an &quot;unnested computation&quot;.
+//
+// An unnested computation is an HloComputation which you run by executing one
+// or more kernels for each HloInstruction it contains.  Examples of unnested
+// computations:
+//
+//  - An HloModule's root computation,
+//  - The body of an HLO while loop,
+//  - The true/false computation of an HLO conditional.
+//
+// Note the opportunity for confusion -- the while loop's computation is nested
+// within the root computation, but it's emitted using IrEmitterUnnested!  Don't
+// think about it too hard.
+//
+// Examples of things that are not unnested computations:
+//
+//  - The reducer of a kReduce HLO.  This is emitted using IrEmitterNested.
+//  - The body of a fusion node.  IrEmitterUnenested emits the relevant code
+//    within a kernel function using FusedIrEmitter.  (FusedIrEmitter is not
+//    really an IrEmitter, but is more an &quot;IR generator generator&quot;.)
+//
+class IrEmitterUnnested : public IrEmitter {
+</code></pre>
+<h2 id="iremitternested">IrEmitterNested</h2>
+<pre><code>// Emits LLVM IR for a &quot;nested computation&quot; into a non-kernel device function.
+//
+// This is used to emit code for HloComputations that don't require a separate
+// kernel call.  For example, IrEmitterNested is used to emit code for a kReduce
+// HLO's elementwise reduction computation.  Notably, IrEmitterNested is *not*
+// used to emit code for fusion nodes -- fusion nodes use FusedIrEmitter, which
+// is a different beast altogether.
+//
+// IrEmitterNested generates a non-kernel function with the following
+// parameters:
+//
+//   - N pointers to the buffers of each of the N parameters to the computation,
+//   - a pointer to the output buffer of the computation, and
+//   - a pointer to the top-level temp buffer.
+//
+class IrEmitterNested : public IrEmitter 
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

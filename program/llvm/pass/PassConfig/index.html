@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>PassConfig - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Machine%20verify/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../init%20pass%20and%20addpass/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            <li class="nav-item" data-bs-level="1"><a href="#debugpass-stop-after" class="nav-link">可用于debug的pass名字 stop-after等使用</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#addpass" class="nav-link">addPass</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>各种Pass</p>
+<p>https://llvm.org/docs/Passes.html</p>
+<h3 id="_1">得到具体做了哪些优化</h3>
+<p><code>lib/CodeGen/TargetPassConfig.cpp</code></p>
+<pre><code class="language-cpp"> 514 void TargetPassConfig::addPass(Pass *P, bool verifyAfter, bool printAfter) {
+     ...
+ 528     std::string Banner;
+ 529     dbgs() &lt;&lt; &quot;\n&quot; &lt;&lt; __LINE__ &lt;&lt; &quot; zhangkang &quot; &lt;&lt; std::string(P-&gt;getPassName());
+ 530     // Construct banner message before PM-&gt;add() as that may delete the pass.
+ 531     if (AddingMachinePasses &amp;&amp; (printAfter || verifyAfter))
+ 532       Banner = std::string(&quot;After &quot;) + std::string(P-&gt;getPassName());
+ 533     PM-&gt;add(P);
+ 534     dbgs() &lt;&lt; &quot;\n&quot; &lt;&lt; __LINE__ &lt;&lt; &quot; zhangkang &quot; &lt;&lt; Banner;
+ 535     if (AddingMachinePasses) {
+ 536       if (printAfter)
+ 537         addPrintPass(Banner);
+ 538       if (verifyAfter)
+ 539         addVerifyPass(Banner);
+ 540     }
+     }
+</code></pre>
+<p>下面是其中的一个调用线索，其它的pass可能有其它的调用线索</p>
+<p><code>LLVMTargetMachine::addPassesToEmitFile -&gt; addPassesToGenerateCode -&gt; TargetPassConfig::addMachinePasses</code> </p>
+<p><code>addPassesToEmitFile</code>被多个地方使用，比如<code>llc.cpp</code>。</p>
+<p>LLVMTargetMachine.cpp</p>
+<pre><code class="language-c++">bool LLVMTargetMachine::addPassesToEmitFile(PassManagerBase &amp;PM,
+                                            raw_pwrite_stream &amp;Out,
+                                            raw_pwrite_stream *DwoOut,
+                                            CodeGenFileType FileType,
+                                            bool DisableVerify,
+                                            MachineModuleInfo *MMI) {
+  // Add common CodeGen passes.
+  if (!MMI)
+    MMI = new MachineModuleInfo(this);
+  TargetPassConfig *PassConfig =
+      addPassesToGenerateCode(*this, PM, DisableVerify, *MMI);  // 往下看
+  if (!PassConfig)
+    return true;
+
+  if (!TargetPassConfig::willCompleteCodeGenPipeline()) {
+    if (this-&gt;getTargetTriple().isOSAIX()) {
+      // On AIX, we might manifest MCSymbols during SDAG lowering. For MIR
+      // testing to be meaningful, we need to ensure that the symbols created
+      // are MCSymbolXCOFF variants, which requires that
+      // the TargetLoweringObjectFile instance has been initialized.
+      MCContext &amp;Ctx = MMI-&gt;getContext();
+      const_cast&lt;TargetLoweringObjectFile &amp;&gt;(*this-&gt;getObjFileLowering())
+          .Initialize(Ctx, *this);
+    }
+    PM.add(createPrintMIRPass(Out));
+  } else if (addAsmPrinter(PM, Out, DwoOut, FileType, MMI-&gt;getContext()))
+    return true;
+
+  PM.add(createFreeMachineFunctionPass());
+  return false;
+}
+</code></pre>
+<p>LLVMTargetMachine.cpp</p>
+<pre><code class="language-c++">static TargetPassConfig *
+addPassesToGenerateCode(LLVMTargetMachine &amp;TM, PassManagerBase &amp;PM,
+                        bool DisableVerify, MachineModuleInfo &amp;MMI) {
+  // Targets may override createPassConfig to provide a target-specific
+  // subclass.
+  TargetPassConfig *PassConfig = TM.createPassConfig(PM);
+  // Set PassConfig options provided by TargetMachine.
+  PassConfig-&gt;setDisableVerify(DisableVerify);
+  PM.add(PassConfig);
+  PM.add(&amp;MMI);
+
+  if (PassConfig-&gt;addISelPasses())
+    return nullptr;
+  PassConfig-&gt;addMachinePasses();   --&gt; 添加MachinePass
+  PassConfig-&gt;setInitialized();
+  return PassConfig;
+}
+</code></pre>
+<p><code>addMachinePasses</code>中可以看到所有MachinePass的添加执行顺序</p>
+<p><code>TargetPassConfig.cpp</code></p>
+<pre><code class="language-cpp"> 861 void TargetPassConfig::addMachinePasses() {
+ 862   AddingMachinePasses = true;
+ 863
+ 864   // Insert a machine instr printer pass after the specified pass.
+ 865   StringRef PrintMachineInstrsPassName = PrintMachineInstrs.getValue();
+ 866   if (!PrintMachineInstrsPassName.equals(&quot;&quot;) &amp;&amp;
+ 867       !PrintMachineInstrsPassName.equals(&quot;option-unspecified&quot;)) {
+ 868     if (const PassInfo *TPI = getPassInfo(PrintMachineInstrsPassName)) {
+ 869       const PassRegistry *PR = PassRegistry::getPassRegistry();
+ 870       const PassInfo *IPI = PR-&gt;getPassInfo(StringRef(&quot;machineinstr-printer&quot;));
+ 871       assert(IPI &amp;&amp; &quot;failed to get \&quot;machineinstr-printer\&quot; PassInfo!&quot;);
+ 872       const char *TID = (const char *)(TPI-&gt;getTypeInfo());
+ 873       const char *IID = (const char *)(IPI-&gt;getTypeInfo());
+ 874       insertPass(TID, IID);
+ 875     }
+ 876   }
+ 877
+ 878   // Print the instruction selected machine code...
+ 879   printAndVerify(&quot;After Instruction Selection&quot;);
+ 880
+ 881   // Expand pseudo-instructions emitted by ISel.
+ 882   addPass(&amp;ExpandISelPseudosID);
+ 883
+ 884   // Add passes that optimize machine instructions in SSA form.
+ 885   if (getOptLevel() != CodeGenOpt::None) {
+ 886     addMachineSSAOptimization();
+ 887   } else {
+ 888     // If the target requests it, assign local variables to stack slots relative
+ 889     // to one another and simplify frame index references where possible.
+ 890     addPass(&amp;LocalStackSlotAllocationID, false);
+ 891   }
+     ...
+ 958   addPreEmitPass();
+     ...
+</code></pre>
+<h3 id="targetpassconfig">TargetPassconfig</h3>
+<p>Pass由<code>TargetPassConfig</code>类进行管理</p>
+<p><code>./include/llvm/CodeGen/TargetPassConfig.h</code></p>
+<p>下面的这些Virtual空方法，子类在需要时对其进行覆盖。基类会在<code>addMaachinePasses</code>对这些Virtual方法进行调用，以擦Pass的添加顺序及流程。</p>
+<pre><code class="language-cpp"> 78 /// Target-Independent Code Generator Pass Configuration Options.
+ 79 ///
+ 80 /// This is an ImmutablePass solely for the purpose of exposing CodeGen options
+ 81 /// to the internals of other CodeGen passes.
+ 82 class TargetPassConfig : public ImmutablePass {
+ 83 private:
+ 84   PassManagerBase *PM = nullptr;
+
+ 347   /// All passes added here should preserve the MachineDominatorTree,
+348   /// MachineLoopInfo, and MachineTraceMetrics analyses.
+349   virtual bool addILPOpts() {
+350     return false;
+351   }
+352
+353   /// This method may be implemented by targets that want to run passes
+354   /// immediately before register allocation.
+355   virtual void addPreRegAlloc() { }
+356
+357   /// createTargetRegisterAllocator - Create the register allocator pass for
+358   /// this target at the current optimization level.
+359   virtual FunctionPass *createTargetRegisterAllocator(bool Optimized);
+360
+361   /// addFastRegAlloc - Add the minimum set of target-independent passes that
+362   /// are required for fast register allocation.
+363   virtual void addFastRegAlloc(FunctionPass *RegAllocPass);
+364
+365   /// addOptimizedRegAlloc - Add passes related to register allocation.
+366   /// LLVMTargetMachine provides standard regalloc passes for most targets.
+367   virtual void addOptimizedRegAlloc(FunctionPass *RegAllocPass);
+368
+369   /// addPreRewrite - Add passes to the optimized register allocation pipeline
+370   /// after register allocation is complete, but before virtual registers are
+371   /// rewritten to physical registers.
+372   ///
+373   /// These passes must preserve VirtRegMap and LiveIntervals, and when running
+374   /// after RABasic or RAGreedy, they should take advantage of LiveRegMatrix.
+375   /// When these passes run, VirtRegMap contains legal physreg assignments for
+376   /// all virtual registers.
+377   virtual bool addPreRewrite() {
+378     return false;
+379   }
+380
+381   /// This method may be implemented by targets that want to run passes after
+382   /// register allocation pass pipeline but before prolog-epilog insertion.
+383   virtual void addPostRegAlloc() { }
+384
+385   /// Add passes that optimize machine instructions after register allocation.
+386   virtual void addMachineLateOptimization();
+387
+388   /// This method may be implemented by targets that want to run passes after
+389   /// prolog-epilog insertion and before the second instruction scheduling pass.
+390   virtual void addPreSched2() { }
+391
+392   /// addGCPasses - Add late codegen passes that analyze code for garbage
+393   /// collection. This should return true if GC info should be printed after
+394   /// these passes.
+395   virtual bool addGCPasses();
+396
+397   /// Add standard basic block placement passes.
+398   virtual void addBlockPlacement();
+399
+400   /// This pass may be implemented by targets that want to run passes
+401   /// immediately before machine code is emitted.
+402   virtual void addPreEmitPass() { }
+403
+404   /// Targets may add passes immediately before machine code is emitted in this
+405   /// callback. This is called even later than `addPreEmitPass`.
+406   // FIXME: Rename `addPreEmitPass` to something more sensible given its actual
+407   // position and remove the `2` suffix here as this callback is what
+408   // `addPreEmitPass` *should* be but in reality isn't.
+409   virtual void addPreEmitPass2() {}
+</code></pre>
+<p>每个<code>arch</code>可以再继续出自己的<code>TargetPassConfg</code>对一些和<code>arch</code>的Pass进行管理</p>
+<p><code>./lib/Target/PowerPC/PPCTargetMachine.cpp</code></p>
+<pre><code class="language-cpp">310 /// PPC Code Generator Pass Configuration Options.
+311 class PPCPassConfig : public TargetPassConfig {
+312 public:
+313   PPCPassConfig(PPCTargetMachine &amp;TM, PassManagerBase &amp;PM)
+314     : TargetPassConfig(TM, PM) {
+315     // At any optimization level above -O0 we use the Machine Scheduler and not
+316     // the default Post RA List Scheduler.
+317     if (TM.getOptLevel() != CodeGenOpt::None)
+318       substitutePass(&amp;PostRASchedulerID, &amp;PostMachineSchedulerID);
+319   }
+320
+321   PPCTargetMachine &amp;getPPCTargetMachine() const {
+322     return getTM&lt;PPCTargetMachine&gt;();
+323   }
+324
+325   void addIRPasses() override;
+326   bool addPreISel() override;
+327   bool addILPOpts() override;
+328   bool addInstSelector() override;
+329   void addMachineSSAOptimization() override;
+330   void addPreRegAlloc() override;
+331   void addPreSched2() override;
+332   void addPreEmitPass() override;
+333 };
+</code></pre>
+<p>上述的几个add函数是基类中的方法，对其进行覆盖。</p>
+<pre><code class="language-shell">457 void PPCPassConfig::addPreEmitPass() {
+458   addPass(createPPCPreEmitPeepholePass());
+459   addPass(createPPCExpandISELPass());
+460
+461   if (getOptLevel() != CodeGenOpt::None)
+462     addPass(createPPCEarlyReturnPass(), false);
+463   // Must run branch selection immediately preceding the asm printer.
+464   addPass(createPPCBranchSelectionPass(), false);
+465 }
+</code></pre>
+<h3 id="add-the-pass">Add the pass</h3>
+<h5 id="1-addpasspass">1 通过公有方法<code>addPass</code>对Pass进行添加。</h5>
+<p><code>./lib/CodeGen/StackMapLivenessAnalysis.cpp</code></p>
+<pre><code class="language-cpp"> 49 class StackMapLiveness : public MachineFunctionPass {
+ 50   const TargetRegisterInfo *TRI;
+ 51   LivePhysRegs LiveRegs;
+ 52
+ 53 public:
+ 54   static char ID;
+</code></pre>
+<pre><code class="language-cpp">./lib/CodeGen/TargetPassConfig.cpp:  addPass(&amp;StackMapLivenessID, false);
+</code></pre>
+<p>所有的pass都有一<code>getPassName()</code>的函数。</p>
+<pre><code class="language-cpp">class FunctionPass : public Pass
+class MachineFunctionPass : public FunctionPass
+class ModulePass : public Pass
+</code></pre>
+<h5 id="2virtual-ppcpassconfigadd____archpass">2通过覆盖<code>virtual PPCPassConfig::add____</code>添加和arch相关的Pass</h5>
+<p>这些virtual方法中，还是会调用addPass()函数。</p>
+<p><code>lib/Target/PowerPC/PPCBranchSelector.cpp</code></p>
+<pre><code class="language-cpp"> 39 namespace {
+ 40   struct PPCBSel : public MachineFunctionPass {
+ 41     static char ID;
+ 42     PPCBSel() : MachineFunctionPass(ID) {
+ 43       initializePPCBSelPass(*PassRegistry::getPassRegistry());
+ 44     }
+ 45
+ 46     // The sizes of the basic blocks in the function (the first
+ 47     // element of the pair); the second element of the pair is the amount of the
+ 48     // size that is due to potential padding.
+ 49     std::vector&lt;std::pair&lt;unsigned, unsigned&gt;&gt; BlockSizes;
+ 50
+ 51     bool runOnMachineFunction(MachineFunction &amp;Fn) override;
+ 52
+ 53     MachineFunctionProperties getRequiredProperties() const override {
+ 54       return MachineFunctionProperties().set(
+ 55           MachineFunctionProperties::Property::NoVRegs);
+ 56     }
+ 57
+ 58     StringRef getPassName() const override { return &quot;PowerPC Branch Selector&quot;; }
+ 59   };
+ 60   char PPCBSel::ID = 0;
+ 61 }
+ 62
+ 63 INITIALIZE_PASS(PPCBSel, &quot;ppc-branch-select&quot;, &quot;PowerPC Branch Selector&quot;,
+ 64                 false, false)
+ 65
+ 66 /// createPPCBranchSelectionPass - returns an instance of the Branch Selection
+ 67 /// Pass
+ 68 ///
+ 69 FunctionPass *llvm::createPPCBranchSelectionPass() {
+ 70   return new PPCBSel();
+ 71 }
+ 72
+</code></pre>
+<p>此处通过<code>createPPCBranchSelectionPass()</code>对<code>PPCBSel</code>进行了封装。</p>
+<p><code>./lib/Target/PowerPC/PPCTargetMachine.cpp</code>添加该Pass。</p>
+<pre><code class="language-cpp">457 void PPCPassConfig::addPreEmitPass() {
+458   addPass(createPPCPreEmitPeepholePass());
+459   addPass(createPPCExpandISELPass());
+460
+461   if (getOptLevel() != CodeGenOpt::None)
+462     addPass(createPPCEarlyReturnPass(), false);
+463   // Must run branch selection immediately preceding the asm printer.
+464   addPass(createPPCBranchSelectionPass(), false);
+465 }
+</code></pre>
+<p>addPass()是添加Pass时，必须调用的方法。所以，可以在里面输出所使用的Pass名字。</p>
+<h1 id="debugpass-stop-after">可用于debug的pass名字 stop-after等使用</h1>
+<p><code>lib/IR/PassRegistry.cpp</code></p>
+<p>For one opt level, if your passname is not in below, you will get </p>
+<p><code>LLVM ERROR: "ppc-early-ret" pass is not registered.</code></p>
+<p>You can use the PassName to get the <code>DEBYG_TYPE</code>, it the passname <code>stop-after</code> needed.</p>
+<pre><code class="language-cpp">#include &quot;llvm/Support/Debug.h&quot; 
+19 #include &quot;llvm/Support/raw_ostream.h&quot;
+
+
+ 55 //===----------------------------------------------------------------------===//
+ 56 // Pass Registration mechanism
+ 57 //
+ 58
+ 59 void PassRegistry::registerPass(const PassInfo &amp;PI, bool ShouldFree) {
+ 60   sys::SmartScopedWriter&lt;true&gt; Guard(Lock);
+ 61   bool Inserted =
+ 62       PassInfoMap.insert(std::make_pair(PI.getTypeInfo(), &amp;PI)).second;
+ 63   assert(Inserted &amp;&amp; &quot;Pass registered multiple times!&quot;);
+ 64   (void)Inserted;
+ 65   PassInfoStringMap[PI.getPassArgument()] = &amp;PI;
+ 66   dbgs() &lt;&lt; &quot;PassName = &quot; &lt;&lt; PI.getPassName() &lt;&lt; &quot;\n&quot;;
+ 67   // Notify any listeners.
+ 68   for (auto *Listener : Listeners)
+ 69     Listener-&gt;passRegistered(&amp;PI);
+ 70
+ 71   if (ShouldFree)
+ 72     ToFree.push_back(std::unique_ptr&lt;const PassInfo&gt;(&amp;PI));
+ 73 }
+ 74
+</code></pre>
+<h2 id="addpass">addPass</h2>
+<pre><code>./lib/Transforms/IPO/PassManagerBuilder.cpp
+Passes/PassBuilder.cpp
+llvm/include/llvm/LinkAllPasses.h
+
+./lib/Target/PowerPC/PPCTargetMachine.cpp
+
+./lib/CodeGen/EarlyIfConversion.cpp:char &amp;llvm::EarlyIfConverterID = EarlyIfConverter::ID;
+./lib/Target/PowerPC/PPCTargetMachine.cpp:  addPass(&amp;EarlyIfConverterID);
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

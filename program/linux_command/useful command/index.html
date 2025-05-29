@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../img/favicon.ico">
+        <title>1. scp - My Docs</title>
+        <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../svn%20command/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../xargs/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#1-scp" class="nav-link">1. scp</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#2-du" class="nav-link">2. du 目录信息</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#3" class="nav-link">3. 重导向</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#4-nm" class="nav-link">4. nm查看导出库</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#5" class="nav-link">5. 杀死用户所有进程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#6-linux" class="nav-link">6. 查看linux导出符号和依赖库</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#7" class="nav-link">7. 输出正在运行的命令行</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#8-xdg-open" class="nav-link">8. xdg-open</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#9-cpu-cpu" class="nav-link">9. 查看内存CPU等信息 &amp; 绑定CPU</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#10-linux-release" class="nav-link">10. linux release</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#13-ln-s" class="nav-link">13 ln -s</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#14-file" class="nav-link">14 file 查看文件类型</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="1-scp">1. scp</h1>
+<p>copy from remote to local</p>
+<pre><code>scp -r ken@host_address:/home/test.txt .
+</code></pre>
+<p>copy from local to remote</p>
+<pre><code>scp -r /home/text.txt ken@host_address:~
+</code></pre>
+<h1 id="2-du">2. du 目录信息</h1>
+<p>local current dir size</p>
+<pre><code class="language-shell">du -ah --max-depth=1
+du -h -d 1
+du --max-depth=1 -h -B G /home/ | sort -rn
+du --max-depth=1 -h -B G . | sort -rn
+</code></pre>
+<h1 id="3">3. 重导向</h1>
+<p><code>&gt;&gt;</code> append</p>
+<h3 id="31-trash">3.1. trash</h3>
+<pre><code class="language-shell">ls -al &gt; /dev/null
+</code></pre>
+<h3 id="32-to-file">3.2. To file</h3>
+<pre><code class="language-shell">ls -al 1&gt; list.txt 2&gt; ok.txt
+ls -al &gt; list.txt 2&gt;&amp;1
+</code></pre>
+<h1 id="4-nm">4. nm查看导出库</h1>
+<pre><code class="language-shell">nm libc.so
+</code></pre>
+<h1 id="5">5. 杀死用户所有进程</h1>
+<h3 id="51-pkill">5.1 pkill方式</h3>
+<pre><code class="language-shell">pkill -u zhangnq
+</code></pre>
+<h3 id="52-killall">5.2 killall方式</h3>
+<pre><code>killall -u zhangnq
+</code></pre>
+<h3 id="53-ps-pszhangnqpidkill">5.3 ps方式 ps列出zhangnq的pid，然后依次kill掉，比较繁琐。</h3>
+<pre><code>ps -ef | grep zhangnq | awk '{ print $2 }' | xargs kill -9
+</code></pre>
+<h3 id="54-pgrep-pgrep-upidkill">5.4 pgrep方式 pgrep -u参数查出用户的所有pid，然后依次kill</h3>
+<pre><code>pgrep -u zhangnq | xargs kill -9
+</code></pre>
+<h1 id="6-linux">6. 查看linux导出符号和依赖库</h1>
+<p>https://www.cnblogs.com/xiaomanon/p/4203671.html</p>
+<h3 id="1-nm-a">1. nm *.a 静态库</h3>
+<pre><code>nm abc.a
+</code></pre>
+<h3 id="2-nm-so">2. nm *.so 动态库</h3>
+<pre><code>nm -D abc.so
+or 
+objdump -tT abc.so
+</code></pre>
+<h3 id="3-ldd">3. ldd 查看依赖库</h3>
+<h1 id="7">7. 输出正在运行的命令行</h1>
+<pre><code>bash -x
+</code></pre>
+<h1 id="8-xdg-open">8. xdg-open</h1>
+<p>xdg-open用法非常简单，就直接参数传入要打开的文件，等效于鼠标双击打开，系统会根据文件类型自动调用对应的程序</p>
+<pre><code class="language-shell">xdg-open  xxx.doc
+xdg-open  xxx.pdf
+xdg-open  xxx.png
+</code></pre>
+<h1 id="9-cpu-cpu">9. 查看内存CPU等信息 &amp; 绑定CPU</h1>
+<pre><code>lscpu
+ppc64_cpu --info
+cat /proc/cpuinfo
+cat /proc/meminfo
+
+tasket -c 12 ./a.out
+</code></pre>
+<h1 id="10-linux-release">10. linux release</h1>
+<pre><code>cat /etc/os-release
+</code></pre>
+<h1 id="13-ln-s">13 ln -s</h1>
+<pre><code class="language-shell">ln -s /lib64/libncurses.so.6 libncurses.so.5
+ln -s exit_file new_link_file
+</code></pre>
+<h3 id="_1">批量建立符号链接</h3>
+<p>https://blog.csdn.net/hnlyyk/article/details/49303741</p>
+<ul>
+<li>使用<code>ln</code>命令</li>
+</ul>
+<p>```shell
+  ln -s /tmp/*.log /tmp/lnk/</p>
+<p>#bin目录下的所有文件建立在当前文件的符号链接
+  ln -s /home/shkzhang/llvm/build/bin/* .
+  ```</p>
+<ul>
+<li>使用<code>cp</code>命令的参数<code>rs</code></li>
+</ul>
+<p><code>shell
+  cp -rs /tmp/*.log /tmp/lnk/</code></p>
+<ul>
+<li>写shell脚本，一个比较愚蠢的方法</li>
+</ul>
+<pre><code class="language-shell">for FILE in /tmp/*.log;do ln -s $FILE '/tmp/lnk_'`basename $FILE`;done
+</code></pre>
+<h1 id="14-file">14 file 查看文件类型</h1>
+<pre><code class="language-shell">/home/shkzhang/llvm/build/bin/clang++ -c -o Playout.o -DSPEC -DNDEBUG -I. -DSPEC_AUTO_SUPPRESS_OPENMP     -O3 -m64 -mcpu=power9 -fexperimental-new-pass-manager  -fprofile-use=default.profdata -flto -Wl,-q  -Wl,-rpath=/home/shkzhang/llvm/build/lib      -DSPEC_LP64  Playout.cpp
+
+[shkzhang@recycler:~/spec_clang_result/benchspec/CPU/541.leela_r/build/build_peak_clang_default.0000]$ file Playout.o
+Playout.o: LLVM IR bitcode
+
+
+
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../js/base.js"></script>
+        <script src="../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

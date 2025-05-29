@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>BuildMI - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../IR/nsw%20nuw%20UB/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../ISD%20inst%20to%20PPC%20inst/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#buildmi" class="nav-link">BuildMI</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#machineinstrbuilder" class="nav-link">MachineInstrBuilder</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="buildmi">BuildMI</h1>
+<p>Implicit operands必须在explicit operands之后。</p>
+<pre><code class="language-c++">/// addOperand - Add the specified operand to the instruction.  If it is an
+/// implicit operand, it is added to the end of the operand list.  If it is
+/// an explicit operand it is added at the end of the explicit operand list
+/// (before the first implicit operand).
+void MachineInstr::addOperand(MachineFunction &amp;MF, const MachineOperand &amp;Op) {}
+</code></pre>
+<p>Some of <code>buildMI</code></p>
+<pre><code class="language-c++">/// Builder interface. Specify how to create the initial instruction itself.
+inline MachineInstrBuilder BuildMI(MachineFunction &amp;MF, const DebugLoc &amp;DL,
+                                   const MCInstrDesc &amp;MCID) {
+  return MachineInstrBuilder(MF, MF.CreateMachineInstr(MCID, DL));
+}
+
+/// This version of the builder sets up the first operand as a
+/// destination virtual register.
+inline MachineInstrBuilder BuildMI(MachineFunction &amp;MF, const DebugLoc &amp;DL,
+                                   const MCInstrDesc &amp;MCID, Register DestReg) {
+  return MachineInstrBuilder(MF, MF.CreateMachineInstr(MCID, DL))
+           .addReg(DestReg, RegState::Define);
+}
+
+/// This version of the builder inserts the newly-built instruction before
+/// the given position in the given MachineBasicBlock, and sets up the first
+/// operand as a destination virtual register.
+在I之前插入
+inline MachineInstrBuilder BuildMI(MachineBasicBlock &amp;BB,
+                                   MachineBasicBlock::iterator I,
+                                   const DebugLoc &amp;DL, const MCInstrDesc &amp;MCID,
+                                   Register DestReg) {
+  MachineFunction &amp;MF = *BB.getParent();
+  MachineInstr *MI = MF.CreateMachineInstr(MCID, DL);
+  BB.insert(I, MI);
+  return MachineInstrBuilder(MF, MI).addReg(DestReg, RegState::Define);
+}
+
+
+  /// Create a MachineInstrBuilder for manipulating an existing instruction.
+  /// F must be the machine function that was used to allocate I.
+  MachineInstrBuilder(MachineFunction &amp;F, MachineInstr *I) : MF(&amp;F), MI(I) {}
+  MachineInstrBuilder(MachineFunction &amp;F, MachineBasicBlock::iterator I)
+      : MF(&amp;F), MI(&amp;*I) {}
+</code></pre>
+<p><code>MachineInstrBuilder</code>会调用<code>MachineInstr</code>的ctor方法，该方法可传入参数来决定是否需要copy implicit。</p>
+<pre><code class="language-c++">void MachineInstr::addImplicitDefUseOperands(MachineFunction &amp;MF) {
+  if (MCID-&gt;ImplicitDefs)
+    for (const MCPhysReg *ImpDefs = MCID-&gt;getImplicitDefs(); *ImpDefs;
+           ++ImpDefs)
+      addOperand(MF, MachineOperand::CreateReg(*ImpDefs, true, true));
+  if (MCID-&gt;ImplicitUses)
+    for (const MCPhysReg *ImpUses = MCID-&gt;getImplicitUses(); *ImpUses;
+           ++ImpUses)
+      addOperand(MF, MachineOperand::CreateReg(*ImpUses, false, true));
+}
+
+
+
+/// MachineInstr ctor - This constructor creates a MachineInstr and adds the
+/// implicit operands. It reserves space for the number of operands specified by
+/// the MCInstrDesc.
+MachineInstr::MachineInstr(MachineFunction &amp;MF, const MCInstrDesc &amp;tid,
+                           DebugLoc dl, bool NoImp)
+    : MCID(&amp;tid), debugLoc(std::move(dl)) {
+  assert(debugLoc.hasTrivialDestructor() &amp;&amp; &quot;Expected trivial destructor&quot;);
+
+  // Reserve space for the expected number of operands.
+  if (unsigned NumOps = MCID-&gt;getNumOperands() +
+    MCID-&gt;getNumImplicitDefs() + MCID-&gt;getNumImplicitUses()) {
+    CapOperands = OperandCapacity::get(NumOps);
+    Operands = MF.allocateOperandArray(CapOperands);
+  }
+
+  if (!NoImp)
+    addImplicitDefUseOperands(MF);
+}
+</code></pre>
+<h3 id="using-the-machineinstrbuilderh-function">Using the <code>MachineInstrBuilder.h</code> function</h3>
+<p><code>MachineInstr *Copy = BuildMI</code>, <code>auto Copy = BuildMI</code> <code>Copy-&gt;dump()</code></p>
+<pre><code class="language-c++">Machine instructions are created by using the BuildMI functions, located in the include/llvm/CodeGen/MachineInstrBuilder.h file. The BuildMI functions make it easy to build arbitrary machine instructions. Usage of the BuildMI functions look like this:
+
+  // Create a 'DestReg = mov 42' (rendered in X86 assembly as 'mov DestReg, 42')
+  // instruction.  The '1' specifies how many operands will be added.
+  // 第一个参数不是MBB,产生指令但不进行插入
+  MachineInstr *MI = BuildMI(X86::MOV32ri, 1, DestReg).addImm(42);
+
+  // Create the same instr, but insert it at the end of a basic block.
+  // 产生指令，并插入到最后
+  MachineBasicBlock &amp;MBB = ...
+  BuildMI(MBB, X86::MOV32ri, 1, DestReg).addImm(42);
+
+  // Create the same instr, but insert it before a specified iterator point.
+  // 产生指令，并插在MBBI之前
+  MachineBasicBlock::iterator MBBI = ...
+  BuildMI(MBB, MBBI, X86::MOV32ri, 1, DestReg).addImm(42);
+
+  // Create a 'cmp Reg, 0' instruction, no destination reg.
+  // 产生指令，未使用结果REG
+  MI = BuildMI(X86::CMP32ri, 2).addReg(Reg).addImm(0);
+
+  // Create an 'sahf' instruction which takes no operands and stores nothing.
+  MI = BuildMI(X86::SAHF, 0);
+
+  // Create a self looping branch instruction.
+  BuildMI(MBB, X86::JNE, 1).addMBB(&amp;MBB);
+
+The key thing to remember with the BuildMI functions is that you have to specify the number of operands that the machine instruction will take (allowing efficient memory allocation). Also, if operands default to be uses of values, not definitions. If you need to add a definition operand (other than the optional destination register), you must explicitly mark it as such.
+
+</code></pre>
+<h4 id="buildmi-will-add-the-implicit-register-automaticlly"><code>BuildMI()</code> will add the implicit register automaticlly</h4>
+<pre><code class="language-c++">Source MI
+BLR8 implicit $lr8, implicit $rm, implicit killed $x3
+
+80               BuildMI(**PI, J, J-&gt;getDebugLoc(), TII-&gt;get(I-&gt;getOpcode()))
+81                   .copyImplicitOps(*I);
+We will get
+BLR8 implicit $lr8, implicit $rm, implicit $lr8, implicit $rm, implicit killed $x3
+</code></pre>
+<pre><code class="language-c++">80               BuildMI(**PI, J, J-&gt;getDebugLoc(), TII-&gt;get(I-&gt;getOpcode()))
+We will get
+BLR8 implicit $lr8, implicit $rm 
+Below is the def of `BLCR`
+
+1405     def BCLR  : XLForm_2_br2&lt;19, 16, 12, 0, (outs), (ins crbitrc:$bi),
+1406                              &quot;bclr 12, $bi, 0&quot;, IIC_BrB, []&gt;;
+</code></pre>
+<h1 id="machineinstrbuilder">MachineInstrBuilder</h1>
+<p>This function will be called by <code>BuildMi()</code>.  Modify the existed instruction.</p>
+<pre><code class="language-c++">  /// Create a MachineInstrBuilder for manipulating an existing instruction.
+
+  /// F must be the machine function that was used to allocate I.
+
+  MachineInstrBuilder(MachineFunction &amp;F, MachineInstr *I) : MF(&amp;F), MI(I) {}
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-c++">I.dump(); 
+MachineInstr *MI = MF.CloneMachineInstr(&amp;I);
+1453       MI.dump();
+1455       Pred[1].dump();
+1456       MI.setDesc(get(PPC::BCLR));
+           BB.insert(J, MI);
+1457       MachineInstrBuilder(*MI.getParent()-&gt;getParent(), MI).add(Pred[1]);
+1458       MI.dump();
+</code></pre>
+<p>Below is the output</p>
+<pre><code class="language-asm">I      : BLR8 implicit $lr8, implicit $rm
+MI     : BLR8 implicit $lr8, implicit $rm
+Pred[1]: undef renamable $cr5lt
+MI     : BCLR undef renamable $cr5lt, implicit $lr8, implicit $rm
+</code></pre>
+<p>BuildMI最终会调用MachineInstr构建MI,会加上implicit operands</p>
+<pre><code class="language-c++">/// MachineInstr ctor - This constructor creates a MachineInstr and adds the
+/// implicit operands. It reserves space for the number of operands specified by
+/// the MCInstrDesc.
+MachineInstr::MachineInstr(MachineFunction &amp;MF, const MCInstrDesc &amp;tid,
+                           DebugLoc dl, bool NoImp)
+    : MCID(&amp;tid), debugLoc(std::move(dl)) {
+  assert(debugLoc.hasTrivialDestructor() &amp;&amp; &quot;Expected trivial destructor&quot;);
+
+  // Reserve space for the expected number of operands.
+  if (unsigned NumOps = MCID-&gt;getNumOperands() +
+    MCID-&gt;getNumImplicitDefs() + MCID-&gt;getNumImplicitUses()) {
+    CapOperands = OperandCapacity::get(NumOps);
+    Operands = MF.allocateOperandArray(CapOperands);
+  }
+
+  if (!NoImp)
+    addImplicitDefUseOperands(MF);
+}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

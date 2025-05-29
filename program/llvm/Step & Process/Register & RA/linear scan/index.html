@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+        <title>Linear scan - My Docs</title>
+        <link href="../../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Tool/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../ShrinkingWrap/ShrinkWarp.cpp/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#1" class="nav-link">1 为什么不用图着色</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#2" class="nav-link">2 术语</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#3-live-interval" class="nav-link">3 计算live interval</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#4" class="nav-link">4 工作过程</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#6" class="nav-link">6 参考文献</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>https://blog.csdn.net/qq_29674357/article/details/79110417</p>
+<p>https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/17/Slides17.pdf</p>
+<p>https://www.zhihu.com/question/29355187</p>
+<p>Paper(MIT &amp; IBM 1999): <a href="http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">Linear Scan Register Allocation</a>  </p>
+<p>在 LLVM3.0 版本以前，默认的寄存器分配器的核心算法就是线性扫描算法。这种算法生成的代码相对图着色有 10%-30% 的冗余代码（见参考文献【2】），但速度远快于图着色。在 LLVM3.0 版本以后，新加入的 basic/greedy 寄存器分配器在线性扫描算法的基础上进行了进一步强化，可以看作是线性扫描算法的变种。正因如此，新版分配器里的一些关键概念与线性扫描经典论文 <a href="http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">Linear Scan Register Allocation</a> 中并无出入。</p>
+<h2 id="1">1 为什么不用图着色</h2>
+<ul>
+<li>根本原因是它要先构造好完整的干涉图，才能在图上着色，而干涉图的构造代价太过高昂.</li>
+<li>图着色算法把重点放在解决“如何把所有的程序变量尽可能地分配到寄存器中”，如果程序一定会大量产生溢出，那么，关注“如何高效地溢出”比关注“如何尽量减少溢出”更有价值。例如，可以关注如何选择溢出的变量，以达到尽可能减少对性能的影响这一问题。这一着重点的改变，就是目前 LLVM 里贪心寄存器分配器的中心思想。</li>
+<li>图着色算法的最后一个问题，就是它难以处理实际寄存器分配问题中碰到的复杂局面。例如，在 X86 架构中，存在 register alias（如 AL/AH/AX）、pre-color 等问题，图着色算法在解决这类问题时需要较为复杂的调整。这些因素都促使 LLVM 选择了线性扫描算法。</li>
+</ul>
+<hr />
+<h2 id="2">2 术语</h2>
+<h4 id="21-live-interval">2.1 live interval:</h4>
+<p>这是线性扫描算法的一个至关重要的概念。假设 IR 里的指令按数字编号，变量 v 的 live interval 是区间 [i, j]，需要满足下述条件：不存在编号为 j’(j’&gt; j)的指令，使得变量 v 在 j’处活跃，且不存在编号为 i’(i’&lt; i)的指令，使得变量 v 在 i’处活跃。这个定义是对 live ranges 的保守估计，因为在区间 [i, j] 里，可能存在部分子区间变量 v 并不活跃，这些区间在 live interval 的定义里被忽视掉了，这就是传统的线性扫描算法未能充分利用寄存器的原因。</p>
+<h4 id="22-live-range">2.2 live range</h4>
+<p>live range：这里采取文献 <a href="https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/17/Slides17.pdf">Register Allocation</a> 中的定义，即认为 live range 是严格意义上变量活跃时所有程序点的集合。例如，若有一变量的生命期是 [12, 96], [96, 112], [112, 256]，上述三个区间都是此变量的 live range，而区间 [12, 256] 则是此变量的 live interval。注意，这里的这个概念和 LLVM 里的 Segment 是一样的。</p>
+<h4 id="23-interference">2.3 interference</h4>
+<p>在线性扫描里，不存在相交图（interference graph），相交发生在各个 live interval 重叠的部分。显然，需要特别关注每个 interval 的起始位置和结束位置，各个 live interval 的相交关系只会在这两个位置发生改变。</p>
+<h4 id="24-active-list">2.4 active list</h4>
+<p>用于表示已经分配了寄存器的 live interval 的表，表中的 live interval 都按照结束位置递增的顺序排列。这么排的原因不难想象，结束位置最小的 live interval 最先结束，然后就可以把分配给该 live interval 的寄存器回收到寄存器池中，等待下一次分配。</p>
+<h2 id="3-live-interval">3 计算live interval</h2>
+<p>在开始执行线性扫描算法前，要先获得 live interval，算法分配寄存器都是给 live interval 分配的，因此编译器还要事先做一点准备工作。首先，编译器要将控制流图 CFG 线性化并给每条指令编号。在 LLVM 里，是通过深度优先序来线性化 CFG 的，同时通过 slot index 来给每条指令编号，<code>相邻指令之间编号的差值为 16</code>。Poletto 的论文里，也选择了深度优先序列。实际上，这并不是一个巧合。其次，需要对 IR 做后向数据流分析，就可以获得每个变量的活跃信息，并进一步得到 live interval。</p>
+<h2 id="4">4 工作过程</h2>
+<p>在上述的线性扫描算法中，LinearScanRegisterAllocation 函数按照 original list 里的顺序（起始位置的升序）对 live interval 进行扫描，每一次扫描是对一个新的 live interval 执行一系列操作。我们可以在此函数中发现 active list 的使用，该 list 用于存放当前程序点（即正在扫描的 live interval 起始位置处指令后的程序点）分配了寄存器的 live interval，这些 interval 是互相干涉的。
+每当开始扫描一个新的 live interval 时，算法会调用 ExpireOldInterval 函数，从头到尾遍历 active list。一旦发现 active list 里有哪个 interval 的结束位置是在新扫描的 interval 开始位置之后，就把它从 active list 中移除，并把它所占有的寄存器回收到寄存器池中。这说明这两个 interval 不相交，分配到同一个物理寄存器也不打紧。</p>
+<p>显然，active list 的大小最多等同于可分配寄存器的总数。在最坏的情况下，当新一轮扫描开始时，active list 的大小可能已经达到了最大。若此时新扫描的 live interval 的起始位置在 active list 中所有 interval 的结束位置后，即它与之前所有的 interval 相交，此时寄存器就不够用了，必须溢出到内存中。溢出的 live interval 可以是 active list 里的任意一个 interval，也可以是新扫描的 interval，具体如何抉择就看分配器的设计者如何选择启发式了。在 Poletto 的论文里，作为溢出选择的是结束位置距离当前程序点最远的 live interval（图中的 last interval），或者当前扫描的 live interval。如果是当前的 interval 结束得更迟，则直接给它分配一个栈槽；否则，把分配给 last interval 的寄存器分配给当前的 interval，并把 last interval 溢出到栈槽中。</p>
+<p>选择这样的启发式的原因不难理解：如果把这样的 interval 溢出了，剩下的 interval 的剩余干涉期较短，更容易被移出 active list，从而更容易回收寄存器。根据 Poletto 论文的说法，这一启发式效果非常好。</p>
+<hr />
+<h1 id="6">6 参考文献</h1>
+<p>[1] <a href="http://llvm.org/devmtg/2011-11/Olesen_RegisterAllocation.pdf">Register Allocation in LLVM 3.0</a>
+[2] <a href="https://news.ycombinator.com/item?id=9754013">Hacker News - Register Allocation</a>
+[3] <a href="http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">Linear Scan Register Allocation</a>
+[4] <a href="https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/17/Slides17.pdf">Register Allocation</a>
+[5] <a href="https://www.zhihu.com/question/29355187/answer/99413526">知乎 - 寄存器分配问题？XlousZeng 的回答</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../../js/base.js"></script>
+        <script src="../../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

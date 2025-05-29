@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../../../img/favicon.ico">
+        <title>LLVM IR - My Docs</title>
+        <link href="../../../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../../../css/brands.min.css" rel="stylesheet">
+        <link href="../../../../css/solid.min.css" rel="stylesheet">
+        <link href="../../../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../../../..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Float%20Point/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../NaN/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<pre><code>    /// Returns platform specific canonical encoding of a floating point number.
+    FCANONICALIZE,
+
+    /// FMINNUM/FMAXNUM - Perform floating-point minimum or maximum on two
+    /// values.
+    //
+    /// In the case where a single input is a NaN (either signaling or quiet),
+    /// the non-NaN input is returned.
+    ///
+    /// The return value of (FMINNUM 0.0, -0.0) could be either 0.0 or -0.0.
+    FMINNUM, FMAXNUM,
+
+    /// FMINNUM_IEEE/FMAXNUM_IEEE - Perform floating-point minimum or maximum on
+    /// two values, following the IEEE-754 2008 definition. This differs from
+    /// FMINNUM/FMAXNUM in the handling of signaling NaNs. If one input is a
+    /// signaling NaN, returns a quiet NaN.
+    FMINNUM_IEEE, FMAXNUM_IEEE,
+
+    /// FMINIMUM/FMAXIMUM - NaN-propagating minimum/maximum that also treat -0.0
+    /// as less than 0.0. While FMINNUM_IEEE/FMAXNUM_IEEE follow IEEE 754-2008
+    /// semantics, FMINIMUM/FMAXIMUM follow IEEE 754-2018 draft semantics.
+    FMINIMUM, FMAXIMUM,
+</code></pre>
+<p>IEEE-2008</p>
+<pre><code>For equal:
+  totalOrder(−0, +0) = true.
+  totalOrder(+0, −0) = false.
+For all:
+  totalOrder(−NaN, y) = true     // -NaN = QNaN
+  totalOrder(x, +NaN) = true     // +NaN = SNaN
+
+</code></pre>
+<h3 id="fminnum-fmaxnum">FMINNUM, FMAXNUM</h3>
+<p>NAN：A single input is a NaN, the non-NaN input is returned.</p>
+<p>Signed-Zero:  The return value of (FMINNUM 0.0, -0.0) could be either 0.0 or -0.0.</p>
+<h3 id="fminnum_ieee-fmaxnum_ieeexsmaxdp-xsmindp">FMINNUM_IEEE, FMAXNUM_IEEE（xsmaxdp, xsmindp）</h3>
+<p>Following the IEEE-754 2008 definition. </p>
+<p>This differs from FMINNUM/FMAXNUM in the handling of signaling NaNs. </p>
+<p>If one input is a signaling NaN, returns a quiet NaN.</p>
+<pre><code>--enable-unsafe-fp-math  --enable-no-signed-zeros-fp-math  --enable-no-nans-fp-math
+
+// Can change
+xsmaxdp(+0, -0) = +0
+xsmaxdp(QNaN, x) = x        // xsmaxdp(-NaN, x) = x
+xsmaxdp(SNaN, x) = QNaN     // xsmaxdp(+NaN, x) = -NaN
+
+</code></pre>
+<h3 id="fminimum-fmaximum">FMINIMUM, FMAXIMUM</h3>
+<p>Following IEEE 754-2018 draft semantics.</p>
+<p>NaN-propagating minimum/maximum that also treat -0.0 as less than 0.0. While FMINNUM_IEEE/FMAXNUM_IEEE follow IEEE 754-2008 semantics, FMINIMUM/FMAXIMUM</p>
+<p>xsmaxcdp</p>
+<pre><code>If src1 or src2 is a SNaN, an exception occurs.
+If either src1 or src2 is a NaN, resul t is src2.
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../../../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../../../js/base.js"></script>
+        <script src="../../../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
