@@ -38,7 +38,10 @@ git push origin main  # 或者推送到你使用的主分支
 # 执行部署命令
 # 执行部署（会自动创建gh-pages分支, 会自动将docs中的md文件，编译到site目录，最后将site内的文件上传到gp-pates分支）
 mkdocs gh-deploy --message "文档更新"
-@mkdocs gh-deploy --remote-branch my-pages-branch  推送到自定义
+# 如果不加message，则会自动生成message，如Deployed 1dd4d3e with MkDocs version: 1.6.1
+# 建议加上message
+# mkdocs gh-deploy --remote-branch my-pages-branch  推送到自定义
+# 建议使用默认分支
 ```
 
 由于在main分支的`.gitignore`中有`site`，所以本地的`site`目录不会被上传到主分支。
