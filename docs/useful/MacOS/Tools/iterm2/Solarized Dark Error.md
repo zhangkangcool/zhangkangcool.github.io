@@ -1,112 +1,93 @@
-<h1 align="center">iterm zsh</h1>
+<h1 align="center">Solarized Dark Error</h1>
 
 
 
 
-# 安装iterm2
 
-```shell
-echo $SHELL
-brew cask instal iterm2
-```
-
-打开iTerm2的偏好设定，`Profiles / Colors`，直接选择Solarized Dark。
-
-
-
-# 安装on-my-zsh
-
-```shell
-sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-```
-
-#### 设置主题为ys
-
-```shell
-# .zshrc
-ZSH_THEME="ys"
-```
-
-
-
-#### 安装实用的插件
 
 https://hufangyun.com/2017/zsh-plugin/
 
-- ### zsh-syntax-highlighting
+https://www.haoyep.com/posts/zsh-config-oh-my-zsh/
 
-  平常用的`ls`、`cd` 等命令输入正确会绿色高亮显示，输入错误会显示其他的颜色。
+
+
+## 1. zsh-syntax-highlighting
+
+平常用的`ls`、`cd` 等命令输入正确会绿色高亮显示，输入错误会显示其他的颜色。
+
+在输入命令的过程中，若指令不合法，则指令显示为红色，若指令合法就会显示为绿色。
 
 ```shell
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# 中国用户可以使用下面任意一个加速下载
+# 加速1
+git clone https://github.moeyy.xyz/https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# 加速2
+git clone https://gh.xmly.dev/https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# 加速3
+git clone https://gh.api.99988866.xyz/https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
 
-.zshrc中启用
+
+
+## 2. zsh -autosuggestions
+
+一个命令提示插件，当你输入命令时，会自动推测你可能需要输入的命令，按下右键可以快速采用建议。
 
 ```shell
-plugins=(其他的插件 zsh-syntax-highlighting)
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# 中国用户可以使用下面任意一个加速下载
+# 加速1
+git clone https://github.moeyy.xyz/https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# 加速2
+git clone https://gh.xmly.dev/https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# 加速3
+git clone https://gh.api.99988866.xyz/https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 ```
 
-我目前所使用的插件，`zsh-syntax-highlighting`需要安装，另外几个可以直接使用。
+
+
+## 3. z
+
+`oh-my-zsh` 内置了 `z` 插件。`z` 是一个文件夹快捷跳转插件，对于曾经跳转过的目录，只需要输入最终目标文件夹名称，就可以快速跳转，避免再输入长串路径，提高切换文件夹的效率。
+
+```shell
+cd workspace/test
+cd
+z test   # (tab)
+```
+
+
+
+
+
+## 4. extract
+
+`oh-my-zsh` 内置了 `extract` 插件。`extract` 用于解压任何压缩文件，不必根据压缩文件的后缀名来记忆压缩软件。使用 `x` 命令即可解压文件。
+
+```shell
+x test.tar.bz2
+```
+
+
+
+## 对插件进行启用
 
 `/Users/ken/.oh-my-zsh/plugins`目录下有所有支持的插件，不要里面的需要额外再安装。
 
 ```shell
 # 我所作用的设置
-plugins=(git z extract zsh-syntax-highlighting sublime)
+# .zshrc add
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting z extract)
 
 source $ZSH/oh-my-zsh.sh
-#source ~/.oh-my-zsh/plugins/incr/incr*.zsh
 ```
 
 
 
-https://www.jianshu.com/p/9189eac3e52d
 
-`z`插件是用来智能跳转的，`extract`使我们可以使用`x`命令来解压各种压缩文件，而不需要再记忆各种压缩命令和选项。
-
-
-
-## 设置zsh为默认shell
-
-```shell
-chsh -s /bin/zsh
-```
-
-
-
-## [incr.zsh 补全插件](http://mimosa-pudica.net/zsh-incremental.html)
-
-```shell
-wget http://mimosa-pudica.net/src/incr-0.2.zsh   
-cd ~/.oh-my-zsh/plugins
-mkdir incr
-cp incr-0.2.zsh ~/.oh-my-zsh/plugins/incr
-```
-
-
-
-`.zshrc`中加上`source ~/.oh-my-zsh/plugins/incr/incr*.zsh`。
-
-使用此插件后，ls后无法使用方向键进行选择，我没有启用此插件。
-
-
-
-### git 慢的问题
-
-进入git repo后，zsh会读取repo的信息，所以会很慢。
-
-```shell
-# ken @ ken in ~/llvm-project on git:master o [9:27:31]
-```
-
-https://blog.csdn.net/a_ran/article/details/72847022
-
-用如下命令解决（无需要添加了.zshrc中）
-
-```shell
-git config --add oh-my-zsh.hide-status 1
-```
 
 
 
