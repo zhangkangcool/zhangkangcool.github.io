@@ -1,3 +1,4 @@
+<h1 align="center">clang输出所经过的pass</h1>
 
 
 
@@ -107,7 +108,7 @@ opt -passes='default<O2>' -print-after-all -S input.ll -o optimized.ll
 
 
 
-```
+```asm
 clang -S -emit-llvm wmemcmp.c  -mllvm -print-after-all -o wmemcmp.s  -O3 > test3.log 2>&1
 ```
 

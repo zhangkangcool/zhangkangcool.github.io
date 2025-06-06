@@ -1,8 +1,6 @@
+<h1 align="center">c输出pass</h1>
 
 
-```
-
-```
 
 
 

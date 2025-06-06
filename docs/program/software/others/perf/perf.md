@@ -1,3 +1,4 @@
+<h1 align="center">perf</h1>
 https://www.ibm.com/developerworks/cn/linux/l-cn-perf1/index.html
 
 http://www.cnblogs.com/arnoldlu/p/6241297.html
@@ -500,13 +501,11 @@ small这个文件夹里的foo函数的没添加循环对齐，两个target和两
 
 
 
-
-
-```
 `perf record -g` 可以得到函数调用关系，最好使用些选项
 
 `perf report -i myperf.data —demangle -g`
-```
+
+
 
 
 

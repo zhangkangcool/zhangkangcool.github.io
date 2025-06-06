@@ -1,3 +1,4 @@
+<h1 align="center">Ubuntu无法打开terminal</h1>
 
 
 https://bbs.huaweicloud.com/blogs/313277
@@ -6,17 +7,13 @@ https://bbs.huaweicloud.com/blogs/313277
 
 # Ubuntu 无法打开 terminal 之修复
 
-```
 【摘要】 Ubuntu 18.04中升级了Python环境，之前的Python是2.7和Python3.5，而为了兼容某些软件的运行，需要升级到Python3.7，中间也有安装Python3.6版本。当一切都准备就绪后，重启服务器，突然发现Ubuntu 18.04中的命令行 terminal 终端无法正常打开。本文将通过详细的步骤来解决这种问题。
-```
-
-
 
 
 
 ssh远程连接时出现以下问题：
 
-```
+```shell
 kex_exchange_identification: Connection closed by remote host
 ```
 
@@ -35,7 +32,7 @@ kex_exchange_identification: Connection closed by remote host
 ![1.jpg](https://bbs-img.huaweicloud.com/blogs/img/20211125/1637806062986036912.jpg)
   首先打开XTerm终端工具 ， 在XTerm中输入如下命令(如果没用xterm则通过GUI进行下载)：
 
-```bash
+```shell
 gnome-terminal
 ```
 
@@ -43,7 +40,7 @@ gnome-terminal
 
   输入上述命令，则可以启动终端，但可以查看到报错信息，我这里的报错信息如下所示：
 
-```
+```shell
 Traceback (most recent call last):
 File "/usr/bin/gnome-terminal", line 9, in
 from gi.repository import GLib, Gio

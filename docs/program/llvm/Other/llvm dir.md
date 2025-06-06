@@ -1,3 +1,4 @@
+<h1 align="center">llvm dir</h1>
 
 
 https://blog.csdn.net/dongjideyu/article/details/16805355?%3E
@@ -160,7 +161,7 @@ https://blog.csdn.net/dongjideyu/article/details/16805355?%3E
 
   根据utils/vim/README文件，可知，运用如下cmd将vim目录下的内容全部复制到`.vim`，执行此操作前最好检测下`.vim`目录是否为空，以免覆盖了该目录下其它需要的文件。
 
-  ```
+  ```asm
   cp ~/workspace/llvm/llvm/utils/vim ~/.vim
   ```
 

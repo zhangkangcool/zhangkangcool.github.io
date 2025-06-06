@@ -1,3 +1,4 @@
+<h1 align="center">print format</h1>
 # print.format
 
 此方法是推荐方法
@@ -42,7 +43,7 @@ https://www.cnblogs.com/qinchao0317/p/10699717.html
 
 ![复制代码](https://common.cnblogs.com/images/copycode.gif)
 
-```
+```asm
  1 >>> print('{} {}'.format('hello','world'))  # 不带字段
  2 hello world
  3 >>> print('{0} {1}'.format('hello','world'))  # 带数字编号
@@ -93,7 +94,7 @@ https://www.cnblogs.com/qinchao0317/p/10699717.html
 
 ![复制代码](https://common.cnblogs.com/images/copycode.gif)
 
-```
+```asm
  1 >>> print('{0:b}'.format(3))
  2 11
  3 >>> print('{:c}'.format(20))
@@ -131,7 +132,7 @@ https://www.cnblogs.com/qinchao0317/p/10699717.html
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
-```
+```asm
 >>> # format also supports binary numbers
 >>> "int: {0:d};  hex: {0:x};  oct: {0:o};  bin: {0:b}".format(42)
 'int: 42;  hex: 2a;  oct: 52;  bin: 101010'
@@ -152,7 +153,7 @@ https://www.cnblogs.com/qinchao0317/p/10699717.html
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
-```
+```asm
 >>> print('{} and {}'.format('hello','world'))  # 默认左对齐
 hello and world
 >>> print('{:10s} and {:>10s}'.format('hello','world'))  # 取10位左对齐，取10位右对齐
@@ -184,7 +185,7 @@ hello      and      world
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
-```
+```asm
 >>> '{:+f}; {:+f}'.format(3.14, -3.14)  # 总是显示符号
 '+3.140000; -3.140000'
 >>> '{: f}; {: f}'.format(3.14, -3.14)  # 若是+数，则在前面留空格
@@ -199,7 +200,7 @@ hello      and      world
 
 ![img](https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif)
 
-```
+```asm
 >>> points = 19
 >>> total = 22
 >>> 'Correct answers: {:.2%}'.format(points/total)
@@ -210,7 +211,7 @@ hello      and      world
 
 ![img](https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif)
 
-```
+```asm
 >>> import datetime
 >>> d = datetime.datetime(2010, 7, 4, 12, 15, 58)
 >>> '{:%Y-%m-%d %H:%M:%S}'.format(d)
@@ -221,7 +222,7 @@ hello      and      world
 
 ![img](https://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif)
 
-```
+```asm
 >>> '{:,}'.format(1234567890)
 '1,234,567,890'
 ```
@@ -232,7 +233,7 @@ hello      and      world
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
-```
+```asm
 >>> for align, text in zip('<^>', ['left', 'center', 'right']):
 ...     '{0:{fill}{align}16}'.format(text, fill=align, align=align)
 ...
@@ -269,7 +270,7 @@ hello      and      world
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
-```
+```asm
 """
 replacement_field ::= "{" [field_name] ["!" conversion] [":" format_spec] "}"
 conversion ::= "r" | "s" | "a"
@@ -289,7 +290,7 @@ conversion ::= "r" | "s" | "a"
 
 ![复制代码](https://common.cnblogs.com/images/copycode.gif)
 
-```
+```asm
 # a.format(b)
 >>> "{0} {1}".format("hello","world")
 'hello world'
@@ -327,7 +328,7 @@ My salary is   9999.990
 
 
 
-```
+```asm
  name = "ken"
  age = 10
  a = f"{name}:{age}"

@@ -1,3 +1,4 @@
+<h1 align="center">CUDA实例</h1>
 https://www.cnblogs.com/aiguona/p/9449668.html
 
 
@@ -16,7 +17,7 @@ cuda的函数定义 __global__ void function();
 
 *解释*：在这里，这个global前缀表明这个函数在哪里执行，可以由谁来呼叫
 
-```js
+```asm
 global:主机呼叫，设备执行
 host:主机呼叫，主机执行
 device:设备呼叫，设备执行
@@ -222,7 +223,7 @@ void addWithCuda(int *c)
 
 **1.传入的数值全改为指针类型**
 
-```
+```c++
 __global__ void Decrease(int *a, int *b, int *c)
 {
      *c = *a - *b;

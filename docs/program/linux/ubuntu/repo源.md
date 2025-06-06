@@ -1,3 +1,4 @@
+<h1 align="center">repo源</h1>
 
 
 https://blog.csdn.net/weixin_39394526/article/details/87935449
@@ -17,7 +18,7 @@ Ubuntu 的软件源配置文件是 /etc/apt/sources.list
 
 ### 1. 为避免出现问题，先备份
 
-```
+```shell
 sudo cp /etc/apt/sources.list  /etc/apt/sources.list.bak
 ```
 
@@ -25,7 +26,7 @@ sudo cp /etc/apt/sources.list  /etc/apt/sources.list.bak
 
 ### 2. 编辑sources.list文件替换内容
 
-```
+```shell
 sudo vi /etc/apt/sources.list 
 ```
 
@@ -33,7 +34,7 @@ sudo vi /etc/apt/sources.list
 
 ### 3.更新源
 
-```
+```shell
 sudo apt-get update
 ```
 
@@ -43,7 +44,7 @@ sudo apt-get update
 
 
 
-```
+```shell
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb http://mirrors.lynxi.net/ubuntu/ xenial main restricted universe multiverse
 # deb-src http://mirrors.lynxi.net/ubuntu/ xenial main restricted universe multiverse

@@ -1,3 +1,4 @@
+<h1 align="center">手写git hooks脚本</h1>
 https://www.cnblogs.com/woai3c/p/15033530.html
 
 # [手写 git hooks 脚本（pre-commit、commit-msg）](https://www.cnblogs.com/woai3c/p/15033530.html)

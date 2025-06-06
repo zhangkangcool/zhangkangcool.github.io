@@ -1,3 +1,4 @@
+<h1 align="center">open</h1>
 https://www.runoob.com/python/python-func-open.html
 
 
@@ -8,7 +9,7 @@ python open() 函数用于打开一个文件，创建一个 **file** 对象，�
 
 ### 函数语法
 
-```
+```asm
 open(name[, mode[, buffering]])
 ```
 

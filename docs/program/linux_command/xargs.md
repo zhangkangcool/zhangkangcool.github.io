@@ -1,3 +1,4 @@
+<h1 align="center">xargs</h1>
 
 
 
@@ -6,7 +7,7 @@ https://www.freesion.com/article/1989606497/
 
 
 
-```
+```shell
 -i使用缺省的占位符{}，而-I是可以指定的，所以在使用上也显示有不同
 
 -I {} 与 -i 是等价的。 -I 可以指定其它占位符，不仅限于 {}

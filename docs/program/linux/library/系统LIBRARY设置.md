@@ -1,3 +1,4 @@
+<h1 align="center">系统LIBRARY设置</h1>
 
 
 /usr/local/lib/ 不在系统的LD_LIBRARY_PATH
@@ -72,7 +73,7 @@ source /etc/profile
 **编辑 `/etc/environment`**：
 打开 `/etc/environment` 文件，找到 `LD_LIBRARY_PATH` 变量（若不存在则添加），并添加 `/usr/local/lib/` 到变量值中。示例如下：
 
-```plaintext
+```shell
 LD_LIBRARY_PATH="/usr/local/lib/:$LD_LIBRARY_PATH"
 ```
 
@@ -84,7 +85,7 @@ LD_LIBRARY_PATH="/usr/local/lib/:$LD_LIBRARY_PATH"
 
 另一种解决办法是借助 `ldconfig` 工具更新动态链接器的缓存。你可以在 `/etc/ld.so.conf.d/` 目录下创建一个新的配置文件，例如 `local.conf`，并在文件中添加 `/usr/local/lib/`：
 
-```plaintext
+```shell
 /usr/local/lib/
 ```
 

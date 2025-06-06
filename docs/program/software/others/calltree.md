@@ -1,3 +1,4 @@
+<h1 align="center">calltree</h1>
 https://blog.csdn.net/lsr_fighting/article/details/78458679
 
 https://www.cnblogs.com/mylinux/p/6145625.html 
@@ -29,7 +30,7 @@ source insight能方便地查看向上和向下的函数（变量等）调用关
 ```
 
 
-```
+```asm
 start_kernel:
 |   WARN
 |   acpi_early_init
@@ -66,13 +67,13 @@ start_kernel:
 ```
 
 ### 下载：
-```
+```asm
     calltree-2.3.tar.bz2 http://download.chinaunix.net/download.php?id=2245&ResourceID=1172 
     sudo apt-get install graphviz
 ```
 
 ### 使用：
-```
+```asm
     calltree -help
     calltree -np -gb -m *.c 
     calltree -np -gb lf=send_query *.c 
@@ -81,22 +82,23 @@ start_kernel:
     calltree -np -gb lf=raw_spin_lock_irqsave    `find . -name "*.c"`
 ```
 还可以生成一个调用图，以kernel为例
-```
+```asm
     calltree -np -b -dot list=start_kernel ./init/*.c > ~/start_kernel.dot
     dot -T png start_kernel.dot -o ./testhaha.png
-```        
-    
-    下面介绍一下各选项：
-    -b 就是那个竖线了，很直观地显示缩进层次。
-    -g 打印内部函数的所属文件名及行号，外部函数所属文件名和行号也是可打印的，详man
-    -np 不要调用c预处理器，这样打印出的界面不会很杂乱，但也可能会产生错误哦，如果我们只看函数的调用关系的话，不会有大问题。
-    -m 告诉程序从main开始
-    还有一个重要的选项是listfunction ，缩写是lf，用来只打印某个函数中的调用，用法是： lf=your_function
-    depth=#选项： 例如： calltree -gb -np -m bind9/bin/named/*.[c.h] depth=2 > codecalltree.txt
+```
+
+```asm
+下面介绍一下各选项：
+-b 就是那个竖线了，很直观地显示缩进层次。
+-g 打印内部函数的所属文件名及行号，外部函数所属文件名和行号也是可打印的，详man
+-np 不要调用c预处理器，这样打印出的界面不会很杂乱，但也可能会产生错误哦，如果我们只看函数的调用关系的话，不会有大问题。
+-m 告诉程序从main开始
+还有一个重要的选项是listfunction ，缩写是lf，用来只打印某个函数中的调用，用法是： lf=your_function
+depth=#选项： 例如： calltree -gb -np -m bind9/bin/named/*.[c.h] depth=2 > codecalltree.txt
+```
 
 
 注意：
 
 　　调用关系一般比较复杂，最好设置好（1）想要关心的函数（2）调用深度（3）关心的目录，否则又会引入过多无关选项，干扰视线。
-
 

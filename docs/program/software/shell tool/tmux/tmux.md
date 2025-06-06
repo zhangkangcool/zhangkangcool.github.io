@@ -1,3 +1,4 @@
+<h1 align="center">tmux</h1>
 ## ssh工具连接远程服务器使用tmux
 
 http://www.ruanyifeng.com/blog/2019/10/tmux.html
@@ -18,7 +19,7 @@ Tmux 窗口有大量的快捷键。所有快捷键都要通过前缀键唤起。
 
 然后，按下 ESC 键或`q`键，就可以退出帮助。
 
-```
+```asm
 
 
 ctrl+b  "           模向分隔窗口

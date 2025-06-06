@@ -1,3 +1,4 @@
+<h1 align="center">红米AX6S救砖教程</h1>
 https://home.x-wan.top/archives/mi-ax6s-jiu
 
 
@@ -26,7 +27,7 @@ https://home.x-wan.top/archives/mi-ax6s-jiu
 
 ##### 6. 把电脑网卡改成自动获取，稍等几分钟即可进小米后台了
 
-```
+```shell
 192.168.31.1，不是的话，就看ipconfig
 ```
 

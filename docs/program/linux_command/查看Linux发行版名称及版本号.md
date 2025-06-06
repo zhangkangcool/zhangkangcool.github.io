@@ -1,3 +1,4 @@
+<h1 align="center">查看Linux发行版名称及版本号</h1>
 https://blog.csdn.net/qianghaohao/article/details/78996189
 
 查看Linux发行版名称及版本号

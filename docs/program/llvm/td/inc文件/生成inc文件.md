@@ -1,10 +1,11 @@
+<h1 align="center">生成inc文件</h1>
 
 
 
 
 在`build.ninja`种直接所有inc的文件名，可以找到编译命令。
 
-```
+```shell
 #############################################
 # Phony custom command for lib/Target/LJMicro/CMakeFiles/LJMicroCommonTableGen
 

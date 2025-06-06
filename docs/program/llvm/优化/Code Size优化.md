@@ -1,3 +1,4 @@
+<h1 align="center">Code Size优化</h1>
 
 
 ## **1. 背景**
@@ -48,7 +49,7 @@ Code Size 优化技术，又叫做代码缩减优化技术，指在代码功能�
 
 ### 2.7 -s
 
-```
+```shell
 -s 会删除所有的symbol，相当于使用strip
 clang test.cpp -s -o a.out
 等价于
@@ -111,7 +112,7 @@ DAE 优化的工作原理是分析代码以确定函数实际使用了哪些参�
 
 优化前：
 
-```
+```c++
 struct S0 {
     int f0;
     long long  f1;
@@ -129,7 +130,7 @@ __attribute__((used)) void func_0(int a) {
 
 优化后：
 
-```
+```c++
 struct S0 {
     int f0;
     long long  f1;
@@ -157,7 +158,7 @@ SCCP 可以处理复杂的控制流结构，例如循环和条件语句。它使
 
 优化前：
 
-```
+```c
 int g;
 extern int g1,g2;
 __attribute__((noinline)) int func_1(int x) {
@@ -175,7 +176,7 @@ __attribute__((used)) int func_0() {
 
 优化后：
 
-```
+```c
 int g;
 extern int g1,g2;
 __attribute__((noinline)) int func_1() {
@@ -227,7 +228,7 @@ SCCP 的优点是它可以减少程序中的运行时计算，从而提高程序
 
 例如，可以用 `__attribute__((noinline))` 精确控制单个函数不做内联。
 
-```
+```c
 __attribute__((noinline))
 int foo(int i) {
     return i;
@@ -240,7 +241,7 @@ int foo(int i) {
 
 例如，可以用 `pragma clang attribute push(__attribute__((noinline)), apply_to = function)` 控制一系列函数不做内联。
 
-```
+```c
 #pragma clang attribute push (__attribute__((noinline)), apply_to = function)
 void function1();
 void function2 (void);

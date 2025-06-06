@@ -1,3 +1,4 @@
+<h1 align="center">dialect</h1>
 
 
 MLIR-HLO是使用MLIR系统构建起来的可为不同硬件进行编译的独立于XLA的端到端编译器，但是MLIR-HLO可以应用在XLA项目中。MLIR-HLO定义了3种方言（上图中的Dialect）以支持HLO编译，分别为chlo、mhlo、func。
@@ -15,7 +16,7 @@ import jaxlib.mlir.dialects.func as func
 
 `jax/interprets/mlir.py`中
 
-```c++
+```python
 from jax._src.lib.mlir.dialects import chlo
 from jax._src.lib.mlir.dialects import mhlo
 from jax._src.lib.mlir.dialects import func as func_dialect

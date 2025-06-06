@@ -1,3 +1,4 @@
+<h1 align="center">指定key</h1>
 https://www.cnblogs.com/chenkeyu/p/10440798.html（重点参考）
 
 https://gist.github.com/jexchan/2351996
@@ -73,7 +74,7 @@ git push
 
 `cat ~/zhangkang/workspace/bashrc`
 
-```
+```shell
 # git 2.7.4 测试成功
 export GIT_SSH_COMMAND="ssh -i /home/lynxi/zhangkang/workspace/.ssh/id_rsa" git clone example
 ```
@@ -88,7 +89,7 @@ export GIT_SSH_COMMAND="ssh -i /home/lynxi/zhangkang/workspace/.ssh/id_rsa" git 
 
 此时可用 `git config --local --list` 和`git --config --list`查看
 
-```
+```shell
 user.email=kang.zhang@lynxi.net   // 重点行
 user.name=kang.zhang              // 重点行
 core.editor=vim
@@ -108,7 +109,7 @@ branch.release/11.x.merge=refs/heads/release/11.x
 
 如果`user.email`和`user.name`不是预期用户，则要进行相应的修改。注意修改时，最好不要用`global`参数，使用`local`只对自己拥有的代码有效。
 
-```
+```shell
 git config --local core.editor.vim
 git config --local push.default simple
 git config --local user.name "kang.zhang"

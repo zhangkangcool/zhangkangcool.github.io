@@ -1,3 +1,4 @@
+<h1 align="center">rm</h1>
 # **Linux下禁用rm命令之建立回收站**
 
 

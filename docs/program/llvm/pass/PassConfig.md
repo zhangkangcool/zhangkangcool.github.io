@@ -1,4 +1,5 @@
- 
+<h1 align="center">PassConfig</h1>
+
 
 各种Pass
 
@@ -422,7 +423,7 @@ You can use the PassName to get the `DEBYG_TYPE`, it the passname `stop-after` n
 
 ## addPass
 
-```
+```shell
 ./lib/Transforms/IPO/PassManagerBuilder.cpp
 Passes/PassBuilder.cpp
 llvm/include/llvm/LinkAllPasses.h

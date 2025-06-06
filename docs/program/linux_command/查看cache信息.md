@@ -1,3 +1,4 @@
+<h1 align="center">查看cache信息</h1>
 https://blog.csdn.net/ai297313/article/details/44726187
 
 cache信息在`/sys/devices/system/cpu/cpu1/cache`.

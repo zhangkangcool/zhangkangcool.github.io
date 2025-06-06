@@ -1,3 +1,4 @@
+<h1 align="center">nvdia_ptx</h1>
 
 
 
@@ -33,7 +34,7 @@ nvcc -ptx -o kernel.ptx kernel.cu
 
 https://docs.nvidia.com/cuda/cuda-binary-utilities/index.html#axzz36AnCbaAh
 
-```
+```asm
 cuobjdump
 nvdisasm
 ```
@@ -42,7 +43,7 @@ nvdisasm
 
 
 
-```
+```shell
 nvcc ptx.ptx --cubin
 
 --cubin --fatbin --device-c --device-link

@@ -1,3 +1,4 @@
+<h1 align="center">llvm td files</h1>
 # 1 include/llvm/IR/IntrinsicsPowerPC.td
 
 http://www.voidcn.com/article/p-tnhyorey-bmq.html
@@ -109,13 +110,13 @@ http://www.voidcn.com/article/p-tnhyorey-bmq.html
 ### 1.2 Three builtin type
 include/llvm/CodeGen/ISDOpcodes.h
 - INTRINSIC_WO_CHAIN
-```
+```asm
 RESULT = INTRINSIC_WO_CHAIN(INTRINSICID, arg1, arg2,...)，
 ```
 表示没有副作用的目标机器固有函数。第一个操作数是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。该节点返回该固有函数的结果。
 
 When you def the Intrinsic, you use the flag `IntrNoMem`:
-```
+```asm
   46   // Intrinsics for [double]word extended forms of divide instructions
   47   def int_ppc_divwe : GCCBuiltin<"__builtin_divwe">,
   48                       Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty],
@@ -139,7 +140,7 @@ RESULT, OUTCHAIN = INTRINSIC_W_CHAIN(INCHAIN,INTRINSICID, arg1, ...)
 表示返回一个结果的有副作用的目标机器固有函数。第一个操作数是链指针，第二个是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。该节点返回两个结果，该固有函数的结果与输出链。
 
 When you def the Intrinsic which has return vaule, and not use the flag `IntrNoMem`
-```
+```asm
 1158 // Extended mnemonics
 1159 def int_ppc_tendall : GCCBuiltin<"__builtin_tendall">,
 1160       Intrinsic<[llvm_i32_ty], [], []>;
@@ -150,14 +151,14 @@ When you def the Intrinsic which has return vaule, and not use the flag `IntrNoM
 ```
 
 - INTRINSIC_VOID
-```
+```asm
 OUTCHAIN = INTRINSIC_VOID(INCHAIN, INTRINSICID, arg1,arg2, ...)
 ```
 表示不返回值、有副作用的目标机器固有函数。第一个操作数是链指针，第二个是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。
 
 使用上述三个类型封装固有函数调用，无疑将极大地简化对固有函数的处理，除非必要，我们都无需操心固有函数的语义。因此，这里我们无需它们生成对应的SDNodeInfo对象，而是要记住它们的Record对象，因为它们是什么，我们很清楚。
 When you def the Intrinsic which has return vaule, and not use the flag `IntrNoMem`
-```
+```asm
 1149 def int_ppc_set_texasr : GCCBuiltin<"__builtin_set_texasr">,
 1150       Intrinsic<[], [llvm_i64_ty], []>;
 1151 def int_ppc_set_texasru : GCCBuiltin<"__builtin_set_texasru">,
@@ -172,7 +173,7 @@ When you def the Intrinsic which has return vaule, and not use the flag `IntrNoM
 
 1.3 Intrinsic Definitons
 
-```
+```c++
 265 //===----------------------------------------------------------------------===//
  266 // Intrinsic Definitions.
  267 //===----------------------------------------------------------------------===//
@@ -259,7 +260,7 @@ TableGen不能直接使用C++类，与之对应，它也有自己的SDNode定义
 
 
 ### SDNodeProperty
-```
+```asm
 276      classSDNodeProperty;
 
 277      def SDNPCommutative:SDNodeProperty;   // X op Y == Y op X
@@ -287,16 +288,11 @@ TableGen不能直接使用C++类，与之对应，它也有自己的SDNode定义
 288      def SDNPWantRoot:SDNodeProperty;   // ComplexPattern gets the root of match
 
 289      defSDNPWantParent: SDNodeProperty;   // ComplexPattern gets the parent
---------------------- 
-作者：wuhui_gdnt 
-来源：CSDN 
-原文：https://blog.csdn.net/wuhui_gdnt/article/details/65629125 
-版权声明：本文为博主原创文章，转载请附上博文链接！
 ```
 
 ### 2.2 Def
 #### 2.2.1 SDNode
-```
+```asm
 def CPU0Ret               :    SDNode<"CPU0ISD::Ret", SDTNone, [SDNPHasChain,SDNoptInGlue,SDNPVariadic]>;
 ```
 每个SelectionDAG节点类型都有一个对应的SDNode定义。该函数的原型在llvm/include/llvm/Target/TargetSelectionDAG.td中。
@@ -305,7 +301,7 @@ def CPU0Ret               :    SDNode<"CPU0ISD::Ret", SDTNone, [SDNPHasChain,SDN
 - 第三个参数指的是该结点所应该具有的属性。上面代码中SDNPHasChai的意思是R/W chain operand and result(具体含义自行理解）; SDNPVariadic的含义则是说该结点有可变参数。其余的属性都可以在TargetSelectioDAG.td中找到。上面这段代码应该是定义了一个返回类型的SDNode结点。
 
 #### 2.2.2 SDTypeProfile
-```
+```asm
 def  SDT_Cp0Ret        :    SDTypeProfile<0, 1, [SDTCisInt<0>]>;
 
 // 每0个是返回值
@@ -319,14 +315,14 @@ SDTypeProfile的原型也在TargetSelectionDAG.td中。
 前两个参数是指有几个结果和几个操作数，因为一个SDNode结点里包括有这些内容。如果第二个参数为-1则说明该操作数个数不定。第三个参数是对操作数类型的约束。如这里的SDTCisInt就说明操作数应该是整型的，0则是代表约束的是第一个操作数。
 
 #### 2.2.3 Operand<i32>
-```
+```asm
 def simm8    ：    Operand<i32>{ let DecoderMethod = "DecodeSimm8"; }
 ```
 Operand的原型在llvm/include/llvm/Target/Target.td中。
 个人理解是把simm8这个标识当作一个32位的操作数。例如有个8位的数，但是该系统只支持32位的，所以就要进行扩展，这在LLVM中就是SelectionDAG的legalize。
 
 #### 2.2.4 Operand<iPTR>
-```
+```asm
       def men    :    Operand<iPTR>{   
 
                             let PrintMethod = "printMemOperand";
@@ -339,13 +335,13 @@ Operand的原型在llvm/include/llvm/Target/Target.td中。
 
 #### 2.2.5 PatLeaf
 
-```
+```asm
 def immSExt8    :    PatLeaf<(imm),[ return isInt<8>(N->getSExtValue()); }]>
 ```
 原型在`TargetSelectionDAG.td`。(imm)是dag类型；N是一个操作数结点，后面就判断该N结点是否为8位的整型，是的话才返回。(但这个的含义也不懂）。给一个8位的立即操作数，之后返回一个常量结点。这样这个常量结点便可以代表这个8位立即数了。至于它是不是8位的立即数就得进行一下判断了。
 
 #### 2.2.6 def addr
-```
+```asm
 def addr    :    ComplexPattern<iPTR, 2, "SelectAddr", [frameindex],[SDNPWantParent]>
 ```
 原型在TargetSelectionDAG.td。这应该是为了处理地址模式比较复杂的情况。2是指SelectAddr方法所返回的操作数个数。SelectAddr似乎定义在了XXXDAGToDAGISel。
@@ -355,7 +351,7 @@ def addr    :    ComplexPattern<iPTR, 2, "SelectAddr", [frameindex],[SDNPWantPar
 向量寄存器只支持128(个数 * 位数)位
 
 VSFRC包括f8rc和VFRC
-```
+```asm
 // Allocate volatiles first, then non-volatiles in reverse order. With the SVR4
 // ABI the size of the Floating-point register save area is determined by the
 // allocated non-volatile register with the lowest register number, as FP

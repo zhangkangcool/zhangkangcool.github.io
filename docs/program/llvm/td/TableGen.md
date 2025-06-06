@@ -1,3 +1,4 @@
+<h1 align="center">TableGen</h1>
 ## 1. llvm-tblgen
 
 
@@ -73,7 +74,7 @@ TableGen支持BCPL风格的`//`注释方法，从该注释符开始到行尾都�
 
 所有的选项都必须以下面的格式使用
 
-```
+```asm
 cd /home/ken/workspace/llvm/build/lib/Target/PowerPC && ../../../bin/llvm-tblgen -I /home/ken/workspace/llvm/llvm/lib/Target/PowerPC -I/home/ken/workspace/llvm/build/include -I/home/ken/workspace/llvm/llvm/include -I /home/ken/workspace/llvm/llvm/lib/Target /home/ken/workspace/llvm/llvm/lib/Target/PowerPC/PPC.td -YOUROPTION
 
 
@@ -86,7 +87,7 @@ cd /home/ken/workspace/llvm/build/lib/Target/PowerPC && ../../../bin/llvm-tblgen
 
 `class`可以是`Register`，`Instruction`或任何在td文件中定义的class，如指令格式`BForm_4`, `SubtargetFeature`, `InstrInfo`等。`Target.td`或是`PowerPC`目录下的td文件。
 
-```c++
+```asm
 cd /home/ken/workspace/llvm/build/lib/Target/PowerPC && ../../../bin/llvm-tblgen -I /home/ken/workspace/llvm/llvm/lib/Target/PowerPC -I/home/ken/workspace/llvm/build/include -I/home/ken/workspace/llvm/llvm/include -I /home/ken/workspace/llvm/llvm/lib/Target /home/ken/workspace/llvm/llvm/lib/Target/PowerPC/PPC.td -print-enums -class=Register
   
 ACC0, ACC1, ACC2, ACC3, ACC4, ACC5, ACC6, ACC7, BP, BP8, CARRY, CR0, CR0EQ, CR0GT, CR0LT, CR0UN, CR1, CR1EQ, CR1GT, CR1LT, CR1UN, CR2, CR2EQ, CR2GT, CR2LT, CR2UN, CR3, CR3EQ, CR3GT, CR3LT, CR3UN, CR4, CR4EQ, CR4GT, CR4LT, CR4UN, CR5, CR5EQ, CR5GT, CR5LT, CR5UN, CR6, CR6EQ, CR6GT, CR6LT, CR6UN, CR7, CR7EQ, CR7GT, CR7LT, CR7UN, CTR, CTR8, F0, F1, F10, F11, F12, F13, F14, F15, F16, F17, F18, F19, F2, F20, F21, F22, F23, F24, F25, F26, F27, F28, F29, F3, F30, F31, F4, F5, F6, F7, F8, F9, FP, FP8, LR, LR8, R0, R1, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R2, R20, R21, R22, R23, R24, R25, R26, R27, R28, R29, R3, R30, R31, R4, R5, R6, R7, R8, R9, RM, S0, S1, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S2, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S3, S30, S31, S4, S5, S6, S7, S8, S9, SPEFSCR, UACC0, UACC1, UACC2, UACC3, UACC4, UACC5, UACC6, UACC7, V0, V1, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V2, V20, V21, V22, V23, V24, V25, V26, V27, V28, V29, V3, V30, V31, V4, V5, V6, V7, V8, V9, VF0, VF1, VF10, VF11, VF12, VF13, VF14, VF15, VF16, VF17, VF18, VF19, VF2, VF20, VF21, VF22, VF23, VF24, VF25, VF26, VF27, VF28, VF29, VF3, VF30, VF31, VF4, VF5, VF6, VF7, VF8, VF9, VRSAVE, VSL0, VSL1, VSL10, VSL11, VSL12, VSL13, VSL14, VSL15, VSL16, VSL17, VSL18, VSL19, VSL2, VSL20, VSL21, VSL22, VSL23, VSL24, VSL25, VSL26, VSL27, VSL28, VSL29, VSL3, VSL30, VSL31, VSL4, VSL5, VSL6, VSL7, VSL8, VSL9, VSRp0, VSRp1, VSRp10, VSRp11, VSRp12, VSRp13, VSRp14, VSRp15, VSRp16, VSRp17, VSRp18, VSRp19, VSRp2, VSRp20, VSRp21, VSRp22, VSRp23, VSRp24, VSRp25, VSRp26, VSRp27, VSRp28, VSRp29, VSRp3, VSRp30, VSRp31, VSRp4, VSRp5, VSRp6, VSRp7, VSRp8, VSRp9, VSX32, VSX33, VSX34, VSX35, VSX36, VSX37, VSX38, VSX39, VSX40, VSX41, VSX42, VSX43, VSX44, VSX45, VSX46, VSX47, VSX48, VSX49, VSX50, VSX51, VSX52, VSX53, VSX54, VSX55, VSX56, VSX57, VSX58, VSX59, VSX60, VSX61, VSX62, VSX63, X0, X1, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X2, X20, X21, X22, X23, X24, X25, X26, X27, X28, X29, X3, X30, X31, X4, X5, X6, X7, X8, X9, XER, ZERO, ZERO8,
@@ -94,14 +95,14 @@ ACC0, ACC1, ACC2, ACC3, ACC4, ACC5, ACC6, ACC7, BP, BP8, CARRY, CR0, CR0EQ, CR0G
 
 
 
-```c++
+```shell
 cd /home/ken/workspace/llvm/build/lib/Target/PowerPC && ../../../bin/llvm-tblgen -I /home/ken/workspace/llvm/llvm/lib/Target/PowerPC -I/home/ken/workspace/llvm/build/include -I/home/ken/workspace/llvm/llvm/include -I /home/ken/workspace/llvm/llvm/lib/Target /home/ken/workspace/llvm/llvm/lib/Target/PowerPC/PPC.td -print-enums -class=BForm_4
 BC, BCL, BCLn, BCn,
 ```
 
 
 
-```c++
+```shell
  cd /home/ken/workspace/llvm/build/lib/Target/PowerPC && ../../../bin/llvm-tblgen -I /home/ken/workspace/llvm/llvm/lib/Target/PowerPC -I/home/ken/workspace/llvm/build/include -I/home/ken/workspace/llvm/llvm/include -I /home/ken/workspace/llvm/llvm/lib/Target /home/ken/workspace/llvm/llvm/lib/Target/PowerPC/PPC.td -print-enums -class=RegisterOperand
 acc, crbitrc, crrc, f4rc, f8rc, g8rc, g8rc_nox0, gprc, gprc_nor0, spe4rc, sperc, spilltovsrrc, uacc, vfrc, vrrc, vsfrc, vsrc, vsrpevenrc, vsrprc, vssrc,
 

@@ -1,3 +1,4 @@
+<h1 align="center">llvm option</h1>
 https://llvm.comptechs.cn/docs/man/llc.html  各个选项的中文文档
 
 
@@ -36,7 +37,7 @@ llc -O0 -print-after-all a.ll > a.log 2>&1
 
 ## -filetype=
 
-```
+```shell
 llc -O3 test -filetype=obj
 ```
 
@@ -44,12 +45,12 @@ llc -O3 test -filetype=obj
 
 # show registers name & type（for PPC）
 
-```
+```shell
 -ppc-asm-full-reg-names  
 -ppc-vsr-nums-as-vr
 ```
 
-```
+```shell
 Format: lxsdx XT, RA, RB
 -mattr=+vsx
 -ppc-asm-full-reg-names                 -ppc-asm-full-reg-names     
@@ -60,7 +61,7 @@ lxsdx v2, r3, r4 <--> lxsdx 33,3, 4 <--> lxsdx vs33, r3, r4
 
 
 
-```
+```shell
 
 -mattr=+vsx
 llc -mcpu=pwr9 -mtriple=powerpc64le-unknown-unknown -enable-ppc-quad-precision -ppc-vsr-nums-as-vr -verify-machineinstrs -ppc-asm-full-reg-names f128-conv.ll
@@ -73,7 +74,7 @@ llc -mcpu=pwr9 -mtriple=powerpc64le-unknown-unknown -enable-ppc-quad-precision -
 
 ##### Test case
 
-```a
+```asm
 declare i32 @llvm.experimental.vector.reduce.add.v4i32(<4 x i32> %a)
 
 define i32 @_Z4testDv4_i(<4 x i32> %a) {
@@ -252,7 +253,7 @@ Playout.o: LLVM IR bitcode
 
   以下是可用于march的参数
 
-  ```c++
+  ```asm
   llc --version
     
   LLVM (http://llvm.org/):

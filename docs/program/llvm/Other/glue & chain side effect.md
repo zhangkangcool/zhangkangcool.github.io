@@ -1,3 +1,4 @@
+<h1 align="center">glue & chain side effect</h1>
 ### NOTE: Side Effects
 
 这里提到的side effects不是td文件中描述机器指令的hasSideEffects中的。td文件中的hasSideEffects是机器指令属性，他可以在ABI中查找，每个指令后面的有`Special Registers Altered`表明某条指令是否有side effects。那些`Special Registers Altered`是空的指令,如`VEXTRACTUB`的hasSideEffects应该为false。
@@ -52,7 +53,7 @@ SDNode 之間有 data 或 control (chain, 簡寫 ch) dependency。上圖中黑�
 
 
 一個 DAG 基本對應一個 BasicBlock，DAG 中的每一個節點 (SDNode) 基本對應一條 LLVM IR。TargetSelectionDAG.td 定義了 LLVM IR 對應的 SDNode。SDNode 之間是 producer-consumer 的關係，producer 產生 SDValue 給 consumer。SDValue 有底下三種型別:
-```
+```asm
         concrete value type: 對映黑色實線。
         Other: 對映藍色虛線ch。
         Glue: 對映紅色實線。
@@ -78,7 +79,7 @@ SDNode 之間有 data 或 control (chain, 簡寫 ch) dependency。上圖中黑�
 - `explicit register operations` 
 
 ch is the last Node in result, and it's the first Node in the input Operand.
-```
+```asm
 Legalizing: t7: f64,ch = PPCISD::MFFS t0
 Legal node: nothing to do
 Legalized selection DAG: %bb.0 'test_setrnd_imm1:entry'
@@ -93,7 +94,7 @@ SelectionDAG has 9 nodes:
 Here `t5 == t5:0 == ch`, `t5:1 == glue`
 对于任何Node, `t:0 == t`
 PPCISD::CALL is chained node
-```
+```asm
 lib/Target/PowerPC/PPCInstrInfo.td
 
 
@@ -115,7 +116,7 @@ lib/Target/PowerPC/PPCInstrInfo.td
 Glue bind the two nodes together.
 `Glue` prevents the two nodes from being broken up during scheduling. It's actually more subtle than that [1], but most of the time you don't need to worry about it. (If you're implementing your own backend that requires two instructions to be adjacent to each other, you really want to be using a pseudoinstruction instead, and expand that after scheduling happens.)
 
-```
+```asm
 Black arrows mean data flow dependency
 Red arrows mean glue dependency
 Blue dashed arrows mean chain dependency
@@ -124,7 +125,7 @@ Blue dashed arrows mean chain dependency
 ### IR Property
 - input a chain, output a chain.
 - glue is created as the result.
-```
+```asm
 === test6
 Creating constant: t1: i64 = TargetConstant<5089>
 Creating new node: t2: i64,ch = llvm.ppc.get.texasr t0, TargetConstant:i64<5089>
@@ -139,7 +140,7 @@ SelectionDAG has 6 nodes:
 ```
 
 For below case:
-```
+```asm
  208 SelectionDAG has 9 nodes:
  209         t0: ch = EntryToken
  210       t9: ch,glue = PPCISD::MTFSB0 t0, Constant:i32<31>
@@ -149,7 +150,7 @@ For below case:
 ```
 `213`: `t5:1` is the `glue`, `t5:0` is the `ch`. `t5:0` is equal `t5`, so 
 below code is equal
-```
+```asm
  211     t11: ch,glue = PPCISD::MTFSB1 t9, Constant:i32<30>
  211     t11: ch,glue = PPCISD::MTFSB1 t9:0, Constant:i32<30>
 ```
@@ -159,7 +160,7 @@ The in glue operand `SDNPOptInGlue` must be in the last, and the in glue operand
 # SDNode must has result
 /home/shkzhang/llvm/llvm/utils/TableGen/DAGISelMatcherGen.cpp
 SDNode必须有结果，或者是Operand，或者是Glue或Chain.
-```
+```asm
 907   assert((!ResultVTs.empty() || TreeHasOutGlue || NodeHasChain) &&
 908          "Node has no result");
 ```

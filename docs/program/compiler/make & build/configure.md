@@ -1,3 +1,4 @@
+<h1 align="center">configure</h1>
 # 1. configure
 
 ### 1.1 help info

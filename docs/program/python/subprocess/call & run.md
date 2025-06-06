@@ -1,3 +1,4 @@
+<h1 align="center">scall & run</h1>
 https://www.cnblogs.com/itwhite/p/12329916.html
 
 ##  1. os.system()
@@ -147,7 +148,7 @@ else:                   # child process
 
 Python 3.5 以前（包括 2.x 版本）没有 subprocess.run() 方法，可以使用 subprocess.call() 来执行命令，该方法原型如下：
 
-```
+```asm
 subprocess.call(args, *, stdin=None, stdout=None, stderr=None, shell=False, cwd=None, timeout=None)
 ```
 

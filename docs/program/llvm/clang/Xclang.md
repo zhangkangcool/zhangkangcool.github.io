@@ -1,3 +1,4 @@
+<h1 align="center">Xclang</h1>
 
 
 在 Clang 中，`-Xclang` 选项用于将特定的命令行选项传递给 **Clang 前端**（即 Clang 本身），而不是传递给整个编译器工具链。它允许你向 Clang 提供一些 **Clang 特定的选项**，而这些选项并不是通常通过 `gcc` 等命令行工具传递给后端工具的。简单来说，`-Xclang` 是用来为 Clang 的内部操作传递额外的参数。
@@ -14,21 +15,23 @@ clang -Xclang <option> <additional_arguments>
 
 ### 示例：
 
-- **调试 Pass 信息**： `-Xclang -debug-pass=Structure` 允许你查看 Clang 在编译过程中执行的 Pass 信息。
+**调试 Pass 信息**： `-Xclang -debug-pass=Structure` 允许你查看 Clang 在编译过程中执行的 Pass 信息。
 
-  ```bash
-  clang -S -emit-llvm -Xclang -debug-pass=Structure source.c -o output.ll
-  ```
+```bash
+clang -S -emit-llvm -Xclang -debug-pass=Structure source.c -o output.ll
+```
 
-  这里，`-Xclang -debug-pass=Structure` 是传递给 Clang 的调试选项，而其他命令行选项（如 `-S` 和 `-emit-llvm`）是传递给整个编译器的。
+这里，`-Xclang -debug-pass=Structure` 是传递给 Clang 的调试选项，而其他命令行选项（如 `-S` 和 `-emit-llvm`）是传递给整个编译器的。
 
-- **启用 Clang 特定的警告**： `-Xclang` 也可以用来启用 Clang 前端的特定警告：
+**启用 Clang 特定的警告**： `-Xclang` 也可以用来启用 Clang 前端的特定警告：
 
-  ```bash
-  clang -Xclang -Wall -S -emit-llvm source.c -o output.ll
-  ```
+```bash
+clang -Xclang -Wall -S -emit-llvm source.c -o output.ll
+```
 
-  这里，`-Wall` 是 Clang 前端的一个选项，用于开启所有警告，`-Xclang` 确保它只传递给 Clang，而不是其他工具。
+这里，`-Wall` 是 Clang 前端的一个选项，用于开启所有警告，`-Xclang` 确保它只传递给 Clang，而不是其他工具。
+
+----
 
 ### 为什么使用 `-Xclang`？
 

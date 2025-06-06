@@ -1,8 +1,9 @@
+<h1 align="center">ERROR</h1>
 
 
 如果碰到以下的错误的话，应该是clang的test没开，应该设置`-DCLANG_INCLUDE_TEST=On`选项。
 
-```
+```shell
 $ python3 /Users/ken/workspace/llvm-project/build/bin/llvm-lit clang/test/Sema/block-return-1.c
 llvm-lit: /Users/ken/workspace/llvm-project/llvm/utils/lit/lit/TestingConfig.py:141: fatal: unable to parse config file '/Users/ken/workspace/llvm-project/clang/test/lit.cfg.py', traceback: Traceback (most recent call last):
   File "/Users/ken/workspace/llvm-project/llvm/utils/lit/lit/TestingConfig.py", line 130, in load_from_path

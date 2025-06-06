@@ -1,3 +1,4 @@
+<h1 align="center">Lnt</h1>
 http://llvm.org/docs/lnt/quickstart.html
 http://llvm.org/docs/lnt/tests.html
 
@@ -23,7 +24,7 @@ You should give different --run-order number
 ```
 
 
-```
+```shell
 
 lnt runtest nt --sandbox /home/ken/llvm_cdl/log/ --cc /home/ken/llvm/build/bin/clang --test-suite /home/ken/llvm_cdl/llvm-test-suite --make-param="RUNUNDER=taskset -c 1" --benchmarking-only --threads 1 --build-threads 16  --run-order "$1" --cflag -mcpu=pwr8  --optimize-option -O3
 

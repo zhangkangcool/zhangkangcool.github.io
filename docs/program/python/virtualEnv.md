@@ -1,3 +1,4 @@
+<h1 align="center">virtualEnv</h1>
 
 
 
@@ -10,7 +11,7 @@ https://tensorflow.juejin.im/install/install_linux.html#NVIDIARequirements
 
 1. 选择下面的一条命令来安装 pip 和 Virtualenv：
 
-   ```
+   ```shell
    $ sudo apt-get install python-pip python-dev python-virtualenv # for Python 2.7
    $ sudo apt-get install python3-pip python3-dev python-virtualenv # for Python 3.n 
    ```
@@ -23,14 +24,14 @@ https://tensorflow.juejin.im/install/install_linux.html#NVIDIARequirements
 
    
 
-   ```
+   ```shell
    $ virtualenv --system-site-packages targetDirectory # for Python 2.7
    $ virtualenv --system-site-packages -p python3 targetDirectory # for Python 3.n 
    ```
 
    其中 `*targetDirectory*` 指明了 Virtualenv 树中根部位置。我们的命令中假设了 `*targetDirectory*` 是 `~/virtualEnv/tf2.1`，但你也可以指定任意目录。
 
-   ```
+   ```shell
     virtualenv --system-site-packages -p python3 ~/virtualEnv/tf2.1
    ```
 
@@ -38,7 +39,7 @@ https://tensorflow.juejin.im/install/install_linux.html#NVIDIARequirements
 
 3. 通过以下任意一条命令激活 Virtualenv 的虚拟环境:
 
-   ```
+   ```shell
    $ source ~/tensorflow/bin/activate # bash, sh, ksh, or zsh 
    $ source ~/tensorflow/bin/activate.csh  # csh or tcsh
    $ . ~/tensorflow/bin/activate.fish  # fish 
@@ -48,13 +49,13 @@ https://tensorflow.juejin.im/install/install_linux.html#NVIDIARequirements
 
 4. 退出虚拟环境使用
 
-   ```
+   ```shell
    (tensorflow)$ deactivate 
    ```
 
 5. 删除虚拟环境
 
-   ```python
+   ```shell
    rm -rf 虚拟环境文件夹
    ```
 
@@ -62,14 +63,14 @@ https://tensorflow.juejin.im/install/install_linux.html#NVIDIARequirements
 
 ## 使用workon对虚拟环境进行管理
 
-```
+```shell
 export WORKON_HOME=~/.virtualenvs
 source virtualwrapper/virtualenvwrapper.sh
 ```
 
 
 
-```
+```shell
 workon  # 下面会返回一个装有虚拟环境的列表
 
 ### 下面是返回结果
@@ -80,7 +81,7 @@ tf112
 
 
 
-```
+```shell
 workon caffe  # 使用caffe虚拟环境
 ```
 

@@ -1,3 +1,4 @@
+<h1 align="center">git bisect</h1>
 如何用此命令：https://cloud.tencent.com/developer/article/1379508
 
 实现细节： https://cloud.tencent.com/developer/section/1138673
@@ -8,7 +9,7 @@
 
 需要在`/hone/llvm`目录下运行命令。
 
-```
+```shell
 You need to run this command from the toplevel of the working tree.
 ```
 
@@ -43,14 +44,14 @@ visualize  view  -- show the remaining revisions in gitk
 
 本文通过一个实例，解释如何使用这个命令。下面是一个[代码库](https://github.com/bradleyboy/bisectercise)，请将它克隆到本地。
 
-```javascript
+```shell
 $ git clone git@github.com:bradleyboy/bisectercise.git
 $ cd bisectercise
 ```
 
 这个库是一个网页`index.html`，在浏览器打开这个网页。
 
-```javascript
+```shell
 $ open index.html
 ```
 
@@ -60,7 +61,7 @@ $ open index.html
 
 现在，就要来查找，到底哪一次代码提交，引入了错误。首先，检查一下代码提交历史。
 
-```javascript
+```shell
 $ git log --pretty=oneline
 ```
 
@@ -70,7 +71,7 @@ $ git log --pretty=oneline
 
 
 
-```javascript
+```shell
 git bisect start [latest] [old]
 git bisect start [终点] [起点]
 git bisect start [BAD [GOOD...]]
@@ -80,7 +81,7 @@ git bisect start [BAD [GOOD...]]
 
 这个例子中，我们选择全部的代码历史。起点是第一次提交`4d83cf`，终点是最近一次的`HEAD`。当然，指定其他范围也可以。
 
-```javascript
+```shell
 $ git bisect start HEAD 4d83cf
 ```
 
@@ -88,7 +89,7 @@ $ git bisect start HEAD 4d83cf
 
 现在刷新浏览器，点击`+`按钮，发现可以正常递增。使用`git bisect good`命令，标识本次提交（第51次）没有问题。
 
-```javascript
+```shell
 $ git bisect good
 ```
 
@@ -96,7 +97,7 @@ $ git bisect good
 
 现在刷新浏览器，点击`+`按钮，发现不能正常递增。使用`git bisect bad`命令，标识本次提交（第76）有问题。
 
-```javascript
+```shell
 $ git bisect bad
 ```
 
@@ -104,7 +105,7 @@ $ git bisect bad
 
 接下来，不断重复这个过程，直到成功找到出问题的那一次提交为止。这时，Git 会给出如下的提示。
 
-```javascript
+```shell
 b47892 is the first bad commit
 ```
 
@@ -112,7 +113,7 @@ b47892 is the first bad commit
 
 然后，使用`git bisect reset`命令，退出查错，回到最近一次的代码提交。
 
-```javascript
+```shell
 $ git bisect reset
 ```
 
@@ -133,7 +134,7 @@ git bisect visualize  # 查看出错的commit-id
 
 是不是bad good弄错了。
 
-```
+```shell
 The merge base 531c1161b9758aa7eae1a4dd8ecf11fdf4417b29 is bad.
 This means the bug has been fixed between 531c1161b9758aa7eae1a4dd8ecf11fdf4417b29 and [19d96ca63f8480ae705a377cd98c072916d33590].
 ```

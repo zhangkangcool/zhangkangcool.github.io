@@ -1,3 +1,4 @@
+<h1 align="center">td语法</h1>
 https://llvm.org/docs/TableGen/LangIntro.html#file-scope-entities
 
 https://llvm.org/docs/TableGen/LangRef.html#if
@@ -14,14 +15,14 @@ def是用于定义concrete record，class用于定义abstruct record。
 
 TD文件中所有的常量都必须是编译TD文件时确定的，所下下面的alias是不能实现的
 
-```c++
+```asm
 sldi ra, rs,n  <====> rldicr ra, rs, n, 63 - n
 因为n是在程序编译时才能确定的常量，而不是编译TD文件时确定的常量，这种情况可以在LLVM CPP文件中进行实现。
 ```
 
 
 
-```c++
+```asm
 下面的定义是错的，不能有未知量，也就是说所有的都必须在td文件编译时确定，把以可以写文件，让常量满足什么要求。
 def : InstAlias<!if(!eq(!add($m,3), 63),"sldi $rA, $rS, $n", "rldicl $rA, $rS, $m, $n"), (RLDICL g8rc:$rA, g8rc:$rS, u6imm:$m, u6imm:$n)>;
 
@@ -35,7 +36,7 @@ def : InstAlias<!if(!eq(!add(2,3), 63),"sldi $rA, $rS, $n", "rldicl $rA, $rS, $m
 
 下面调用TrapExtendedMnemonic时用的是常量，所以也是正确的
 
-```c++
+```asm
 multiclass TrapExtendedMnemonic<string name, int to> {
   def : InstAlias<"td"#name#"i $rA, $imm", (TDI to, g8rc:$rA, s16imm:$imm)>;
   def : InstAlias<"td"#name#" $rA, $rB", (TD to, g8rc:$rA, g8rc:$rB)>;
@@ -65,7 +66,7 @@ defm : TrapExtendedMnemonic<"u", 31>;
 
 https://reviews.llvm.org/D71474
 
-```shell
+```asm
 foreach i = 1-4 in {
   if !eq(i, 3) then {
     def "bThree" # i;

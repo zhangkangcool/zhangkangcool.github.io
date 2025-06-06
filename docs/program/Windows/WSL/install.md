@@ -1,8 +1,9 @@
+<h1 align="center">install</h1>
 
 
 
 
-```
+```shell
 https://zhuanlan.zhihu.com/p/62658094
 ```
 

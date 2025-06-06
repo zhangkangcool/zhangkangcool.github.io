@@ -1,8 +1,9 @@
+<h1 align="center">mkdocs github部署</h1>
 
 
 
 
-# mkdocs github部署
+# 
 
 在此之前，确保已将代码按照[mkdocs gh-deploy](./mkdocs gh-deploy.md)。中的方法提交到github中。
 

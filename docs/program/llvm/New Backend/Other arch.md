@@ -1,3 +1,4 @@
+<h1 align="center">Other arch</h1>
 
 
  ## Writing an LLVM Backend
@@ -10,12 +11,10 @@ https://llvm.org/docs/WritingAnLLVMBackend.html
 
 一些Target添加代码后，并未启用。
 
-```
+```asm
 llc -march=arc alu.ll  // llc: error: error: invalid target 'arc'.
 参考 D23560进行
 ```
-
-
 
 ------
 
@@ -33,7 +32,7 @@ https://github.com/llvm/llvm-project/commits?author=asb
 
 The patch to add new backend.
 
-```
+```asm
 https://reviews.llvm.org/people/revisions/475/
 ```
 
@@ -78,7 +77,7 @@ D23563
 
 ### Can get the asm
 
-```
+```asm
 https://github.com/llvm/llvm-project/commit/60714f98 YES 2017.12.13
 https://github.com/llvm/llvm-project/commit/e2f664e1 YES 2017.11.21
 https://github.com/llvm/llvm-project/commit/a337675c YES 2017.11.08
@@ -94,7 +93,7 @@ https://github.com/llvm/llvm-project/commit/cfa6291b YES 2017.11.08
 
 ## CSKY
 
-```
+```asm
 https://reviews.llvm.org/people/revisions/20647/   Zixuan
 192.168.5.10: /home/zhangkang/CSKY
 
@@ -125,7 +124,7 @@ https://github.com/llvm/llvm-project/commits?author=zixuan-wu&after=1d4e857acdd9
 
 ## Use patches
 
-```
+```asm
 D23564
 ```
 
@@ -135,7 +134,7 @@ D23564
 
 
 
-```
+```asm
 # List of all targets to be built by default:
 set(LLVM_ALL_TARGETS    # 默认全编译
   AArch64

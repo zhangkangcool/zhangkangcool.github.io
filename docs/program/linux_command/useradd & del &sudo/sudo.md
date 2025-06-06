@@ -1,3 +1,4 @@
+<h1 align="center">sudo</h1>
 https://zhuanlan.zhihu.com/p/57883153
 
 
@@ -12,13 +13,13 @@ https://zhuanlan.zhihu.com/p/57883153
 
 通常，我们使用 `useradd` 命令创建新用户，如下所示。
 
-```text
+```shell
 $ sudo useradd ostechnix -m -s /bin/bash
 ```
 
 如果你希望新创建的用户使用 `sudo` 执行管理任务，只需使用以下命令将它添加到 `sudo` 组：
 
-```text
+```shell
 $ sudo usermod -a -G sudo ostechnix
 
 如果是redhat及其衍生
@@ -31,7 +32,7 @@ $ sudo usermod -a -G wheel ostechnix
 
 
 
-```text
+```shell
 $ sudo useradd ostechnix sudo
 ```
 
@@ -41,7 +42,7 @@ $ sudo useradd ostechnix sudo
 
 要验证它，只需在任何命令中使用 `sudo` 作为前缀。
 
-```text
+```shell
 $ sudo mkdir /test
 [sudo] password for ostechnix:
 ```
@@ -54,13 +55,13 @@ $ sudo mkdir /test
 
 比如说如果要从 `sudo` 组中删除名为 `ostechnix` 的用户，只需运行：
 
-```text
+```shell
 $ sudo deluser ostechnix sudo
 ```
 
 示例输出：
 
-```text
+```shell
 Removing user `ostechnix' from group `sudo' ...
 Done.
 ```
@@ -69,7 +70,7 @@ Done.
 
 此外，你可以使用以下命令撤消用户的 `sudo` 访问权限：
 
-```text
+```shell
 $ sudo gpasswd -d ostechnix sudo
 ```
 
@@ -77,7 +78,7 @@ $ sudo gpasswd -d ostechnix sudo
 
 使用命令验证用户 `ostechnix` 是否已从 `sudo` 组中删除：
 
-```text
+```shell
 $ sudo -l -U ostechnix
 User ostechnix is not allowed to run sudo on ubuntuserver.
 
@@ -97,7 +98,7 @@ User ostechnix is not allowed to run sudo on ubuntuserver.
 
 直接修改`/etc/sudoers`
 
-```
+```shell
 youuser ALL=(ALL) ALL 
 %youuser ALL=(ALL) ALL 
 youuser ALL=(ALL) NOPASSWD: ALL (最好不写此行)
@@ -115,7 +116,7 @@ youuser ALL=(ALL) NOPASSWD: ALL (最好不写此行)
 
 只使用下面两行即可，`ken`为用户名。
 
-```
+```shell
 ken ALL=(ALL) ALL 
 %ken ALL=(ALL) ALL 
 ```

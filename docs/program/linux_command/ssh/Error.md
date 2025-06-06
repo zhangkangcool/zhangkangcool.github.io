@@ -12,7 +12,7 @@ https://www.cnblogs.com/xubing-613/p/6844564.html
 
 ### 2 Too open
 
-```
+```shell
 $ ssh qiaojun@142.11.252.34
 The authenticity of host '142.11.252.34 (142.11.252.34)' can't be established.
 ECDSA key fingerprint is SHA256:1fxomF3Gamzr1Sk8b9Ahw4lptxoIQU61teZXvIigsb0.
@@ -32,8 +32,7 @@ qiaojun@142.11.252.34: Permission denied (publickey,gssapi-keyex,gssapi-with-mic
 
 
 
-```
+```shell
 chmod 0600 id_rsa
-
 ```
 

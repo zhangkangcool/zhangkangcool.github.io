@@ -1,3 +1,4 @@
+<h1 align="center">git log</h1>
 # 1 git reflog
 
 该命令可以查看最近所有的HEAD变化，一般用于恢复。查看git reset的用法md
@@ -178,7 +179,7 @@ git log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ 
 
 一般用于merge
 
-```
+```shell
 git checkout master
 git log --pretty=%P -n 1 f09d54ed2a75b62960b35258136435d7c8d418e1
 294f37561ab155e363be0fca5fa43528d8b29d18
@@ -190,7 +191,7 @@ git log --pretty=%P -n 1 f09d54ed2a75b62960b35258136435d7c8d418e1
 
 ### 4. git log --author
 
-```
+```shell
 git log --author="zhang kang"
 ```
 

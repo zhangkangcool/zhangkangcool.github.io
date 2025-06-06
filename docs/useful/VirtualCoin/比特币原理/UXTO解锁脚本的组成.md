@@ -1,3 +1,4 @@
+<h1 align="center">UXTO解锁脚本的组成</h1>
 
 
 
@@ -26,13 +27,13 @@
 
 ### P2PKH解锁脚本示例
 假设有一个UTXO，其锁定脚本（`scriptPubKey`）为：
-```
+```shell
 OP_DUP OP_HASH160 <公钥哈希> OP_EQUALVERIFY OP_CHECKSIG
 ```
 这是一个典型的P2PKH脚本，要求花费者提供公钥和签名，并验证公钥的哈希与指定值匹配，签名有效。
 
 对应的解锁脚本（`scriptSig`）可能是：
-```
+```shell
 <签名> <公钥>
 ```
 - `<签名>`：用私钥对交易数据签名的结果（通常是DER编码的ECDSA签名，后面附加一个字节的SIGHASH标志，例如`01`表示`SIGHASH_ALL`）。
@@ -40,11 +41,11 @@ OP_DUP OP_HASH160 <公钥哈希> OP_EQUALVERIFY OP_CHECKSIG
 
 #### 具体例子
 假设某个UTXO的锁定脚本是：
-```
+```shell
 OP_DUP OP_HASH160 1a91e3dace36e2be3bf030a2cf1a5e7c1d21e3f4 OP_EQUALVERIFY OP_CHECKSIG
 ```
 对应的解锁脚本可能是：
-```
+```shell
 3044022047ac8e878352d3ebbde1c94ce3a10d057c24175747116f8288e5d794d12d482f02207f8e8e5d794d12d482f47ac8e878352d3ebbde1c94ce3a10d057c24175747101 02f8e8e5d794d12d482f47ac8e878352d3ebbde1c94ce3a10d057c24175747116f
 ```
 - `30440220...01`：签名（70字节，DER编码，末尾`01`表示`SIGHASH_ALL`）。

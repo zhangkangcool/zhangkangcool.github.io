@@ -1,6 +1,7 @@
+<h1 align="center">指令example</h1>
 ### 大小端
 
-```
+```c++
 unsigned int value = 0x1234 5678
 
 

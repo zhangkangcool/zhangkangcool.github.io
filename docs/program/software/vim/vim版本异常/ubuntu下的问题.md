@@ -1,3 +1,4 @@
+<h1 align="center">ubuntu下的问题</h1>
 
 
 https://blog.admpub.com/blog/post/admin/Vi%E6%96%B9%E5%90%91%E9%94%AE%5BA-%5BB-%5BC-%5BD%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3
@@ -60,13 +61,13 @@ vim --version | grep "syntax"
 
 root权限下打开 /etc/vim/vimrc.tiny 文件，将“compatible”改成“nocompatible”非兼容模式：
 
-```
+```asm
 set nocompatible
 ```
 
 就可以解决方向键变ABCD的问题了。接下来要解决Backspace键的问题也很简单，在刚才那句话后面再加一句：
 
-```
+```asm
 set backspace=2
 ```
 
@@ -80,7 +81,7 @@ set backspace=2
 
 首先，要先卸掉旧版的vi，输入以下命令：
 
-```
+```asm
 sudo apt-get remove vim-common
 ```
 

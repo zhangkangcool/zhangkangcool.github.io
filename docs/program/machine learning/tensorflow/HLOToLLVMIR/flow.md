@@ -1,10 +1,11 @@
+<h1 align="center">flow</h1>
 
 
 
 
 https://sketch2sky.com/2020/03/08/tensorflow-xla-service-buffer/#more-1820
 
-```C++
+```c++
 NVPTXCompiler::RunBackend() {
   hlo_schedule = GpuHloSchedule::Build(*module, *stream_assignment, pointer_size_)
   BufferAssigner::Run(hlo_schedule->ConsumeHloOrdering()...)
@@ -16,7 +17,7 @@ NVPTXCompiler::RunBackend() {
 
 
 
-```
+```asm
 -2- 从XLA Service通用层中选择适合GPU的Schedule策略
 -3- 基于Schedule策略，进行设备无关的Buffer优化，主要关注尽可能的减少Buffer的大小。注意，这里是设备无关的优化，是无法利用硬件Memory特性的。
 -4- 将HloModule转化为LLVM IR
@@ -53,7 +54,7 @@ NVPTXCompiler::RunBackend() {
 
 
 
-```
+```asm
  Emits LLVM IR for an "unnested computation".
 ```
 

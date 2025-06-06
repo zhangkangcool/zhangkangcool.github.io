@@ -1,3 +1,4 @@
+<h1 align="center">files share</h1>
 
 
 ## win10与子系统Ubuntu之间互相访问文件系统
@@ -30,7 +31,7 @@ C:\Users\69138
 
 与
 
-```
+```shell
 /mnt/c/Users/69138
 ```
 
@@ -70,7 +71,7 @@ $ cd win10
 
 真实使用的命令
 
-```
+```shell
 ln -s /mnt/c/Users/69138/linux win10
 ```
 
@@ -84,7 +85,7 @@ windows的资源管理器中直接输入
 
 可以把\\wsl$下的某个文件弄个快捷方式到桌面上
 
-```
+```shell
 \\wsl$  或者  \\wsl.localhost
 ```
 

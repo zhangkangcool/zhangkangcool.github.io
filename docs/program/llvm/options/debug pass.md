@@ -1,10 +1,11 @@
+<h1 align="center">debug pass</h1>
 http://llvm.org/docs/Passes.html
 
 ## time-passes
 
 Get the time for every pass
 
-```
+```asm
 opt sum.bc -time-passes -domtree -instcount -o sum-tmp.bc
 
 ===-------------------------------------------------------------------------===
@@ -32,7 +33,7 @@ opt sum.bc -time-passes -domtree -instcount -o sum-tmp.bc
 
 ## stats
 
-```
+```asm
 $ opt sum.bc -mem2reg -instcount -o sum-tmp.bc -stats
 ===----------------------------------------------------------------------
 ---===
@@ -50,7 +51,7 @@ $ opt sum.bc -mem2reg -instcount -o sum-tmp.bc -stats
 
 Or you can use `stats` in clang
 
-```
+```shell
 clang -Xclang -print-stats -emit-llvm -O1 sum.c -c -o sum-O1.bc
 ```
 
@@ -58,7 +59,7 @@ clang -Xclang -print-stats -emit-llvm -O1 sum.c -c -o sum-O1.bc
 
 print the pass the mem2reg will use.
 
-```
+```shell
 opt sum-O0.ll -debug-pass=Structure -mem2reg -S -o sum-O1.ll
 
 Pass Arguments:  -targetlibinfo -tti -targetpassconfig -assumption-cache-tracker -domtree -mem2reg -verify -print-module

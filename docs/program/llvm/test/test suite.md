@@ -1,3 +1,4 @@
+<h1 align="center">test suite</h1>
 
 
 # How to debug the test suite error
@@ -6,7 +7,7 @@ You'd better remove `llvm/log` first.
 
 ### Log file
 
-```
+```shell
 /home/ken/llvm/log/test-2019-06-19_13-19-56/test.log
 ```
 
@@ -68,7 +69,7 @@ Add `set -x` in `/home/ken/llvm_cdl/llvm-test-suite/DiffOutput.sh`.
 
 可能出错代码处加`assert`，定位出错的文件，然后单独编译此文件。 
 
-```
+```shell
 
 /home/ken/llvm_cdl/llvm-test-suite/HashProgramOutput.sh Output/ldecod.simple-hash
 /home/ken/llvm_cdl/llvm-test-suite/DiffOutput.sh "/home/ken/llvm/log/test-2019-06-20_06-21-44/tools/fpcmp " simple ldecod
@@ -81,7 +82,7 @@ Execution Context Diff:
 rm -f Output/ldecod.exe-simple
 ```
 
-```
+```shell
 /home/ken/llvm/log/test-2019-06-20_08-42-10/MultiSource/Applications/JM/ldecod/Output
 
 grep -r "exit"
@@ -112,7 +113,7 @@ grep -r "zhangkang"
 
 Open `./MultiSource/Benchmarks/MallocBench/cfrac/Output/atop.llvm.o.compile` we can get the building file `./MultiSource/Benchmarks/MallocBench/cfrac/Output/atop.c`. Then, we can search the test.log to get the cmd to build file
 
-```
+```shell
 ./MultiSource/Benchmarks/MallocBench/cfrac/Output/atop.llvm.o.compile:clang-9: /home/ken/llvm/llvm/lib/Target/PowerPC/PPCISelLowering.cpp:12397: llvm::SDValue llvm::PPCTargetLowering::combineSetCC(llvm::SDNode*, llvm::TargetLowering::DAGCombinerInfo&) const: Assertion `"zhangkang find a case" && false' failed.
 ```
 

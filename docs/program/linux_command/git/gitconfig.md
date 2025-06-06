@@ -1,3 +1,4 @@
+<h1 align="center">gitconfig</h1>
 
 
 ### 1 全局的config文件
@@ -12,7 +13,7 @@
 
 每个项目可以有自己单独的config文件
 
-```pshell
+```shell
 $project_dir/.git/config   // git config --local会对此进行修改。
 ```
 
@@ -43,7 +44,7 @@ $project_dir/.git/config   // git config --local会对此进行修改。
 
 设置git edit为vim
 
-```
+```shell
 git config --global core.editor vim
 ```
 

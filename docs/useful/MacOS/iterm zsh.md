@@ -1,3 +1,4 @@
+<h1 align="center">iterm zsh</h1>
 
 
 
@@ -76,7 +77,7 @@ chsh -s /bin/zsh
 
 ## [incr.zsh 补全插件](http://mimosa-pudica.net/zsh-incremental.html)
 
-```
+```shell
 wget http://mimosa-pudica.net/src/incr-0.2.zsh   
 cd ~/.oh-my-zsh/plugins
 mkdir incr
@@ -95,7 +96,7 @@ cp incr-0.2.zsh ~/.oh-my-zsh/plugins/incr
 
 进入git repo后，zsh会读取repo的信息，所以会很慢。
 
-```
+```shell
 # ken @ ken in ~/llvm-project on git:master o [9:27:31]
 ```
 
@@ -103,7 +104,7 @@ https://blog.csdn.net/a_ran/article/details/72847022
 
 用如下命令解决（无需要添加了.zshrc中）
 
-```
+```shell
 git config --add oh-my-zsh.hide-status 1
 ```
 
@@ -260,7 +261,7 @@ iterm2中取消`Brightem bold text`勾选。 `iterm2 -> Preferences > Profiles -
 
 ### 按tab时，屏幕闪烁的问题
 
-```c++
+```shell
 term2更新后, tab键时会闪屏。修改方法为: iterm -> preference -> profiles -> Terminal, 在notifications中选中 "slience bell"。
 ```
 

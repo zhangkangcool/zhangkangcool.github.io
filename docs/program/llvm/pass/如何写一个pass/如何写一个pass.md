@@ -1,3 +1,4 @@
+<h1 align="center">如何写一个pass</h1>
 https://bsauce.github.io/2019/05/30/how-to-write-a-pass/#2%E5%86%99hello-world-pass
 
 
@@ -22,7 +23,7 @@ Hello pass用于打印出内部函数的函数名，不会修改程序，只是�
 
 首先，配置和安装LLVM；然后在LLVM源码目录下创建一个新目录，这里假设你创建了lib/Transforms/Hello目录；最后，设置build脚本，用于编译新的pass。将以下代码拷贝到`lib/Transforms/Hello/CMakeLists.txt`。
 
-```c++
+```asm
 add_llvm_library( LLVMHello MODULE
   Hello.cp
 
@@ -241,7 +242,7 @@ LoopPass遍历处理函数中的loop，并不依赖函数中其他loop。遍历�
 
   `getAnalysisUsage`实现示例：
 
-  ```
+  ```c++
     // This example modifies the program, but does not modify the CFG
     void LICM::getAnalysisUsage(AnalysisUsage &AU) const {
       AU.setPreservesCFG();
@@ -404,7 +405,7 @@ $ opt -load lib/LLVMHello.so -gvn -hello -licm --debug-pass=Structure < hello.bc
 
 LLVM提供了一种机制，可以在clang、opt、bugpoint内自动注册pass插件。首先要创建一个独立的project，添加到`tools/`，或者使用`MonoRepo`布局，跟其他project并列。该project的`CMakeLists.txt`如下所示：
 
-```shell
+```cmake
 add_llvm_pass_plugin(Name source0.cpp)
 ```
 

@@ -1,3 +1,4 @@
+<h1 align="center">tmux error</h1>
 
 
 # 1. linux无法正常启动tmux的解决方法

@@ -1,3 +1,4 @@
+<h1 align="center">gitignore</h1>
 e https://blog.csdn.net/weixin_45318845/article/details/120740012
 
 
@@ -20,7 +21,7 @@ e https://blog.csdn.net/weixin_45318845/article/details/120740012
 
 在 .gitignore 文件中，每一行的忽略规则的语法如下：
 
-```c++
+```shell
 * 空格不匹配任意文件，可作为分隔符，可用反斜杠转义
 * 开头的文件标识注释，可以使用反斜杠进行转义
 * ! 开头的模式标识否定，该文件将会再次被包含，如果排除了该文件的父级目录，则使用 ! 也不会再次被包含。可以使用反斜杠进行转义
@@ -173,10 +174,7 @@ build/
 
 
 
-```
 
-
-```
 
 
 

@@ -1,3 +1,4 @@
+<h1 align="center">example</h1>
 下面是一个最简单的Makefile文件示例，用于编译一个名为test.cpp的源文件：
 
 makefile

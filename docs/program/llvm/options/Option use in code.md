@@ -1,3 +1,4 @@
+<h1 align="center">Option use in code</h1>
 ### Example1
 
 有些选项不是`llc`的选项，这点要注意

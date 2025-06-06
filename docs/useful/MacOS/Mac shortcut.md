@@ -1,3 +1,4 @@
+<h1 align="center">Mac shortcut</h1>
 https://www.jianshu.com/p/e6c364084c22
 
 # Control
@@ -32,7 +33,7 @@ Tab键：命令、文件名等自动补全功能。
 
 ## Useful
 
-```
+```shell
 Ctrl+[ ：相当于Esc键。(vim)
 Ctrl+u: 删除光标处到行首的字符。
 Ctrl+w：删除光标处前一个单词。

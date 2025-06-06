@@ -1,3 +1,4 @@
+<h1 align="center">llvm-config</h1>
 
 
 # llvm-confg
@@ -8,7 +9,7 @@
 
 以下是help info
 
-```c++
+```asm
 llvm-config --help
 usage: llvm-config <OPTION>... [<COMPONENT>...]
 

@@ -1,3 +1,4 @@
+<h1 align="center">JAX安装</h1>
 
 
 
@@ -6,7 +7,7 @@
 
 最好先弄个虚拟环境
 
-```
+```asm
 pip3 install jax -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host https://pypi.tuna.tsinghua.edu.cn
 
 pip3 install jaxlib -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host https://pypi.tuna.tsinghua.edu.cn
@@ -22,7 +23,7 @@ https://jax.readthedocs.io/en/latest/developer.html#building-from-source
 
 
 
-```shell
+```asm
 python3 build/build.py --bazel_options=--override_repository=org_tensorflow=/home/ken/workspace/tensorflow/tensorflow
 这样不用编译时下载tensorflow
 
@@ -42,7 +43,7 @@ ROCm enabled: no
 
 
 
-```
+```asm
 pip3 install pybind11
 pip3 install ducc0
 ```
@@ -73,7 +74,7 @@ python3 build/build.py --bazel_options="--override_repository=bazel_skylib=/home
 
 
 
-```
+```asm
 https://storage.googleapis.com/mirror.tensorflow.org/github.com/llvm/llvm-project/archive/0538e5431afdb1fa05bdcedf70ee502ccfcd112a.tar.gz
 ```
 

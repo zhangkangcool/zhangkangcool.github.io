@@ -1,3 +1,4 @@
+<h1 align="center">git reset之后的恢复</h1>
 <https://www.jianshu.com/p/5d3ad1a23298>
 
 
@@ -63,14 +64,14 @@
 
 objects 后面的部分就是一个 add 的ID，注意要去掉 / 符号。从上到下是最新的提交到旧的提交。执行：
 
-```undefined
+```shell
     git cat-file -p 008b61d60cc4829d438e54a4073f2fdd4b62ae74 > hello
 ```
 
 会将 add 中的文件重新写到新文件中，进行恢复。
 此外，还有一种方法进行恢复。执行：
 
-```undefined
+```shell
     git fsck --lost-found
 ```
 

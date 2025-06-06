@@ -1,3 +1,4 @@
+<h1 align="center">td文件信息</h1>
 ## 
 
 
@@ -10,7 +11,7 @@ https://blog.csdn.net/fs3296/article/details/141831812
 
 td通过class Instruction来定义指令，其各个字段意义如下：
 
-```c++
+```asm
 OutOperandList：输出dag节点列表；
 InOperandList：输入操作数节点列表；
 AsmString：用于在“.s”文件中的汇编显示；
@@ -34,7 +35,7 @@ TSFlags：
 # . 定义SDNode
 SDNode用于定义一个dag节点，它分别有如下重要参数：
 
-```c++
+```asm
 opcode：SDNode的节点枚举；
 typeprof：用于描述节点特性的SDTypeProfile类型；
 props：节点属性列表，定义在SDNodeProperties.td文件中，对应源码enum SDNP。例如满足交换律、满足结合律、有边界影响；
@@ -45,7 +46,7 @@ sdclass：节点对应C++类型名称；
 
 SDTypeProfile用于描述节点的特性，各个参数如下：
 
-```c++
+```asm
 numresults：节点输出值数量；
 numoperands：节点输入操作数数量；
 constraints：节点输出/入的约束；
@@ -92,7 +93,7 @@ pred：表示可匹配的先决条件，为一段输出布尔的代码。代码�
 
 PatLeaf表示将一个无操作数节点重新匹配、或者说重定义为一个新的节点名称，PatLeaf是PatFrag子类。由于叶子节点没有子节点可继续展开，所以在PatFrag中断ops参数由一个空的ops表示。例如x86中如下定义：
 
-```c++
+```asm
 ... ...
 def i32immSExt8  : ImmLeaf<i32, [{ return isInt<8>(Imm); }]>;
 ... ...
@@ -127,7 +128,7 @@ Properties：表示被提取节点(而非根节点)的属性；
 
 例如X86中，有如下定义：
 
-```c++
+```asm
 def addr      : ComplexPattern<iPTR, 5, "selectAddr", [], [SDNPWantParent]>;
 ```
 

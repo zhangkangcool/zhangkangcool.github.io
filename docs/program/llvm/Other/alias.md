@@ -1,3 +1,4 @@
+<h1 align="center">alias</h1>
 ### 汇编级别的
 
 PPCAsmPseudo定义汇编级别的alias指令，不会出来在Codegen中。
@@ -27,7 +28,7 @@ PPCAsmPseudo定义汇编级别的alias指令，不会出来在Codegen中。
 
 `PPCAsmPseudo`用于定义`InstAlias`无法实现的alias定义，例如
 
-```shell
+```asm
 // 有非常量，PPCAsmPseudo和PPCInstrInfo.td一起实现
 srwi ra, rs,n (n<32)  <==> rlwinm ra, rs, 32-n, n, 31
 
@@ -154,13 +155,14 @@ def : InstAlias<"la $rD, $mm($rA)", (ADDI gprc:$rD, gprc_nor0:$rA, s16imm:$imm)>
 
 常量时不能有类型
 
-```
+```asm
 def : InstAlias<"nop", (ORI8 X0, X0, 0)>;
 def : InstAlias<"nop", (ORI R0, R0, 0)>;
 ```
 
 
 
+```asm
 SH + MB = 32
 
 0 <= MB <= 31  ==>  1<= SH <= 32
@@ -170,6 +172,9 @@ SH + MB = 32
 n < 32 
 
 MB can't be 32, but SH can be 32. If MB = 0, then SH = 32
+```
+
+
 
 两个都不能是32
 
@@ -185,7 +190,7 @@ MB can't be 32, but SH can be 32. If MB = 0, then SH = 32
 
 ../llvm/lib/Target/PowerPC/MCTargetDesc/PPCInstPrinter.cpp `MCInst --> asm`
 
-```
+```asm
 PPCInstPrinter.cpp - Convert PPC MCInst to assembly syntax
 This class prints an PPC MCInst to a .s file.
 ```
@@ -222,7 +227,7 @@ PPCAsmParser.cpp - Parse PowerPC asm to MCInst instructions
 
 `../llvm/lib/Target/PowerPC/PPCInstrInfo.td`
 
-```
+```asm
 4677 def SRWI : PPCAsmPseudo<"srwi $rA, $rS, $n",
 4678                         (ins gprc:$rA, gprc:$rS, u5imm:$n)>;
 4679 def SRWI_rec : PPCAsmPseudo<"srwi. $rA, $rS, $n",
@@ -253,7 +258,7 @@ PPCAsmParser.cpp - Parse PowerPC asm to MCInst instructions
 
 Why: `~/llvm/llvm/test/MC/PowerPC/ppc64-encoding-ext.s`
 
-```
+```asm
 3389 # CHECK-BE: srwi 2, 3, 4                    # encoding: [0x54,0x62,0xe1,0x3e]
 3390 # CHECK-LE: srwi 2, 3, 4                    # encoding: [0x3e,0xe1,0x62,0x54]
 3391             srwi 2, 3, 4
@@ -262,7 +267,7 @@ Why: `~/llvm/llvm/test/MC/PowerPC/ppc64-encoding-ext.s`
 3394             srwi. 2, 3, 4
 ```
 
-```
+```asm
   1 Args: /home/shkzhang/llvm/build/bin/llvm-mc -triple powerpc64-unknown-unknown --show-encoding srwi.    s -debug
   2 AsmMatcher: found 2 encodings with mnemonic 'srwi'
   3 Trying to match opcode SRWI
@@ -276,7 +281,7 @@ Why: `~/llvm/llvm/test/MC/PowerPC/ppc64-encoding-ext.s`
 
 
 
-```
+```asm
   1 Args: /home/shkzhang/llvm/build/bin/llvm-mc -triple powerpc64-unknown-unknown --show-encoding srwid    ot.s -debug
   2 AsmMatcher: found 2 encodings with mnemonic 'srwi'
   3 Trying to match opcode SRWI
@@ -299,7 +304,7 @@ Why: `~/llvm/llvm/test/MC/PowerPC/ppc64-encoding-ext.s`
 
 Inslwi
 
-```shell
+```asm
 SH = 32 -b, ME = b + n - 1     b = MB
 MB = 32 - SH, ME = 31 - SH + n 
 
@@ -312,7 +317,7 @@ MB = 32 - SH, ME = 31 - SH + n
 
 insrwi
 
-```
+```asm
 SH = 32 - B - N,  MB =B,  ME = B + N - 1
 SH + ME = 31,   SH = 32 - MB - N, N = 32 - MB - SH
 
@@ -325,7 +330,7 @@ B = 0, N = 31
 
 Clrlsldi
 
-```
+```asm
 SH = N, MB = B - N, B = MB + SH
 n <= b < 64
 
@@ -338,7 +343,7 @@ sh <= MB + SH < 64
 
 ## rldicl
 
-```
+```asm
 extrdi ra,rs,n,b (n > 0)  <==> rldicl ra,rs,b+n,64-n
 SH = B + N;  MB = 64 - N
 0 < N = 64 - MB 
@@ -347,7 +352,7 @@ SH = B + N;  MB = 64 - N
 
 
 
-```
+```asm
 rotrdi ra,rs,n     <===>  rldicl ra,rs,64-n,0
 MB = 0    0 < SH < 64
 SH = 64 - N  ===> N = 64 - SH 
@@ -355,7 +360,7 @@ SH = 64 - N  ===> N = 64 - SH
 
 
 
-```
+```asm
 srdi ra,rs,n (n < 64)    <=====> rldicl ra,rs,64-n,n
 SH = 64 - N   MB = N
 SH + MB = 64,   0 < SH < 64    N 同样
@@ -363,7 +368,7 @@ SH + MB = 64,   0 < SH < 64    N 同样
 
 
 
-```
+```asm
 insrdi ra,rs,n,b (n > 0)
 rldimi ra,rs,64-(b+n),b
 
@@ -383,7 +388,6 @@ Bug:
 
 - RLWIMI 5个Op变6个的问题
 - `RLDICL_rec`未看到定义，却能找到使用
-
 
 
 

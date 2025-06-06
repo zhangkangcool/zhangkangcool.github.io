@@ -1,3 +1,4 @@
+<h1 align="center">红米AX6S路由器刷入 openWrt 固件</h1>
 https://www.bilibili.com/read/cv22327855/
 
 https://qust.me/post/ax6s/   刷机+翻墙

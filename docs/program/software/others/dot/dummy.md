@@ -1,3 +1,4 @@
+<h1 align="center">dummy</h1>
 
 
 ### dummy 结点控制宽度等
@@ -10,7 +11,7 @@ dot
 
 复制
 
-```
+```asm
 digraph G {
     A -> B;
     A -> C;

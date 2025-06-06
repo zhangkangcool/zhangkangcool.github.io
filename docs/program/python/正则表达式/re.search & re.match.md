@@ -1,3 +1,4 @@
+<h1 align="center">re.search & re.match</h1>
 
 
 
@@ -44,7 +45,7 @@ else:
 
 输出结果：
 
-```
+```asm
 hello
 ```
 
@@ -54,7 +55,7 @@ hello
 
 re.search（）函数会在字符串内查找模式匹配,只要找到第一个匹配然后返回，如果字符串没有匹配，则返回None。
 
-```python
+```asm
 格式：re.search(pattern, string, flags=0)
 ```
 
@@ -71,7 +72,7 @@ print(ret.group())
 
 输出结果：
 
-```
+```asm
 9999
 ```
 

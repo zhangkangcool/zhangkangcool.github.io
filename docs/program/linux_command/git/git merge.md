@@ -1,3 +1,4 @@
+<h1 align="center">git merge</h1>
 #  1. git merge & git rebase
 
 https://blog.csdn.net/liuxiaoheng1992/article/details/79108233
@@ -85,7 +86,7 @@ git push
 
 如果想放弃修改，可以用
 
-```
+```shell
 git reset last_commit_id_before_merge
 ```
 

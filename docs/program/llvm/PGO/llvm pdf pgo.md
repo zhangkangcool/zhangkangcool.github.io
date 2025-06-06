@@ -1,3 +1,4 @@
+<h1 align="center">llvm pdf pgo</h1>
 build clang & compiler_rt on e1v
 ```shell
 cmake $HOME/llvm/llvm -DLLVM_TARGETS_TO_BUILD=PowerPC  -DCMAKE_INSTALL_PREFIX=$HOME/llvm/install -DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RELEASE -DLLVM_ENABLE_PROJECTS="clang;compiler-rt"  -DCMAKE_C_COMPILER=/opt/at12.0/bin/gcc -DCMAKE_CXX_COMPILER=/opt/at12.0/bin/g++ ../llvm -DLLVM_BINUTILS_INCDIR=/gsa/tlbgsa/projects/x/xlcdl/shkzhang/p9_software/binutils/binutils/include

@@ -1,4 +1,5 @@
- 
+<h1 align="center">输出各种pass</h1>
+
 
 各种Pass
 
@@ -97,7 +98,7 @@ EnableShrinkWrapOpt("enable-shrink-wrap", cl::Hidden,
 
 One output
 
-```shell
+```asm
 PassName = Convert i1 constants to i32/i64 if they are returned
 PassName = PowerPC Expand ISEL Generation
 PassName = PowerPC Pre-Emit Peephole
@@ -340,7 +341,7 @@ PassName = Scavenge virtual registers inside basic blocks
 
 # One case do what pass
 
-```cpp
+```asm
   -debug-pass=<value>                                            - Print PassManager debugging information
     =Disabled                                                    -   disable debug output
     =Arguments(line 4)                                            -   print pass arguments to pass to 'opt'
@@ -424,7 +425,7 @@ llc -mcpu=pwr9  -mtriple=powerpc64le-unknown-unknown -O0 -debug-pass=Structure n
 
 可以找help中的`print-before`或`print-after`。
 
-```
+```asm
 llc --help-hidden 
 1155   --print-after=<value>                                           - Print IR after specified passe     s
 1156     =CFGuardLongjmp                                               -   Insert symbols at valid long     jmp targets for /guard:cf

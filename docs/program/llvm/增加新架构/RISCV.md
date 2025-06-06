@@ -1,10 +1,11 @@
+<h1 align="center">RISCV</h1>
 
 
 
 
 
 
-```
+```c++
 git log --author="Alex Bradbury" > ~/git.log  找此人的提交
 ```
 
@@ -12,7 +13,7 @@ git log --author="Alex Bradbury" > ~/git.log  找此人的提交
 
 
 
-```
+```c++
 D23557 b6e784a240 [RISCV 1/10] Recognise riscv32 and riscv64 in triple parsing code
 D23558 1524f62b97 [RISCV 2/10] Add RISC-V ELF defines
 acf6c82de2c5a4c3f [RISCV] Add missing RISCV.def

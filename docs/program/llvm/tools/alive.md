@@ -1,3 +1,4 @@
+<h1 align="center">alive</h1>
 # Automatic LLVM's Instcombine Verifier
 
 Alive is a tool that can prove the correctness of InstCombine optimizations specified in a high-level language. (Used in opt). It can automatically translated into C++ code.
@@ -68,7 +69,7 @@ Name: Test
 
 Result:
 
-```shell
+```asm
 about Alive - Optimization Verifier
 Alive proves correctness of peephole optimizations.
 ```
@@ -95,7 +96,7 @@ Example4:
 
 Error case:(poision propagate)
 
-```shell
+```asm
 Name: Test
 %add = add nuw i32 %a, %b   // add i32 %a, %b
 %cmp = icmp sgt i32 %add, %a
@@ -107,7 +108,7 @@ Name: Test
 
 Example5:
 
-```shell
+```asm
 // right
 %add = add nuw i8 %t12, 6
 %t21 = i8 9
@@ -151,7 +152,7 @@ cmpconst > addconst > 0 || 0 > cmpconst > addconst
 
 Right
 
-```
+```asm
 Name: Test
 %add = add nuw i8 %a, -10
 %cmp = icmp sgt i8 %add, 126

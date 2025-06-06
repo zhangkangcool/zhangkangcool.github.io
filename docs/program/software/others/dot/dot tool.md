@@ -1,3 +1,4 @@
+<h1 align="center">dot tool</h1>
 # Grammer
 
 ```
@@ -21,7 +22,7 @@ https://blog.csdn.net/qq_27885505/article/details/80366525
 sudo apt-get install graphviz
 ```
 
-```
+```asm
 dot test.dot -Tpng -o test.png  # 可以选择svg文件，markdown支持的矢量文件
 clang -S -emit-llvm mul.cpp
 llc -view-dag-combine1-dags mul.ll  // get the dot file

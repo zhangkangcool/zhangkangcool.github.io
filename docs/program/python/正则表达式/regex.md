@@ -1,3 +1,4 @@
+<h1 align="center">regex</h1>
 [https://baike.baidu.com/item/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/1700215?fr=aladdin](https://baike.baidu.com/item/正则表达式/1700215?fr=aladdin)
 
 https://www.runoob.com/python/python-reg-expressions.html
@@ -8,7 +9,7 @@ https://www.runoob.com/python/python-reg-expressions.html
 
 https://docs.python.org/zh-cn/3/library/re.html 
 
-```
+```asm
 asm = "14:     20 00 80 4e     blr"
 
 #OP = re.compile(r':\s+\S\S\s\S\S\s\S\S\s\S\S\s+(?=blr)')  // :	20 00 80 4e
@@ -23,7 +24,7 @@ OP = re.compile(r':\s+\S\S\s\S\S\s\S\S\s\S\S\s+blr')       // :	20 00 80 4e 	blr
 
 
 
-```
+```asm
 re.search 与 re.match 的用法区别
 match会从头开始匹配，search而不是
 
@@ -46,7 +47,7 @@ ret = Op.search(Op, line)    // a:b
 
 https://www.cnblogs.com/jmliao/p/11775938.html
 
-```
+```asm
 ^(?!.*helloworld).*$
 ```
 
@@ -54,7 +55,7 @@ https://www.cnblogs.com/jmliao/p/11775938.html
 
 
 
-```
+```asm
 OP = re.compile(r'^(?!.*nop).*b')
 
 asm1 = "14:    20 00 80 4e     nop"
@@ -70,7 +71,7 @@ ret2 = re.search(OP, asm2)     // 14:     20 00 80 4e     b
 
 过滤反汇编中的nop指令
 
-```
+```asm
 OP = re.compile(r'^(?!.*\s+nop).*:\s+\S\S\s\S\S\s\S\S\s\S\S\s+\D')  # right
 ```
 
@@ -80,7 +81,7 @@ OP = re.compile(r'^(?!.*\s+nop).*:\s+\S\S\s\S\S\s\S\S\s\S\S\s+\D')  # right
 
 
 
-```
+```asm
  22 OP = re.compile(r'.*\s+\.long|.*\s+nop')
  23
  24 asm1 = "14:     20 00 80 4e     nop"     yes  
@@ -93,7 +94,7 @@ OP = re.compile(r'^(?!.*\s+nop).*:\s+\S\S\s\S\S\s\S\S\s\S\S\s+\D')  # right
 
 ~/Test/testpython/match_inst/asm.py
 
-```
+```asm
  23 OP = re.compile(r'^(?!.*\s+\.long.*|.*\s+nop.*)') #right
  24
  25 asm1 = "14:     20 00 80 4e     nop"               no
@@ -108,7 +109,7 @@ OP = re.compile(r'^(?!.*\s+nop).*:\s+\S\S\s\S\S\s\S\S\s\S\S\s+\D')  # right
 
 
 
-```
+```asm
 OP = re.compile(r'^(?!.*\s+\.long.*|.*\s+nop\s*).*:\s+\S{2}\s\S{2}\s\S{2}\s\S{2}\s+\D')
 
 
@@ -124,7 +125,7 @@ asm4 = "24:     18 00 00 00     .long 0x18"      no
 
 包含特定的字符串是返回none
 
-```
+```asm
 r'^(?!.*\s+\.long.*|.*\s+nop\s*).*:zhangkang'
 包含zhangkang的行，但不包含.long或nop
 ```
@@ -133,7 +134,7 @@ r'^(?!.*\s+\.long.*|.*\s+nop\s*).*:zhangkang'
 
 
 
-```
+```asm
 
 
 line = "/home/ken/diff_clang_xl/test/Transforms/TransformsA_G/ADCE/2002-05-22-PHITest.ll:test -> /home/ken/diff_clang_xl/ADCE_c_files/bd6d877019daca4ec27adf6d45cbc597b26c8d60.c"
@@ -147,7 +148,7 @@ GEN_C_FILE = re.compile(r'(?<= -> ).*') // /home/ken/diff_clang_xl/ADCE_c_files/
 
 
 
-```
+```asm
 read()  得到所有的内容，非list
 readlines() 得到list
 ```

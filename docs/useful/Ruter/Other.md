@@ -1,3 +1,4 @@
+<h1 align="center">Other</h1>
 
 
 # 小米路由器3刷机潘多拉(Openwrt)以及刷回教程

@@ -1,3 +1,4 @@
+<h1 align="center">Intrinsic</h1>
 
 
 clang中使用的是`builtin`
@@ -149,7 +150,7 @@ When you def the Intrinsic, you use the flag `IntrNoMem`:
 
 
 - INTRINSIC_W_CHAIN
-```c++
+```assembly
 RESULT, OUTCHAIN = INTRINSIC_W_CHAIN(INCHAIN,INTRINSICID, arg1, ...)
 ```
 表示返回一个结果的有副作用的目标机器固有函数。第一个操作数是链指针，第二个是来自llvm::Intrinsic名字空间的该固有函数的ID号，后跟该固有函数的操作数。该节点返回两个结果，该固有函数的结果与输出链。

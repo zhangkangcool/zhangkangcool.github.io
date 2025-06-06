@@ -1,3 +1,4 @@
+<h1 align="center">samba</h1>
 
 
 
@@ -8,14 +9,14 @@ https://zhuanlan.zhihu.com/p/462724410
 
 ## 1、安装 samba 服务器
 
-```python3
+```shell
 sudo apt update
 sudo apt install samba smbclient
 ```
 
 通过如下命令可以看到已经安装成功
 
-```console
+```shell
 $ whereis samba
 
 output:
@@ -28,13 +29,13 @@ samba: /usr/sbin/samba /usr/lib/x86_64-linux-gnu/samba /etc/samba /usr/share/sam
 
 使用 vim 打开 smb.conf 文件
 
-```text
+```shell
 sudo vim /etc/samba/smb.conf
 ```
 
 在文件末尾添加如下几行：
 
-```text
+```shell
 [linux35]
   Comment = my share directory
   path = /home/ubuntu
@@ -49,7 +50,7 @@ sudo vim /etc/samba/smb.conf
 
 这里我使用的下面的配置
 
-```
+```shell
 [ken]
   path = /home/ken
   browseable = yes
@@ -68,13 +69,13 @@ sudo vim /etc/samba/smb.conf
 
 为了避免后续使用过程中遇到的读写权限问题，通过下面这个命令，对 linux 共享路径下面的所有子目录开通权限。
 
-```text
+```shell
 chmod 777 -R /home/ubuntu
 ```
 
 全部设置完成后，重启 Samba 服务器使设置生效。
 
-```text
+```shell
 sudo /etc/init.d/smbd restart
 ```
 
@@ -82,7 +83,7 @@ sudo /etc/init.d/smbd restart
 
 
 
-```
+```shell
 smb://172.18.8.108
 ```
 
@@ -116,7 +117,7 @@ smb://172.18.8.108
 
 ### 4. linux映射到本地磁盘
 
-```
+```shell
 smb://172.1.8.8.108  映射根目录/,  或者  smb://172.1.8.8.108/ken 映射ken目录
 ```
 

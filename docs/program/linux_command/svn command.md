@@ -1,3 +1,4 @@
+<h1 align="center">svn command</h1>
 
 
 https://github.ibm.com/cdl-compiler/llvm/wiki/How-to-check-in-LLVM-Phabricator-patch
@@ -45,7 +46,7 @@ https://llvm.org/docs/GettingStarted.html#checkout-via-svn-deprecated
 提交后的版本为 363495。
 ```
 
-zhangkang(m3s*q___)
+
 
 询问保存密码时，最好选择否。pcom023未保存密码，最好使用此机器提交代码。
 
@@ -90,13 +91,13 @@ zhangkang(m3s*q___)
 
 ## Try a real commit
 1. Download the code that has been accepted from Phabricator,The command looks like the following
-```
+```shell
 wget https://reviews.llvm.org/******/D53358.diff
 wget https://reviews.llvm.org/file/data/ybddgs7v2zgjigttn6fq/PHID-FILE-m2lannggh4c2qngi7g6l/D54738.diff
 ```
 2. patch up  
     The command looks like 
-```
+```shell
 cd llvm
 patch -p1 < D53358.diff
 ```
@@ -125,7 +126,7 @@ patch -p1 < D53358.diff
 If you want discard it, you should use exit force(q!).  
 
 Below is a example comment:
-```
+```shell
 [PowerPC] Fix inconsistent ImmMustBeMultipleOf for same instruction
 
 Summary:
@@ -143,7 +144,7 @@ Differential Revision: https://reviews.llvm.org/D54738
 
 #### Notice: The test case must add `// REQUIRES: powerpc-registered-target`, if this case is not in the PowerPC directory.
 
-```
+```shell
 svn log | less // to check your commit number
 svn merge -r347532:347530 https://zhangkang@llvm.org/svn/llvm-project/llvm/trunk
 // the r347532 is your commit number, and 347530 is last commit number.

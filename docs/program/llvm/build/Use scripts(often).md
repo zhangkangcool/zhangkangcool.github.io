@@ -1,3 +1,4 @@
+<h1 align="center">Use scripts(often)</h1>
 https://github.ibm.com/cdl-compiler/llvm/wiki/Use-script-to-build-&-test-llvm
 
 
@@ -91,29 +92,11 @@ ninja -check-all -j120
 
 -------
 
-## Bootstrap(test on recycler)
-
-First time, you should use `--debug` to see whether the command is what you want, and then remove the `--debug` to run the bootstrap. 
-
-```shell
-# Use the default compiler: /xl_le/gsa/tlbgsa/projects/w/wyvern-environment/compilers/ppc64le/linux_leppc/clang.10.0.0.rc2/bin/clang
-# Don't use --lit-path，it will use the your latest llvm-lit
-# master use community
-cd ~/llvm_test_script/scripts
-~/llvm_test_script/scripts/bootstrapllvm.sh --community --result-dir=/home/shkzhang/llvm/bootstrap --lnt-path=/home/shkzhang/mysandbox/bin/lnt --src=/home/shkzhang/llvm/llvm --test-suite-path=/home/shkzhang/llvm_test_script/llvm-test-suite --lnt=all --lnt --lld --width=80 --ninja --cmake-variables=-DTSAN_TEST_DEFLAKE_THRESHOLD=200 --cmake-variables=-DBUILD_SHARED_LIBS=ON --debug
-
-
-# wyvern don't use community
-cd ~/llvm_test_script/scripts
-~/llvm_test_script/scripts/bootstrapllvm.sh --result-dir=/home/shkzhang/llvm/bootstrap --lnt-path=/home/shkzhang/mysandbox/bin/lnt --src=/home/shkzhang/llvm/llvm --test-suite-path=/home/shkzhang/llvm_test_script/test-suite-wyvern --lnt=all --lnt --lld --width=80 --ninja --cmake-variables=-DTSAN_TEST_DEFLAKE_THRESHOLD=200 --cmake-variables=-DBUILD_SHARED_LIBS=ON --debug
-```
 
 
 
 
 
-```
-Culprit commit (in master branch): 86e3abc9e63e01675cb37919c55419f5c190d90e
-Fix commit (fixes build failure):  fb2fe21c5bd8d1021375753757ad3d0eb694f826
-```
+
+
 

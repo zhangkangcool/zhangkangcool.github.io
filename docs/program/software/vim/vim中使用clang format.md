@@ -1,10 +1,11 @@
+<h1 align="center">vim中使用clang format</h1>
 
 
 # 准备工作
 
 #### 1. clang-format
 
-```
+```shell
 下载clang-format（编译llvm时会在build/bin目录下生成，需加入PATH） 和 clang-format.py（llvm源代码中已提供）
 
 clang-format.py在下面的位置，没有的话，需要自行生成

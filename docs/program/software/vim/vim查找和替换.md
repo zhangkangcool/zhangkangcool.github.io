@@ -1,19 +1,20 @@
+<h1 align="center">vim查找和替换</h1>
 # vim查找和替换详解
 http://blog.csdn.net/zcube/article/details/42710141
 
 # 1. vim 单文件中查找方法
-```
+```shell
 /love   从光标位置向前搜索关键词 love  
 ?love   从光标位置向后搜索关键词 love  
 ```
 正常模式下使用 n 或 N 命令执行 向前查找 或 向后查找 下一个关键词  
-```
+```shell
 :set ic     忽略大小写命令，ic 为 ignore case 缩写   
 :set is     边输入边显示匹配结果，is 是 incsearch 命令的缩写  
 :set hls    高亮显示匹配结果，hls 为 highlight search 缩写  
 ```
 可将上述设置放入.vimrc 文件中，设为默认搜索设置  
-```  
+```  shell
 :set noic nois nohls    将取消上述设置  
 :noh    暂时取消高亮显示，不会影响下次高亮显示匹配结果   
 ```
@@ -21,7 +22,7 @@ http://blog.csdn.net/zcube/article/details/42710141
 # 2. vim 多文件查找方法  
 正常模式下使用 :vim 或 :vimgrep 命令执行多文件搜索  
 搜索的时候涉及到选取文件问题，这里主要用到 * 作为通配符  
-```
+```shell
 ** 表示文件夹及子文件夹下的所有文件  
   
 搜索 love 关键词  
@@ -42,7 +43,7 @@ http://blog.csdn.net/zcube/article/details/42710141
 单文件中使用 :s 命令进行替换操作  
   替换操作会涉及几个常用的标记  
 % 所有行  g 单行内所有匹配项  i 忽略大小写  c  确认是否替换  
-```  
+```  shell
 关键词 old 替换为 new  
 :s/old/new              将光标所在行第一个 old 替换为 new  
 :s/old/new/g            将光标所在行所有 old 替换为 new  
@@ -55,7 +56,7 @@ g i c 可自由组合
 # 4. vim 多问件替换  
 
 多文件替换使用 :args 和 :argdo 命令，这两个命令结合可以对多文件执行相同操作，不仅是替换  
-```  
+```  shell
 :args *.php                         将当前文件夹下的 php 文件加入参数列表。加入文件操作也可使用 ** 选择文件夹和子文件夹，和上述2 多文件查找用法一样  
 :argdo %s/old/new/gc | update       执行替换操作，除使用:argdo 和 | update 外，其它替换操作和 3 中单文件替换用法是一样的  
   

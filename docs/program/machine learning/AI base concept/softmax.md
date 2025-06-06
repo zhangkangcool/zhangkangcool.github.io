@@ -1,3 +1,4 @@
+<h1 align="center">softmax</h1>
 
 
 https://zhuanlan.zhihu.com/p/105722023
@@ -52,7 +53,7 @@ Softmax从字面上来说，可以分成soft和max两个部分。max故名思议
 
 使用Numpy模块实现hardmax：
 
-```python3
+```python
 import numpy as np
 
 a = np.array([1, 2, 3, 4, 5]) # 创建ndarray数组
@@ -62,7 +63,7 @@ print(a_max) # 5
 
 使用TensorFlow深度学习框架实现hardmax：
 
-```python3
+```python
 import tensorflow as tf
 
 print(tf.__version__) # 2.0.0

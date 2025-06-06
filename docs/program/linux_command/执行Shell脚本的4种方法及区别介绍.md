@@ -1,8 +1,9 @@
+<h1 align="center">执行Shell脚本的4种方法及区别介绍</h1>
 [Source Website](http://4554480.blog.51cto.com/4544480/837006)
 
 放在/root目录下。下面介绍几种在终端执行shell脚本的方法：
 测试shell脚本
-```
+```shell
 [root@localhost ~]#pwd
 /root
 [root@localhost ~]#vim hello.sh
@@ -13,19 +14,19 @@ echo "welcome to my Blog:linuxboy.org!"
 ```
 
 ## 1.切换到shell脚本所在的目录，执行：
-```
+```shell
 [root@localhost ~]# ./hello.sh
 -bash: ./ hello.sh: 权限不够
 ```
 
 ## 2. 以绝对路径的方式执行：
-```
+```shell
 [root@localhost ~]# /root/Desktop/hello.sh
 -bash: /root/Desktop/ hello.sh: 权限不够
 ```
 
 ## 3. 直接用bash或sh执行：
-```
+```shell
 [root@localhost ~]# bash hello.sh
 hello guys!
 welcome to my Blog:linuxboy.org!
@@ -42,7 +43,7 @@ welcome to my Blog:linuxboy.org!
 
 ###  NOTE:也可以让shell脚本在现行的shell中执行：
 ## 4. 现行的shell中执行
-```
+```shell
 [root@localhost ~]# . hello.sh
 hello guys!
 welcome to my Blog:linuxboy.org!

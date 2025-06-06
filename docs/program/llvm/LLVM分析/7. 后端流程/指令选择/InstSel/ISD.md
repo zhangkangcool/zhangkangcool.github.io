@@ -1,3 +1,4 @@
+<h1 align="center">ISD</h1>
 # ./lib/CodeGen/TargetLoweringBase.cpp
 
 http://llvm.org/doxygen/namespacellvm_1_1ISD.html
@@ -77,7 +78,7 @@ vector_shuffle<5,0,2,7> t9, t4 = <6.0, 1.0, 3.0, 8.0>
 
 #### 对就的IR是
 
-```
+```assembly
 <result> = shufflevector<4 x i32>%v1, <4 x i32>%v2, <4 x i32><i32 0, i32 4, i32 1, i32 5>
 <result> = shufflevector v1, v2, MASK
 ```
@@ -121,7 +122,7 @@ tmp2=<0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7> ==> vmrglw
 
   If the type of the boolean COND is not i1 then the high bits must conform to getBooleanContents.
 
-  ```
+  ```assembly
   ret: i64 = select seteq:ch t0, t1
   ```
 
@@ -129,13 +130,13 @@ tmp2=<0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7> ==> vmrglw
 
 - SELECT_CC(Cond, LHS, RHS, TrueEval, FalseEval, CC)
 
-  ```
+  ```assembly
   ret: i64 = select_cc  t0, t1, t2, t3, seteq:ch
   ```
 
 - SETCC(LHS, RHS, CC)
 
-  ```
+  ```assembly
   ret: i1 = setcc  t0, t1, seteq:ch
   ```
 
@@ -143,7 +144,7 @@ tmp2=<0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 4, 5, 6, 7> ==> vmrglw
 
 ##### FP_EXEND
 
-```
+```assembly
 488 ISEL: Starting selection on root node: t17: f64 = fp_extend t4
  489 ISEL: Starting pattern match
  490   Initial Opcode index to 99638
@@ -161,7 +162,7 @@ FP_EXTEND会变成`COPY_TO_REGCLASS`，fp32变为fp64，不需要加任何指令
 
 ### 	insert_vector_elt & scalar_to_vector
 
-```
+```assembly
 Legalizing: t19: v2i64 = insert_vector_elt undef:v2i64, t16, Constant:i32<0>
 Trying to expand node
 Creating new node: t27: v2i64 = scalar_to_vector t16
@@ -188,7 +189,7 @@ DMbit[0] = 0，则 XT.dword[0] = XA.dword[0]，否则XT.dword[0] = XA.dword[1].
 
 DMbit[1] = 0，则 XT.dword[1] = XB.dword[0]，否则XT.dword[1] = XB.dword[1].
 
-```
+```assembly
 src1 = VSR[XA]
  --------------------------------
 |  dword[0] = a  |  dword[1] = b |
@@ -219,7 +220,7 @@ xxswapd T, A     <===> xxpermdi T, A, A, 0b10 ==> ad （交换dword[1]）
 
 
 
-```
+```assembly
 SDValue Ef64 = DAG.getNode(ISD::UNDEF, dl, MVT::f64);
 SDValue TVVec = DAG.getNode(ISD::BUILD_VECTOR, dl, MVT::v2f64, Ef64, TV);
 
@@ -233,7 +234,7 @@ t28: v2f64 = XXPERMDI t43, t43, TargetConstant:i32<0>
 
 fp32->fp64，不会产生任何指令，fp64->fp128会产生一条`sxcvdpqp`指令。
 
-```
+```assembly
   def : Pat<(f64 (fpextend f32:$src)),
             (COPY_TO_REGCLASS $src, VSFRC)>;
             

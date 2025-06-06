@@ -1,3 +1,4 @@
+<h1 align="center">tar</h1>
 ### Linux操作系统中，*.zip、*.tar、*.tar.gz、*.tar.bz2、*.tar.xz、*.jar、*.7z等格式的压缩与解压
 
 # 1. zip格式

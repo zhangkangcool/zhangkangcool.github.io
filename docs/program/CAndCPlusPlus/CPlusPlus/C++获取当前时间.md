@@ -1,3 +1,4 @@
+<h1 align="center">C++获取当前时间</h1>
 
 
 ### 1. 利用timeb得到毫秒

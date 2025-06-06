@@ -1,3 +1,4 @@
+<h1 align="center">git换仓库地址</h1>
 
 
 
@@ -5,14 +6,6 @@
 https://my.oschina.net/u/4370754/blog/3550662
 
 https://www.liaoxuefeng.com/wiki/896043488029600/898732864121440
-
-
-
-
-
-
-
-
 
 
 
@@ -28,25 +21,27 @@ https://www.liaoxuefeng.com/wiki/896043488029600/898732864121440
 
 3. 更改远程仓库地址
 
-   ```shell
-   执行此操作前，在源仓库上多切换这个分支，这样这些分支的信息会下载到本地。在目的仓库上一一进行上传。
-   
-   
-   git remote -v      // 查看git对应的远程仓库地址
-   git branch -a  
-   git checkout llvm_release_100,切换各种仓库，这些仓库会被上传(比如远程remotes/origin/llvm_release_100)
-   git remote rm origin     // 删除关联对应的远程仓库地址,这里只会有本地仓库
-   git remote -v     // 查看是否删除成功，如果没有任何返回结果，表示OK
-   git remote add origin git@192.168.5.11:kang.zhang/llvm-project.git // 重新关联git远程仓库地址，这里使用git地址，不要使用https地址，否则可能需要输入用户名和密码。
-   git push -u origin master    // 这里可能只会上传master分支，其它分支需要切换过去才行。
-   
-   git push -u origin --all   // 所有本地分支分支，需要先把远程分支切换到本地才行
-   ```
-   
+
+```shell
+执行此操作前，在源仓库上多切换这个分支，这样这些分支的信息会下载到本地。在目的仓库上一一进行上传。
+
+
+git remote -v      // 查看git对应的远程仓库地址
+git branch -a  
+git checkout llvm_release_100,切换各种仓库，这些仓库会被上传(比如远程remotes/origin/llvm_release_100)
+git remote rm origin     // 删除关联对应的远程仓库地址,这里只会有本地仓库
+git remote -v     // 查看是否删除成功，如果没有任何返回结果，表示OK
+git remote add origin git@192.168.5.11:kang.zhang/llvm-project.git // 重新关联git远程仓库地址，这里使用git地址，不要使用https地址，否则可能需要输入用户名和密码。
+git push -u origin master    // 这里可能只会上传master分支，其它分支需要切换过去才行。
+
+git push -u origin --all   // 所有本地分支分支，需要先把远程分支切换到本地才行
+```
 
 
 
-下面脚本把所有的原来的远程分支切换到本地，并进行提交
+
+
+### 把所有的原来的远程分支切换到本地，并进行提交
 
 ```shell
 git branch -a

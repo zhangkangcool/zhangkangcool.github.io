@@ -1,3 +1,4 @@
+<h1 align="center">Mesa-LLVM-Analysis</h1>
 
 - [1. 核函数编译器总体设计方案](#1-核函数编译器总体设计方案)
 - [2. Mesa OpenCL编译器分析](#2-mesa-opencl编译器分析)
@@ -200,7 +201,7 @@ CompilerInstance对象为编译器实例对象，管理着整个编译过程中�
 <center> <img src="./img/compilerInstance.svg"></center>
 
 下面代码为该对象的构造函数，其中两个输入参数默认输入的都是空指针，构造函数主要任务就是分配了一个CompilerInvocation对象，其他重要的数据结构都是单独构造然后再和CompilerInstance对象关联起来的
-```
+```c++
 CompilerInstance::CompilerInstance(
     std::shared_ptr<PCHContainerOperations> PCHContainerOps,
     MemoryBufferCache *SharedPCMCache)
@@ -259,7 +260,7 @@ SourceManager是LLVM中对文件管理的最上层对象，通常都会在编译
 ### 3.2.4 clang AST
 #### 3.2.4.1 AST的基本结构
 首先用OpenCL的程序来展示下clang中语法树的结构，如下所示为要编译的OpenCL kernel
-```
+```c++
 __kernel void add_kernel(global int *a, global int *b,global int *c)
 {
     int i = get_global_id(0);
@@ -267,11 +268,11 @@ __kernel void add_kernel(global int *a, global int *b,global int *c)
 }
 ```
 使用下面命令dump其语法树结构：
-```
+```shell
 clang -c -target spir -x cl -cl-std=CL2.0 -Xclang -ast-dump -Xclang -finclude-default-header input.cl
 ```
 语法树结构如下所示：
-```
+```assembly
 TranslationUnitDecl 0x55ff6668d008 <<invalid sloc>> <invalid sloc>
 |-TypedefDecl 0x55ff666aa1e8 <<invalid sloc>> <invalid sloc> implicit __NSConstantString 'struct __NSConstantString_tag'
 | `-RecordType 0x55ff6668dfc0 'struct __NSConstantString_tag'
@@ -324,11 +325,11 @@ clang的AST和其他编译器的AST不同，例如LJMICRO的语法树有一个�
 一个翻译单元生成的语法树的所有信息都保存在ASTContext对象中。ASTContext中有一个重要的成员函数getTranslationUnitDecl，获取TranslationUnitDecl（其父类是Decl，DeclContext），这是AST树的顶层（top level）结构，可以通过其decls_begin()/decls_end()遍历其保存的nodes。  
 
 AST树的本地化存储和读入借助ASTWriter和ASTReader，Clang还提供了一些高层次的类ASTUnit，将AST树保存为二进制文件，也可以加载AST文件构建ASTContext。
-```
+```c++
  ASTUnit::LoadFromASTFile("input.ast",Diags,opts);
 ```
 AST基类和派生的子类有一个关键的回调函数HandleTranslationUnit，该函数会在处理完一个翻译单元后每调用，不同的子类完成的任务不一样，其实现也不同，如ASTPrinter类，负责打印输出AST节点信息，其HandleTranslationUnit函数的功能是获取当前翻译单元声明，遍历并打印  
-```
+```c++
 void HandleTranslationUnit(ASTContext &Context) override {
       TranslationUnitDecl *D = Context.getTranslationUnitDecl();
       if (FilterString.empty())
@@ -347,7 +348,7 @@ AST的生成发生在clang::ParseAST函数中，其函数流程图如下所示�
 <center> <img src="./img/preprocessor.svg"></center>
 
 在clang中，预处理操作并未和词法分析彻底分开，在解析开始时，会根据token的种类来进入不同的处理分支，如token是#define,\#if 等需要进行预处理的语句会进入相应的预处理分支，对#关键字符的处理是通过方法HandleDirective来完成的，在Parser结构体中有一系列关于预处理操作相关的函数，如：
-```
+```c++
 HandlePragmaUnused
 HandlePragmaAttribute
 HandlePragmaRedefineExtname
@@ -366,7 +367,7 @@ ParsingPreprocessorDirective mode: 该模式主要用于处理#开头的语句
 词法分析发生在函数PreProcesser::Lex，最终调用到Lexer::Lex，Lexer::LexTokenInternal，对具体的字符进行分析，当处理到一些特殊字符如#，编译器会预取后面的字符判断是否是在include第三方文件，若是在include，会更新SouceLocation, SourceManager等信息，并进入新的文件从头开始解析，重复最开始的Lex操作。  
 
 解析关键字时是通过查找IdentifierTable的内容进行匹配的，关键字的定义通过文件TokenKinds.def来维护要编译语言的关键字，比如以下代码：  
-```
+```assembly
 KEYWORD(extern                      , KEYALL)
 KEYWORD(float                       , KEYALL)
 KEYWORD(for                         , KEYALL)
@@ -382,7 +383,7 @@ KEYWORD(long                        , KEYALL)
 <center><img src="./img/Parser.svg"></center>
 
 语法分析通过调用Parser的成员函数来实现，会完成了一个TopLevelDecl的词法分析后会进行调用，根据要分析语句的特征有一系列的解析函数，如：
-```
+```c++
 ParseDeclarationOrFunctionDefinition
 ParseExternalDeclaration
 ParseLexedAttribute
@@ -467,7 +468,7 @@ LLVM后端有一组代码生成分析器和变换流程（pass)组成，这些�
 #### 3.3.3.1 LLVM Pass及常用子类  
 pass是一种编译器开发的结构化技术，用于完成编译对象（如IR）的转换、分析或优化等功能。pass的执行就是编译器对编译对象进行转换、分析和优化的过程，pass构建了这些过程所需要的分析结果。
 LLVM Pass是LLVM系统的重要组成部分，定义在llvm\include\llvm\Pass.h中：  
-```
+```c++
 class Pass {
   AnalysisResolver *Resolver = nullptr;  // Used to resolve analysis
   const void *PassID;
@@ -522,7 +523,7 @@ CallGraphSCCPass构成了LLVM的过程间优化的重要组成部分。CallGraph
 
 **FunctionPass**  
  与ModulePass子类相反，FunctionPass子类具有系统可以预期的局部行为。所有FunctionPass在程序中的每个方法上执行，独立于程序中的所有其它方法。 FunctionPass子类不需要以特定顺序执行，并且不会修改外部方法。明确地说，FunctionPass子类不允许检查或修改当前正在处理的方法以外的其它方法，也不允许添加或删除当前模块的方法和全局变量。AMDGPU后端中的AMDGPUPromoteAllocaToVector pass就是一个function pass。这个pass通过将Alloc指令转换为向量消除Alloc指令：  
- ```  
+ ```  c++
  class AMDGPUPromoteAllocaToVector : public FunctionPass {
 ……
   bool runOnFunction(Function &F) override;
@@ -559,7 +560,7 @@ PassManager类高效调度和运行pass。所有运行pass的LLVM工具都使用
 PassManager通过两种方式减少pass序列的执行时间：第一，pass之间共享分析结果。PassManager的主要任务之一避免是重复计算分析结果，这就需要PassManager跟踪维护哪些分析可用、哪些分析失效以及哪些分析是必需的。 PassManager跟踪分析结果的生命周期，并在不再需要某些分析结果时，释放这部分分析结果占用的内存，从而实现最优内存使用。第二，PassManager将pass连接起来，以pipeline的方式执行，可以获得更好的内存和缓存结果，从而改善了编译器的缓存行为。例如，当给出一系列连续的FunctionPass时，PassManager将在第一个函数上执行所有FunctionPass，然后在第二个函数上执行所有FunctionPass，依此类推。这种处理方式可改善缓存行为，因为这样一次只会处理LLVM IR的一个函数，而不是处理整个程序，减少了编译器的内存消耗。 
 
 LLVM中添加pass的方式非常灵活。AMDGPU后端是基于llvm::TargetPassConfig类派生AMDGPUPassConfig类，并通过重写其中的虚函数，如addIRPasses()、addCodeGenPrepare()、addInstSelector()等，在代码生成过程中的不同阶段（如如在寄存器分配之前、之后或在汇编代码生成之前）向AMDGPU后端目标添加pass，并应用自定义优化。以下是AMDGPU后端实现addIRPasses()的示例代码： 
-```
+```c++
 void AMDGPUPassConfig::addIRPasses() {
 …...
   addPass(createAMDGPUPrintfRuntimeBinding());
@@ -582,7 +583,7 @@ void AMDGPUPassConfig::addIRPasses() {
 
 部分核心代码实现如下：  
 初始化目标机器，测试平台上为AMD显卡，只初始化AMD相关信息，也可以全部初始化  
-```
+```c++
 LLVMInitializeAMDGPUTargetInfo();
 LLVMInitializeAMDGPUTarget();
 LLVMInitializeAMDGPUTargetMC();
@@ -590,44 +591,44 @@ LLVMInitializeAMDGPUAsmPrinter();
 LLVMInitializeAMDGPUAsmParser();
 ```
 创建LLVM上下文，用来设置回调函数，并且作为clang compiler instance的上下文
-```
+```c++
 std::unique_ptr<LLVMContext> ctx{ new LLVMContext };
 ```
 创建编译器实例对象，该对象管理着所有编译相关的资源
-```
+```c++
 std::unique_ptr<clang::CompilerInstance> c { new clang::CompilerInstance };
 ```
 创建诊断引擎相关对象，用来输出编译调试信息
-```
+```c++
 clang::TextDiagnosticBuffer *diag_buffer = new clang::TextDiagnosticBuffer;
 clang::DiagnosticsEngine diag { new clang::DiagnosticIDs, new clang::DiagnosticOptions, diag_buffer };
 ```
 创建CompilerInvocation对象，用以给实例对象提供编译参数和选项，其中input.cl是编译器前端要编译的源码文件名称，后续会将要编译的代码写入到该文件
-```
+```c++
 const std::vector<const char *> copts = {"input.cl"};
 clang::CompilerInvocation::CreateFromArgs(c->getInvocation(), copts.data(), copts.data()+copts.size(), diag)
 ```
 刷新诊断引擎，会初始化相关成员对象
-```
+```c++
 diag_buffer->FlushDiagnostics(diag);
 ```
 设置编译目标对象，目标对象用triple来表示，是一个三元组，用来描述目标机器的架构，操作系统，厂商等基本信息，本demo要输出的目标代码时spirv格式，triple可以设置为spriv-Unknown-Unknown
-```
+```c++
 c->getTargetOpts().Triple = "spirv-Unknown-Unknown";
 ```
 设置一些调试选项，可以输出一些编译信息，例如ShwoStats选项可以打印出编译过程中分析了哪些对象，处理了多少文件，解析了多少函数等
-```
+```c++
 c->getFrontendOpts().ShowStats = true;
 ```
 设置要编译的语言信息，这样前端能选择合适的处理流程来对输入的语言进行处理
-```
+```c++
 c->getInvocation().setLangDefaults(c->getLangOpts(),
                              clang::InputKind::OpenCL, ::llvm::Triple(triple),
                              c->getPreprocessorOpts(),  
                              clang::LangStandard::lang_unspecified);
 ```
 将设置的诊断引擎和目标信息与CompilerInstance关联起来
-```
+```c++
  c->createDiagnostics(new clang::TextDiagnosticPrinter(
                               *new raw_string_ostream(r_log),
                               &c->getDiagnosticOpts(), true));
@@ -635,26 +636,26 @@ c->getInvocation().setLangDefaults(c->getLangOpts(),
                         c->getDiagnostics(), c->getInvocation().TargetOpts));
 ```
 设置前端要执行的action种类，如EmitLLVMOnly可以输出可读形式的IR，EmitBCOnly可以输出bitcode形式的IR
-```
+```c++
 c->getFrontendOpts().ProgramAction = clang::frontend::EmitLLVMOnly;
 ```
 设置ResourceDir并包含OpenCL的头文件，这里是clang编译器会用到的一些头文件，包含着内部的一些宏定义，数据类型，不同平台上的字节对齐等，对于OpenCL来说，对一些扩展进行了处理
-```
+```c++
 const std::string CLANG_RESOURCE_DIR("/usr/local/lib/clang/8.0.1/include");
 c->getHeaderSearchOpts().ResourceDir = CLANG_RESOURCE_DIR;
 c->getPreprocessorOpts().Includes.push_back("opencl-c.h");
 ```
 设置OpenCL C版本
-```
+```c++
 c->getPreprocessorOpts().addMacroDef("__OPENCL_VERSION__=120");
 ```
 给输入文件填充数据,其中filename为设置的输出文件的名字，在此处为input.cl，source为要编译的kernel源码，为std::string类型
-```
+```c++
 c->getPreprocessorOpts().addRemappedFile(
               filename, ::llvm::MemoryBuffer::getMemBuffer(source).release());
 ```
 在完成准备工作后，启动action执行
-```
+```c++
 clang::EmitLLVMAction act(ctx.get()); 
 if (!c->ExecuteAction(act))
    throw build_error();
@@ -662,7 +663,7 @@ return;
 ```
 执行后会输出一个input.ll文件，为可读形式的IR
 代码层面上的IR信息保存在llvm::Module对象中，可以通过下述操作提取并进行解读，在本项目中需要将提取的IR进一步转换为SPIR-V格式，目前是使用工具实现，代码层面上还没有进行实现
-```
+```c++
 auto mod = act.takeModule();
 ```
 通过takeModule方法可以从action中提取Module信息，再调用LLVM-SPIRV-TRANSLATOR中的方法可以讲Module信息进行解读并转换为SPIR-V，当前这一步已有实现思路但还未完成代码实现。

@@ -1,3 +1,4 @@
+<h1 align="center">git command</h1>
 #   1. reset & revert
 
 ```
@@ -41,7 +42,7 @@ revert 会产生新的提交，并不会真正删除history。
 最简单的方法就是如果你的远程分支的代码还没更改的话，直接使用git pull就可以了！如果远程分支也跟本地修改的同步了，那么我们可以使用reset命令才重新的回退回去！但是重点就是你必须知道之前的commit id！知道的话直接reset回去就可以了，操作跟上面的基本一致！ 
 
 - 如果要把本地reset之后的代码提交上去，如果直接使用git push命令是不行的，会提示以下的错误，
-```
+```shell
 resonLei@resonLei-PC MINGW64 /d/new_website_ssh/my_website (master)
 $ git push
 To git.oschina.net:Mr.Lei/my_website.git
@@ -53,7 +54,7 @@ hint: 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
-```
+```shell
 git push --force
 ```
 
@@ -63,7 +64,7 @@ git push --force
 
 
 # 2. git commit --amend  --no-edit
-```
+```shell
 https://blog.csdn.net/zhujiangtaotaise/article/details/73505770
 https://blog.csdn.net/garfielder007/article/details/60885000
 ```
@@ -77,7 +78,7 @@ leader不abandon代码，你回去之后，修改出问题的Java文件，修改
 最后 git push origin HEAD:refs/for/branches。
 
 如果提交时出现冲突，要使用
-```
+```shell
 git push --force
 ```
 
@@ -87,7 +88,7 @@ git push --force
 可以通过 `git diff > diff.log 2>&1`来对diff进行备份，方便导入。
 
 - 丢弃本地分支，并拉取远程分支代码
-```
+```shell
 git checkout -- .
 git pull
 
@@ -97,7 +98,7 @@ git pull
 
 - 在网站上查看分支
 
-```
+```shell
 https://github.ibm.com/compiler/wyvern/issues/5859#issuecomment-18693834
 
 https://github.ibm.com/compiler/llvm-project/branches/yours
@@ -107,23 +108,23 @@ https://github.ibm.com/compiler/test-suite/branches/yours
 
 
 
-```
+```shell
 https://www.cnblogs.com/luosongchao/p/3408365.html
 ```
 
  - 删除远程分支
-```
+```shell
 git push origin --delete shkzhang_isseue184   // 不需要加remotes/origin/shkzhang_issue184
 ```
 - 删除本地分支
-```
+```shell
 git branch -d Chapater8  // 如果主分支上对应的分支还在，则正确，否则会提示使用-D
 git branch -D Chapater8  // 小心使用，此时可能主分支已被删除，本地是唯一一份代码
 ```
 
 
 
-```
+```shell
 [shkzhang@recycler:~/llvm_project]$ git branch -d shkzhang_alias
 error: The branch 'shkzhang_alias' is not fully merged.
 If you are sure you want to delete it, run 'git branch -D shkzhang_alias'.
@@ -136,7 +137,7 @@ Deleted branch shkzhang_alias (was 6f20505fcb9).
 
 ### 错误  
 
-```
+```shell
 remote refs do not exist
 
 https://blog.csdn.net/harryptter/article/details/58129187
@@ -149,7 +150,7 @@ https://blog.csdn.net/harryptter/article/details/58129187
 
 ##### 删除单个文件
 
-```
+```shell
 git rm test.txt 
 ```
 
@@ -157,7 +158,7 @@ git rm test.txt
 
 删除多个文件
 
-```
+```shell
 rm test.txt test1.txt  // 正常的用rm命令删除
 git add --all .        // 添加进来，正常情况下git add不会添加删除的文件，这里加上--all后，会将删除的文件也加进来。
 ```
@@ -168,7 +169,7 @@ git add --all .        // 添加进来，正常情况下git add不会添加删�
 
 #  6. set multiple comments
 
-```
+```shell
 which vim
 git config --global core.editor "/usr/bin/vim"
 git commit # Then vim will open a new window
@@ -179,13 +180,13 @@ git commit # Then vim will open a new window
 
 ## 设置commit模板
 
-```
+```shell
 git config --global commit.template gitcommit_template.tx
 ```
 
 
 
-```
+```shell
 cat gitcommit_template.txt
 
 type(模板)：标题
@@ -210,12 +211,12 @@ JIRA-ID:ABC-XXXX                       ------必填      （需求JIRA ID 或 �
 
 # 7. 查看远程仓库地址
 
-```
+```shell
 git remote -v
 ```
 
 # 8. git form one address to another address
-```
+```shell
 git clone  /gsa/tlbgsa/projects/x/xlanalytics/public/gromacs/gromacs-2016-rc3/.git/
 cd gromacs-2016-rc3/
 git remote rm origin
@@ -226,7 +227,7 @@ git push -u origin master
 
 # 9. git local
 Create the git log
-```
+```shell
 rm -rf .git
 git init
 git add *

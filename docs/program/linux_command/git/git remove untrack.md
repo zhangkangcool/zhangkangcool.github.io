@@ -1,3 +1,4 @@
+<h1 align="center">git remove untrack</h1>
 https://blog.csdn.net/u013536313/article/details/92578694
 
 ### 使用时必须小心，只有在使用了git reset后，多出来的文件手动删除比较麻烦时才用

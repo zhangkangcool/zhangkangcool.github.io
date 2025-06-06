@@ -1,8 +1,9 @@
+<h1 align="center">HLO Module</h1>
 
 
 
 
-```
+```asm
 // Describes a compilation unit at the HLO level.
 //
 // HloModule is the top-level unit in the HLO IR.  It corresponds to a whole

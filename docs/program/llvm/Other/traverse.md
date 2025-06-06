@@ -1,8 +1,9 @@
+<h1 align="center">traverse</h1>
 http://coyee.com/article/10594-llvm-programmer-s-manual-llvm-4-0-documentation
 
 
 ## 通过`MachineFunction`遍历指令
-```
+```c++
   for (MachineFunction::const_iterator MFI = MF.begin(), MFE = MF.end();
        MFI!=MFE; ++MFI) {
 
@@ -16,7 +17,7 @@ http://coyee.com/article/10594-llvm-programmer-s-manual-llvm-4-0-documentation
 
 ## 通过 `Function遍历BasicBlock`
 您需要遍历构成Function的所有BasicBlocks。 以下是打印BasicBlock的名称及其包含的Instructions个数的示例:
-```
+```c++
 // func is a pointer to a Function instance
 for (Function::iterator i = func->begin(), e = func->end(); i != e; ++i)
   // Print out the name of the basic block if it has one, and then the
@@ -27,7 +28,7 @@ for (Function::iterator i = func->begin(), e = func->end(); i != e; ++i)
 
 ## 通过某一BasicBlock遍历所有BasicBlock
 遍历所有前驱
-```
+```c++
 #include "llvm/Support/CFG.h"
 BasicBlock *BB = ...;
 
@@ -41,7 +42,7 @@ for (pred_iterator PI = pred_begin(BB), E = pred_end(BB); PI != E; ++PI) {
 # 遍历指令
 ## 在BasicBlock中迭代指令
 
-```
+```c++
 // blk是一个指向BasicBlock实例的指针
 for (BasicBlock::iterator i = blk->begin(), e = blk->end(); i != e; ++i)
    // 下一个语句工作，因为运算符<<（ostream＆，...）重载了指令&
@@ -53,7 +54,7 @@ for (BasicBlock::iterator i = blk->begin(), e = blk->end(); i != e; ++i)
 
 ## 在BasicBlock中迭代指令
 
-```
+```c++
  for (const MachineInstr &MI : MBB.instrs()) {
 ```
 
@@ -63,7 +64,7 @@ for (BasicBlock::iterator i = blk->begin(), e = blk->end(); i != e; ++i)
 
 ## 迭代函数中的指令
 
-```
+```c++
 #include "llvm/IR/InstIterator.h"
 
 Function *F;
@@ -76,13 +77,13 @@ for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I)
 
 # 遍历所有后继
 
-```
+```c++
 for (auto I = CmpBB->succ_begin(), E = CmpBB->succ_end(); I != E; ++I)
 ```
 
 
 
-```
+```c++
 MachineFunction::iterator MBBIter = ++MBB->getIterator();
 ```
 
@@ -90,7 +91,7 @@ MachineFunction::iterator MBBIter = ++MBB->getIterator();
 
 # iteration & value
 
-```shell
+```c++
 MachineBasicBlock::pred_iterator PI
 (*PI)->getParent();
 
@@ -131,7 +132,7 @@ MachineBasicBlock *MBPtr = *PI;
 
 
 
-```
+```c++
 431  BasicBlock *BeginBB;
      BeginBB->getTerminator() 的类型型是 Instruction *
      BeginBB->getTerminator()->dump();
@@ -140,7 +141,7 @@ MachineBasicBlock *MBPtr = *PI;
 
 
 
-```
+```c++
   MachineBasicBlock::iterator I(MI);
   removeDeadCode(I, std::next(I));
 ```
@@ -151,7 +152,7 @@ MachineBasicBlock *MBPtr = *PI;
 
 ### 迭代mi.operands
 
-```
+```c++
 for (unsigned i = getDesc().getNumOperands(), e = getNumOperands(); i!= e; ++i)
   MachineOperand &MO = getOperand(i);
   
@@ -258,7 +259,7 @@ for (auto MI = MBB.rbegin(), E = MBB.rend(); MI != E; ++MI) {
 
 
 
-```
+```c++
 #include "llvm/Support/CFG.h"
 BasicBlock *BB = ...;
  
@@ -275,7 +276,7 @@ for (pred_iterator PI = pred_begin(BB), E = pred_end(BB); PI != E; ++PI) {
 
 
 
-```
+```c++
  LI = &getAnalysis<LoopInfoWrapperPass>().getLoopInfo();
 ```
 

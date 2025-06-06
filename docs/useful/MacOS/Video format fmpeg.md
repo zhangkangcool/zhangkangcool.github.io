@@ -1,3 +1,4 @@
+<h1 align="center">Video format fmpeg</h1>
 https://mrcoles.com/convert-mov-mp4-ffmpeg/
 
 https://videoconverter.wondershare.com/mov/ffmpeg-mov-to-mp4.html
@@ -38,7 +39,7 @@ ffmpeg -i ShrinkWrap.cut.mov -vcodec h264 -acodec copy ShrinkWrap.cut.mp4
 
 还不确定是否能对格式进行转换
 
-```
+```shell
 ffmpeg -i input.avi -fs 10MB output.mp4
 ffmpeg -i input.mov -fs 10MB output.mp4
 ffmpeg -i input.mov -fs 10MB output.mov

@@ -1,3 +1,4 @@
+<h1 align="center">MLIR：摩尔定律终结的编译器基础结构 论文解读</h1>
 https://mp.weixin.qq.com/s/SLzMKYugrkhQifqahfdVNw
 
 
@@ -366,7 +367,7 @@ MLIR中一个最根本（也是最难理解）的部分是允许并鼓励将来�
 
 正如论文提到的，在MLIR中Operation是MLIR的一个基本语意单位。定义了一个新的Dialect后我们首先就要考虑Operation的定义，要定义Operation必须先定义Attribute和Type。OneFlow Dialect的定义在`oneflow/ir/include/OneFlow/OneFlowDialect.td`这个文件中，它基于ODS规则设置了`description`，`cppNamespce`等关键信息，然后依靠`mlir-tblgen`可执行文件（MLIR提供）自动生成了OneFlow Dialect的C++代码。
 
-```
+```asm
 def OneFlow_Dialect : Dialect {
     let name = "oneflow";
     let summary = "OneFlow MLIR dialect.";
@@ -382,7 +383,7 @@ def OneFlow_Dialect : Dialect {
 
 然后Type的定义在`oneflow/ir/include/OneFlow/OneFlowBase.td`和`oneflow/ir/include/OneFlow/OneFlowEnums.td`这两个文件中，分别对OneFlow的Tensor类型以及后续Operation指定Attribute需要的Type进行定义，需要说明的是OneFlow的Operation定义中除了下面定义的Type类型还大量使用了MLIR中提供的基础Type：
 
-```
+```asm
 def OneFlow_Tensor : TensorOf<[AnyType]>;
 def SI32ArrayAttr : TypedArrayAttrBase<SI32Attr, "signed 32-bit integer array attribute"> {}
 
@@ -394,7 +395,7 @@ def ShapeAttr : TypedArrayAttrBase<SI64Attr, ""> {}
 
 Attribute的定义在每个Operation定义中，使用`let attrs=`来指定。下面以LeakyReLU为例看一下OneFlow Dialect的Operation定义（在`oneflow/ir/include/OneFlow/OneFlowUserOps.td`）：
 
-```
+```asm
 def OneFlow_LeakyReluOp : OneFlow_BaseOp<"leaky_relu", [NoSideEffect, DeclareOpInterfaceMethods<UserOpCompatibleInterface>]> {
   let input = (ins
     OneFlow_Tensor:$x
@@ -418,7 +419,7 @@ def OneFlow_LeakyReluOp : OneFlow_BaseOp<"leaky_relu", [NoSideEffect, DeclareOpI
 
 在OneFlow的Operation定义中不仅使用了MLIR提供的特征如Leaky-ReLU中的 `NoSideEffect`，还自定义了特征如`IsOpConfCompatible`。在`oneflow/ir/include/OneFlow/OneFlowBase.td`中`def OneFlow_IsOpConfCompatible : NativeOpTrait<"IsOpConfCompatible">;`的这句话就是使用MLIR提供的ODS方法`NativeOpTrait`声明了一个自定义的特征用来检查OneFlow Dialect定义的Op是否有某些共用属性例如OpName，DeviceDagAttr等等。这里只是在ODS中声明了自定义的属性，它真正定义在`oneflow/ir/include/OneFlow/OneFlowOpTraits.h`。这里简单摘出来看一下：
 
-```
+```asm
 template<typename ConcreteType>
 class IsOpConfCompatible : public TraitBase<ConcreteType, IsOpConfCompatible> {
  public:
@@ -449,7 +450,7 @@ LogicalResult VerifyIsOpConfCompatible(Operation* op) {
 
 除了Trait之外，OneFlow还使用了MLIR提供的一些特征如`SameOperandsAndResultType`。在`oneflow/ir/include/OneFlow/OneFlowBase.td`的`OneFlow_UnaryBaseOp`定义这里：
 
-```
+```asm
 class OneFlow_UnaryBaseOp<string mnemonic, list<Trait> traits = []> :
         OneFlow_BaseOp<mnemonic, !listconcat(traits, [SameOperandsAndResultType, NoSideEffect])> {
   let summary = "";
@@ -468,7 +469,7 @@ class OneFlow_UnaryBaseOp<string mnemonic, list<Trait> traits = []> :
 
 在OneFlow中，各个自定的Interfaces在`oneflow/ir/include/OneFlow/OneFlowInterfaces.td`这里。我们以`UserOpCompatibleInterface`为例来看一下Interface的具体实现：
 
-```
+```asm
 def UserOpCompatibleInterface : OpInterface<"UserOpCompatible"> {
   let description = [{
     Interface to getting the hard-coded bn
@@ -505,7 +506,7 @@ def UserOpCompatibleInterface : OpInterface<"UserOpCompatible"> {
 
 思维导图中还剩下Block和Region没有讲了，实际上MLIR论文中对Region和Block的解释我觉得已经到位了。一个Op会附加一系列Region，Region为MLIR的嵌套结构提供了实现机制：一个Operation有一系列Region，然后Region又是由一系列Block组成，然后Block又包含一系列Op。这样就形成了一个嵌套的关系，可以表达作用域和控制流关系。在OneFlow的Dialect中对Region和Block的应用目前主要是在函数相关的语意中，例如在`oneflow/ir/lib/OneFlow/Passes.cpp`里面实现了一个`OutlineMulCast`的Pass可以将IR中指令的op模式外联到一个FuncOp类型的Operation中进行执行，就使用到了Block来确定这个FuncOp要插入到IR中的位置。再举一个例子，要访问FuncOp的参数时也需要用到Block，如`oneflow/ir/lib/OneFlow/OneFlowOps.cpp`里为Job Op实现了一个verify函数，来验证函数的参数列表和入口Block的参数列表是否对齐：
 
-```
+```asm
 static LogicalResult verify(Job op) {
   // If this function is external there is nothing to do.
   if (op.isExternal()) return success();

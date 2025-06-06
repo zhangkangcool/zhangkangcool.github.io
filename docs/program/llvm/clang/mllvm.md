@@ -1,8 +1,6 @@
+<h1 align="center">mllvm</h1>
 
 
-
-
-以下回答来自chatGPT
 
 
 
@@ -23,40 +21,44 @@ clang -mllvm <llvm_option>
 
 1. **启用优化 Pass**： 如果你想启用某个特定的 LLVM 优化 Pass，例如 `loop-unroll`，可以这样写：
 
-   ```bash
-   clang -S -emit-llvm -mllvm -loop-unroll source.c -o output.ll
-   ```
+```bash
+clang -S -emit-llvm -mllvm -loop-unroll source.c -o output.ll
+```
 
-   这里，`-mllvm -loop-unroll` 是一个传递给 LLVM 后端的选项，它告诉 LLVM 启用循环展开优化。
+这里，`-mllvm -loop-unroll` 是一个传递给 LLVM 后端的选项，它告诉 LLVM 启用循环展开优化。
 
 2. **打印每个 Pass 后的 LLVM IR**： 如果你想查看每个 Pass 后的 LLVM IR，可以使用 `-print-after-all` 选项：
 
-   ```bash
-   clang -S -emit-llvm -mllvm -print-after-all source.c -o output.ll
-   ```
+```bash
+clang -S -emit-llvm -mllvm -print-after-all source.c -o output.ll
+```
 
-   这个选项会在每个优化 Pass 后打印出 IR，帮助你跟踪 IR 的变化。
+这个选项会在每个优化 Pass 后打印出 IR，帮助你跟踪 IR 的变化。
 
 3. **控制 LLVM 的目标架构特性**： 你还可以使用 `-mllvm` 来传递与目标架构相关的参数，例如优化某个特定架构的代码：
 
-   ```bash
-   clang -S -emit-llvm -mllvm -mcpu=haswell source.c -o output.ll
-   ```
+```bash
+clang -S -emit-llvm -mllvm -mcpu=haswell source.c -o output.ll
+```
 
-   这个例子中，`-mcpu=haswell` 是传递给 LLVM 后端的参数，用于生成适合 Haswell 架构的代码。
+这个例子中，`-mcpu=haswell` 是传递给 LLVM 后端的参数，用于生成适合 Haswell 架构的代码。
 
 4. **调试输出**： 如果你想查看 LLVM 内部的调试信息，可以传递 `-debug` 参数：
 
-   ```bash
-   clang -S -emit-llvm -mllvm -debug source.c -o output.ll
-   
-   
-   clang -S -emit-llvm -mllvm -print-after-all source.c -o output.ll
-   
-   clang -S -emit-llvm -mllvm -debug -mllvm -print-after-all source.c -o output.ll 输出更多的信息
-   
-   clans -S -emit-llvm -mllvm -debug-pass=Structure main.c -o main.ll
-   ```
+```bash
+clang -S -emit-llvm -mllvm -debug source.c -o output.ll
+
+
+clang -S -emit-llvm -mllvm -print-after-all source.c -o output.ll
+
+clang -S -emit-llvm -mllvm -debug -mllvm -print-after-all source.c -o output.ll 输出更多的信息
+
+clans -S -emit-llvm -mllvm -debug-pass=Structure main.c -o main.ll
+```
+
+
+
+-----
 
 ### **为什么使用 `-mllvm`？**
 

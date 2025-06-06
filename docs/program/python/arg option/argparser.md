@@ -1,3 +1,4 @@
+<h1 align="center">argparser</h1>
 
 
 # argparse详解
@@ -50,7 +51,7 @@ print('show {}  {}'.format(epochs, batch))
 
 当我们在命令行显示帮助信息的时候会看到description描述的信息。例如:
 
-```python
+```asm
 python3 ./test.py -h
 usage: test.py [-h] [--epochs EPOCHS] [--batch BATCH]
 
@@ -67,7 +68,7 @@ optional arguments:
 
 下面是参数的使用方法
 
-```python
+```asm
 python fun_test.py --epochs 30 --batch 4
 ```
 
@@ -87,7 +88,7 @@ python fun_test.py --epochs 30 --batch 4
 
 （2）add_argument() 方法定义如何解析命令行参数
 
-```text
+```asm
 parser.add_argument(name or flags...[, action][, nargs][, const][, default][, type][,choices][, required][, help][, metavar][, dest])
 ```
 
@@ -113,7 +114,7 @@ parser.add_argument(name or flags...[, action][, nargs][, const][, default][, ty
 
 ArgumentParser对象通过 parse_args() 方法解析命令行的参数。它将检查命令行中每个参数，转换为适当的数据类型，然后调用相应的操作，并把参数结构化后存放在对象args中。
 
-```text
+```asm
 args = parser.parse_args()
 ```
 
@@ -154,7 +155,7 @@ print('-------gf-------', args.girlfriend)
 
 使用
 
-```python
+```asm
 python gf.py potato ，这种方式会将potato赋值给food
 python gf.py -gf jingjing tomato，该种方式会将jingjing赋值给girlfriend，tomato赋值给food
 python gf.py --house 2 chicken，该种方式会将house赋值为2，food赋值为chicken

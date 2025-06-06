@@ -1,4 +1,5 @@
-## 
+<h1 align="center">定义operand</h1>
+
 
 
 
@@ -6,11 +7,11 @@ https://blog.csdn.net/fs3296/article/details/141831812
 
 
 
-# 定义Operand
+
 
 Operand用于定义操作，相关字段如下：
 
-```c++
+```asm
 Type：操作数类型，例如i8、i16、i32等；
 PrintMethod：在class XXXInstPrinter中用于打印该操作数的成员函数，参数分别为const MCInst *MI、unsigned Op、raw_ostream &O。需要cpp实现；
   

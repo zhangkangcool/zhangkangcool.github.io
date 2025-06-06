@@ -1,3 +1,4 @@
+<h1 align="center">mir</h1>
 Create & use mir command
 
 ```shell
@@ -21,7 +22,7 @@ llc -start-before ppc-mi-peepholes -ppc-late-peephole convert.mir -o convert.s -
 
 #### 吃mir文件时不能使用`<`
 
-```
+```shell
 llc -run-pass=ppc-early-ret test.mir -o - | FileCheck test.mir
 ```
 
@@ -29,7 +30,7 @@ llc -run-pass=ppc-early-ret test.mir -o - | FileCheck test.mir
 
 下面的方法是错的
 
-```
+```shell
 llc -run-pass=ppc-early-ret < test.mir | FileCheck test.mir
 expected top-level entity
 --- |

@@ -1,3 +1,4 @@
+<h1 align="center">td pattern</h1>
 
 
 
@@ -6,7 +7,7 @@
 
   PPCxsmaxc可理解成自定义指令时，在TD文件中使用的PPCISD::PPCxsmaxc
 
-```shell
+```asm
 def PPCxsmaxc : SDNode<"PPCISD::XSMAXCDP", SDT_PPCFPMinMax, []>;
 ```
 
@@ -14,7 +15,7 @@ def PPCxsmaxc : SDNode<"PPCISD::XSMAXCDP", SDT_PPCFPMinMax, []>;
 
 - Lowering
 
-```c++
+```asm
 DAG.getNode(PPCISD::XSMAXCDP, dl, Op.getValueType(), LHS, RHS);
 ```
 
@@ -30,7 +31,7 @@ DAG.getNode(PPCISD::XSMAXCDP, dl, Op.getValueType(), LHS, RHS);
 
   1. (PPCxsmaxc -> PPC::XSMAXCDP )
 
-```c++
+```asm
 def XSMAXCDP : XX3_XT5_XA5_XB5<60, 128, "xsmaxcdp", vsfrc, vsfrc, vsfrc,
                                  IIC_VecFP,
                                  [(set f64:$XT, (PPCxsmaxc f64:$XA, f64:$XB))]>;
@@ -40,7 +41,7 @@ def XSMAXCDP : XX3_XT5_XA5_XB5<60, 128, "xsmaxcdp", vsfrc, vsfrc, vsfrc,
 
 2. PPCxsmaxc -> PPC::XSMAXCDP(硬件指令)
 
-```c++
+```asm
 def : Pat<(ISD::Node), (PPC::Node)>
 ISD::VECTOR_EXTRACT_ELT
 
@@ -50,7 +51,7 @@ ISD::VECTOR_EXTRACT_ELT
 
 
 
-```c++
+```asm
 def : Pat<(f32 (PPCxsmaxc f32:$XA, f32:$XB)),
             (f32 (COPY_TO_REGCLASS (XSMAXCDP (COPY_TO_REGCLASS $XA, VSSRC),
                                              (COPY_TO_REGCLASS $XB, VSSRC)),
@@ -69,7 +70,7 @@ PPC::CRSET,
 
 `creqv $dst, $dst, $dst`: 将会生成的asm
 
-```c++
+```asm
 def CRSET  : XLForm_1_ext<19, 289, (outs crbitrc:$dst), (ins),
               "creqv $dst, $dst, $dst", IIC_BrCR,
               [(set i1:$dst, 1)]>;

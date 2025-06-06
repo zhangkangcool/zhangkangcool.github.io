@@ -1,3 +1,4 @@
+<h1 align="center">tensorflow xla hlo 基本概念和pass pipeline</h1>
 https://zhuanlan.zhihu.com/p/71980945
 
 
@@ -15,7 +16,7 @@ https://zhuanlan.zhihu.com/p/71980945
 - 一个module可以包含多个computation，除了entry_computation，其他的都是"nested"，也就是被调用。
 - HLO instructions就是op了，对应了官网上列出的operation semantics，看注释已经解释的非常清楚了，op融合和向llvm ir转换都是在这个层面进行的。
 
-```text
+```asm
 // HLO instructions are the atomic unit of the high-level compiler's IR.
 //
 // HloInstructions live inside of an HloComputation, which is analogous to a
@@ -35,7 +36,7 @@ https://zhuanlan.zhihu.com/p/71980945
 
 举hlo.proto里的一个例子:
 
-```text
+```asm
    ENTRY main {
      a = f32[] parameter(0)
      b = f32[10] parameter(1)
@@ -52,7 +53,7 @@ https://zhuanlan.zhihu.com/p/71980945
 
 得到hlo graph后，就需要做high level optimize了。此处调用代码：
 
-```text
+```asm
 aot_or = client->CompileAheadOfTime({instance}, aot_opts);
 ```
 
@@ -66,7 +67,7 @@ aot_or = client->CompileAheadOfTime({instance}, aot_opts);
 
 所以整个流程就是
 
-```
+```asm
 graph compile -> hlo graph build -> hlo pass pipelime -> hlo dataflow analysis -> codegen
 ```
 

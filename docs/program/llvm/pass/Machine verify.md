@@ -1,8 +1,9 @@
+<h1 align="center">Machine verify</h1>
 CodeGen/TargetPassConfig.cpp
 
 
 
-```
+```c++
 addVerifyPass
 ```
 
@@ -73,7 +74,7 @@ https://github.ibm.com/compiler/llvm-project/commit/941f20c3bd22f2b55815c6d5aa79
 
 https://reviews.llvm.org/rL228079
 
-```
+```shell
  // The machine code verifier is enabled from LLVMTargetMachine.cpp with the
  // command-line option -verify-machineinstrs, or by defining the environment
  // variable LLVM_VERIFY_MACHINEINSTRS to the name of a file that will receive
@@ -91,7 +92,7 @@ export LLVM_ENABLE_MACHINE_VERIFIER=1
 
 
 
-```
+```shell
 export LLVM_ENABLE_MACHINE_VERIFIER=1
 cd ~/issue_test/6378_verify/log/all_enable_macrho_277/277
 ./two_address.py
@@ -210,7 +211,7 @@ lib/CodeGen/TargetPassConfig.cpp
 
 Codegen
 
-```
+```shell
 CodeGen/TargetPassConfig.cpp:    addPass(&LocalStackSlotAllocationID, false);
 CodeGen/TargetPassConfig.cpp:      addPass(createGCInfoPrinter(dbgs()), false, false);
 CodeGen/TargetPassConfig.cpp:  addPass(&FEntryInserterID, false);
@@ -240,7 +241,7 @@ CodeGen/TargetPassConfig.cpp:  addPass(&GCMachineCodeAnalysisID, false);
 
 Other arch
 
-```
+```shell
 Target/Hexagon/HexagonTargetMachine.cpp:  addPass(createHexagonPacketizer(NoOpt), false);
 Target/Hexagon/HexagonTargetMachine.cpp:    addPass(createHexagonVectorPrint(), false);
 Target/Hexagon/HexagonTargetMachine.cpp:  addPass(createHexagonCallFrameInformation(), false);
@@ -274,7 +275,7 @@ https://reviews.llvm.org/rL260806
 
 https://reviews.llvm.org/rL7954
 
-```
+```c++
 if (getPPCTargetMachine().getRelocationModel() == Reloc::PIC_) {
     // FIXME: LiveVariables should not be necessary here!
     // PPCTLSDYnamicCallPass uses LiveIntervals which previously dependet on
@@ -308,7 +309,7 @@ Enable all(don't use verify-machineinstrs)
 
 利用`EXPENSIVE_CHECKS`来控制PPC，全对
 
-```
+```shell
 ./CMakeCache.txt:LLVM_ENABLE_EXPENSIVE_CHECKS:BOOL=OFF
 
 
@@ -333,7 +334,7 @@ Comment need to fix`LLVM_VERIFY_MACHINEINSTRS`
 
 Blow is the old method, hs been removed.
 
-```
+```c++
 00066 static cl::opt<bool> VerifyMachineCode("verify-machineinstrs", cl::Hidden,
 00067     cl::desc("Verify generated machine code"),
 00068     cl::init(getenv("LLVM_VERIFY_MACHINEINSTRS")!=NULL));
@@ -345,7 +346,7 @@ Blow is the old method, hs been removed.
 
 ~/llvm/llvm/lib/CodeGen/TargetPassConfig.cpp
 
-```
+```c++
 commenting out the "#ifdef EXPENSIVE_CHECKS"
 ```
 

@@ -1,3 +1,4 @@
+<h1 align="center">log</h1>
 
 
 
@@ -26,7 +27,7 @@
 
 搜索`llvm-as.cpp.o`可以知道link命令在Link.txt中，编译命令在`compiler_commands.json`中。
 
-```
+```shell
 ./tools/llvm-as/CMakeFiles/llvm-as.dir/link.txt
 ```
 

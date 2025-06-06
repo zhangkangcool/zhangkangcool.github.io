@@ -1,3 +1,4 @@
+<h1 align="center">Visual Performance Analyzer</h1>
 Visual Performance Analyzer(VPA)
 
 Download: https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/W5be7727ab90c_4453_b240_01bb7c1df49d/page/Performance%20Tools%20Release
@@ -106,7 +107,7 @@ lhs/test, lhs_test1a.qt.bz2, 0.47159, 11561, 5452
 
 -  Define special nops for mambo 
 
-```
+```python
 #define mambo_warm_trace() asm volatile("or 13,13,13")
 #define mambo_start_trace() asm volatile("or 14,14,14")
 #define mambo_stop_trace() asm volatile("or 15,15,15")

@@ -1,14 +1,15 @@
+<h1 align="center">useful command</h1>
 
 
 # 1. scp
 
 copy from remote to local
-```
+```shell
 scp -r ken@host_address:/home/test.txt .
 ```
 
 copy from local to remote
-```
+```shell
 scp -r /home/text.txt ken@host_address:~
 ```
 
@@ -52,27 +53,27 @@ nm libc.so
 pkill -u zhangnq
 ```
 ### 5.2 killall方式
-```
+```shell
 killall -u zhangnq
 ```
 ### 5.3 ps方式 ps列出zhangnq的pid，然后依次kill掉，比较繁琐。
-```
+```shell
 ps -ef | grep zhangnq | awk '{ print $2 }' | xargs kill -9
 ```
 ### 5.4 pgrep方式 pgrep -u参数查出用户的所有pid，然后依次kill
-```
+```shell
 pgrep -u zhangnq | xargs kill -9
 ```
 
 # 6. 查看linux导出符号和依赖库
 https://www.cnblogs.com/xiaomanon/p/4203671.html
 ### 1. nm *.a 静态库
-```
+```shell
 nm abc.a
 ```
 
 ### 2. nm *.so 动态库
-```
+```shell
 nm -D abc.so
 or 
 objdump -tT abc.so
@@ -82,7 +83,7 @@ objdump -tT abc.so
 
 
 # 7. 输出正在运行的命令行
-```
+```shell
 bash -x
 ```
 
@@ -105,7 +106,7 @@ xdg-open  xxx.png
 
 
 # 9. 查看内存CPU等信息 & 绑定CPU
-```
+```shell
 lscpu
 ppc64_cpu --info
 cat /proc/cpuinfo
@@ -119,7 +120,7 @@ tasket -c 12 ./a.out
 
 # 10. linux release
 
-```
+```shell
 cat /etc/os-release
 ```
 
@@ -168,9 +169,6 @@ for FILE in /tmp/*.log;do ln -s $FILE '/tmp/lnk_'`basename $FILE`;done
 
 [shkzhang@recycler:~/spec_clang_result/benchspec/CPU/541.leela_r/build/build_peak_clang_default.0000]$ file Playout.o
 Playout.o: LLVM IR bitcode
-
-
-
 ```
 
 

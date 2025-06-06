@@ -1,3 +1,4 @@
+<h1 align="center">vim变成ABCD</h1>
 
 
 ## Linux （Ubuntu）使用vi和vim方向键变成了ABCD

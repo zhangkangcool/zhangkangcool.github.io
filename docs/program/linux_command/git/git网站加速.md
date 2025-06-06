@@ -1,3 +1,4 @@
+<h1 align="center">git网站加速</h1>
 
 
 
@@ -41,7 +42,7 @@ git clone https://github.com/tendermint/tendermint.git
 
 #### 3. use cgit client方法
 
-```
+```shell
 git clone https://github.com/tendermint/tendermint.git
 ```
 

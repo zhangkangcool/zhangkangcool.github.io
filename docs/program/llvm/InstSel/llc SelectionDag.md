@@ -1,8 +1,9 @@
+<h1 align="center">llc SelectionDag</h1>
 https://people.cs.nctu.edu.tw/~chenwj/dokuwiki/doku.php?id=llvm
 
 # Print the SelectionDAG graph
 
-```
+```shell
 [ken@lep824e1v:~/wyvern/add_64unsigned]$ llc -help-hidden | grep view | grep dags
   -filter-view-dags=<string>                        - Only display the basic block whose name matches this for all view-*-dags options
   -view-block-freq-propagation-dags                 - Pop up a window to show a dag displaying how block frequencies propagation through the CFG.
@@ -20,7 +21,7 @@ https://people.cs.nctu.edu.tw/~chenwj/dokuwiki/doku.php?id=llvm
 ```
 
 The order:
-```
+```shell
   -view-dag-combine1-dags                           - Pop up a window to show dags before the first dag combine pass
   -view-legalize-types-dags                         - Pop up a window to show dags before legalize types
   -view-dag-combine-lt-dags                         - Pop up a window to show dags before the post legalize types dag combine pass
@@ -36,48 +37,48 @@ SDNode 之間有 data 或 control (chain, 簡寫 ch) dependency。上圖中黑�
 SelectionDAG 主要有底下幾個流程 (SelectionDAGISel::CodeGenAndEmitDAG()):
 
 - 1 Lower: 將 LLVM IR 轉換成 SelectionDAG (SelectionDAGISel::SelectAllBasicBlocks)。
-```
+```shell
 # Pop up a window to show dags before the first dag combine pass
 $ llc -view-dag-combine1-dags sum.ll
 ```
 - 2 Combine: 將若干 SDNode 合成一個 SDNode (SelectionDAG::Combine())。
-```
+```shell
 # Pop up a window to show dags before legalize types
 $ llc -view-legalize-types-dags sum.ll
 ```
 
 - 3 Legalize Type: 將目標平台不支援的型別轉換成支援的型別 (SelectionDAG::LegalizeTypes())。
-```
+```shell
 # Pop up a window to show dags before the post legalize types dag combine pass
 $ llc -view-dag-combine-lt-dags sum.ll
 ```
 
 - 4 Legalize Vector: 將目標平台不支援的向量型別轉換成支援的型別。
-```
+```shell
 # Pop up a window to show dags before legalize
 $ llc -view-legalize-dags sum.ll
 ```
 
 - 5 Legalize Op: 將目標平台不支援的運算轉換成支援的運算。
-```
+```shell
 # Pop up a window to show dags before the second dag combine pass
 $ llc -view-dag-combine2-dags sum.ll
 ```
 
 - 6 Combine: 將若干 SDNode 合成一個 SDNode。
-```
+```shell
 # Pop up a window to show isel dags as they are selected
 $ llc -view-isel-dags sum.ll
 ```
 
 - 7 Select: SDNode (平台無關) → SDNode (平台相關)。
-```
+```shell
 # Pop up a window to show sched dags as they are processed
 $ llc -view-sched-dags sum.ll
 ```
 
 - 8 Schedule: 完成指令調度。
-```
+```shell
 # Pop up a window to show SUnit dags after they are processed
 $ llc -view-sunit-dags sum.ll
 ```
@@ -85,7 +86,7 @@ $ llc -view-sunit-dags sum.ll
 # using the dot tool
 windows: graph install and use
 https://blog.csdn.net/lanchunhui/article/details/49472949
-```
+```shell
 dot D:\test\1.gv -Tpng -o image.png
 ```
 

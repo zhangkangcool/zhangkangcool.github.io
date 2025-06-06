@@ -1,3 +1,4 @@
+<h1 align="center">pip tensorflow安装</h1>
 https://blog.csdn.net/qq_44019762/article/details/124984425
 
 
@@ -14,7 +15,7 @@ pip install tensorflow-gpu==2.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 这里，我使用的命令是
 
-```
+```asm
 pip install tensorflow-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
@@ -23,7 +24,7 @@ pip install tensorflow-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
 安装tensorflow时，如果使用直接安装速度相对较慢，pip install tensorflow
 采取清华大学的镜像会提高速度。
 
-```
+```asm
 GPU版本安装方法：
 pip3 install tensorflow-gpu==2.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 CPU版本安装方法：
@@ -36,7 +37,7 @@ pip3 install tensorflow==2.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 安装的时候需要python是64位版本，32位版本则会报错
 备注2：如果默认的 pip 和 conda 网络连接速度慢，可以尝试使用镜像，将显著提升 pip 和 conda 的下载速度（具体效果视您所在的网络环境而定）；
 
-```
+```asm
 清华大学；}- 的 pypi 镜像：https://mirrors.tuna.tsinghua.edu.cn/help/pypi/
 
  Anaconda 镜像：https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/
@@ -46,7 +47,7 @@ pip3 install tensorflow==2.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 NVIDIA 驱动程序安装完成后，可在命令行下使用 nvidia-smi 命令检查是否安装成功。
 
-```
+```python
 import tensorflow as tf
 tf.compat.v1.disable_eager_execution()
 hello=tf.constant("Hello,Tensorflow!")
@@ -59,7 +60,7 @@ tf.compat.v1.disable_eager_execution()
 
 
 
-```
+```asm
 #创建虚拟环境
 conda create -n python37 python=3.7.1
 #激活虚拟环境
@@ -81,7 +82,7 @@ conda remove -n 名字 --all
 
 
 
-```
+```python
 import pip
 from subprocess import call
 from pip._internal.utils.misc import get_installed_distributions
@@ -95,7 +96,7 @@ for dist in get_installed_distributions():
 
 ## Navigator打不开的解决办法
 
-```
+```asm
 以管理员权限打开anaconda prompt，输入代码：
 1、conda update conda
 2、conda update --all`

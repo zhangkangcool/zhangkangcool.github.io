@@ -1,3 +1,4 @@
+<h1 align="center">git submodule</h1>
 https://www.jianshu.com/p/2d74a6f41d07?u_atoken=5b7262f6-25f3-43b5-9345-e011135fc5cc&u_asession=013FeaJH5z4FUShutzhH4BjF08iy1A2FlUSSpRhPyQXJGgEMtcKDKVLn8YYO6w7cycX0KNBwm7Lovlpxjd_P_q4JsKWYrT3W_NKPr8w6oU7K8uclpM16flIU70hl2sC9DYAt9AIvYhu5Tuzl1JEP_OamBkFo3NEHBv0PZUm6pbxQU&u_asig=05DeK0a0DKFecR--vOFG3Mvp-vj5ZLVc4CnUS_rL4cmROmoZvLEcdxSemrSIAQXe2BE_y8GR7brmSB4PsLmsVOasT_p3SiJ9k_sozmRsTrab1gRl2Y8Xrr3OLXSbGo_XaZv8mFui05Y6srRoslkFvuZw34lkhIZn84vr75PUIKrPz9JS7q8ZD7Xtz2Ly-b0kmuyAKRFSVJkkdwVUnyHAIJzQrnN0nVoRdz-igOIrDYgEPlBGEWiTfizbDWLLgfYc8RcYXgoUw8UHphWe030pDERu3h9VXwMyh6PgyDIVSG1W9M0Enn8a5bbqmLGLF0bVJaZLoTycCbaHWtF7OlfSpaCoor1MwY-P8MpCZxeaVzPVaQ6IyKezohWil8te5AFw7VmWspDxyAEEo4kbsryBKb9Q&u_aref=l4skD1PzbKQdvWPjtaFQaWG6lwE%3D
 
 
@@ -8,7 +9,7 @@ https://www.jianshu.com/p/2d74a6f41d07?u_atoken=5b7262f6-25f3-43b5-9345-e011135f
 
 [DeepNoMind](https://www.jianshu.com/u/f1a9c3ae8d22)关注
 
-0.5142021.10.04 09:57:10字数 3,336阅读 12,732
+
 
 > *DRY原则是程序世界的基本原则之一，我们每个人在工作中都不可避免的会复用别人的代码，有可能是某个开源项目，也有可能是公司里其他团队提供的模块。Git是最流行的现代化代码版本控制工具，为了支持模块的复用，Git引入了submodule的概念，通过这篇文章，你会理解什么是git submodule以及在项目中如何应用。原文：Understanding and Working with Submodules in Git[1]*
 

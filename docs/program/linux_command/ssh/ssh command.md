@@ -1,3 +1,4 @@
+<h1 align="center">ssh command</h1>
 # 1 Create the key
 
 https://blog.csdn.net/a753255157/article/details/49156029
@@ -12,13 +13,13 @@ https://help.github.com/cn/github/authenticating-to-github/generating-a-new-ssh-
 
 
 
-```
+```shell
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
 # 2 linux实现免密码登陆
 
-```
+```shell
 https://www.cnblogs.com/yixue2017/p/7559970.html
 ```
 本质是：将本地id_rsa.pub文件的内容拷贝至远程服务器的~/.ssh/authorized_keys文件中
@@ -43,7 +44,7 @@ Method 1 && 3 is recommended.
 
 加入下面四行测试成功，使用`ssh remote_login_name`进行登陆。
 
-```
+```shell
 Host remote_login_name(随便取)
 HostName 服务器地址/ip
 User zhangkang
@@ -77,7 +78,7 @@ scp -r .ssh shkzhang@recycler.torolab.ibm.com:~
 
 
 
-```
+```shell
 Permissions 0644 for 'id_rsa' are too open.
 
 $ chmod 0600 id_rsa

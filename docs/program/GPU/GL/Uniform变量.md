@@ -1,3 +1,4 @@
+<h1 align="center">Uniform变量</h1>
 https://zhuanlan.zhihu.com/p/569758915
 
 
@@ -34,7 +35,7 @@ https://zhuanlan.zhihu.com/p/569758915
 
 只需要在着色器中写如下代码，例如顶点着色器
 
-```text
+```c++
 #version 450
 layout (location = 0) in vec4 vPos;
 
@@ -52,13 +53,13 @@ void main()
 
 在CPU执行的代码中，首先通过
 
-```text
+```c++
 glGetUniformLocation(program,"model")
 ```
 
 类似上述的gl函数获得model名称对应的location，然后使用
 
-```text
+```c++
 glUniformMatrix4fv(location , 1 ,GL_FALSE,data);
 ```
 
@@ -68,7 +69,7 @@ glUniformMatrix4fv(location , 1 ,GL_FALSE,data);
 
 定义uniform块的方式如下，修改着色器代码
 
-```text
+```c++
 #version 450
 layout (location = 0) in vec4 vPos;
 

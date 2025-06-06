@@ -1,3 +1,4 @@
+<h1 align="center">signal</h1>
 
 
 捕获到SIGQUIT之后，程序仍可运行。在测试中如果是SIGTRAP的话，则会不停输出`in_handler:`
@@ -61,7 +62,7 @@ int main() {
 
 ### output
 
-```
+```shell
 SIGQUIT unblocked
 in_handler: 4
 SIGQUIT 123

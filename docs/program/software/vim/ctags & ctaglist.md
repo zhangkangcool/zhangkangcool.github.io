@@ -1,4 +1,5 @@
-```
+<h1 align="center">ctags & ctaglist</h1>
+```shell
 1.$ ctags –R *    ($ 为Linux系统Shell提示符)        
 
 2.$ vi –t tag       (请把tag替换为您欲查找的变量或函数名)        
@@ -22,7 +23,7 @@
 
 `.vimrc`中加入下面两句后，不必每次都在有tags文件的目录下运行。
 
-```
+```shell
  set tags=tags;    "   其中 ; 不能没有
  set autochdir
 ```
@@ -37,18 +38,18 @@ https://blog.csdn.net/G_BrightBoy/article/details/16830395
 
 
 使用 vim + ctags + cscope + taglist 阅读源码
-```
+```shell
 https://my.oschina.net/u/554995/blog/59927
 ```
 
 # ctagslist
 
-```
+```shell
 https://www.cnblogs.com/diegodu/p/7088596.html
 https://www.cnblogs.com/mo-beifeng/archive/2011/11/22/2259356.html
 ```
 
-```
+```shell
 "鼠标在Vim 里面点击无效，请在~/.vimrc下加入这句话
 set mouse=a  " always use mouse
 
@@ -94,7 +95,7 @@ let Tlist_Show_Menu = 1
 
 # cscope
 
-```
+```shell
 https://blog.csdn.net/dengxiayehu/article/details/6330200
 https://blog.csdn.net/heyuqian_csdn/article/details/78832099
 https://blog.csdn.net/clevercode/article/details/51379309
@@ -104,7 +105,7 @@ https://blog.csdn.net/lee244868149/article/details/38980937
 If you use `cscope`, you should not use `set autochdir`, or you will get the error `cscope file does not exist`.
 https://my.oschina.net/u/554995/blog/59927
 
-````
+````shell
 cscope -Rbkq
 ```
 

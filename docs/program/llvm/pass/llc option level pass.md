@@ -1,3 +1,4 @@
+<h1 align="center">llc option level pass</h1>
 ## Get the pass name
 
 ```shell
@@ -287,7 +288,7 @@ Machine Branch Probability Analysis
 
 # Opt pass
 
-```
+```shell
 opt -O3 main.ll -S -o test.ll --debug-pass-manager > opt3.log 
 ```
 

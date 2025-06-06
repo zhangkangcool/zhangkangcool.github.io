@@ -1,3 +1,4 @@
+<h1 align="center">inline错误解决</h1>
 
 
 # C/C++中的inline关键字

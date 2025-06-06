@@ -1,3 +1,4 @@
+<h1 align="center">lto优化</h1>
 http://llvm.org/docs/LinkTimeOptimization.html
 
 https://blog.csdn.net/zhajio/article/details/79640155

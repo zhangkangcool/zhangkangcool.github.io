@@ -1,3 +1,4 @@
+<h1 align="center">dir</h1>
 
 
 遍历目录
@@ -18,9 +19,6 @@ https://www.runoob.com/python/python-if-statement.html
   print(os.getcwd())
   print(os.path.abspath(os.curdir))
   print(os.path.abspath("."))
-
-
- 
 ```
 
 

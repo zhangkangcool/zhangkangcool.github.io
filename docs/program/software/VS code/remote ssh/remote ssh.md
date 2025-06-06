@@ -1,3 +1,4 @@
+<h1 align="center">remote ssh</h1>
 https://www.cnblogs.com/dotnetcrazy/p/11254225.html
 
 # [本地VSCode编辑远程服务器文件](https://www.cnblogs.com/dotnetcrazy/p/11254225.html)
@@ -6,7 +7,7 @@ https://www.cnblogs.com/dotnetcrazy/p/11254225.html
 
 
 
-```
+```shell
 Remote - SSH
 Remote - SSH: Editing Configration Files
 ```

@@ -1,3 +1,4 @@
+<h1 align="center">vim command</h1>
 中文manual: http://vimcdoc.sourceforge.net/doc/help.html
 
 
@@ -20,7 +21,7 @@ Set the scheme
 
 # 2. 翻页
 
-```
+```shell
 整页翻页 ctrl-f ctrl-b
 f就是forword b就是backward
 

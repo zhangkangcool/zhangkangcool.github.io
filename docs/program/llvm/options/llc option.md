@@ -1,4 +1,5 @@
-```
+<h1 align="center">llc option</h1>
+```shell
 llc sum.bc -o sum.s
 llc sum.ll -o sum.s
 llc sum.bc -filetype=obj -o sum.o
@@ -9,7 +10,7 @@ llc sum.bc -march=mips -filetype=obj -o sum.o
 # debug option
 ### -print-after-all
 Print IR after each pass
-```
+```shell
 llc -debug -print-after-all 32.ll > llc.log
 ```
 
@@ -17,18 +18,18 @@ llc -debug -print-after-all 32.ll > llc.log
 
 https://www.cnblogs.com/NBSTAR/archive/2012/12/20/2827288.html
 Enablu debug output, you will get the backend output
-```
+```shell
 llc clang_O3.ll -debug > llc.log 2>&1
 clang 17.c -c  -mllvm -debug > 17.log 2>&1
 ```
 
 ### -O level
 
-```
+```shell
 https://llvm.org/docs/CommandGuide/llc.html
 ```
 
-```
+```shell
 Optimization level. [-O0, -O1, -O2, or -O3] (default = '-O2')
 -O=uint
 

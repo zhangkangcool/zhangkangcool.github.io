@@ -1,3 +1,4 @@
+<h1 align="center">git format-patch</h1>
 
 
 如何使用git命令，将其它项目的提交Commit 打 补丁到本项目，保留提交的时间 等日志信息、
@@ -10,7 +11,7 @@
 
    - 在另一个项目的分支中，找到目标提交的哈希值（`commit hash`）。
 
-     ```
+     ```shell
      git log --oneline
      ```
 

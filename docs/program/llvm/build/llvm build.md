@@ -1,3 +1,4 @@
+<h1 align="center">llvm build</h1>
 BUILD_SHARED_LIBS=ON
 
 DLLVM_ENABLE_EXPENSIVE_CHECKS=ON只能在check-llvm时加，否则很多case会挂。
@@ -421,20 +422,6 @@ cd /home/ken/llvm/log/test-2019-08-12_02-29-53/MultiSource/Benchmarks/7zip
 ```
 
 
-
-
-
-```
-/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/stage1.install/bin/clang++ -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/sandbox/build/MultiSource/Benchmarks/7zip -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/MultiSource/Benchmarks/7zip -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/include -I../../../include -D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DNDEBUG -std=gnu++98 -DBREAK_HANDLER -DUNICODE -D_UNICODE -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/MultiSource/Benchmarks/7zip/C -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/MultiSource/Benchmarks/7zip/CPP/myWindows -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/MultiSource/Benchmarks/7zip/CPP/include_windows -I/home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/MultiSource/Benchmarks/7zip/CPP -I. -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DNDEBUG -D_REENTRANT -DENV_UNIX -D_7ZIP_LARGE_PAGES -pthread -O3 -march=skylake-avx512 -c /home/ssglocal/clang-cmake-x86_64-sde-avx512-linux/clang-cmake-x86_64-sde-avx512-linux/test/test-suite/MultiSource/Benchmarks/7zip/CPP/7zip/UI/Console/UserInputUtils.cpp -o Output/UserInputUtils.llvm.o
-```
-
-
-
-
-
-```shell
-/home/ken/llvm/build/bin/clang++ -I/home/ken/llvm/log/test-2019-08-02_02-54-36/MultiSource/Benchmarks/7zip -I/home/ken/llvm_cdl/llvm-test-suite/MultiSource/Benchmarks/7zip -I/home/ken/llvm_cdl/llvm-test-suite/include -I../../../include -D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DNDEBUG -std=gnu++98 -DBREAK_HANDLER -DUNICODE -D_UNICODE -I/home/ken/llvm_cdl/llvm-test-suite/MultiSource/Benchmarks/7zip/C -I/home/ken/llvm_cdl/llvm-test-suite/MultiSource/Benchmarks/7zip/CPP/myWindows -I/home/ken/llvm_cdl/llvm-test-suite/MultiSource/Benchmarks/7zip/CPP/include_windows -I/home/ken/llvm_cdl/llvm-test-suite/MultiSource/Benchmarks/7zip/CPP -I. -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DNDEBUG -D_REENTRANT -DENV_UNIX -D_7ZIP_LARGE_PAGES -pthread -O3  -c /home/ken/llvm_cdl/llvm-test-suite/MultiSource/Benchmarks/7zip/CPP/7zip/UI/Console/UserInputUtils.cpp -o Output/UserInputUtils.llvm.o -target x86_64-unknown-linux-gnu
-```
 
 
 

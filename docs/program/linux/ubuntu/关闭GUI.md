@@ -1,3 +1,4 @@
+<h1 align="center">关闭GUI</h1>
 https://blog.csdn.net/sole_cc/article/details/42707735
 
 
@@ -10,7 +11,7 @@ https://blog.csdn.net/sole_cc/article/details/42707735
 
 Linux [系统](http://www.2cto.com/os/)任何时候都运行在一个指定的运行级上，并且不同的运行级的程序和服务都不同，所要完成的工作和要达到的目的都不同，系统可以在这些运行级之间进行切换，以完成不同的工作。 
 
-```
+```shell
 Ubuntu 的系统运行级别：    
 0：关机级别    
 1：单用户运行级别，运行rc.sysinit和rc1.d目录下的脚本    

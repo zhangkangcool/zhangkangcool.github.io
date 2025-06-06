@@ -1,6 +1,7 @@
+<h1 align="center">shell</h1>
 # 1. if statement
 
-```
+```shell
 XLFPATH="${XLF_PATH:-/gsa/tlbgsa/projects/x/xlcmpbld/run/xlf/dev_lite/linux_leppc/daily/${XLF_DRIVER:-latest}/bin}"
 ```
 If `XLF_PATH` exist, `XLFPATH=$(XLF_PATH)` 
@@ -11,7 +12,7 @@ else
 # 2. replace every string
 
 replace a space ( ) with a dot (.) in a string in bash
-```
+```shell
 foo="  "
 
 # replace first blank only
@@ -22,7 +23,7 @@ bar=${foo// /.}
 ```
 
 For example
-```
+```shell
 NOBINPATH=/opt/ibm:/opt:/usr/bin
 BINPATH=${NOBINPATH//:/:/bin}
 ```

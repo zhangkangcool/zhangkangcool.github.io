@@ -1,3 +1,4 @@
+<h1 align="center">Ch2 生成初级MLIR</h1>
 
 
 # 生成初级MLIR
@@ -276,7 +277,7 @@ def TransposeOp : Toy_Op<"transpose"> {
 
 与工具链 toyc-ch2 的联系，查看CMakeList.txt 文件（默认位置为 `llvm-project/mlir/examples/toy/Ch2/include/toy`）：
 
-```c++
+```asm
 set(LLVM_TARGET_DEFINITIONS Ops.td)
 mlir_tablegen(Ops.h.inc -gen-op-decls)
 mlir_tablegen(Ops.cpp.inc -gen-op-defs)

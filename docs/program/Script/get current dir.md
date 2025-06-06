@@ -1,3 +1,4 @@
+<h1 align="center">get current dir</h1>
 
 
 得到当前脚本的绝对路径

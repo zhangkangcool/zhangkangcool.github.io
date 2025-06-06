@@ -1,9 +1,10 @@
+<h1 align="center">linux rpm问题：怎样查看rpm安装包的安装路径</h1>
 https://blog.csdn.net/vovo2000/article/details/2110762
 
 # 1. 如何安装rpm软件包 
 
 rmp软件包的安装可以使用程序rpm来完成。执行下面的命令 
-```
+```shell
 rpm -i your-package.rpm 
 ```
 其中your-package.rpm是你要安装的rpm包的文件名，一般置于当前目录下。 
@@ -22,7 +23,7 @@ rpm -i your-package.rpm
 需要进行编译。这类软件包有两种安装方法，
 
 ### 方法一：
-```
+```shell
 1.rpm -i your-package.src.rpm 
 2. cd /usr/src/redhat/SPECS 
 3. rpmbuild -bp your-package.specs   ///一个和你的软件包同名的specs文件 
@@ -34,7 +35,7 @@ rpm -i your-package.rpm
 
 
 ### 方法二: 
-```
+```shell
 
 
 1.rpm -i you-package.src.rpm 
@@ -51,14 +52,14 @@ rpm -i your-package.rpm
 # 3.如何卸载rpm软件包 
 使用命令 rpm -e 包名，包名可以包含版本号等信息，但是不可以有后缀.rpm 
 比如卸载软件包proftpd-1.2.8-1，可以使用下列格式：
-```
+```shell
 rpm -e proftpd-1.2.8-1 
 rpm -e proftpd-1.2.8 
 rpm -e proftpd- 
 rpm -e proftpd 
 ```
 不可以是下列格式： 
-```
+```shell
 rpm -e proftpd-1.2.8-1.i386.rpm 
 rpm -e proftpd-1.2.8-1.i386 
 rpm -e proftpd-1.2 
@@ -70,7 +71,7 @@ rpm -e proftpd-1
 
 # 4.如何不安装但是获取rpm包中的文件 
 使用工具rpm2cpio和cpio 
-```
+```shell
 rpm2cpio xxx.rpm | cpio -vi 
 rpm2cpio xxx.rpm | cpio -idmv 
 rpm2cpio xxx.rpm | cpio --extract --make-directories 
@@ -82,19 +83,19 @@ m表示保持文件的更新时间。
 # 5.如何查看与rpm包相关的文件和其他信息 
 下面所有的例子都假设使用软件包mysql-3.23.54a-11 
 ### 1.我的系统中安装了那些rpm软件包 
-```
+```shell
 rpm -qa 讲列出所有安装过的包 
 如果要查找所有安装过的包含某个字符串sql的软件包 
 rpm -qa |grep sql
 ```
 ### 2.如何获得某个软件包的文件全名 
-```
+```shell
 rpm -q mysql 可以获得系统中安装的mysql软件包全名，从中可以获得 
 当前软件包的版本等信息。这个例子中可以得到信息mysql-3.23.54a-11
 ```
 
 ### 3.一个rpm包中的文件安装到那里去了？ 
-```
+```shell
 rpm -ql 包名 
 注意这里的是不包括.rpm后缀的软件包的名称 
 也就是说只能用mysql或者mysql-3.23.54a-11而不是mysql-3.23.54a-11.rpm。 
@@ -103,18 +104,18 @@ which mysql
 ```
 
 ### 4.一个rpm包中包含那些文件 
-```
+```shell
 一个没有安装过的软件包，使用rpm -qlp ****.rpm 
 一个已经安装过的软件包，还可以使用rpm -ql ****.rpm
 ```
 ### 5.如何获取关于一个软件包的版本，用途等相关信息？ 
-```
+```shell
 一个没有安装过的软件包，使用rpm -qip ****.rpm 
 一个已经安装过的软件包，还可以使用rpm -qi ****.rpm
 ```
 
 ### 6.某个程序是哪个软件包安装的，或者哪个软件包包含这个程序 
-```
+```shell
 rpm -qf `which 程序名` 返回软件包的全名 
 rpm -qif `which 程序名` 返回软件包的有关信息 
 rpm -qlf `which 程序名` 返回软件包的文件列表 
@@ -126,7 +127,7 @@ rpm -qlf `which 程序名` 返回软件包的文件列表
 注意，前一个问题中的方法，只适用与可执行的程序，而下面的方法，不仅可以 
 用于可执行程序，也可以用于普通的任何文件。前提是知道这个文件名。 
 首先获得这个程序的完整路径，可以用whereis或者which，然后使用rpm -qf例如： 
-```
+```shell
 # whereis ftptop 
 ftptop: /usr/bin/ftptop /usr/share/man/man1/ftptop.1.gz 
 # rpm -qf /usr/bin/ftptop 

@@ -1,3 +1,4 @@
+<h1 align="center">pipestat</h1>
 # How to use pipestat 
 
 https://ltc3.linux.ibm.com/wiki/LoP_Toolchain/howto/valgrind-itrace

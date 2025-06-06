@@ -1,3 +1,4 @@
+<h1 align="center">Write pass</h1>
 https://blog.csdn.net/baimafujinji/article/details/78631322
 
 
@@ -41,7 +42,7 @@ class ImmutablePass : public ModulePass {
 
 analysis是true，则为分析pass。
 
-```
+```c++
  #define INITIALIZE_PASS(MyPassName, arg, name, cfg, analysis)     # 使用宏来生成 initializeMyPassNamePass
 ```
 
@@ -49,7 +50,7 @@ analysis是true，则为分析pass。
 
 分析pass，可以通过下面的代码获得分析有结果，非分析pass不能这么干。
 
-```
+```c++
 LiveVariables *LV = getAnalysisIfAvailable<LiveVariables>();
 ```
 
@@ -92,14 +93,13 @@ LiveVariables *LV = getAnalysisIfAvailable<LiveVariables>();
 
 ```
 getAnalysisIfAvailable 一般用于已经有了，则进行更新
-
 ```
 
 
 
 保留传给下一个Pass
 
-```
+```c++
 AU.addPreserved<LiveVariables>();
 ```
 
@@ -140,8 +140,7 @@ AU.addPreserved<LiveVariables>();
     Used.push_back(&PassClass::ID);
     return *this;
   }
-  
-  
+ 
 ```
 
 

@@ -1,3 +1,4 @@
+<h1 align="center">spirv</h1>
 
 
 https://portablecl.org/docs/html/opencl_status.html
@@ -49,14 +50,14 @@ Requirements:
 
 To compile the LLVM SPIR-V translator:
 
-```
+```shell
 git clone https://github.com/KhronosGroup/SPIRV-LLVM-Translator
 git checkout <branch>
 ```
 
 Check out the corresponding branch for your installed LLVM version, then:
 
-```
+```shell
 mkdir build
 cd build
 cmake -DLLVM_DIR=/path/to/LLVM/lib/cmake/llvm ..
@@ -69,7 +70,7 @@ This will produce an executable, `tools/llvm-spirv/llvm-spirv`. You can copy thi
 
 PoCL’s own binary format doesn’t use SPIR-V, but it’s possible to compile OpenCL sources directly to SPIR (LLVM IR with SPIR target), using Clang:
 
-```
+```shell
 clang -Xclang -cl-std=CL1.2 -D__OPENCL_C_VERSION__=120  -D__OPENCL_VERSION__=120 \
  -Dcl_khr_int64 -Dcl_khr_byte_addressable_store -Dcl_khr_int64_extended_atomics \
  -Dcl_khr_global_int32_base_atomics -Dcl_khr_global_int32_extended_atomics \
@@ -82,7 +83,7 @@ clang -Xclang -cl-std=CL1.2 -D__OPENCL_C_VERSION__=120  -D__OPENCL_VERSION__=120
 
 The SPIR binary from previous command can be further compiled to SPIR-V with:
 
-```
+```shell
 llvm-spirv -o SPIRV_OUTPUT.spv SPIR_OUTPUT.bc
 ```
 

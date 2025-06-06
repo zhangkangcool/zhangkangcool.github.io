@@ -1,3 +1,4 @@
+<h1 align="center">ssh连接远程服务器自动断开解决</h1>
 https://blog.csdn.net/hustcw98/article/details/79325878
 
 https://blog.csdn.net/abld99/article/details/69388858
@@ -14,13 +15,13 @@ https://blog.csdn.net/abld99/article/details/69388858
 
 在其中添加一行内容,意思是向客户端每60秒发一次保持连接的信号
 
-```
+```shell
 ClientAliveInterval  601
 ```
 
 如果仍要设置断开时间,还有一个参数可以添加
 
-```
+```shell
 ClientAliveCountMax  601
 ```
 
@@ -34,7 +35,7 @@ ClientAliveCountMax  601
 
 在其中类似的添加相应的参数也行
 
-```
+```shell
 ServerAliveInterval  60
 ServerAliveCountMax  6012
 ```
@@ -45,7 +46,7 @@ ServerAliveCountMax  6012
 
 在连接前使用-o 可以设置相应的参数
 
-```
+```shell
 ssh -o ServerAliveInterval=30 root@192.168.1.1
 ```
 
@@ -68,7 +69,7 @@ ServerAliveCountMax  6012
 
 ## 重启ssh服务
 
-```
+```shell
 servece sshd restart
 ```
 

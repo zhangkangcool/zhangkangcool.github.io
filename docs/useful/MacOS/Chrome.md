@@ -1,3 +1,4 @@
+<h1 align="center">Chrome</h1>
 Mac安装Chrome，亲测可用。解决闪退问题
 
 https://blog.csdn.net/u010113247/article/details/79290633
