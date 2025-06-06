@@ -162,30 +162,30 @@ http://www.cnblogs.com/cocoajin/p/3729436.html
 
 - 安装所需软件
 
-  ```shell
+```shell
   brew install coreutils  # install command gdircolors
-  ```
+```
 
 - 下载所需的配置文件并重命名为`.dir_colors`，linux是`.dircolors`
 
-  ```shell
+```shell
   wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.ansi-universal
   mv dircolors.ansi-universal ~/.dir_colors
-  ```
+```
 
   
 
   也可生成所需要的配置文件，再对其进行信息
 
-  ```shell
+```shell
   gdircolors --print-database > ~/.dir_colors
-  ```
+```
 
   生成的配置文件会反映当前的配置情况，最好直接下载，生成的配置文件，一般去除前缀高亮即可。
 
 - 在`.zshrc`和`.bashrc`中添加如下设置
 
-  ```shell
+```shell
   # 通过coreutils设置ls的颜色
   if brew list | grep coreutils > /dev/null ; then
     PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
@@ -206,7 +206,7 @@ http://www.cnblogs.com/cocoajin/p/3729436.html
   alias ..4="cd ../../../.."
   alias ..5="cd ../../../../.."
   alias  "l"="ls -ahl --full-time"
-  ```
+```
 
   现在，`zsh`和`bash`的颜色都可以正常显示。
 
@@ -214,7 +214,7 @@ http://www.cnblogs.com/cocoajin/p/3729436.html
 
   https://blog.csdn.net/u013045749/article/details/53576868
 
-  ```shell
+```shell
   # 36为绿色，34为蓝色
   # directory
   #DIR 36
@@ -223,12 +223,12 @@ http://www.cnblogs.com/cocoajin/p/3729436.html
   LINK 01;36
   
   EXEC 01;36
-  ```
+```
 
-  ```shell
+```shell
   # DIR表示针对的是目录名，01表示高亮度显示，34表示蓝色,Solarized不要使用高亮
   DIR 01;34
-  ```
+```
 
   
 
