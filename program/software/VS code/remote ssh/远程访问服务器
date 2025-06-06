@@ -20,7 +20,7 @@ https://marketplace.visualstudio.com/VSCode
 
 需要安装如下两个插件
 
-```
+```shell
 Remote - SSH
 Remote - SSH: Editing Configration Files
 ```
