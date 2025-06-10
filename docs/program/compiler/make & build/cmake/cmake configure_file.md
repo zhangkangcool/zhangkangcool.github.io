@@ -27,7 +27,7 @@ https://www.jianshu.com/p/2946eeec2489
 
 ####   2. 将input文件中的`#cmakedefine var`关键字替换成`#define var`或者`#undef var`，取决于cmake是否定义了var。
 
-#### 
+
 
 # 三、举例说明
 
@@ -37,7 +37,7 @@ https://www.jianshu.com/p/2946eeec2489
 
 
 
-```objc
+```shell
 #cmakedefine var1
 #cmakedefine var2 "@var2@" #注意：@@之间的名称要与cmakedefine后的变量名一样
 #cmakedefine var3 "${var3}" #注意：${}之间的名称要与cmakedefine后的变量名一样
@@ -65,7 +65,7 @@ configure_file (config.h.in config.h)
 
 
 
-```undefined
+```shell
 cmake .
 ```
 
@@ -89,44 +89,44 @@ cmake .
 
 ##### **`output`** - 输出文件或目录，它也是一个相对路径，以[`CMAKE_CURRENT_BINARY_DIR`](https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Fv3.14%2Fvariable%2FCMAKE_CURRENT_BINARY_DIR.html%23variable%3ACMAKE_CURRENT_BINARY_DIR)为前缀。如果output的名称与已存在的目录名称相同，则会在该目录下生成一个与input文件名相同的文件。举个例子：如果input的文件名是inputfile，output是一个目录currentdir，那么生成的文件为currentdir/inputfile。
 
-##### **`options`** - 参数选项
+### 4.1 **`options`** - 参数选项
 
-> 1. `COPYONLY`：简单的把`input`文件拷贝到`output`，不做任何替换。注意，![\color{red}{该选项与}](cmake configure_file.assets/math-20230706161016937)`NEWLINE_STYLE`![\color{red}{冲突，不能同时使用}](cmake configure_file.assets/math)。
-> 2. `ESCAPE_QUOTES`：忽略反斜杠（C语言风格）的转义。
->      举个例子，不加`ESCAPE_QUOTES`的情况，也就是默认会对反斜杠进行转义：
->
-> 
->
-> ```cpp
-> config.h.in文件：
-> #define @var@
-> 
-> CMakeLists.txt文件：
-> set (var "\"VAR\"")
-> configure_file (config.h.in config.h)
-> 
-> 生成的config.h文件：
-> #define "VAR"
-> ```
->
->   加`ESCAPE_QUOTES`的情况，不对反斜杠进行转义：
->
-> 
->
-> ```csharp
-> config.h.in文件：
-> #define @var@
-> 
-> CMakeLists.txt文件：
-> set (var "\"VAR\"")
-> configure_file (config.h.in config.h ESCAPE_QUOTES)
-> 
-> 生成的config.h文件：
-> #define \"VAR\"
-> ```
->
-> 1. `@ONLY`：只替换`@var@`，不替换`${var}`。`${var}`在脚本语言中有语义含义（替换会导致含义发生变化），因此在处理这类文件的时候，该选项很有用。
-> 2. `NEWLINE_STYLE`：指定`output`文件的换行风格，例如linux以\n作为换行，windows以\r\n作为换行。该参数后面要指明换行的规则，如`UNIX|DOS|WIN32|LF|CRLF`。
+1. `COPYONLY`：简单的把`input`文件拷贝到`output`，不做任何替换。注意，![\color{red}{该选项与}](cmake configure_file.assets/math-20230706161016937)`NEWLINE_STYLE`![\color{red}{冲突，不能同时使用}](cmake configure_file.assets/math)。
+2. `ESCAPE_QUOTES`：忽略反斜杠（C语言风格）的转义。
+   举个例子，不加`ESCAPE_QUOTES`的情况，也就是默认会对反斜杠进行转义：
+
+```shell
+config.h.in文件：
+#define @var@
+
+CMakeLists.txt文件：
+set (var "\"VAR\"")
+configure_file (config.h.in config.h)
+
+生成的config.h文件：
+#define "VAR"
+```
+
+
+
+加`ESCAPE_QUOTES`的情况，不对反斜杠进行转义：
+
+```shell
+config.h.in文件：
+#define @var@
+
+CMakeLists.txt文件：
+set (var "\"VAR\"")
+configure_file (config.h.in config.h ESCAPE_QUOTES)
+
+生成的config.h文件：
+#define \"VAR\"
+```
+
+1. `@ONLY`：只替换`@var@`，不替换`${var}`。`${var}`在脚本语言中有语义含义（替换会导致含义发生变化），因此在处理这类文件的时候，该选项很有用。
+2. `NEWLINE_STYLE`：指定`output`文件的换行风格，例如linux以\n作为换行，windows以\r\n作为换行。该参数后面要指明换行的规则，如`UNIX|DOS|WIN32|LF|CRLF`。
+
+
 
 - #### cmakedefine01命令
 
