@@ -1,4 +1,4 @@
-<h1 align="center">安装on-my-zsh</h1>
+<h1 align="center">安装oh-my-zsh</h1>
 
 
 
@@ -31,7 +31,7 @@ sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install
 ### **Gitee ( 国内镜像 )**
 
 ```bash
-sh -c "$(wget -O- https://gitee.com/pocmon/mirrors/raw/master/tools/install.sh)"
+sh -c "$(wget -O- https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)"
 ```
 
 
