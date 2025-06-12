@@ -10,15 +10,31 @@ copyright: Copyright &copy; 2023 ~ now | zhangkangcool(ken)
 
 markdown_extensions:
 
-  - toc:
-
+  - toc:   # 自动生成目录
       permalink: True
 
-  - footnotes
+  - footnotes # 在文档底部自动生成脚注区域，并在引用处添加上标链接
 
-  - tables
+  - tables    # 支持 Markdown 表格语法
 
-  - markdown_checklist.extension
+  - admonition  #便利贴
+
+  - markdown_checklist.extension  # 支持 GitHub 风格的任务列表
+
+# TODO: 行号无法显示
+  - codehilite:  # 是 MkDocs 内置的 Markdown 扩展，基于 Python Markdown 的 codehilite 插件，使用 Pygments 进行代码高亮
+      guess_lang: false
+      linenums: false
+  - pymdownx.highlight: # 是 MkDocs 内置的 Markdown 扩展，基于 Python Markdown 的 codehilite 插件，使用 Pygments 进行代码高亮
+      anchor_linenums: true
+      line_spans: __span
+      auto_title: true   # 显示标题，未设置则会显示代码的语言
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences  #块嵌套
+  - pymdownx.details #块折叠
+  - pymdownx.keys # 样式：键盘按键
+
 
 #theme: readthedocs
 theme:
@@ -90,7 +106,16 @@ theme:
       hardware-tag: fontawesome/solid/microchip
       software-tag: fontawesome/solid/laptop-code
 
+plugins:
+  - minify:  # 压缩 HTML、CSS、JavaScript 文件以提高加载速度
+      minify_html: true
 
-extra:
-  disqus: 'your-shortname'
+  - git-revision-date-localized:  # 显示文档的最后修改时间（基于 Git）
+      type: date
+
+  - search  # 内置搜索
+
+
+# TODO: 此插件报编译错误
+#  - git-authors: # 显示文档的 Git 作者和贡献统计
 
