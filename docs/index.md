@@ -1,7 +1,5 @@
-<h1 align="center">index</h1>
+<h1 align="center">欢迎来到ken的个人博客</h1>
 
-
-## 欢迎来到zhangkangcool的个人博客
 
 
 
