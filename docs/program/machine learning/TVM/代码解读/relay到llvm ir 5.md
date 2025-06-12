@@ -9,7 +9,7 @@ https://zhuanlan.zhihu.com/p/165238422
 
 还是拆为若干逻辑部分来看，第一部分是对参数的处理。
 
-```text
+```c++
 CachedFunc Create(const Function& prim_func) {
     auto cache_node = make_object<CachedFuncNode>();
     cache_node->target = target_;
@@ -39,7 +39,7 @@ CachedFunc Create(const Function& prim_func) {
 
 上回说到CreateSschedule将relay IR转为Tensor和Operation构成的数据流图，这里就是把Function各参数输入转换为placeholder这玩意，placeholder表示一个占位符，表示还没有确定的Tensor，约束了该Tensor的形状和类型。看<dive into deep learning compiler>里经常出现te.placeholder就是生成出玩意的实例。处理tuple参数的方法是在else块中将他们都flatten。
 
-```text
+```c++
  CachedFunc Create(const Function& prim_func) {
     ...
     readable_name_stream_ << "fused";
@@ -63,7 +63,7 @@ CachedFunc Create(const Function& prim_func) {
 
 俺这里还是关注Array<te::Tensor> VisitExpr_(const CallNode* call_node)。按打算将这函数切俩半来学习。
 
-```text
+```c++
 Array<te::Tensor> VisitExpr_(const CallNode* call_node) final {
     static auto fpattern = Op::GetAttrMap<TOpPattern>("TOpPattern");
     static auto flower_call = tvm::runtime::Registry::Get("relay.backend.lower_call");
@@ -105,7 +105,7 @@ Array<te::Tensor> VisitExpr_(const CallNode* call_node) final {
 
 fpattern可以认为是kv map，键类型是Op(即relay::Op)，每个实例代表系统已注册的各个relay op。值类型则是枚举类型OpPatternKind的值。OpPatternKind定义在include/tvm/relay/op_attr*_*types.h:45, 源码如下:
 
-```text
+```c++
 enum OpPatternKind {
   // Elementwise operation
   kElemWise = 0,
@@ -137,7 +137,7 @@ enum OpPatternKind {
 
 以下是lower_call的代码。
 
-```python3
+```python
 @tvm._ffi.register_func("relay.backend.lower_call")
 def lower_call(call, inputs, target):
     """Lower the call expression to op implementation and tensor outputs."""
@@ -199,7 +199,7 @@ ret_type那部分就是构造等价的输出类型，不难理解。
 
 select_implementation的作用是为op选取最优的OpImplementation，其注释上说，如果启用了AutoTVM则使用相关机制来决策，没有的话就选用最高有优先级的实现。俺将它的代码拆分成常规决策和使用AutoTVM两部分, 以下为第一部分:
 
-```text
+```python
 def select_implementation(op, attrs, inputs, out_type, target, use_autotvm=True):
     all_impls = get_valid_implementations(op, attrs, inputs, out_type, target)
 
@@ -219,7 +219,7 @@ def select_implementation(op, attrs, inputs, out_type, target, use_autotvm=True)
 
 首先是调用了**get_valid_implementations**获得所有的候选实现。省掉注释后的代码长这样:
 
-```text
+```python
 def get_valid_implementations(op, attrs, inputs, out_type, target):
     fstrategy = op.get_attr("FTVMStrategy")
     assert fstrategy is not None, "%s doesn't have FTVMStrategy registered" % op.name

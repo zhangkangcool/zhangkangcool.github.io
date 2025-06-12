@@ -1,13 +1,12 @@
-<h1 align="center">getopt</h1>
+<h1 align="center">getopt函数</h1>
+
 bhttps://blog.csdn.net/yzy1103203312/article/details/78278625
 
 
 
-# getopt()函数
-
 无法使用长参数
 
-### 1 原型
+## 1. 原型
 
 ```c++
 #include <unistd.h>
@@ -37,7 +36,7 @@ optstring：短选项字符集合，如 -i -n中的i,n
 
 
 
-### 2 描述
+## 2. 描述
 
 1. getopt函数的前两个参数，就是main函数的argc和argv，这两者直接传入即可，要考虑的就只剩下第三个参数。
 
@@ -59,9 +58,7 @@ optstring：短选项字符集合，如 -i -n中的i,n
 
 
 
-
-
-### 3 解析过程
+## 3. 解析过程
 
 getopt首先扫描argv[1]到argv[argc-1]，并将选项及参数依次放到argv数组的最左边，非选项参数依次放到argv的最后边
 即该函数会改变argv的排列顺序。
@@ -89,7 +86,7 @@ $./mygetopt -i infile -a -o outfile -v -h file1 file2
 
 
 
-### 4 返回值
+## 4. 返回值
 
 若getopt找到短选项字符，则返回该选项字符，如此例中的i a o v h.
 若出现不能接受的选项字符或丢失选项参数，则返回?，同时optopt将被设置成相应选项字符；
@@ -102,7 +99,9 @@ getopt()的返回后，如果有选项参数的话optarg指向选项参数，并
 变量optopt保存最后一个由getopt()返回的已知的选项。
 在调用getopt()之前，将opterr设置为0，这样就可以在getopt()函数发现错误的时候强制它不输出任何消息。
 
-### 5 Example
+
+
+## 5. Example
 
 #### 5.1 例1
 

@@ -7,7 +7,7 @@ https://zhuanlan.zhihu.com/p/160840422
 
 起点是官网文档的第一个例子:
 
-```text
+```python
 batch_size = 1
 num_class = 1000
 image_shape = (3, 224, 224)
@@ -24,13 +24,13 @@ print(lib.get_source()[:])
 
 我做了微小的改动，使得程序会将生成的llvm ir打印出来，方便我们观察。运行命令是:
 
-```text
+```shell
 python tvm-test.py > tvm-test.ll
 ```
 
 生成的ir文件包含众多类型定义和函数，其中一个函数如下，看起来是正确生成了？
 
-```text
+```assembly
 define dllexport i32 @fused_nn_contrib_conv2d_NCHWc(i8* noalias nocapture readonly, i8* noalias nocapture readonly, i32, i8* noalias nocapture readnone, i8* noalias nocapture readnone, i8* noalias nocapture readnone) local_unnamed_addr {
 entry:
   %6 = icmp eq i32 %2, 3
@@ -57,7 +57,7 @@ assert_end:                                       ; preds = %entry
 
 开始正式研究源码。入口函数是relay.build，该函数定义在**tvm/python/tvm/relay/buil-d_module.py:184**, 省略不重要的代码，紧扣主线，该函数的末尾部分才真正进入代码生成环节:
 
-```text
+```python
 def build(mod, target=None, target_host=None, params=None):    
     ...
     with tophub_context:
@@ -117,7 +117,7 @@ void Build(IRModule mod, const TargetsMap& targets, const tvm::Target& target_ho
 
 下面是BuildRelay的第一部分:
 
-```text
+```c++
   void BuildRelay(IRModule relay_module,
                   const std::unordered_map<std::string, tvm::runtime::NDArray>& params) {
     // Relay IRModule -> IRModule optimizations.
@@ -135,7 +135,7 @@ void Build(IRModule mod, const TargetsMap& targets, const tvm::Target& target_ho
 
 这里岔开一个题外话, 就是在Relay上做的优化，同LLVM IR的优化类似，通过Pass来完成的，而tvm中添加pass和运行pass的工作交给了**RelayBuildModule::Optimize**来完成, 该函数大致的行为如下，添加到pass_seqs的就是pass的实体，有兴趣可以去看看各个pass干了啥。
 
-```text
+```C++
 IRModule Optimize(IRModule relay_module, const TargetsMap& targets,
                     const std::unordered_map<std::string, runtime::NDArray>& params) {
     Array<Pass> pass_seqs;
@@ -175,7 +175,7 @@ IRModule Optimize(IRModule relay_module, const TargetsMap& targets,
 
 最后通过**SequentialNode(src/ir/[http://transform.cc:209](https://link.zhihu.com/?target=http%3A//transform.cc%3A209))**来运行这些passes, 见代码:
 
-```text
+```c++
 // TODO(zhiics): we currenlty only sequentially execute each pass in
 // a Sequential without the consideration of their orders. The phase
 // ordering problem needs to be handled in the future.

@@ -57,7 +57,7 @@ std::vector<GraphNodeRef> VisitExpr_(const CallNode* op) override {
 
 compile_engine_是GraphRuntimeCodegen的成员变量，在GraphRuntimeCodegen构造函数中进行初始化，它也是后续流程的执行者。为了解释清楚，贴出刚才提到的代码:
 
-```text
+```c++
 TVM_REGISTER_GLOBAL("relay.backend._CompileEngineLower")
     .set_body_typed([](CompileEngine self, CCacheKey key) { return self->Lower(key); });
 
@@ -82,7 +82,7 @@ const CompileEngine& CompileEngine::Global() {
 
 CompileEngineImpl类定义在**src/relay/backend/[http://compile_engine.cc:549](https://link.zhihu.com/?target=http%3A//compile_engine.cc%3A549)。**调用了Lower方法。这个Lower方法就只是调用了LowerInternal方法，代码如下:
 
-```text
+```c++
 CachedFunc Lower(const CCacheKey& key) { 
     return LowerInternal(key)->cached_func; 
 }
@@ -92,7 +92,7 @@ CachedFunc Lower(const CCacheKey& key) {
 
 LowerInternal方法比较长，还是要省略一下远离主线的代码。俺所省略的代码完成的主要任务有1.缓存机制，如果已经处理过该relay function了直接返回以前的结果，没有的话就开个新的cache entry给它，继续处理流程。2. 如果是外部函数，则不急着进行代码生成，先都收集起来，最后再调用外部代码生成工具一把梭，所以这里完成收集的步骤。
 
-```text
+```c++
    CCacheValue LowerInternal(const CCacheKey& key) {
     std::lock_guard<std::mutex> lock(mutex_);
     CCacheValue value;

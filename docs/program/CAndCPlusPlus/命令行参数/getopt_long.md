@@ -1,25 +1,24 @@
-<h1 align="center">getopt_long</h1>
+
 
 
 https://www.cnblogs.com/hellokitty2/p/9102924.html
 
 
 
-# getopt_long()函数
+<h1 align="center">getopt_long()函数</h1>
 
 
 
-### 1 原型
+## 1. 原型
 
 getopt_long函数包含了getopt函数的功能，并且还可以指定“长参数”（或者说长选项），与getopt函数对比，getopt_long比其多了两个参数。
 
 ```c++
 #define _GNU_SOURCE
- 
 #include <getopt.h>
  
 extern char *optarg;
- 
+
 extern int optind, opterr, optopt;
  
 int getopt_long(int argc, char *const argv[], const char *optstring, const struct option *longopts, int *longindex);
@@ -38,7 +37,7 @@ only可以使用 `-arg 123`和`--arg 123`，而非only只能用`--arg 123`，建
 
 
 
-### 2 描述
+## 2. 描述
 
 1、注意相比getopt，使用getopt_long需要加头文件<getopt.h>;
 2、getopt_long除了会接受长选项，其他概念和getopt是一样的；
@@ -51,7 +50,7 @@ only可以使用 `-arg 123`和`--arg 123`，而非only只能用`--arg 123`，建
 
 
 
-### 3. struct option
+## 3. struct option
 
 ```c++
 struct option {
@@ -80,7 +79,7 @@ val: 设置为函数返回值，字符常量返回值('m', 'n', 0 , 1, 2, '2'，
 
 
 
-### 4 返回值
+## 4. 返回值
 
 每次调用getopt_long，它会解析一个符号，返回相应的短选项字符，如果解析完毕返回-1
 如果getopt_long遇到一个无效的选项字符，它会打印一个错误消息并且返回'?'
@@ -91,7 +90,7 @@ val: 设置为函数返回值，字符常量返回值('m', 'n', 0 , 1, 2, '2'，
 
 
 
-### 5 Example
+## 5. Example
 
 #### 5.1 例1
 
@@ -238,7 +237,7 @@ int main (int argc, char *argv[])
 
 
 
-```c++
+```shell
 $ ./dd --name
 nnnnn.
 $ ./dd --good
@@ -248,10 +247,4 @@ you!
 ```
 
 
-
-
-
-```
-
-```
 

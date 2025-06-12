@@ -25,7 +25,7 @@ https://zhuanlan.zhihu.com/p/161030209
 
 GraphCodegen结构体定义在**src/relay/backend/[http://build_module.cc:58](https://link.zhihu.com/?target=http%3A//build_module.cc%3A58)**。它里边有一个成员对象mod为**tvm::runtime::Module**类的实例，下边展示的是GraphCodegen结构体的部分代码，省去了暂时不会用到的函数。
 
-```text
+```c++
 struct GraphCodegen {
  public:
   GraphCodegen() {
@@ -57,7 +57,7 @@ struct GraphCodegen {
 
 它的方法是经过转发实际调用了**GraphRuntimeCodegenModule**类的方法，这两个类的桥梁就是mod成员对象和CallFunction方法, 初始化函数中的pf实际指向的是CreateGraph-CodegenMod函数，mod被初始化为GraphRuntimeCodegenModule类的对象。下面是桥接的代码(**src/relay/backend/graph_runtime\*_\*[http://codegen.cc](https://link.zhihu.com/?target=http%3A//codegen.cc))**:
 
-```text
+```c++
 runtime::Module CreateGraphCodegenMod() {
   auto ptr = make_object<GraphRuntimeCodegenModule>();
   return runtime::Module(ptr);
@@ -75,7 +75,7 @@ TVM_REGISTER_GLOBAL("relay.build_module._GraphRuntimeCodegen")
 
 GraphRuntimeCodegenModule类中就只实现了GetFunction方法，除了init和codegen,其他的是getXXX方法，无关紧要。
 
-```text
+```c++
 virtual PackedFunc GetFunction(const std::string& name, const ObjectPtr<Object>& sptr_to_self) {
     if (name == "init") {
       return PackedFunc([sptr_to_self, this](TVMArgs args, TVMRetValue* rv) {
@@ -109,7 +109,7 @@ GraphCodegen-> GraphRuntimeCodegenModule -> GraphRuntimeCodegen
 
 好了，开始研究GraphRuntimeCodegen(graph_runtime*_*[http://codegen.cc:185](https://link.zhihu.com/?target=http%3A//codegen.cc%3A185))。初始化函数将成员对象compile_engine_初始化为CompileEngineImpl类实例, 注释说CompileEngineI-mpl的功能是"**backend compilation engine for low level code generation**", 目前不清楚它是用来生成ir还是机器码，我粗略地扫了一眼这个类的方法，感觉挺猛的。但是它现在不是俺的重点盯防对象，也许会在后边遇到它。回到GraphRuntimeCodegen中，先研究研究Codegen方法干了啥。
 
-```text
+```c++
 LoweredOutput Codegen(relay::Function func) {
     auto pf = GetPackedFunc("relay.backend.GraphPlanMemory");
     storage_device_map_ = (*pf)(func);
@@ -147,7 +147,7 @@ GraphInputNode是个啥?
 
 先来探究这个GraphNode类。
 
-```text
+```c++
 class GraphNode {
  public:
   GraphNode() {}
@@ -172,7 +172,7 @@ with open(temp.relpath("deploy_graph.json"), "w") as fo:
 
 在进入它的子类之前，看看它本身有什么有趣的地方，我发现了GraphAttrs这个类型，它是一个别名:
 
-```text
+```c++
 using GraphAttrs = std::unordered_map<std::string, dmlc::any>;
 ```
 
