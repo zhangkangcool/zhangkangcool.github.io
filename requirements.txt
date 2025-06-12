@@ -7,3 +7,5 @@ mkdocs-git-revision-date-localized-plugin  # 显示文档的最后修改时间�
 mkdocs-awesome-pages-plugin     # 简化 MkDocs 导航配置的插件，它的核心功能是让导航结构的管理更加灵活和直观
 pymdown-extensions
 mkdocs-git-authors-plugin   # 显示文档的 Git 作者和贡献统计
+jieba   # 支持中文分词的搜索插件
+

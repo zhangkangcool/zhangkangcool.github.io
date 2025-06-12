@@ -113,7 +113,9 @@ plugins:
   - git-revision-date-localized:  # 显示文档的最后修改时间（基于 Git）
       type: date
 
-  - search  # 内置搜索
+  - search:  # 内置搜索
+#      prebuild_index: true  # 预构建索引
+      separator: '[\s\u200b\-]'
 
 
 # TODO: 此插件报编译错误
