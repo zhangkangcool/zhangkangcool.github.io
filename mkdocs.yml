@@ -6,7 +6,9 @@ repo_name: zhangkangcool
 
 site_author: zhangkangcool
 site_description: ken's blog
-copyright: Copyright &copy; 2023 ~ now | zhangkangcool(ken)
+
+# href 新页面中打开
+copyright: Copyright &copy; 2023 ~ now | <a href="https://github.com/zhangkangcool" target="_blank" rel="noopener">zhangkangcool</a>
 
 markdown_extensions:
 
@@ -49,16 +51,16 @@ theme:
     - content.action.view # 查看按钮，似乎没啥用
     - content.code.annotate # 代码注释，具体不清楚
     - content.code.copy # 复制代码按钮
-    # - content.code.select # 选择代码按钮
+#    - content.code.select # 选择代码按钮
     # - content.tabs.link # 链接标签
     - content.tooltips # 不太清楚呢这个
     # - header.autohide # 自动隐藏header
     - navigation.expand # 默认展开导航栏
-    - navigation.footer # 底部导航栏
+    - navigation.footer # 底部换页支持
     - navigation.indexes # 索引按钮可以直接触发文件，而不是只能点击其下属选项浏览，这个功能可以给对应的section提供很好的预览和导航功能
     # - navigation.instant # 瞬间加载 - 如果这个开着，那么语言切换后就会跳转至首页，所以我关掉了
     - navigation.instant.prefetch # 预加载
-    - navigation.instant.progress # 进度条
+    - navigation.instant.progress # 加载速度慢时，在页面顶部显示加载进度（400ms 以上加载时间才会显示它
     - navigation.path # 导航路径， 目前好像没啥用
     # - navigation.prune # 只构建可见的页面
     - navigation.sections # 导航栏的section
@@ -106,15 +108,30 @@ theme:
       hardware-tag: fontawesome/solid/microchip
       software-tag: fontawesome/solid/laptop-code
 
+extra: # 额外设定
+  generator: false # 页面底部不显示生成信息
+  status: # 元信息状态标识
+    new: 最近添加
+    deprecated: 已废弃
+  homepage: . # 左上角徽标链接的地址
+  social: # 社交联系方式（页面右下角内容）
+    - icon: fontawesome/brands/github
+      link: https://github.com/zhangkangcool
+      name: GitHub
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:691386092@qq.com
+      name: 联系作者
+
 plugins:
   - minify:  # 压缩 HTML、CSS、JavaScript 文件以提高加载速度
       minify_html: true
 
   - git-revision-date-localized:  # 显示文档的最后修改时间（基于 Git）
-      type: date
+      enable_creation_date: true
+      type: datetime
 
   - search:  # 内置搜索
-#      prebuild_index: true  # 预构建索引
+#      prebuild_index: true  # 预构建索引  #此选项报错
       separator: '[\s\u200b\-]'
 
 
