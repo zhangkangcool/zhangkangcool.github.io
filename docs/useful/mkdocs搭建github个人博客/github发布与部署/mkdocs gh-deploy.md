@@ -1,7 +1,10 @@
 <h1 align="center">mkdocs gh-deploy</h1>
 
+如果想使用`github actions`自动进行发布与部署的话，请参考[github action自动发布](./github action自动发布.md)
 
-# `mkdocs gh-deploy` 命令详解
+
+
+## `mkdocs gh-deploy` 命令详解
 
 `mkdocs gh-deploy` 是一个专为 MkDocs 项目设计的便捷命令，其主要功能是把 MkDocs 项目自动部署到 GitHub Pages。下面为你详细介绍该命令的用法、工作机制以及相关注意要点。
 
@@ -58,3 +61,4 @@ mkdocs gh-deploy --message "文档更新"
 - `--force`：不进行任何检查，直接强制推送。
 - `--remote-name <远程仓库名>`：指定要推送的远程仓库名称，默认是 `origin`。
 - `--remote-branch <分支名>`：指定目标分支，默认是 `gh-pages`。
+
