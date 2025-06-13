@@ -1,0 +1,26 @@
+
+
+<h1 align="center">交叉编译 基本概念</h1>
+
+
+
+https://blog.csdn.net/whatday/article/details/73930604
+
+https://blog.csdn.net/menghuanbeike/article/details/103180010
+
+https://cloud.tencent.com/developer/article/1571937
+
+
+
+需要有交叉编译的编译器，如X86上编译ARM，该编译器需要能在X86上运行，但支持编译出ARM的binary。
+
+比如llvm如何编译出全平台的话，x86上的llc在指令target的情况下，可以得到ppc的汇编。
+
+
+
+
+
+```
+
+```
+
