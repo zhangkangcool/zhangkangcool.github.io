@@ -1,4 +1,4 @@
-<h1 align="center">gbin install</h1>
+<h1 align="center">bin install</h1>
 
 
 
