@@ -134,6 +134,19 @@ plugins:
 #      prebuild_index: true  # 预构建索引  #此选项报错
       separator: '[\s\u200b\-]'
 
+  - awesome-pages:  # 添加 awesome-pages 插件
+#      filename: .pages  # 配置文件名，默认为 .pages
+      collapse_single_pages: true  # 单页目录自动折叠
+
+
+# nav:
+#  - Home: index.md
+#  - Compiler: Compiler/llvm/llvm-ir.md
+#  - Program: Program/
+#  - Useful: Useful/
+#  - Other: Other/
+#  - About: about.md
+
 
 # TODO: 此插件报编译错误
 #  - git-authors: # 显示文档的 Git 作者和贡献统计
