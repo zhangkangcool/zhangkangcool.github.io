@@ -74,6 +74,19 @@ cat /dev/ttyUSB0
 
 
 
+### 2.3 puty
+
+以下方式对UEFI shell比较友好
+
+```shell
+sudo apt-get install putt
+sudo putty /dev/ttyUSB0 -serial -sercfg 115200,8,n,1,N
+```
+
+
+
+
+
 **注意**：此方法无法发送数据，且需提前配置好波特率（见下文编程方式）。
 
 
