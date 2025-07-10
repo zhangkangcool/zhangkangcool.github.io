@@ -62,3 +62,11 @@ index 5c9b2c18..bde35e06 100755
    cd -
 ```
 
+
+
+# 3. 安装
+
+```c++
+./oh-my-zsh/tools/instll.sh
+```
+

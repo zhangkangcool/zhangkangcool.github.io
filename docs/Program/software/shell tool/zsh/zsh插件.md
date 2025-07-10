@@ -87,6 +87,9 @@ source $ZSH/oh-my-zsh.sh
 
 
 
+自定义插件在这里，可以直接从其它机器复制过来放在这里。
 
-
+```shell
+/home/ken/.oh-my-zsh/custom/plugins
+```
 
