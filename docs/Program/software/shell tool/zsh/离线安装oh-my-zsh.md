@@ -70,3 +70,15 @@ index 5c9b2c18..bde35e06 100755
 ./oh-my-zsh/tools/instll.sh
 ```
 
+
+
+# 4. 设置默认使用zsh
+
+如果此时默认不是zsh的话，可以通过以下命令进行设置：
+
+```shell
+ken$:  chsh -s $(which zsh)        # chsh -s /bin/zsh
+或者使用root，指定为ken设置
+root#: chsh -s $(which zsh) ken      # chsh -s /bin/zsh ken
+```
+

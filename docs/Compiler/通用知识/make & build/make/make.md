@@ -2,26 +2,9 @@
 
 <h1 align="center">make</h1>
 
+# 1. 示例
 
-
-make use `Makefile` default.
-If you want to use the specify Makefile file, you should use `make -f`.
-On the linux the `gmake`(means gnu make) is same as `make`. If on other OS, you must use `gmake` to use the gnu make. 
-
-```
-make -j40 -f Makefile.lnx_le
-```
-
-print the command line and not to run
-```
-make -n
-```
-
-### 1 A Makefile example
-
-
-
-```
+```shell
 TARGET = main
 OBJ=server.o interface.o phy_iniparser.o phy_dictionary.o  XenCtrImpl.o auth_app.o public.o log.o md5.o main.o
 CFLAG=-Wall -Iinclude/ 
@@ -36,39 +19,54 @@ clean:
 ```
 缩进必须是TAB，不能是space。
 
-### 2.2 查看命令行
 
-```
+
+# 2 常用选项
+
+## 2.1 查看命令行
+
+```shell
 仅查看命令，不执行编译
 make clean
-make cheak -n 
+make chean -n 
 make -n
 ```
 
 
 
-### 2.3 编译时显示详细的命令行
+## 2. 打印Makefile的各种变量信息
 
+```shell
+make -p 
+make -p -n               # 不执行
+make -p -n --trace       # 不执行
 ```
+
+
+
+
+
+## 2.3 编译时显示详细的命令行
+
+```shell
 http://euhat.com/wp/2017/11/01/cmake-%E6%98%BE%E7%A4%BA%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4/
 最好先make clean
 make VERBOSE=1
+make --trace
 ```
 
 
 
+## 2.4 指定Makefile文件
 
-
-### 2.4 指定Makefile文件
-
-```
+```shell
  make -f myMakefile
 ```
 
 # 3. build a software
 
 If you are building the `texinfo-6.0`.
-```
+```shell
 mkdir ~/software/textinfo
 cd ~/software/textinfo
 mkdir build
@@ -103,7 +101,7 @@ make -n 只输出编译命令，不进行真正的输出
 
 
 
-```
+```shell
 cmake -E link.txt --verbose=1
 ```
 
@@ -131,19 +129,20 @@ cmake -E link.txt --verbose=1
 
 
 
-### 5. Make 调试
+## 5. Make 调试
 
-```
+```shell
 make CFLAGS="-g" CXXFLAGS="-g"
+make -p   # 打印makefile中的所有变量 
+make -p -n               # 不执行
+make -p -n --trace       # 不执行
 ```
 
 
 
+## 6. flag上加-v输出更多信息
 
-
-### 6. flag上加-v输出更多信息
-
-```C++
+```shell
 CFLAGS    += -v
 CXXFLAGS  += -v
 ```
@@ -152,7 +151,7 @@ CXXFLAGS  += -v
 
 
 
-### 7. make --trace VERBOSE=2（建议使用）
+## 7. make --trace VERBOSE=2（建议使用）
 
 cmake --trace可以打印cmake脚本信息，
 
