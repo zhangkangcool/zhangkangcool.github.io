@@ -52,7 +52,7 @@ menuentry 'AcoreLinux Embedded version V1.0.0.F.2' {
         insmod part_gpt  # 加载 GPT 分区表驱动（若磁盘是 MBR，需改为 insmod part_msdos）
         insmod ext2      # 加载 ext2/ext3/ext4 文件系统驱动（根据内核分区的文件系统调整）
         set root='hd1,gpt1'  # /dev/sdb1 对应的 GRUB 磁盘/分区标识
-        linux  /Image-4.19.115-01-acorelinux  root=/dev/sda5  # 内核文件路径 + 根分区
+        linux  /Image-4.19.115-01-acorelinux  root=/dev/sdb  # 内核文件路径 + 根分区
         console=ttyAMA1,115200 splash loglevel=7 rootdelay=5 KEYBOARDTYPE=pc KEYTABLE=us security=
 }
 ```

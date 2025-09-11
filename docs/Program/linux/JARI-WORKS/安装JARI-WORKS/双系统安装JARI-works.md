@@ -129,7 +129,7 @@ boot
 └── vmlinuz-4.19.272-rt120.JARI-Works.0428-test
 ```
 
-将此部得到的boot/*的内容，复制到imgage解压出来的/boot/下。
+将此部得到的boot/*的内容，复制到image解压出来的/boot/下。
 
 ```shell
 $ ls /mnt/sda7/boot
@@ -165,7 +165,7 @@ $ ls /mnt/sda7/lib/modules
 ##### 4.1 复制内核到启动分区，例如：
 
 ```shell
-cp /mnt/sda7/boot/jxworks /mnt/sda1 -v  # 将jxworks复制到麒麟系统下的/boot下, -v输出更详细的信息
+cp /mnt/sda7/boot/jxworks /boot-v  # 将jxworks复制到麒麟系统下的/boot下, -v输出更详细的信息
 或者
 cp /mnt/sda7/boot/jxworks /boot -v  # 将jxworks复制到麒麟系统下的/boot下, -v输出更详细的信息
 可能需要修改jxworks权限

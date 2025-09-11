@@ -56,7 +56,7 @@ index 5c9b2c18..bde35e06 100755
 -    fmt_error "git clone of oh-my-zsh repo failed"
 -    exit 1
 -  }
-+  cp -ra "$(dirname "$0")"/.. $ZSH  # 复制本项目到~/.oh-my-zsh 
++  cp -ra "$(dirname "$0")"/.. $ZSH  # 复制本项目到~/.oh-my-zsh
 +  rm -rf $ZSH/.git                  # 删除项目下的.git
    # Exit installation directory
    cd -
