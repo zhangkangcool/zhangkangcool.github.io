@@ -63,6 +63,7 @@ export https_proxy=192.168.110.124:4399
 ```
 sudo apt-get -o Acquire::http::proxy="http://127.0.0.1:4399/" update
 sudo apt-get -o Acquire::http::proxy="http://192.168.110.124:4399/" update
+sudo apt-get -o Acquire::http::proxy="http://172.18.8.106:3128/" update
 ```
 
 

@@ -33,7 +33,7 @@ ken@d2000:~/workspace/Compiler_6434$ ldd /usr/bin/clinfo
 #### 2.1 备份目前/etc/OpenCL/vendors下所有的库
 
 ```shell
-sudo cp mesa.icd mesa.icd.bak
+sudo m mesa.icd mesa.icd.bak
 ```
 
 
