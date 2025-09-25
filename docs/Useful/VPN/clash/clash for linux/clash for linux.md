@@ -8,6 +8,8 @@
 
 https://github.com/wnlen/clash-for-linux  可以根据项目中的README.md来进行安装
 
+此项目不支持arm架构，在start.sh中写了只支持x86_64和amd64，因为`clash-for-linux/tools/subconverter/subconverter`转换工具是x86架构的，arm下无法运行。
+
 
 
 ### 1. 设置
@@ -107,7 +109,7 @@ proxy_on
 ##### 检查服务端口
 
 ```shell
- netstat -tln | grep -E '9090|789.'
+netstat -tln | grep -E '9090|789.'
 tcp        0      0 127.0.0.1:9090          0.0.0.0:*               LISTEN     
 tcp6       0      0 :::7890                 :::*                    LISTEN     
 tcp6       0      0 :::7891                 :::*                    LISTEN     

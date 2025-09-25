@@ -82,3 +82,12 @@ ken$:  chsh -s $(which zsh)        # chsh -s /bin/zsh
 root#: chsh -s $(which zsh) ken      # chsh -s /bin/zsh ken
 ```
 
+
+
+如果是centOS的，chsh报错的话，需要
+
+```shell
+sudo yum install util-linux-user
+chsh -s $(which zsh) 
+```
+

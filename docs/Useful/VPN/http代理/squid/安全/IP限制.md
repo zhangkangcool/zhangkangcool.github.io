@@ -24,6 +24,7 @@ Squid允许你使用访问控制列表（ACL）来控制客户如何访问网络
 ```c++
 # All other allowed IPs
 192.168.110.237   # 192.168.110.* 的写法使用`systemctl restart squild.service`报错
+   192.168.1.0/24
 ```
 
 
