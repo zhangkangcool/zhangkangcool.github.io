@@ -52,6 +52,12 @@ pip install 包名  --proxy=192.168.110.124:4399
 ```shell
 export http_proxy=192.168.110.124:4399
 export https_proxy=192.168.110.124:4399
+
+
+
+如果用的是clash，可能是以下
+export http_proxy=http:172.0.0.1:47890
+export https_proxy=http:172.0.0.1:47890
 ```
 
 

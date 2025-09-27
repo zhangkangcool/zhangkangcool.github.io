@@ -27,6 +27,8 @@ https://www.cnblogs.com/youngyajun/p/16661980.html
 
 ```shell
 sudo dpkg -i typora_1.0.3_amd64.deb
+
+sudp apt install  typora_1.0.3_amd64.deb   # 次命令会把所需要的依赖也一起安装了
 ```
 
 # 3.激活环境准备
