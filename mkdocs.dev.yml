@@ -1,0 +1,29 @@
+site_name: zhangkangcool's blog (dev)
+repo_url: https://github.com/zhangkangcool/zhangkangcool.github.io
+edit_uri: edit/main/docs/
+
+# Dev config: minimal plugins and extensions to speed up `mkdocs serve`.
+# Use this when actively editing pages to avoid full-site rebuilds caused by
+# some plugins (awesome-pages, minify, git-revision-date-localized, etc.).
+
+site_author: zhangkangcool
+site_description: ken's blog (dev)
+
+markdown_extensions:
+  - toc:
+      permalink: True
+  - tables
+  - admonition
+
+theme:
+  name: material
+  logo: assets/images/logo.jpeg
+  language: en
+
+plugins:
+  - search:
+      separator: '[\s\u200b\-]'
+
+# Note: this dev config intentionally omits heavy plugins used in production
+# such as awesome-pages, minify, git-revision-date-localized, and others.
+# If you need to preview the exact production output, run with `mkdocs.yml`.

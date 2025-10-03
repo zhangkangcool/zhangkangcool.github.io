@@ -38,6 +38,20 @@ mkdocs serve
 
 如果你想让我把 README 调整为更短的版本或加入更多具体示例（例如 CI 错误排查、常见构建问题），告诉我希望的方向，我可以继续修改.
 
+快速本地开发（更快的 `mkdocs serve`）
+
+如果你发现 `mkdocs serve` 每次会触发全面编译，或本地预览比较慢，可以使用仓库提供的轻量开发配置 `mkdocs.dev.yml`：
+
+```bash
+# 安装依赖（如果尚未安装）
+pip install -r requirements.txt
+
+# 使用 dev 配置运行（禁用部分耗时插件）
+mkdocs serve -f mkdocs.dev.yml
+```
+
+说明：`mkdocs.dev.yml` 会在本地禁用或简化一些在生产中需要的插件（例如 `awesome-pages`、`minify`、`git-revision-date-localized` 等），以减少每次变更时的全站重建。若需预览生产构建结果，请用默认的 `mkdocs.yml`。
+
 
 
 
