@@ -2,7 +2,11 @@
 
 
 
-
+| 函数                        | 是否需要 `clBuildProgram`？                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| `clCreateProgramWithSource` | **是**，必须调用。                                           |
+| `clCreateProgramWithBinary` | **否**，绝对不要调用。                                       |
+| `clCreateProgramWithIL`     | **是**，必须调用，因为 IL (SPIR-V) 是中间语言，需要翻译成设备二进制。 |
 
 
 
@@ -64,6 +68,10 @@ cl_program program = clCreateProgramWithIL(context, il_binary, il_size, &err);
 #include <stdio.h>
 #include <stdlib.h>
 
+// 假设这是你的内核函数名
+// 这个名字必须与生成 SPIR-V 二进制文件时使用的 __kernel 函数名完全一致
+#define KERNEL_NAME "your_kernel_name" 
+
 int main() {
     // 假设 context 和 device 已经创建
     cl_context context = ...;
@@ -71,31 +79,57 @@ int main() {
     cl_int err;
 
     // SPIR-V 二进制数据 (这只是示例，需替换为实际的 SPIR-V 数据)
+    // 注意：这个二进制数据必须是从合法的 OpenCL C/C++ 代码编译而来的
     const unsigned char spirv_binary[] = {
         0x03, 0x02, 0x23, 0x07, // SPIR-V header (示例数据)
         /* 后续为实际的 SPIR-V 数据 */
     };
     size_t spirv_size = sizeof(spirv_binary);
 
-    // 创建程序对象
+    // 1. 从 SPIR-V IL 创建程序对象
     cl_program program = clCreateProgramWithIL(context, spirv_binary, spirv_size, &err);
     if (err != CL_SUCCESS) {
         printf("Failed to create program with IL: %d\n", err);
         return -1;
     }
 
-    // 构建程序
+    // 2. 构建/翻译程序 (将 SPIR-V 翻译为设备二进制)
     err = clBuildProgram(program, 1, &device, NULL, NULL, NULL);
     if (err != CL_SUCCESS) {
         printf("Failed to build program: %d\n", err);
+        
+        // 输出构建日志以排查问题
+        char buffer[2048];
+        clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, NULL);
+        printf("Build log:\n%s\n", buffer);
+
+        clReleaseProgram(program); // 清理
+        clReleaseContext(context);
         return -1;
     }
 
-    printf("Program created and built successfully with IL!\n");
+    // 3. 从构建好的程序中创建内核对象 (这是缺失的关键步骤)
+    cl_kernel kernel = clCreateKernel(program, KERNEL_NAME, &err);
+    if (err != CL_SUCCESS) {
+        printf("Failed to create kernel '%s': %d\n", KERNEL_NAME, err);
+        // 常见错误是内核名字写错，或者 SPIR-V 模块中不包含此内核
+        clReleaseProgram(program);
+        clReleaseContext(context);
+        return -1;
+    }
 
-    // 清理
-    clReleaseProgram(program);
-    clReleaseContext(context);
+    printf("Program created from IL, built, and kernel '%s' created successfully!\n", KERNEL_NAME);
+
+    // 此时，你可以继续进行下一步操作，例如：
+    // - 创建命令队列 (cl_command_queue)
+    // - 创建内存对象 (cl_mem)
+    // - 设置内核参数 (clSetKernelArg)
+    // - 执行内核 (clEnqueueNDRangeKernel)
+
+    // 4. 清理所有创建的 OpenCL 资源 (按相反顺序释放)
+    clReleaseKernel(kernel);   // 释放内核对象
+    clReleaseProgram(program); // 释放程序对象
+    clReleaseContext(context); // 释放上下文
 
     return 0;
 }
@@ -176,30 +210,49 @@ int main() {
         "   c[id] = a[id] + b[id];"
         "}";
 
-    // 创建程序对象
+    // 1. 创建程序对象
     cl_program program = clCreateProgramWithSource(context, 1, &source, NULL, &err);
     if (err != CL_SUCCESS) {
         printf("Failed to create program with source: %d\n", err);
         return -1;
     }
 
-    // 构建程序
+    // 2. 构建程序
     err = clBuildProgram(program, 1, &device, NULL, NULL, NULL);
     if (err != CL_SUCCESS) {
         printf("Failed to build program: %d\n", err);
-
-        // 输出构建日志
         char buffer[2048];
         clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, NULL);
         printf("Build log:\n%s\n", buffer);
+        clReleaseProgram(program); // 清理
+        clReleaseContext(context);
         return -1;
     }
 
-    printf("Program created and built successfully with source!\n");
+    // 3. 从构建好的程序中创建内核对象 (这是缺失的关键步骤)
+    //    内核的名字 "vector_add" 必须与源代码中的 __kernel 函数名完全一致
+    cl_kernel kernel = clCreateKernel(program, "vector_add", &err);
+    if (err != CL_SUCCESS) {
+        printf("Failed to create kernel 'vector_add': %d\n", err);
+        // 常见错误是内核名字写错，或者构建失败
+        clReleaseProgram(program);
+        clReleaseContext(context);
+        return -1;
+    }
 
-    // 清理
-    clReleaseProgram(program);
-    clReleaseContext(context);
+    printf("Program created, built, and kernel 'vector_add' created successfully!\n");
+
+    // 此时，你可以继续进行下一步操作，例如：
+    // - 创建命令队列 (cl_command_queue)
+    // - 创建内存对象 (cl_mem) 用于 a, b, c 数组
+    // - 设置内核参数 (clSetKernelArg)
+    // - 执行内核 (clEnqueueNDRangeKernel)
+    // - 读取结果 (clEnqueueReadBuffer)
+
+    // 4. 清理所有创建的 OpenCL 资源 (按相反顺序释放)
+    clReleaseKernel(kernel);   // 释放内核对象
+    clReleaseProgram(program); // 释放程序对象
+    clReleaseContext(context); // 释放上下文
 
     return 0;
 }
@@ -268,6 +321,9 @@ cl_program program = clCreateProgramWithBinary(context, 1, &device, &binary_size
 #include <stdio.h>
 #include <stdlib.h>
 
+// 假设这是你的内核函数名
+#define KERNEL_NAME "your_kernel_name" 
+
 int main() {
     // 假设 context 和 device 已经创建
     cl_context context = ...;
@@ -292,30 +348,31 @@ int main() {
     // 创建程序对象
     cl_program program = clCreateProgramWithBinary(context, 1, &device, &binary_size, 
                                                    (const unsigned char**)&binary, NULL, &err);
-    free(binary);
+    free(binary); // 二进制数据已被驱动加载，本地内存可以释放
 
     if (err != CL_SUCCESS) {
         printf("Failed to create program with binary: %d\n", err);
         return -1;
     }
 
-    // 构建程序
-    err = clBuildProgram(program, 1, &device, NULL, NULL, NULL);
-    if (err != CL_SUCCESS) {
-        printf("Failed to build program: %d\n", err);
+    // --- clBuildProgram 调用已被删除 ---
 
-        // 输出构建日志
-        char buffer[2048];
-        clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, NULL);
-        printf("Build log:\n%s\n", buffer);
+    // 直接从已加载的二进制程序创建内核
+    cl_kernel kernel = clCreateKernel(program, KERNEL_NAME, &err);
+    if (err != CL_SUCCESS) {
+        printf("Failed to create kernel '%s': %d\n", KERNEL_NAME, err);
+        // 注意：这里不能获取构建日志，因为没有执行构建操作
+        clReleaseProgram(program);
+        clReleaseContext(context);
         return -1;
     }
 
-    printf("Program created and built successfully with binary!\n");
+    printf("Program created from binary and kernel '%s' created successfully!\n", KERNEL_NAME);
 
-    // 清理
-    clReleaseProgram(program);
-    clReleaseContext(context);
+    // 清理资源
+    clReleaseKernel(kernel);   // 释放内核对象
+    clReleaseProgram(program); // 释放程序对象
+    clReleaseContext(context); // 释放上下文
 
     return 0;
 }
