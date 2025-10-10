@@ -139,6 +139,9 @@ extra_css:
   - assets/stylesheets/custom.css
   - assets/stylesheets/custom-fonts.css
 
+extra_javascript:
+  - assets/javascripts/utterances-config.js
+
 
 # -----------------------------
 # 插件（plugins）

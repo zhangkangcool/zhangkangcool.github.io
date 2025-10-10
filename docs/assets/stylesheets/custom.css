@@ -83,6 +83,12 @@ body {
   .md-content { padding: 1rem; }
 }
 
+/* 留言板（Utterances）容器间距 */
+#utterances-thread {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 /* 深色模式细化样式（prefers-color-scheme: dark） */
 @media (prefers-color-scheme: dark) {
   /* 页面背景与文字色微调以提升对比度 */
