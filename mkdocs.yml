@@ -1,105 +1,112 @@
 site_name: zhangkangcool's blog
+# 站点基本信息
+# site_name: 网站标题，会显示在导航栏和页面标题中
 repo_url: https://github.com/zhangkangcool/zhangkangcool.github.io
+# repo_url: 仓库地址，主题会在页面上显示一个仓库图标并链接到这里
 site_url: https://github.com/zhangkangcool/zhangkangcool.github.io
+# site_url: 网站部署后的根 URL，供生成 sitemap 或社交分享时使用
 edit_uri: edit/main/docs/
+# edit_uri: 用于在页面上生成 "Edit on GitHub" 链接，格式通常为 edit/<branch>/<path>/
 repo_name: zhangkangcool
 
 site_author: zhangkangcool
+# site_author: 站点作者名称，部分主题会在模板中引用
 site_description: ken's blog
+# site_description: SEO 描述，会被搜索引擎和部分主题使用
 
-# href 新页面中打开
+# copyright: 自定义页脚版权信息，支持 HTML
 copyright: Copyright &copy; 2023 ~ now | <a href="https://github.com/zhangkangcool" target="_blank" rel="noopener">zhangkangcool</a>
 
+# -----------------------------
+# Markdown 扩展（Python-Markdown 扩展）
+# 这些扩展增强原生 Markdown 的功能，例如自动生成目录、脚注、表格等
+# -----------------------------
 markdown_extensions:
 
-  - toc:   # 自动生成目录
-      permalink: True
+  - toc:   # 自动为页面生成目录（Table of Contents）
+      permalink: True  # 在每个头部（h1/h2 等）旁边显示链接图标，方便复制链接
 
-  - footnotes # 在文档底部自动生成脚注区域，并在引用处添加上标链接
+  - footnotes # 支持脚注语法，渲染为页面底部的脚注列表
 
-  - tables    # 支持 Markdown 表格语法
+  - tables    # 启用 Markdown 表格语法
 
-  - admonition  #便利贴
+  - admonition  # 支持 admonition 块（提示、注意等信息框）
 
-  - markdown_checklist.extension  # 支持 GitHub 风格的任务列表
+  - markdown_checklist.extension  # 支持 GitHub 风格的任务列表，如 - [ ] 和 - [x]
 
-# TODO: 行号无法显示
-  - codehilite:  # 是 MkDocs 内置的 Markdown 扩展，基于 Python Markdown 的 codehilite 插件，使用 Pygments 进行代码高亮
-      guess_lang: false
-      linenums: false
-  - pymdownx.highlight: # 是 MkDocs 内置的 Markdown 扩展，基于 Python Markdown 的 codehilite 插件，使用 Pygments 进行代码高亮
+  # 代码高亮配置（两个可选扩展，保留主要设置）
+  - codehilite:  # 基于 Pygments 的代码高亮扩展
+      guess_lang: false  # 不自动猜测代码语言（避免误判）
+      linenums: false    # 是否显示行号（可改为 true）
+  - pymdownx.highlight: # pymdown 的代码高亮增强（和 codehilite 可配合使用）
       anchor_linenums: true
       line_spans: __span
-      auto_title: true   # 显示标题，未设置则会显示代码的语言
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences  #块嵌套
-  - pymdownx.details #块折叠
-  - pymdownx.keys # 样式：键盘按键
+      auto_title: true   # 当代码块没有标题时，自动使用语言作为标题
+  - pymdownx.inlinehilite  # 支持在行内高亮代码片段
+  - pymdownx.snippets     # 支持将外部片段插入页面
+  - pymdownx.superfences  # 支持多层嵌套代码块和自定义语法高亮
+  - pymdownx.details     # 支持可折叠的 details/summary 区块
+  - pymdownx.keys        # 美化键盘按键的显示，例如 <kbd>Ctrl</kbd>
 
 
-#theme: readthedocs
+# -----------------------------
+# 主题配置（Material for MkDocs）
+# 参考：https://squidfunk.github.io/mkdocs-material/
+# -----------------------------
 theme:
-# reference http://www.cuishuaiwen.com:8000/zh/PROJECT/TECH-BLOG/mkdocs_and_material/#material_3
-#  custom_dir: material/overrides # 自定义文件夹，对于个别页面，如果你不想使用主题的默认样式，可以在这里进行修改，使用里面的文件覆盖主题的默认文件。具体可以参考material官方文档。
-  name: material # 主题名称，Material已经是最优秀的选择了，相信我。
-  logo: assets/images/logo.jpeg # logo 图片
-  language: en # 默认语言
-  features: # 功能  
-    - announce.dismiss # 可以叉掉公告的功能
-    - content.action.edit # 编辑按钮，似乎没啥用
-    - content.action.view # 查看按钮，似乎没啥用
-    - content.code.annotate # 代码注释，具体不清楚
-    - content.code.copy # 复制代码按钮
-#    - content.code.select # 选择代码按钮
-    # - content.tabs.link # 链接标签
-    - content.tooltips # 不太清楚呢这个
-    # - header.autohide # 自动隐藏header
-    - navigation.expand # 默认展开导航栏
-    - navigation.footer # 底部换页支持
-    - navigation.indexes # 索引按钮可以直接触发文件，而不是只能点击其下属选项浏览，这个功能可以给对应的section提供很好的预览和导航功能
-    # - navigation.instant # 瞬间加载 - 如果这个开着，那么语言切换后就会跳转至首页，所以我关掉了
-    - navigation.instant.prefetch # 预加载
-    - navigation.instant.progress # 加载速度慢时，在页面顶部显示加载进度（400ms 以上加载时间才会显示它
-    - navigation.path # 导航路径， 目前好像没啥用
-    # - navigation.prune # 只构建可见的页面
-    - navigation.sections # 导航栏的section
-    - navigation.tabs # 顶级索引被作为tab
-    - navigation.tabs.sticky # tab始终可见
-    - navigation.top # 开启顶部导航栏
-    - navigation.tracking # 导航栏跟踪
-    - search.highlight # 搜索高亮
-    - search.share # 搜索分享
-    - search.suggest # 搜索建议
-    - toc.follow # 目录跟踪-页面右侧的小目录
-    # - toc.integrate # 目录跟踪集成到左侧大目录中
+  # custom_dir: material/overrides # 如果需要自定义主题模板，可在这里指定覆盖目录
+  name: material # 使用 Material 主题
+  logo: assets/images/logo.jpeg # 站点 logo 路径，相对于 docs 目录或 site 目录下的 assets
+  language: en # 主题语言（影响 UI 文案），常用值：en / zh
+  features: # Material 主题的可选特性开关（启用/禁用不同的 UI 功能）
+    - announce.dismiss # 允许用户关闭顶部公告栏
+    - content.action.edit # 在页面显示编辑按钮（需要 edit_uri 配合）
+    - content.action.view # 在页面显示查看按钮
+    - content.code.annotate # 代码注释（在代码块中显示注释行）
+    - content.code.copy # 在代码块中显示 "复制" 按钮
+    - content.tooltips # 启用悬浮提示
+    - navigation.expand # 默认展开左侧导航树
+    - navigation.footer # 在页脚显示翻页导航
+    - navigation.indexes # 允许在 section 展示索引入口
+    - navigation.instant.prefetch # 启用页面预加载以提高导航速度
+    - navigation.instant.progress # 页面加载慢时在顶部显示进度条
+    - navigation.path # 在页面上显示面包屑路径
+    - navigation.sections # 将导航按 section 组织
+    - navigation.tabs # 顶级目录以 tab 形式展示
+    - navigation.tabs.sticky # 顶部 tab 固定显示
+    - navigation.top # 在顶部显示导航
+    - navigation.tracking # 跟踪当前页面在导航中的位置
+    - search.highlight # 在搜索结果中高亮关键字
+    - search.share # 允许分享搜索结果
+    - search.suggest # 启用搜索建议
+    - toc.follow # 右侧目录随滚动位置高亮
   palette:
-    - media: "(prefers-color-scheme)" # 主题颜色
+    - media: "(prefers-color-scheme)" # 根据用户系统主题自动切换
       scheme: slate
       primary: black
       accent: indigo
       toggle:
         icon: material/link
         name: Switch to light mode
-    - media: "(prefers-color-scheme: light)" # 浅色
+    - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: indigo
       accent: indigo
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)" # 深色
+    - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
       accent: indigo
       toggle:
         icon: material/toggle-switch-off
         name: Switch to system preference
-  font: # 字体，大概率不需要换
+  font: # 字体设置（可按需调整）
     text: Roboto
     code: Roboto Mono
-  favicon: assets/favicon.png # 网站图标 似乎不需要管
-  icon: # 一些用到的icon
+  favicon: assets/favicon.png # 网站图标
+  icon: # 主题使用的图标映射（可用于自定义标签图标等）
     logo: logo
     previous: fontawesome/solid/angle-left
     next: fontawesome/solid/angle-right
@@ -108,13 +115,18 @@ theme:
       hardware-tag: fontawesome/solid/microchip
       software-tag: fontawesome/solid/laptop-code
 
-extra: # 额外设定
-  generator: false # 页面底部不显示生成信息
-  status: # 元信息状态标识
+
+# -----------------------------
+# 额外信息（extra）以及主题中自定义键值
+# 这些键值会传递到模板，可在自定义模板或主题中读取
+# -----------------------------
+extra:
+  generator: false # 关闭默认页脚中的生成器信息（MkDocs 自带）
+  status: # 自定义状态标签映射
     new: 最近添加
     deprecated: 已废弃
-  homepage: . # 左上角徽标链接的地址
-  social: # 社交联系方式（页面右下角内容）
+  homepage: . # 顶部徽标链接地址（相对于站点根）
+  social: # 页面右下角社交链接（主题会渲染这些项）
     - icon: fontawesome/brands/github
       link: https://github.com/zhangkangcool
       name: GitHub
@@ -122,24 +134,31 @@ extra: # 额外设定
       link: mailto:691386092@qq.com
       name: 联系作者
 
+
+# -----------------------------
+# 插件（plugins）
+# 通过插件扩展 MkDocs 的功能，例如搜索、git 元信息、目录控制等
+# -----------------------------
 plugins:
-  - minify:  # 压缩 HTML、CSS、JavaScript 文件以提高加载速度
+  - minify:  # 压缩输出的 HTML/CSS/JS（加快加载且减少带宽）
       minify_html: true
 
-  - git-revision-date-localized:  # 显示文档的最后修改时间（基于 Git）
-      enable_creation_date: true
-      type: datetime
+  - git-revision-date-localized:  # 基于 Git 显示页面的创建/修改时间
+      enable_creation_date: true  # 同时显示创建时间（creation date）
+      type: datetime               # 显示为日期时间（datetime），也可设置为 date
+      # 本地化设置：设置语言和时区以显示本地时间（例如中国标准时间 UTC+8）
+      locale: zh_CN
+      timezone: Asia/Shanghai
 
-  - search:  # 内置搜索
-#      prebuild_index: true  # 预构建索引  #此选项报错
+  - search:  # 内置搜索插件配置
+      # prebuild_index: true  # 预构建索引（某些环境下会报错，默认注释）
       separator: '[\s\u200b\-]'
 
-  - awesome-pages:  # 添加 awesome-pages 插件
-#      filename: .pages  # 配置文件名，默认为 .pages
-      collapse_single_pages: true  # 单页目录自动折叠
+  - awesome-pages:  # 使用 awesome-pages 自动生成导航（比手写 nav 更灵活）
+      collapse_single_pages: true  # 单页目录若只有一个子项则折叠显示
 
 
-# nav:
+# nav: # 如果不使用 awesome-pages，可以在这里手动配置导航结构
 #  - Home: index.md
 #  - Compiler: Compiler/llvm/llvm-ir.md
 #  - Program: Program/
@@ -148,6 +167,6 @@ plugins:
 #  - About: about.md
 
 
-# TODO: 此插件报编译错误
+# TODO: 此插件可能报编译错误，暂时注释掉
 #  - git-authors: # 显示文档的 Git 作者和贡献统计
 
