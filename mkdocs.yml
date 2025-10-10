@@ -57,7 +57,7 @@ theme:
   # custom_dir: material/overrides # 如果需要自定义主题模板，可在这里指定覆盖目录
   name: material # 使用 Material 主题
   logo: assets/images/logo.jpeg # 站点 logo 路径，相对于 docs 目录或 site 目录下的 assets
-  language: en # 主题语言（影响 UI 文案），常用值：en / zh
+  language: zh # 主题语言（影响 UI 文案），常用值：en / zh；改为中文以便主题界面文案为中文
   features: # Material 主题的可选特性开关（启用/禁用不同的 UI 功能）
     - announce.dismiss # 允许用户关闭顶部公告栏
     - content.action.edit # 在页面显示编辑按钮（需要 edit_uri 配合）
@@ -103,7 +103,7 @@ theme:
         icon: material/toggle-switch-off
         name: Switch to system preference
   font: # 字体设置（可按需调整）
-    text: Roboto
+    text: "Noto Sans SC, Roboto, Arial, sans-serif"
     code: Roboto Mono
   favicon: assets/favicon.png # 网站图标
   icon: # 主题使用的图标映射（可用于自定义标签图标等）
@@ -134,6 +134,11 @@ extra:
       link: mailto:691386092@qq.com
       name: 联系作者
 
+# 自定义样式（用于站点美化）
+extra_css:
+  - assets/stylesheets/custom.css
+  - assets/stylesheets/custom-fonts.css
+
 
 # -----------------------------
 # 插件（plugins）
@@ -157,6 +162,10 @@ plugins:
   - awesome-pages:  # 使用 awesome-pages 自动生成导航（比手写 nav 更灵活）
       collapse_single_pages: true  # 单页目录若只有一个子项则折叠显示
 
+  - git-authors:  # 显示文档的 Git 作者和贡献统计（根据 Git 历史生成每页作者列表和贡献信息）
+      # 该插件在 requirements.txt 中已加入依赖（mkdocs-git-authors-plugin）。
+      # 未指定额外配置时使用默认行为；可按需添加配置项，例如 show_email: false
+
 
 # nav: # 如果不使用 awesome-pages，可以在这里手动配置导航结构
 #  - Home: index.md
@@ -165,8 +174,4 @@ plugins:
 #  - Useful: Useful/
 #  - Other: Other/
 #  - About: about.md
-
-
-# TODO: 此插件可能报编译错误，暂时注释掉
-#  - git-authors: # 显示文档的 Git 作者和贡献统计
 

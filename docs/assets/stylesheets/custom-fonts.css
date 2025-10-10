@@ -1,0 +1,35 @@
+/* custom-fonts.css — 使用本地字体文件（Noto Sans SC）
+   放置位置：docs/assets/fonts/
+   说明：出于版权和体积考虑，请自行下载 Noto Sans SC 的 woff2/ttf 文件并放到上面路径下。
+   推荐文件名示例：
+     - NotoSansSC-Regular.woff2
+     - NotoSansSC-Bold.woff2
+
+   该文件为字体加载提供 @font-face 声明，并将站点主体字体设为 Noto Sans SC。 */
+
+@font-face {
+  font-family: 'Noto Sans SC Local';
+  src: url('../fonts/NotoSansSC-Regular.woff2') format('woff2'),
+       url('../fonts/NotoSansSC-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans SC Local';
+  src: url('../fonts/NotoSansSC-Bold.woff2') format('woff2'),
+       url('../fonts/NotoSansSC-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 使用本地字体 */
+:root, body, .md-content, .md-header, .md-nav__link {
+  font-family: 'Noto Sans SC Local', 'Noto Sans SC', Roboto, Arial, sans-serif;
+}
+
+/* 细微调整：行高与标题间距 */
+.md-content h1, .md-content h2, .md-content h3 {
+  line-height: 1.25;
+}

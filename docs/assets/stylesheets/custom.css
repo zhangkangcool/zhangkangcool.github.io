@@ -1,0 +1,143 @@
+/* custom.css — 站点美化样式（放在 docs/assets/stylesheets/ ）
+   主要目标：优化头部、侧边栏、正文与代码块的视觉效果。
+   低风险、跨浏览器的样式调整，不会改变主题结构，仅覆盖样式。 */
+
+:root{
+  --accent: #4f46e5; /* indigo-600 */
+  --muted: #6b7280; /* gray-500 */
+}
+
+/* 全局字体平滑与行高 */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.75;
+}
+
+/* 顶部栏和 Logo 微调 */
+.md-header {
+  background: linear-gradient(90deg, rgba(79,70,229,0.06), rgba(99,102,241,0.02));
+}
+.md-header-nav__title {
+  font-weight: 700;
+}
+.md-header__inner .md-logo {
+  margin-right: 8px;
+}
+
+/* 侧边栏宽度与样式 */
+.md-sidebar {
+  max-width: 280px;
+}
+.md-nav__link {
+  color: inherit;
+}
+.md-nav__link--active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 提升内容区可读性 */
+.md-content {
+  font-size: 16px;
+}
+.md-content h1, .md-content h2, .md-content h3 {
+  color: #0f172a; /* 深色标题 */
+}
+
+/* 卡片/代码块阴影与圆角 */
+.md-article, .md-content__inner, .md-typeset blockquote {
+  border-radius: 8px;
+}
+.md-typeset blockquote {
+  border-left-color: rgba(79,70,229,0.18);
+}
+
+/* 代码块：更舒服的行高与背景 */
+.md-typeset pre {
+  background: linear-gradient(180deg, #0b1220, #071022);
+  color: #e6eef6;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  overflow: auto;
+}
+
+/* 代码复制按钮调整 */
+.md-clipboard {
+  background: rgba(255,255,255,0.06);
+}
+
+/* 作者/贡献者面板轻微样式（兼容常见插件类名） */
+.git-authors, .contributors, .page-contributors {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background: rgba(79,70,229,0.03);
+  border: 1px solid rgba(79,70,229,0.06);
+}
+
+/* 响应式调整：小屏幕提升可读性 */
+@media (max-width: 768px){
+  .md-sidebar { display: none; }
+  .md-content { padding: 1rem; }
+}
+
+/* 深色模式细化样式（prefers-color-scheme: dark） */
+@media (prefers-color-scheme: dark) {
+  /* 页面背景与文字色微调以提升对比度 */
+  body {
+    background-color: #071022;
+    color: #e6eef6;
+  }
+
+  /* 副标题更醒目，带微下划线作为分隔 */
+  .md-content h2, .md-content h3 {
+    color: #c7d2fe; /* 浅紫色提高可读性 */
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 0.35rem;
+  }
+  .md-content h2::after, .md-content h3::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 56px;
+    background: linear-gradient(90deg, rgba(99,102,241,0.9), rgba(79,70,229,0.9));
+    margin-top: 0.45rem;
+    border-radius: 2px;
+    opacity: 0.9;
+  }
+
+  /* 代码块：更柔和的单色背景、提高行内代码对比 */
+  .md-typeset pre {
+    background: linear-gradient(180deg, #0b1220, #06101a);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  }
+  .md-typeset code {
+    background: rgba(255,255,255,0.03);
+    color: #f8fafc;
+    padding: 0.15rem 0.28rem;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  /* 代码行号与差异高亮（若存在） */
+  .md-typeset .linenos {
+    color: #94a3b8;
+    background: transparent;
+  }
+
+  /* 复制按钮在深色下更显眼 */
+  .md-clipboard {
+    background: rgba(255,255,255,0.06);
+    color: #0b1220;
+  }
+
+  /* 作者/贡献区域在深色下的可读性 */
+  .git-authors, .contributors, .page-contributors {
+    background: rgba(99,102,241,0.06);
+    border: 1px solid rgba(99,102,241,0.12);
+  }
+}
