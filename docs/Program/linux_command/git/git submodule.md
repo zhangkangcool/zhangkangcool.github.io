@@ -137,6 +137,22 @@ $ git commit -m "Add timezone converter library as a submodule"
 
 在这种情况下，要在克隆了父仓库之后填充submodule，可以简单地执行`git submodule update --init --recursive`。不过更好的方法是在调用`git clone`时直接添加`--recurse-submodules`选项。
 
+
+
+```shell
+git clone --rhttps://github.com/zhangkangcool/MyEarning.git
+git submodule init
+git submodule update
+```
+
+或者
+
+```shell
+git clone --recursive https://github.com/zhangkangcool/MyEarning.git
+```
+
+
+
 # 使用特定版本
 
 在普通的Git仓库中，我们通过使用`git checkout <branchname>`或者在Git 2.23引入的`git switch <branchname>`，告诉git当前活动的分支是什么。当在这个分支上进行新的提交时，HEAD指针会自动移动到最近的提交。理解这一点很重要——因为Git submodule的工作方式不太一样！
