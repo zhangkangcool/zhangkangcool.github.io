@@ -22,8 +22,12 @@
    sudo apt update
    sudo apt install flatpak
    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+   
+   
+   
+   sudo http_proxy=http://172.18.8.106:7890 https_proxy=http://172.18.8.106:7890 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
    ```
-
+   
    执行完毕后，建议**重启您的电脑**或注销后重新登录，以确保 Flatpak 环境完全集成到您的桌面系统中。
 
 
@@ -35,15 +39,16 @@
    ```bash
    flatpak install --user deskflow-1.24.0-linux-x86_64.flatpak
    或者
-   sudo flatpak install  ./deskflow-1.24.0-linux-x86_64.flatpa
+   sudo flatpak install  ./deskflow-1.24.0-linux-x86_64.flatpak
+   sudo http_proxy=http://172.18.8.106:7890 https_proxy=http://172.18.8.106:7890 flatpak install ./deskflow-1.24.0-linux-x86_64.flatpak  # 用代理的情况
    ```
-
+   
    - `flatpak install`: 安装命令。
-
+   
    - `--user`: **（推荐）** 这个参数表示将应用安装在当前用户的个人目录下，这样不需要 `sudo` 管理员权限，更加安全和方便。
-
+   
    - `deskflow-1.24.0-linux-x86_64.flatpak`: 您要安装的文件名。
-
+   
      
 
 以下是安装日志，系统会分析包内容并询问您是否要继续安装。它可能会提示需要安装一些额外的运行时库（runtime）。
