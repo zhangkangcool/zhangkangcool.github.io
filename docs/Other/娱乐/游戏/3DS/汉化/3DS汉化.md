@@ -1,4 +1,4 @@
-https://stray-soul.com/softwares.html
+\https://stray-soul.com/softwares.html
 
 视屏教程
 
