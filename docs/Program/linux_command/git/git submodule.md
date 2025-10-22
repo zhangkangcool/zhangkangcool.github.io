@@ -140,7 +140,7 @@ $ git commit -m "Add timezone converter library as a submodule"
 
 
 ```shell
-git clone --rhttps://github.com/zhangkangcool/MyEarning.git
+git clone https://github.com/zhangkangcool/MyEarning.git
 git submodule init
 git submodule update
 ```
