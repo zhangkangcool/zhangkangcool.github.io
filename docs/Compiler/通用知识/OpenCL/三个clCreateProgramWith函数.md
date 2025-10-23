@@ -4,8 +4,8 @@
 
 | 函数                        | 是否需要 `clBuildProgram`？                                  |
 | --------------------------- | ------------------------------------------------------------ |
-| `clCreateProgramWithSource` | **是**，必须调用。                                           |
-| `clCreateProgramWithBinary` | **否**，绝对不要调用。                                       |
+| `clCreateProgramWithSource` | **是**，必须调用。源CL C代码                                 |
+| `clCreateProgramWithBinary` | **否**，绝对不要调用。可能是二进制形式的SPIRV，或者其他二进制，和具体的编译器有关 |
 | `clCreateProgramWithIL`     | **是**，必须调用，因为 IL (SPIR-V) 是中间语言，需要翻译成设备二进制。 |
 
 
