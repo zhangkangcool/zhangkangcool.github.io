@@ -2,6 +2,10 @@
 
 
 
+clCreateKernel函数会生成编译生成最终的二进制汇编。
+
+
+
 
 `clCreateKernel` 和 `clCreateKernelsInProgram` 都是 OpenCL 中用于创建内核对象的函数，但它们在功能和使用场景上存在明显区别，下面为你详细介绍：
 
