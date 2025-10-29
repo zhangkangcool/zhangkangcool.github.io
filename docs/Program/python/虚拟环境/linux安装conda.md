@@ -14,7 +14,10 @@ Miniconda 仅包含 Conda 和基础依赖，适合服务器场景，步骤如下
 
 ```bash
 # 下载最新版 Miniconda3（Python 3.x）
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh    # for x86_65
+或者
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh # arm64
+
 ```
 
 如果没有 `wget`，可先安装：`sudo yum install -y wget`
@@ -23,8 +26,8 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 ```bash
 # 赋予脚本执行权限
-chmod +x Miniconda3-latest-Linux-x86_64.sh
-
+chmod +x Miniconda3-latest-Linux-x86_64.sh   # x86
+chmod +x Miniforge3-Linux-aarch64.sh         # for amr64
 # 运行安装脚本
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
