@@ -20,7 +20,7 @@
 
 ### **使用场景**
 - **`clCompileProgram`**：适用于需要模块化程序设计的场景。你可以先用 `clCompileProgram` 编译多个模块，然后通过 `clLinkProgram` 将它们链接在一起，生成最终的可执行程序。
-- **`clBuildProgram`**：适用于简单的程序开发，直接从 OpenCL 源代码到设备可执行程序的构建。
+- **`clBuildProgram`**：适用于简单的程序开发，直接从 OpenCL 源代码到设备可执行程序的构建。目前将C/IL可读源码编译生成SHADER，后续在clCreateKernel中将VIR转化为最终的二进制。
 
 ---
 

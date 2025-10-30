@@ -4,8 +4,11 @@
 
 
 
-
 `clCreateKernel` 是 OpenCL（Open Computing Language）中的一个重要函数，其作用是从程序对象里创建一个内核对象。OpenCL 是一种用于并行计算的开放标准，可让你在多种异构平台（像 CPU、GPU、FPGA 等）上执行代码。
+
+
+
+此步中将VIR编译生成二进制。
 
 
 
