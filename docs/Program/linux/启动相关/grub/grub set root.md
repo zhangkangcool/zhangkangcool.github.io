@@ -76,8 +76,6 @@ linux  /Image-4.19.115-01-acorelinux  root=/dev/sdc  # 内核文件路径 + 根�
 
 
 
-
-
 ## 3. 额外验证建议
 
 1. 确认 `/dev/sdb1` 的分区表类型：执行 `lsblk -f /dev/sdb`，查看 `TYPE` 列是否为 `gpt`（若为 `dos` 则是 MBR，需将 `insmod part_gpt` 改为 `insmod part_msdos`，`set root` 改为 `'hd1,1'`）。

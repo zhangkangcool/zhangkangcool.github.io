@@ -181,7 +181,7 @@ ken@ken-pc:/boot$ ls
 boot  boot.cfg  config-5.4.18-142-generic  efi  EFI  grub  initrd.img  initrd.img-5.4.18-142-generic  initrd.img.old  jxworks  lost+found  System.map-5.4.18-142-generic  TRANS.TBL  vmlinuz  vmlinuz-5.4.18-142-generic  vmlinuz.old
 ```
 
-
+c
 
 ##### 4.2 修改启动配置文件
 
@@ -332,4 +332,3 @@ setparams 'JARI-Works V4'
 ##### 4.3 重启系统
 
 在进入麒麟时会出现多一行未`JARI-Works V4`。下一行则是麒麟，再下一行时麒麟修复模式。
-

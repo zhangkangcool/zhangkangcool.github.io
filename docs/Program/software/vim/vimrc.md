@@ -250,6 +250,17 @@ if has("cscope")
     set csverb
 
 endif
+
+
+
+" 以下解决中文编码
+" 基础编码设置
+set encoding=utf-8                  " Vim 内部处理文本的编码（核心）
+set fileencoding=utf-8              " 新建文件的默认编码
+set fileencodings=utf-8,ucs-bom,gbk,gb2312,latin1  " 打开文件时尝试检测的编码顺序
+
+" 终端相关（可选，根据需要添加）
+set termencoding=utf-8              " Vim 与终端之间的编码
 ```
 
 
