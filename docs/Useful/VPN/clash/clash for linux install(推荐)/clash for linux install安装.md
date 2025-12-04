@@ -209,6 +209,23 @@ $ clashtun on
 
 
 
+`ifconfig`会产生Meta虚拟网卡
+
+```shell
+Meta: flags=4305<UP,POINTOPOINT,RUNNING,NOARP,MULTICAST>  mtu 9000
+        inet 198.18.0.1  netmask 255.255.255.252  destination 198.18.0.1
+        inet6 fe80::69fa:913a:df4d:9710  prefixlen 64  scopeid 0x20<link>
+        unspec 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00  txqueuelen 500  (未指定)
+        RX packets 41  bytes 17118 (17.1 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 68  bytes 8568 (8.5 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+
+
+
+
+
 ### 3.2 允许局域网
 
 此选项在http://192.168.100.104:9090/ui和http://board.zash.run.place，都能看到。就是是否允许其他设备连接把本机器当代理服务器。[详见允许局域网](./clash允许局域网.md) 
@@ -249,6 +266,12 @@ sudo bash uninstall.sh
 
 
 
+
+## 5. 问题解决
+
+如果出现无法上网的情况，可能需要重装：
+
+需要先删除resources/config.yaml文件，这样会重新下载订阅。
 
 
 
