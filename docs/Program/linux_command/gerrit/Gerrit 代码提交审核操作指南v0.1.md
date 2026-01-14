@@ -50,7 +50,7 @@
 
 ```Bash
 # 提交到refs/for/develop 进行审核
-git push origin HEAD:refs/for/develop    
+git push origin HEAD:refs/for/develop    # 需要登录网站后，使用ssh下载，要不然需要输入
 
 
 ```
