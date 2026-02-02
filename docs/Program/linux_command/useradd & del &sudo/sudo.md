@@ -20,10 +20,10 @@ $ sudo useradd ostechnix -m -s /bin/bash
 如果你希望新创建的用户使用 `sudo` 执行管理任务，只需使用以下命令将它添加到 `sudo` 组：
 
 ```shell
-$ sudo usermod -a -G sudo ostechnix
+$ sudo usermod -a -G sudo ken
 
 如果是redhat及其衍生
-$ sudo usermod -a -G wheel ostechnix
+$ sudo usermod -a -G wheel k
 ```
 
 上面的命令将使名为 `ostechnix` 的用户成为 `sudo` 组的成员。
@@ -33,7 +33,7 @@ $ sudo usermod -a -G wheel ostechnix
 
 
 ```shell
-$ sudo useradd ostechnix sudo
+sudo useradd ken sudo
 ```
 
 

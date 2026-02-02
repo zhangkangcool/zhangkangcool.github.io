@@ -18,6 +18,7 @@ sudo apt-get install zsh
 
 ```shell
 https://github.com/zsh-users/zsh/tags
+whttps://github.com/zsh-users/zsh/archive/refs/tags/zsh-5.9.tar.gz
 ```
 
 
@@ -26,7 +27,7 @@ https://github.com/zsh-users/zsh/tags
 
 根基INSTALL指引
 
-```
+```shell
 ./Util/preconfig   # 产生 configure文件
 mkdir build
 cd build
