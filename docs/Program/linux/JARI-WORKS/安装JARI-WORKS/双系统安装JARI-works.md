@@ -181,8 +181,6 @@ ken@ken-pc:/boot$ ls
 boot  boot.cfg  config-5.4.18-142-generic  efi  EFI  grub  initrd.img  initrd.img-5.4.18-142-generic  initrd.img.old  jxworks  lost+found  System.map-5.4.18-142-generic  TRANS.TBL  vmlinuz  vmlinuz-5.4.18-142-generic  vmlinuz.old
 ```
 
-c
-
 ##### 4.2 修改启动配置文件
 
 对uefi启动方式，修改grub配置文件，通常位于/mnt/sda1/grub/grub.cfg也就是`/boot/grub/grub.cfg`，修改进入系统时的系统选择项部分，新增JARI-worrks。

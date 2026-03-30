@@ -20,12 +20,16 @@
 
 ## 2. 命令行使用代理(亲测)
 
+如果是用clash，在http_proxy=172.18.8.106:9090上打开allow lan
+
 ### 2.1 wget使用代理 
 
 ```shell
 这里网站中的http与http_proxy必须对应。
 wget http://www.baidu.com -e "http_proxy=192.168.110.124:4399"
 wget https://www.baidu.com -e "https_proxy=192.168.110.124:4399"
+
+wget http://www.baidu.com -e "http_proxy=172.18.8.106:7890"
 ```
 
 

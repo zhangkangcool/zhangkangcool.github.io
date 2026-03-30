@@ -226,3 +226,11 @@ conda activate myenv
 # 再次安装依赖
 ```
 
+
+
+导出环境
+
+```
+conda run -n Acuity pip freeze > requirements.txt
+```
+
