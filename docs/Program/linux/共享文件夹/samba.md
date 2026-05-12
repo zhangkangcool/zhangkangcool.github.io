@@ -33,59 +33,72 @@ samba: /usr/sbin/samba /usr/lib/x86_64-linux-gnu/samba /etc/samba /usr/share/sam
 sudo vim /etc/samba/smb.conf
 ```
 
-在文件末尾添加如下几行：
+
 
 ```shell
-[linux35]
-  Comment = my share directory
-  path = /home/ubuntu
-  browseable = yes
-  writable = yes
-  guest ok = yes
-```
-
-
-
-
-
-这里我使用的下面的配置
-
-```shell
-[ken]
+[Ubuntu_Share]
   path = /home/ken
   browseable = yes
   writeable = yes
-  guest ok = yes
+  # 关闭匿名访问
+  guest ok = no
+  # 仅允许 ken 用户访问
+  valid users = ken
   force user = ken
-  create mask = 644
-  directory mask = 755
+  # 权限匹配可写需求
+  create mask = 0664
+  directory mask = 0775
+```
+
+
+
+设置密码
+
+```
+sudo smbpasswd -a ken
 ```
 
 
 
 
 
-`linux35` 表示共享目录的别名，`path` 指定你想共享的目录， `browseable` 和 `writable` 为对该目录的操作权限。
+文件权限设置
 
-为了避免后续使用过程中遇到的读写权限问题，通过下面这个命令，对 linux 共享路径下面的所有子目录开通权限。
+```
+# 检查目录权限
+ls -ld /home/ken
+# 输出示例：drwxr-xr-x 20 ken ken 4096 Apr 30 10:00 /home/ken
 
-```shell
-chmod 777 -R /home/ubuntu
+# 如果权限不对，修正为可读写权限
+chmod 755 /home/ken
+chown ken:ken /home/ken
 ```
 
-全部设置完成后，重启 Samba 服务器使设置生效。
 
-```shell
-sudo /etc/init.d/smbd restart
+
+
+
+设置防火墙
+
+```
+sudo ufw allow samba
+sudo ufw reload
+```
+
+
+
+重启服务并开机启动
+
+```
+sudo systemctl restart smbd nmbd 或者 sudo /etc/init.d/smbd restart
+sudo systemctl enable smbd nmbd
 ```
 
 
 
 
 
-```shell
-smb://172.18.8.108
-```
+
 
 
 
@@ -120,4 +133,46 @@ smb://172.18.8.108
 ```shell
 smb://172.1.8.8.108  映射根目录/,  或者  smb://172.1.8.8.108/ken 映射ken目录
 ```
+
+
+
+
+
+### 5. 问题解决
+
+win10/11上有samba兼容问题
+
+##### 5.1 临时在 Windows 上禁用 SMB 客户端签名（仅测试用）
+
+以管理员身份打开 PowerShell，
+
+```shell
+Set-SmbClientConfiguration -RequireSecuritySignature $false
+Set-SmbServerConfiguration -RequireSecuritySignature $false
+```
+
+
+
+##### 5.2 设置samba（推荐）
+
+修改 /etc/samba/smb.conf
+在 [global] 段添加以下配置：
+
+```shell
+[global]
+  server min protocol = SMB2
+  server max protocol = SMB3
+  server signing = mandatory
+  client signing = mandatory
+```
+
+
+
+重启服务
+
+```
+sudo systemctl restart smbd nmbd
+```
+
+
 

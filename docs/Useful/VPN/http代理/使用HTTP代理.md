@@ -18,6 +18,10 @@
 
 
 
+如果这样写的是http://www.myserver.com的话，代理协议选HTTP，代理服务器不能加http://，代理服务器应该写www.myserver.com
+
+
+
 ## 2. 命令行使用代理(亲测)
 
 如果是用clash，在http_proxy=172.18.8.106:9090上打开allow lan
