@@ -42,6 +42,36 @@ cat `include/llvm/CodeGen/ISDOpcodes.h`
 
 
 
+
+
+
+
+第 4 种：无链 + 无返回 → LLVM 没有定义！禁止使用！
+
+因为：
+
+- **无返回值（void）** 的 intrinsic **99% 都是带副作用**（写寄存器、store、fence）
+
+- 有副作用 **必须带 chain**
+
+- 所以 LLVM 直接规定：
+
+  > **无返回值的 intrinsic 必须用 INTRINSIC_VOID（必须带链）**
+
+- 
+
+
+
+-----
+
+
+
+
+
+
+
+
+
 https://stackoverflow.com/questions/33005061/what-are-glue-and-chain-dependencies-in-an-llvm-dag
 
 https://people.cs.nctu.edu.tw/~chenwj/dokuwiki/doku.php?id=llvm
@@ -166,6 +196,12 @@ SDNode必须有结果，或者是Operand，或者是Glue或Chain.
 ```
 
 
+
+
+
+```
+
+```
 
 
 
