@@ -75,6 +75,9 @@ HEAD: 是一个特别的指针，它是一个指向你正在工作的本地分�
 
 ```
 git checkout -b test
+
+git push origin test   # 此步可选，可以选择推送或者不推送到远程
+
 git commit -m "First commit"
 git push origin HEAD:refs/for/develop 
 
@@ -83,6 +86,21 @@ git commit -m "Second commit depend on A"
 git push origin HEAD:refs/for/develop 
 
 在Relation Chain和Submitted together上能看到依赖
+```
+
+
+
+在test上rebase最新代码
+
+```
+假设当前在test分f
+# 1. 更新远端分支信息
+git fetch origin  # 不要用pull, pull只能拉取与test相同名字的远程分析
+# 2. 变基到最新develop
+git rebase origin/develop
+# 有冲突则解决后 git rebase --continue
+# 3. 重新推送到gerrit评审
+git push origin HEAD:refs/for/develop
 ```
 
 

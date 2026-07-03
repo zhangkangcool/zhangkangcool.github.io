@@ -110,6 +110,14 @@
      ```
 
      这会生成从 `start-commit`（不含）到 `end-commit`（含）的所有提交的补丁。
+     
+   - 生成最新两个提交的patch
+
+   - ```
+     git format-patch -2
+     ```
+
+   - 
 
 3. 将生成的 `.patch` 文件复制到当前项目中。
 
