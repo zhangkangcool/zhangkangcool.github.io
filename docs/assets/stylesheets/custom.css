@@ -97,6 +97,10 @@ body {
     color: #e6eef6;
   }
 
+  .md-content h1 {
+    color: #f8fafc;
+  }
+
   /* 副标题更醒目，带微下划线作为分隔 */
   .md-content h2, .md-content h3 {
     color: #c7d2fe; /* 浅紫色提高可读性 */
