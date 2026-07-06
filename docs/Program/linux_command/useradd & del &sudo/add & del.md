@@ -1,4 +1,4 @@
-<h1 align="center">add & del</h1>
+# add & del
 
 
 # 1. useradd

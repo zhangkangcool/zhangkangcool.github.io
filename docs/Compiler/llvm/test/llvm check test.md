@@ -1,4 +1,4 @@
-<h1 align="center">llvm check test</h1>
+# llvm check test
 http://llvm.org/docs/CommandGuide/FileCheck.html
 
 http://llvm.org/docs/CommandGuide/lit.html

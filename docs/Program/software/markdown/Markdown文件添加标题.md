@@ -1,4 +1,4 @@
-<h1 align="center">Markdown文件添加标题</h1>
+# Markdown文件添加标题
 
 
 
@@ -36,15 +36,15 @@ def add_title_to_markdown(file_path: Path) -> None:
                 # 可选: 取消下面的注释以覆盖现有标题
                 # content = content.split('\n', 1)[1] if len(content.split('\n')) > 1 else ''
         
-        # 使用HTML格式添加居中标题
-        new_title = f'<h1 align="center">{title}</h1>'
+        # 使用 Markdown 标题，便于 MkDocs 生成目录、锚点和搜索索引
+        new_title = f'# {title}'
         new_content = f"{new_title}\n{content}"
         
         # 写回文件
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(new_content)
         
-        print(f"成功添加居中标题到: {file_path}")
+        print(f"成功添加标题到: {file_path}")
     except Exception as e:
         print(f"处理文件 {file_path} 时出错: {e}")
 
@@ -72,4 +72,3 @@ if __name__ == "__main__":
     process_directory(target_dir)
     print("处理完成!")    %                                          
 ```
-

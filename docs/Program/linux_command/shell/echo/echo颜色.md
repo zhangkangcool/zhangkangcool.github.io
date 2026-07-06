@@ -1,4 +1,4 @@
-<h1 align="center">echo颜色</h1>
+# echo颜色
 https://zhuanlan.zhihu.com/p/78085057
 
 

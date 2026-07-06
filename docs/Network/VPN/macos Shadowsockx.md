@@ -1,4 +1,4 @@
-<h1 align="center">macos Shadowsockx</h1>
+# macos Shadowsockx
 
 
 

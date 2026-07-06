@@ -1,6 +1,6 @@
 
 
-<h1 align="center">make</h1>
+# make
 
 # 1. 示例
 

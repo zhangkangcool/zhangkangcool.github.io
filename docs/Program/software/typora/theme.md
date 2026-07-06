@@ -1,4 +1,4 @@
-<h1 align="center">typora主题设置</h1>
+# typora主题设置
 
 
 https://jingyan.baidu.com/article/2d5afd693f077f85a2e28e3e.html

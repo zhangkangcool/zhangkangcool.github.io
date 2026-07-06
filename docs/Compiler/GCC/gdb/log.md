@@ -1,4 +1,4 @@
-<h1 align="center">gdb log</h1>
+# gdb log
 
 
 

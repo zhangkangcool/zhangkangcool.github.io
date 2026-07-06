@@ -1,4 +1,4 @@
-<h1 align="center">glue & chain side effect</h1>
+# glue & chain side effect
 ### NOTE: Side Effects
 
 这里提到的side effects不是td文件中描述机器指令的hasSideEffects中的。td文件中的hasSideEffects是机器指令属性，他可以在ABI中查找，每个指令后面的有`Special Registers Altered`表明某条指令是否有side effects。那些`Special Registers Altered`是空的指令,如`VEXTRACTUB`的hasSideEffects应该为false。

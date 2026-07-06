@@ -1,4 +1,4 @@
-<h1 align="center">MO & MI</h1>
+# MO & MI
 
 
 ```c++

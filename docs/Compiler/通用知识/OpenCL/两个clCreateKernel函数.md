@@ -1,4 +1,4 @@
-<h1 align="center">两个clCreateKernel函数</h1>
+# 两个clCreateKernel函数
 
 
 

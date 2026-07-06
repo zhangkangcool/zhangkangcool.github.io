@@ -1,4 +1,4 @@
-<h1 align="center">opt pass</h1>
+# opt pass
 
 
 Opt使用的各种pass，可以在`llvm/tools/opt/opt.cpp`中看到。

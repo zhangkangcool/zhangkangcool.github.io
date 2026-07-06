@@ -1,4 +1,4 @@
-<h1 align="center">git command</h1>
+# git command
 #   1. reset & revert
 
 ```

@@ -1,4 +1,4 @@
-<h1 align="center">SNAP设置http代理</h1>
+# SNAP设置http代理
 
 
 

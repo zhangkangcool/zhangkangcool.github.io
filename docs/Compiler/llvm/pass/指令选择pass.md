@@ -1,4 +1,4 @@
-<h1 align="center">指令选择pass</h1>
+# 指令选择pass
 
 
 

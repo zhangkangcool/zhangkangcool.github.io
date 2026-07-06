@@ -1,4 +1,4 @@
-<h1 align="center">git bisect</h1>
+# git bisect
 如何用此命令：https://cloud.tencent.com/developer/article/1379508
 
 实现细节： https://cloud.tencent.com/developer/section/1138673

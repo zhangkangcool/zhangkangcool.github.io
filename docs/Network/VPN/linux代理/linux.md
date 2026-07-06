@@ -1,4 +1,4 @@
-<h1 align="center">linux</h1>
+# linux
 https://ihac.xyz/2018/07/01/Linux-Mac%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%BF%BB%E5%A2%99/
 
 

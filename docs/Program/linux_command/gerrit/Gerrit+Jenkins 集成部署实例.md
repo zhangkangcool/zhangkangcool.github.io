@@ -1,4 +1,4 @@
-<h1 align="center">Gerrit+Jenkins 集成部署实例</h1>
+# Gerrit+Jenkins 集成部署实例
 
 
 

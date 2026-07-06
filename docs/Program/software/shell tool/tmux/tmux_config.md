@@ -1,4 +1,4 @@
-<h1 align="center">tmux_config</h1>
+# tmux_config
 http://louiszhai.github.io/2017/09/30/tmux/
 
 https://linuxtoy.org/archives/from-screen-to-tmux.html

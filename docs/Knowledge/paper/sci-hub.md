@@ -1,4 +1,4 @@
-<h1 align="center">sci-hub</h1>
+# sci-hub
 # 1. 找某个人发表的英文论文
 
 https://www.researchgate.net/scientific-contributions/Yudong-Liu-2154147783

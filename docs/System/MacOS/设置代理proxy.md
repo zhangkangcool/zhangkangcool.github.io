@@ -1,4 +1,4 @@
-<h1 align="center">设置代理proxy</h1>
+# 设置代理proxy
 # 命令行
 
 ```shell

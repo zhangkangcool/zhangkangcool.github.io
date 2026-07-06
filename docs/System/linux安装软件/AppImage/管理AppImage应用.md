@@ -1,6 +1,6 @@
 
 
-<h1 align="center">管理AppImage应用</h1>
+# 管理AppImage应用
 
 
 

@@ -1,4 +1,4 @@
-<h1 align="center">gitconfig</h1>
+# gitconfig
 
 
 ### 1 全局的config文件

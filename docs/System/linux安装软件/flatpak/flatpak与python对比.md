@@ -1,4 +1,4 @@
-<h1 align="center">flatpak与python对比</h1>
+# flatpak与python对比
 
 
 

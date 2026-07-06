@@ -1,4 +1,4 @@
-<h1 align="center">linux设置串口通信</h1>
+# linux设置串口通信
 
 
 

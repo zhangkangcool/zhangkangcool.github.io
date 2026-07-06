@@ -1,4 +1,4 @@
-<h1 align="center">vim中使用clang format</h1>
+# vim中使用clang format
 
 
 # 准备工作

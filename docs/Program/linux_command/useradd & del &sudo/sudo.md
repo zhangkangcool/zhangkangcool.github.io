@@ -1,4 +1,4 @@
-<h1 align="center">sudo</h1>
+# sudo
 https://zhuanlan.zhihu.com/p/57883153
 
 

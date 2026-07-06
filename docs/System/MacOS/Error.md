@@ -1,4 +1,4 @@
-<h1 align="center">Error</h1>
+# Error
 # 1. 您需要安装旧 Java SE 6 运行环境才能打开
 https://blog.csdn.net/kongxx/article/details/50969077
 

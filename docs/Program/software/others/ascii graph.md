@@ -1,4 +1,4 @@
-<h1 align="center">ascii graph</h1>
+# ascii graph
 # Ascii flow
 
 #### Online website

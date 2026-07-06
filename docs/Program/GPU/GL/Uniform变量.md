@@ -1,4 +1,4 @@
-<h1 align="center">Uniform变量</h1>
+# Uniform变量
 https://zhuanlan.zhihu.com/p/569758915
 
 

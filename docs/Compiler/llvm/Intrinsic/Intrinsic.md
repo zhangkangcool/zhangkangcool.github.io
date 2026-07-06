@@ -1,4 +1,4 @@
-<h1 align="center">Intrinsic</h1>
+# Intrinsic
 
 
 clang中使用的是`builtin`

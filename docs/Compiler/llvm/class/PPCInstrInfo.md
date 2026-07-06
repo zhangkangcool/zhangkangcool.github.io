@@ -1,4 +1,4 @@
-<h1 align="center">PPCInstrInfo</h1>
+# PPCInstrInfo
 ## Definition
 
 #### The definition of class PPCInstrInfo

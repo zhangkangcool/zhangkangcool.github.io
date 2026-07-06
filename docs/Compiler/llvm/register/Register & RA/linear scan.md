@@ -1,4 +1,4 @@
-<h1 align="center">linear scan</h1>
+# linear scan
 https://blog.csdn.net/qq_29674357/article/details/79069013
 
 https://blog.csdn.net/qq_29674357/article/details/79110417

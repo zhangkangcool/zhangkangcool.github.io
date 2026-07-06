@@ -1,4 +1,4 @@
-<h1 align="center">红米AX6S救砖教程</h1>
+# 红米AX6S救砖教程
 https://home.x-wan.top/archives/mi-ax6s-jiu
 
 

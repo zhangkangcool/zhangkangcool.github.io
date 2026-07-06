@@ -1,4 +1,4 @@
-<h1 align="center">flatpak介绍</h1>
+# flatpak介绍
 
 
 

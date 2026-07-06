@@ -1,4 +1,4 @@
-<h1 align="center">llvm-mc</h1>
+# llvm-mc
 
 
 

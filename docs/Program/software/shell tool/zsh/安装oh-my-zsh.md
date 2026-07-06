@@ -1,4 +1,4 @@
-<h1 align="center">安装oh-my-zsh</h1>
+# 安装oh-my-zsh
 
 
 

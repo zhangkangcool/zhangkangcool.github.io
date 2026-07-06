@@ -1,4 +1,4 @@
-<h1 align="center">scall & run</h1>
+# scall & run
 https://www.cnblogs.com/itwhite/p/12329916.html
 
 ##  1. os.system()

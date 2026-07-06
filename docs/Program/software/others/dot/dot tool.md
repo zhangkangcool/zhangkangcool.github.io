@@ -1,4 +1,4 @@
-<h1 align="center">dot tool</h1>
+# dot tool
 # Grammer
 
 ```

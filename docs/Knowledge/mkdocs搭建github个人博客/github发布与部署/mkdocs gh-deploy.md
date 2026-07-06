@@ -1,4 +1,4 @@
-<h1 align="center">mkdocs gh-deploy</h1>
+# mkdocs gh-deploy
 
 如果想使用`github actions`自动进行发布与部署的话，请参考[github action自动发布](./github action自动发布.md)
 

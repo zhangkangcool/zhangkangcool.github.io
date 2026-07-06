@@ -1,4 +1,4 @@
-<h1 align="center">gdprint</h1>
+# gdprint
 
 
 

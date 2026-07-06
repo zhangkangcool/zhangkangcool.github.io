@@ -1,4 +1,4 @@
-<h1 align="center">linux rpm问题：怎样查看rpm安装包的安装路径</h1>
+# linux rpm问题：怎样查看rpm安装包的安装路径
 https://blog.csdn.net/vovo2000/article/details/2110762
 
 # 1. 如何安装rpm软件包 

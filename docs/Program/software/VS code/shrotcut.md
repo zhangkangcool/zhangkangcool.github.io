@@ -1,4 +1,4 @@
-<h1 align="center">shrotcut</h1>
+# shrotcut
 # Mac
 
 ### 1. 向前/向后

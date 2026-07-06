@@ -1,4 +1,4 @@
-<h1 align="center">nvcc</h1>
+# nvcc
 
 
 

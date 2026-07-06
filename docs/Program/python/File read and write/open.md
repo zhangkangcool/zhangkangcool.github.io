@@ -1,4 +1,4 @@
-<h1 align="center">open</h1>
+# open
 https://www.runoob.com/python/python-func-open.html
 
 

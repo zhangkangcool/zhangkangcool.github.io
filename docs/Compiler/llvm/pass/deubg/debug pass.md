@@ -1,4 +1,4 @@
-<h1 align="center">debug pass</h1>
+# debug pass
 ## `DEBUG_TYPE` & Options
 
 `./lib/Target/PowerPC/PPCMIPeephole.cpp`

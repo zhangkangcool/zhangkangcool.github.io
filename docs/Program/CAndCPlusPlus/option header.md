@@ -1,4 +1,4 @@
-<h1 align="center">option header</h1>
+# option header
 ###  1 -v查看编译过程
 
 可以看到include文件的查找位置

@@ -1,4 +1,4 @@
-<h1 align="center">files share</h1>
+# files share
 
 
 ## win10与子系统Ubuntu之间互相访问文件系统

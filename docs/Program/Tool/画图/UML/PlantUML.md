@@ -1,4 +1,4 @@
-<h1 align="center">PlantUML</h1>
+# PlantUML
 
 
 # 1. 快速使用

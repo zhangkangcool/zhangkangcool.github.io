@@ -1,4 +1,4 @@
-<h1 align="center">ssh连接远程服务器自动断开解决</h1>
+# ssh连接远程服务器自动断开解决
 https://blog.csdn.net/hustcw98/article/details/79325878
 
 https://blog.csdn.net/abld99/article/details/69388858

@@ -1,4 +1,4 @@
-<h1 align="center">Opt level</h1>
+# Opt level
 ## With version 3.8 the passes are as follow:
 
 https://stackoverflow.com/questions/15548023/clang-optimization-levels

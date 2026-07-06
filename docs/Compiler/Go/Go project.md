@@ -1,4 +1,4 @@
-<h1 align="center">Go project</h1>
+# Go project
 ## My patch
 
 ```

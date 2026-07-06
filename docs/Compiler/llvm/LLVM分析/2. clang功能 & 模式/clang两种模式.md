@@ -1,4 +1,4 @@
-<h1 align="center">clang两种模式</h1>
+# clang两种模式
 clang的使用有两种方式，一种是通过driver里的clang应用程序，用命令行来执行操作，实现基于clang的前端，该方式要理清driver实现的路径，并基于其调用顺序来实现自己的前端处理流程。另一种是通过库调用的方式，直接调用clang核心模块中的接口来实现相关功能。
 
 # 1. clang driver模式

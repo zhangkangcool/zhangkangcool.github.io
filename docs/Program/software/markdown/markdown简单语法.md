@@ -1,4 +1,4 @@
-<h1 align="center">markdown简单预防</h1>
+# markdown简单预防
 ## 文字加粗
 
 **两边加两个星号**

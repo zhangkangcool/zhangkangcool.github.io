@@ -1,4 +1,4 @@
-<h1 align="center">alias</h1>
+# alias
 ### 汇编级别的
 
 PPCAsmPseudo定义汇编级别的alias指令，不会出来在Codegen中。

@@ -1,6 +1,6 @@
 
 
-<h1 align="center">ubuntu安装RealVNC</h1>
+# ubuntu安装RealVNC
 
 
 

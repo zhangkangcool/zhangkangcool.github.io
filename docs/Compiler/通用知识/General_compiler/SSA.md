@@ -1,4 +1,4 @@
-<h1 align="center">SSA</h1>
+# SSA
 https://www.zhihu.com/question/24992774/answer/29740949?utm_campaign=rss&utm_medium=rss&utm_source=rss&utm_content=title
 
 作者：RednaxelaFX

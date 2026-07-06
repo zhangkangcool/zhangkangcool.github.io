@@ -1,4 +1,4 @@
-<h1 align="center">bugpoint</h1>
+# bugpoint
 # LLVM bugpoint tool: design and usage
 
 https://llvm.org/docs/Bugpoint.html

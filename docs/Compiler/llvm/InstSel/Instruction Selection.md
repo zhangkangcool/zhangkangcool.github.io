@@ -1,4 +1,4 @@
-<h1 align="center">Instruction Selection</h1>
+# Instruction Selection
 
 
 

@@ -1,4 +1,4 @@
-<h1 align="center">llc option</h1>
+# llc option
 ```shell
 llc sum.bc -o sum.s
 llc sum.ll -o sum.s

@@ -1,4 +1,4 @@
-<h1 align="center">Ch2 生成初级MLIR</h1>
+# Ch2 生成初级MLIR
 
 
 # 生成初级MLIR

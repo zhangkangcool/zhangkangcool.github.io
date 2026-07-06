@@ -1,4 +1,4 @@
-<h1 align="center">Visual Performance Analyzer</h1>
+# Visual Performance Analyzer
 Visual Performance Analyzer(VPA)
 
 Download: https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/W5be7727ab90c_4453_b240_01bb7c1df49d/page/Performance%20Tools%20Release

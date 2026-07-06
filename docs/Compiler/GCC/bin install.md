@@ -1,4 +1,4 @@
-<h1 align="center">bin install</h1>
+# bin install
 
 
 

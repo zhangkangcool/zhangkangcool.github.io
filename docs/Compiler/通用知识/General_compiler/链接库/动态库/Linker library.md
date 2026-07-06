@@ -1,4 +1,4 @@
-<h1 align="center">Linker library</h1>
+# Linker library
 
 
 ## Search Path

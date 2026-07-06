@@ -1,4 +1,4 @@
-<h1 align="center">options</h1>
+# options
 
 
 # 1 `--user`

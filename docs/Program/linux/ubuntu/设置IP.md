@@ -1,4 +1,4 @@
-<h1 align="center">设置IP</h1>
+# 设置IP
 https://www.jianshu.com/p/872e2e2e502d
 
 

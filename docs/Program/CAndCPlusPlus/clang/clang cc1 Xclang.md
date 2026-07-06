@@ -1,4 +1,4 @@
-<h1 align="center">clang cc1 Xclang</h1>
+# clang cc1 Xclang
 
 
 命令行使用的“clang”其实并不是前端Clang，而是指的是Clang driver；

@@ -1,4 +1,4 @@
-<h1 align="center">mount</h1>
+# mount
 https://www.cnblogs.com/puloieswind/p/5853401.html
 
 # 查看文件挂载点信息

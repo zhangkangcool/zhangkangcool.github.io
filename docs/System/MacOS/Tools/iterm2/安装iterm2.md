@@ -1,4 +1,4 @@
-<h1 align="center">安装iterm2</h1>
+# 安装iterm2
 
 ## 1. 安装iterm2
 

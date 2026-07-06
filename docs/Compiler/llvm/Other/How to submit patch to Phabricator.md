@@ -1,4 +1,4 @@
-<h1 align="center">How to submit patch to Phabricator</h1>
+# How to submit patch to Phabricator
 Useful website:
 https://reviews.llvm.org/D54738
 https://reviews.llvm.org/D53360

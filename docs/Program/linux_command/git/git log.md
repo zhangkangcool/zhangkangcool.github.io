@@ -1,4 +1,4 @@
-<h1 align="center">git log</h1>
+# git log
 # 1 git reflog
 
 该命令可以查看最近所有的HEAD变化，一般用于恢复。查看git reset的用法md

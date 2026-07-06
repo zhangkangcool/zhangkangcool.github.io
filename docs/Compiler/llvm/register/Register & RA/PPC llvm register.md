@@ -1,4 +1,4 @@
-<h1 align="center">PPC llvm register</h1>
+# PPC llvm register
 # PPCGenRegisterInfo.inc
 
 可在对应的inc文件中看到详细的寄存器定义

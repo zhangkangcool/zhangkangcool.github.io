@@ -1,4 +1,4 @@
-<h1 align="center">git使用代理</h1>
+# git使用代理
 ### clash.sh
 
 ```shell

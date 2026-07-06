@@ -1,4 +1,4 @@
-<h1 align="center">cmake configure_file</h1>
+# cmake configure_file
 
 
 https://www.jianshu.com/p/2946eeec2489

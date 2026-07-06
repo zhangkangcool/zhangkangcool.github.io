@@ -1,4 +1,4 @@
-<h1 align="center">Ubuntu 18.04 下解决 shadowsocks 服务报错问题</h1>
+# Ubuntu 18.04 下解决 shadowsocks 服务报错问题
 https://floperry.github.io/2019/02/24/2018-06-25-Ubuntu-18.04-%E4%B8%8B%E8%A7%A3%E5%86%B3-shadowsocks-%E6%9C%8D%E5%8A%A1%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/
 
 

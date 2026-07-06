@@ -2,7 +2,7 @@
 
 
 
-<h1 align="center">两个grub文件的区别</h1>
+# 两个grub文件的区别
 
 以下两个grub.cfg文件有什么区别：
 

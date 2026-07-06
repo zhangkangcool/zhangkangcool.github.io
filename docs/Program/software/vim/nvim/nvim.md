@@ -1,4 +1,4 @@
-<h1 align="center">nvim</h1>
+# nvim
 
 
 

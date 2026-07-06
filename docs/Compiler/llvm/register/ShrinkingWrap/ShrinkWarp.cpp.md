@@ -1,4 +1,4 @@
-<h1 align="center">ShrinkWarp.cpp</h1>
+# ShrinkWarp.cpp
 ```shell
 // This pass looks for safe point where the prologue and epilogue can be
 // inserted.

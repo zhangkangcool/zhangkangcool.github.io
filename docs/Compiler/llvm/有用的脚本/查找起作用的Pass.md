@@ -1,4 +1,4 @@
-<h1 align="center">查找起作用的Pass</h1>
+# 查找起作用的Pass
 
 
 

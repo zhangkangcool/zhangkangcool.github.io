@@ -1,4 +1,4 @@
-<h1 align="center">clash for linux</h1>
+# clash for linux
 
 
 

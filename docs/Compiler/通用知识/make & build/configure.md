@@ -1,4 +1,4 @@
-<h1 align="center">configure</h1>
+# configure
 
 
 ## 1. configure介绍

@@ -2,7 +2,7 @@
 
 
 
-<h1 align="center">ICD但使用非ICD库文件</h1>
+# ICD但使用非ICD库文件
 
 ## 1. 确认使用了icd编译
 

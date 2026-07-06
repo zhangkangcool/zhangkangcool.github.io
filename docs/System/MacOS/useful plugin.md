@@ -1,4 +1,4 @@
-<h1 align="center">useful plugin</h1>
+# useful plugin
 ## WeChat
 
 https://github.com/TKkk-iOSer/WeChatPlugin-MacOS

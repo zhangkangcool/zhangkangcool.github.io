@@ -1,4 +1,4 @@
-<h1 align="center">关闭GUI</h1>
+# 关闭GUI
 https://blog.csdn.net/sole_cc/article/details/42707735
 
 

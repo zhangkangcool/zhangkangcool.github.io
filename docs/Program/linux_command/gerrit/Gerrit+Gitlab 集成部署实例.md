@@ -1,4 +1,4 @@
-<h1 align="center">Gerrit+Gitlab 集成部署实例</h1>
+# Gerrit+Gitlab 集成部署实例
 
 
 

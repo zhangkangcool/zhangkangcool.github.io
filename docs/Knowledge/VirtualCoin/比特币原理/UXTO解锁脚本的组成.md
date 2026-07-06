@@ -1,4 +1,4 @@
-<h1 align="center">UXTO解锁脚本的组成</h1>
+# UXTO解锁脚本的组成
 
 
 

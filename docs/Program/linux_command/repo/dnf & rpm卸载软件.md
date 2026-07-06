@@ -1,6 +1,6 @@
 
 
-<h1 align="center">rpm & dnf 卸载软件</h1>
+# rpm & dnf 卸载软件
 
 
 

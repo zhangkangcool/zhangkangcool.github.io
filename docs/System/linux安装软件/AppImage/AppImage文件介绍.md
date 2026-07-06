@@ -1,6 +1,6 @@
 
 
-<h1 align="center">AppImage文件介绍</h1>
+# AppImage文件介绍
 
 
 

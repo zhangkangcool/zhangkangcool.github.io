@@ -1,4 +1,4 @@
-<h1 align="center">spirv</h1>
+# spirv
 
 
 https://portablecl.org/docs/html/opencl_status.html

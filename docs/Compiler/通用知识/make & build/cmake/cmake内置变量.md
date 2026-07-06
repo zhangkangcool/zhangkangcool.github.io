@@ -1,4 +1,4 @@
-<h1 align="center">cmake内置变量</h1>
+# cmake内置变量
 https://blog.csdn.net/fanrongwoaini/article/details/126559472
 
 

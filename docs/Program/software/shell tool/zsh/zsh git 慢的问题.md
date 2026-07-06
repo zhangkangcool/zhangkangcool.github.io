@@ -1,4 +1,4 @@
-<h1 align="center">zsh git 慢的问题</h1>
+# zsh git 慢的问题
 
 
 

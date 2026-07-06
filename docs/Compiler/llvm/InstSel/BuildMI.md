@@ -1,4 +1,4 @@
-<h1 align="center">BuildMI</h1>
+# BuildMI
 https://releases.llvm.org/1.3/docs/CodeGenerator.html
 
 

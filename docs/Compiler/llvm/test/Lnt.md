@@ -1,4 +1,4 @@
-<h1 align="center">Lnt</h1>
+# Lnt
 http://llvm.org/docs/lnt/quickstart.html
 http://llvm.org/docs/lnt/tests.html
 

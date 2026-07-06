@@ -1,4 +1,4 @@
-<h1 align="center">RetroArch安装和使用</h1>
+# RetroArch安装和使用
 
 
 

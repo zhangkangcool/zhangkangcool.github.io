@@ -1,4 +1,4 @@
-<h1 align="center">llvm td files</h1>
+# llvm td files
 # 1 include/llvm/IR/IntrinsicsPowerPC.td
 
 http://www.voidcn.com/article/p-tnhyorey-bmq.html

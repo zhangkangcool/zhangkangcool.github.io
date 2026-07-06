@@ -1,4 +1,4 @@
-<h1 align="center">print type</h1>
+# print type
 
 ### 1. Print the type
 

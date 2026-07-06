@@ -1,6 +1,6 @@
 
 
-<h1 align="center">cipher与fernet加解密对比</h1>
+# cipher与fernet加解密对比
 
 在 Python 中，原生的 `crypto` 相关库（如 `pycryptodome` 中的 AES 实现）和 `cryptography` 库的 `Fernet` 模块（对应 `aes_fernet.py` 逻辑）在便捷性、安全性和易用性上有显著差异，具体对比如下：
 

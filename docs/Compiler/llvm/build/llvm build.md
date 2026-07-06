@@ -1,4 +1,4 @@
-<h1 align="center">llvm build</h1>
+# llvm build
 BUILD_SHARED_LIBS=ON
 
 DLLVM_ENABLE_EXPENSIVE_CHECKS=ON只能在check-llvm时加，否则很多case会挂。

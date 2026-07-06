@@ -1,4 +1,4 @@
-<h1 align="center">查看CPU信息</h1>
+# 查看CPU信息
 
 
 ```shell

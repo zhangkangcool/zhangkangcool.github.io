@@ -1,4 +1,4 @@
-<h1 align="center">mlir doc</h1>
+# mlir doc
 # 1. IR设计细节
 
 ### Operations（操作）

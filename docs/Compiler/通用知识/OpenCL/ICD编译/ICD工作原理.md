@@ -1,4 +1,4 @@
-<h1 align="center">ICD工作原理</h1>
+# ICD工作原理
 
 在 OpenCL 的 ICD（Installable Client Driver）架构中，驱动本身并不知道也不需要知道你的 ICD 文件叫什么名字。ICD 机制的核心是通过**ICD Loader**（一个中间层）来发现和加载驱动，而 ICD 文件的命名和位置遵循特定的**约定**而非驱动强制要求。
 

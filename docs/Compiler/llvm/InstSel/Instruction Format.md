@@ -1,4 +1,4 @@
-<h1 align="center">Instruction Format</h1>
+# Instruction Format
 
 
 

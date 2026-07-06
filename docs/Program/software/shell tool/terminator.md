@@ -1,4 +1,4 @@
-<h1 align="center">terminator</h1>
+# terminator
  ## GUI界面的linux可以安装terminator
 
 可以轻松拆分窗口等。

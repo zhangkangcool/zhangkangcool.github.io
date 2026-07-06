@@ -1,4 +1,4 @@
-<h1 align="center">cmd</h1>
+# cmd
 # Option
 
 1. `-o -`输出到screen

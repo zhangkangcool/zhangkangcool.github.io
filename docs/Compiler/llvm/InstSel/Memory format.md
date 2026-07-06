@@ -1,4 +1,4 @@
-<h1 align="center">Memory format</h1>
+# Memory format
 ## C*Core
 
 ```c++

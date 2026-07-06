@@ -1,4 +1,4 @@
-<h1 align="center">Register def</h1>
+# Register def
 
 
 https://reviews.llvm.org/D86269#change-xkvgJ0GEdUTo   `CSKYRegisterInfo.td`

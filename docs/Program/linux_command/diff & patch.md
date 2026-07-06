@@ -1,4 +1,4 @@
-<h1 align="center">diff & patch</h1>
+# diff & patch
 
 #### 1. first old, second new
 ```shell

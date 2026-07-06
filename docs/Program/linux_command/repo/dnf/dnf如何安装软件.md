@@ -1,4 +1,4 @@
-<h1 align="center">dnf如何安装软件</h1>
+# dnf如何安装软件
 
 
 

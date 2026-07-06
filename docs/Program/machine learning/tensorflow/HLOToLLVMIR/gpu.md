@@ -1,4 +1,4 @@
-<h1 align="center">gpu</h1>
+# gpu
 
 
 #### 以下代码以r2.10.0为例

@@ -1,4 +1,4 @@
-<h1 align="center">Use scripts(often)</h1>
+# Use scripts(often)
 https://github.ibm.com/cdl-compiler/llvm/wiki/Use-script-to-build-&-test-llvm
 
 

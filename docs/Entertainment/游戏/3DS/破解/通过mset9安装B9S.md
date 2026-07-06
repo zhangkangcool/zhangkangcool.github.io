@@ -1,6 +1,6 @@
 https://stray-soul.com/mset9.html
 
-<h1 align="center">通过mset9安装B9S</h1>
+# 通过mset9安装B9S
 
 
 

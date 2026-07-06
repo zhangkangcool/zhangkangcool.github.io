@@ -1,4 +1,4 @@
-<h1 align="center">clCreateBuffer 新设备驱动实现 - 快速参考</h1>
+# clCreateBuffer 新设备驱动实现 - 快速参考
 
 # 
 

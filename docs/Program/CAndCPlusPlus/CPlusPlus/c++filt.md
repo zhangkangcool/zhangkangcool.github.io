@@ -1,4 +1,4 @@
-<h1 align="center">c++filt</h1>
+# c++filt
 # 1. c++filt
 In the disassembly file, you can see below instruction:
 ```

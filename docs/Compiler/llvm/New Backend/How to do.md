@@ -1,4 +1,4 @@
-<h1 align="center">How to do</h1>
+# How to do
 
 
 

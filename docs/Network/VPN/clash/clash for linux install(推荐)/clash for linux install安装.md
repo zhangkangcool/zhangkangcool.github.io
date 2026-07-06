@@ -2,7 +2,7 @@
 
 
 
-<h1 align="center">clash for linux install 推荐使用</h1>
+# clash for linux install 推荐使用
 
 
 

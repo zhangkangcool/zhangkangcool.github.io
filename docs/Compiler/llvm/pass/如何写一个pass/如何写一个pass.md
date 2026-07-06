@@ -1,4 +1,4 @@
-<h1 align="center">如何写一个pass</h1>
+# 如何写一个pass
 https://bsauce.github.io/2019/05/30/how-to-write-a-pass/#2%E5%86%99hello-world-pass
 
 

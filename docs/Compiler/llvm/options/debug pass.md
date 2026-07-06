@@ -1,4 +1,4 @@
-<h1 align="center">debug pass</h1>
+# debug pass
 http://llvm.org/docs/Passes.html
 
 ## time-passes

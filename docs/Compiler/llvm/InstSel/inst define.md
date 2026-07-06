@@ -1,4 +1,4 @@
-<h1 align="center">inst define</h1>
+# inst define
 
 
 # Independent instruction property

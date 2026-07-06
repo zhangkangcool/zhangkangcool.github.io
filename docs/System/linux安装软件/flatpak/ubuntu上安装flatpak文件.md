@@ -2,7 +2,7 @@
 
 
 
-<h1 align="center">ubuntu上安装flatpak文件</h1>
+# ubuntu上安装flatpak文件
 
 
 

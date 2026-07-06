@@ -1,4 +1,4 @@
-<h1 align="center">getopt函数</h1>
+# getopt函数
 
 bhttps://blog.csdn.net/yzy1103203312/article/details/78278625
 

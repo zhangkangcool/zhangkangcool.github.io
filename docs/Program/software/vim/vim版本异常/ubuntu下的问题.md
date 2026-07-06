@@ -1,4 +1,4 @@
-<h1 align="center">ubuntu下的问题</h1>
+# ubuntu下的问题
 
 
 https://blog.admpub.com/blog/post/admin/Vi%E6%96%B9%E5%90%91%E9%94%AE%5BA-%5BB-%5BC-%5BD%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3

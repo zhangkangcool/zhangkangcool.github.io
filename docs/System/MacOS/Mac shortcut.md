@@ -1,4 +1,4 @@
-<h1 align="center">Mac shortcut</h1>
+# Mac shortcut
 https://www.jianshu.com/p/e6c364084c22
 
 # Control

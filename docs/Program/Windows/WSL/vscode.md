@@ -1,4 +1,4 @@
-<h1 align="center">vscode</h1>
+# vscode
 https://docs.microsoft.com/zh-cn/windows/wsl/tutorials/wsl-vscode
 
 

@@ -1,4 +1,4 @@
-<h1 align="center">Other arch</h1>
+# Other arch
 
 
  ## Writing an LLVM Backend

@@ -1,4 +1,4 @@
-<h1 align="center">NaN</h1>
+# NaN
 https://zh.wikipedia.org/wiki/NaN
 
 

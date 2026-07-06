@@ -1,4 +1,4 @@
-<h1 align="center">call hierarchy</h1>
+# call hierarchy
 ### 关于call tree有另一个文件进行了介绍
 
 ----

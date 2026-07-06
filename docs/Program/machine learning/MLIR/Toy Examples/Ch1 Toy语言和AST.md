@@ -1,4 +1,4 @@
-<h1 align="center">Ch1 Toy语言和AST</h1>
+# Ch1 Toy语言和AST
 
 
 # Toy语言和AST

@@ -1,4 +1,4 @@
-<h1 align="center">Configuration</h1>
+# Configuration
 
 
 # 1 Configure file

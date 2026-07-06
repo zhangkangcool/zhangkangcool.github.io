@@ -1,4 +1,4 @@
-<h1 align="center">print format</h1>
+# print format
 # print.format
 
 此方法是推荐方法

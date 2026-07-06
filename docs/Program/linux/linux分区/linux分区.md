@@ -2,7 +2,7 @@
 
 
 
-<h1 align="center">linux分区</h1>
+# linux分区
 
 
 

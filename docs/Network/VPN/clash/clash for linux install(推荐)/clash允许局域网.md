@@ -2,7 +2,7 @@
 
 
 
-<h1 align="center">clash允许局域网</h1>
+# clash允许局域网
 
 VSCode AI回答
 

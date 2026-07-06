@@ -1,4 +1,4 @@
-<h1 align="center">cast</h1>
+# cast
 `dyn_cast` will return `NULL` or what you want. 
 
 `isa` will return bool, if it can convert.

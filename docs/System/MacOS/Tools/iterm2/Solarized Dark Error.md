@@ -1,4 +1,4 @@
-<h1 align="center">Solarized Dark Error</h1>
+# Solarized Dark Error
 
 
 

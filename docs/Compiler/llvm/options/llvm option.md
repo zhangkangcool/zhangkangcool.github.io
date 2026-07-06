@@ -1,4 +1,4 @@
-<h1 align="center">llvm option</h1>
+# llvm option
 https://llvm.comptechs.cn/docs/man/llc.html  各个选项的中文文档
 
 

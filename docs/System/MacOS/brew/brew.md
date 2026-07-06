@@ -1,4 +1,4 @@
-<h1 align="center">brew</h1>
+# brew
 
 
 ## 1. 从githb安装

@@ -1,4 +1,4 @@
-<h1 align="center">IR</h1>
+# IR
 # Shift
 
 https://llvm.org/docs/LangRef.html

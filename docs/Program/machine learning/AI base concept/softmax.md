@@ -1,4 +1,4 @@
-<h1 align="center">softmax</h1>
+# softmax
 
 
 https://zhuanlan.zhihu.com/p/105722023

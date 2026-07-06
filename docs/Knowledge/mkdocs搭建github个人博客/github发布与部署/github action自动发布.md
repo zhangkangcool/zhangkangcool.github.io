@@ -1,6 +1,6 @@
 
 
-<h1 align="center">github action自动发布</h1>
+# github action自动发布
 
 
 

@@ -1,4 +1,4 @@
-<h1 align="center">git merge</h1>
+# git merge
 #  1. git merge & git rebase
 
 https://blog.csdn.net/liuxiaoheng1992/article/details/79108233

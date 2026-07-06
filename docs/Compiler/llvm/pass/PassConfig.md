@@ -1,4 +1,4 @@
-<h1 align="center">PassConfig</h1>
+# PassConfig
 
 
 各种Pass

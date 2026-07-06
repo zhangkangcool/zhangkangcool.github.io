@@ -1,4 +1,4 @@
-<h1 align="center">shortcut</h1>
+# shortcut
 将光标移到行首 "^"
 
 将光标移到行尾"$"

@@ -1,4 +1,4 @@
-<h1 align="center">IP限制</h1>
+# IP限制
 
 
 https://www.yfname.com/help/detail/288

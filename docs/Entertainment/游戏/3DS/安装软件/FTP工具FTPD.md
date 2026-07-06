@@ -2,7 +2,7 @@
 
 https://stray-soul.com/about-file-transfer-via-phone.html
 
-<h1 align="center">FTP工具FTPD</h1>
+# FTP工具FTPD
 
 ## 1. 下载
 

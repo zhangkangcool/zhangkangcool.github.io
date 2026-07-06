@@ -1,4 +1,4 @@
-<h1 align="center">Instructoin Selection td files</h1>
+# Instructoin Selection td files
 
 
 # PPCInstrFormats.td

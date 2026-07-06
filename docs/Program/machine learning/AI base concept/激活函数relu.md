@@ -1,4 +1,4 @@
-<h1 align="center">激活函数relu</h1>
+# 激活函数relu
 https://zhuanlan.zhihu.com/p/428448728
 
 

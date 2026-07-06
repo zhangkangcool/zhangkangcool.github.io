@@ -1,4 +1,4 @@
-<h1 align="center">option</h1>
+# option
 http://llvm.org/docs/LinkTimeOptimization.html
 
 https://blog.csdn.net/zhajio/article/details/79640155

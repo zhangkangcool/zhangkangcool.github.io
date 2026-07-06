@@ -1,6 +1,6 @@
 
 
-<h1 align="center">MacOS安装RealVNC</h1>
+# MacOS安装RealVNC
 
 
 

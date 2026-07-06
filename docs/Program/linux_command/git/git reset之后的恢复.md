@@ -1,4 +1,4 @@
-<h1 align="center">git reset之后的恢复</h1>
+# git reset之后的恢复
 <https://www.jianshu.com/p/5d3ad1a23298>
 
 

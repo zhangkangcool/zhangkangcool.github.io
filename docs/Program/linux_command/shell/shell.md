@@ -1,4 +1,4 @@
-<h1 align="center">shell</h1>
+# shell
 # 1. if statement
 
 ```shell

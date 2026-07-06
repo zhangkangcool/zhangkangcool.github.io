@@ -1,4 +1,4 @@
-<h1 align="center">llvm-config</h1>
+# llvm-config
 
 
 # llvm-confg

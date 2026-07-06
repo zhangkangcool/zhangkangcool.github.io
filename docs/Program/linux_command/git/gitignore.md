@@ -1,4 +1,4 @@
-<h1 align="center">gitignore</h1>
+# gitignore
 e https://blog.csdn.net/weixin_45318845/article/details/120740012
 
 

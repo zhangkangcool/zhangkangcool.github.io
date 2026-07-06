@@ -1,4 +1,4 @@
-<h1 align="center">vim查找和替换</h1>
+# vim查找和替换
 # vim查找和替换详解
 http://blog.csdn.net/zcube/article/details/42710141
 

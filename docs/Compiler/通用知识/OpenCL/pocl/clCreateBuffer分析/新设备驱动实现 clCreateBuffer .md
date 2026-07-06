@@ -1,6 +1,6 @@
 
 
-<h1 align="center">新设备驱动实现 clCreateBuffer 指南</h1>
+# 新设备驱动实现 clCreateBuffer 指南
 
 
 

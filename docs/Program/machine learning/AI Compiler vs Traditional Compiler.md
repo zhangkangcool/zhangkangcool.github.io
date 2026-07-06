@@ -1,4 +1,4 @@
-<h1 align="center">AI Compiler vs Traditional Compiler</h1>
+# AI Compiler vs Traditional Compiler
 
 
 https://www.zhihu.com/question/396105855

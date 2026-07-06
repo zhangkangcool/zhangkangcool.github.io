@@ -1,4 +1,4 @@
-<h1 align="center">查看include path</h1>
+# 查看include path
 # 2 查看include path(以下方法也可以用于clang)
 
 ##### 2.1 For C

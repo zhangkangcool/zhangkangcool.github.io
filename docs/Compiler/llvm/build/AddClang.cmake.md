@@ -1,1 +1,1 @@
-<h1 align="center">AddClang.cmake</h1>
+# AddClang.cmake

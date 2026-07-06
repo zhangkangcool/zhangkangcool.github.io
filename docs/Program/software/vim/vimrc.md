@@ -1,4 +1,4 @@
-<h1 align="center">vimrc</h1>
+# vimrc
 
 
 

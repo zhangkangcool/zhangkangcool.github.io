@@ -1,4 +1,4 @@
-<h1 align="center">rsync & fwatch</h1>
+# rsync & fwatch
 #### Mac上使用fwatch，linux上用其它的软件
 
 https://my.oschina.net/mengshuai/blog/618354

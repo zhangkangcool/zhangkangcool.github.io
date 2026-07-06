@@ -1,4 +1,4 @@
-<h1 align="center">gbuild</h1>
+# gbuild
 # 1. Download site
 
 ```shell

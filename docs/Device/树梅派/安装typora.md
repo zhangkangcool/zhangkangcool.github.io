@@ -1,4 +1,4 @@
-<h1 align="center">RaspBerry PI 4安装 typora</h1>
+# RaspBerry PI 4安装 typora
 
 
 

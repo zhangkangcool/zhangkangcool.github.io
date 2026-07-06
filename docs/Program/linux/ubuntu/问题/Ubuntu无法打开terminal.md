@@ -1,4 +1,4 @@
-<h1 align="center">Ubuntu无法打开terminal</h1>
+# Ubuntu无法打开terminal
 
 
 https://bbs.huaweicloud.com/blogs/313277

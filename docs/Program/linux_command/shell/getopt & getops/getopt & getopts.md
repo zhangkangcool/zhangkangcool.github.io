@@ -1,4 +1,4 @@
-<h1 align="center">getopt & getopts</h1>
+# getopt & getopts
 https://blog.csdn.net/weixin_30482027/article/details/116578311
 
 

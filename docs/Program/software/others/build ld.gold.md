@@ -1,4 +1,4 @@
-<h1 align="center">build ld.gold</h1>
+# build ld.gold
 # If you have error for below
 
 ```

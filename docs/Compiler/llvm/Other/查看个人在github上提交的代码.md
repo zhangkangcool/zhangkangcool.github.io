@@ -1,4 +1,4 @@
-<h1 align="center">查看个人在github上提交的代码</h1>
+# 查看个人在github上提交的代码
 
 
 ## 查看本人的所有Patch

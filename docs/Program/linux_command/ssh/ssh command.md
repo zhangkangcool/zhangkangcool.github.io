@@ -1,4 +1,4 @@
-<h1 align="center">ssh command</h1>
+# ssh command
 # 1 Create the key
 
 https://blog.csdn.net/a753255157/article/details/49156029

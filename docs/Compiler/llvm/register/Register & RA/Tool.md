@@ -1,4 +1,4 @@
-<h1 align="center">Tool</h1>
+# Tool
 ### Display the RA
 
 https://reviews.llvm.org/M2

@@ -1,4 +1,4 @@
-<h1 align="center">linker</h1>
+# linker
 ## LD LLD GOLD
 
 编译llvm时，如果明确编译了lld，并且加入了path，则clang会用lld

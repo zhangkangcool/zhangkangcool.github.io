@@ -1,4 +1,4 @@
-<h1 align="center">禁用pass</h1>
+# 禁用pass
 
 
 

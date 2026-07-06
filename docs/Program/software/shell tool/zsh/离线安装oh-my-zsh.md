@@ -1,4 +1,4 @@
-<h1 align="center">离线安装oh-my-zsh</h1>
+# 离线安装oh-my-zsh
 
 ## 1.  下载代码
 

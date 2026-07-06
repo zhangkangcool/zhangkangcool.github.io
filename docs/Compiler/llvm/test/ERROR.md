@@ -1,4 +1,4 @@
-<h1 align="center">ERROR</h1>
+# ERROR
 
 
 如果碰到以下的错误的话，应该是clang的test没开，应该设置`-DCLANG_INCLUDE_TEST=On`选项。

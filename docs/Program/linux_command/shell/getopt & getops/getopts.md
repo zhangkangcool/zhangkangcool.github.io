@@ -1,4 +1,4 @@
-<h1 align="center">getopts</h1>
+# getopts
 # getops命令（只支持短选项，shell内置）
 
 

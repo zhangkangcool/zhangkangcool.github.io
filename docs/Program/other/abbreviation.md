@@ -1,4 +1,4 @@
-<h1 align="center">abbreviation</h1>
+# abbreviation
 # 缩写 & abbreviation
 
 # LTO（LinkTimeOptimization）

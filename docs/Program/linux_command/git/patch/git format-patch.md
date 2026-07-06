@@ -1,4 +1,4 @@
-<h1 align="center">git format-patch</h1>
+# git format-patch
 
 
 如何使用git命令，将其它项目的提交Commit 打 补丁到本项目，保留提交的时间 等日志信息、

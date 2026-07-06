@@ -1,4 +1,4 @@
-<h1 align="center">git中文支持设置</h1>
+# git中文支持设置
 
 
 

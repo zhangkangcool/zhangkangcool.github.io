@@ -1,4 +1,4 @@
-<h1 align="center">gcc -M</h1>
+# gcc -M
 https://blog.csdn.net/pengfei240/article/details/53165151
 
 # 参数详解

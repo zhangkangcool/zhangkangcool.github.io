@@ -1,4 +1,4 @@
-<h1 align="center">gerrit使用技巧说明</h1>
+# gerrit使用技巧说明
 
 
 

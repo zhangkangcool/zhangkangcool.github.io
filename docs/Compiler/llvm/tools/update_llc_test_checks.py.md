@@ -1,4 +1,4 @@
-<h1 align="center">update_llc_test_checks.py</h1>
+# update_llc_test_checks.py
 ```shell
 usage: update_llc_test_checks.py [-h] [-v] [--llc-binary LLC_BINARY]
                                  [--function FUNCTION] [--extra_scrub]

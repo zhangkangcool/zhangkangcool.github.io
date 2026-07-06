@@ -1,4 +1,4 @@
-<h1 align="center">clang-format</h1>
+# clang-format
 # Clang-Format格式化选项介绍
 
 https://blog.csdn.net/softimite_zifeng/article/details/78357898 

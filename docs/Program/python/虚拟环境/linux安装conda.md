@@ -1,4 +1,4 @@
-<h1 align="center">linux安装conda</h1>
+# linux安装conda
 
 
 

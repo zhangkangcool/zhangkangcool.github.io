@@ -1,4 +1,4 @@
-<h1 align="center">get pgo info</h1>
+# get pgo info
 # 静态分析
 
 `lib/Analysis/BranchProbabilityInfo.cpp`

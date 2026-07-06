@@ -1,4 +1,4 @@
-<h1 align="center">ISD</h1>
+# ISD
 # ./lib/CodeGen/TargetLoweringBase.cpp
 
 http://llvm.org/doxygen/namespacellvm_1_1ISD.html

@@ -1,4 +1,4 @@
-<h1 align="center">tmux</h1>
+# tmux
 ## ssh工具连接远程服务器使用tmux
 
 http://www.ruanyifeng.com/blog/2019/10/tmux.html

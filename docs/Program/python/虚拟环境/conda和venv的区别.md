@@ -1,4 +1,4 @@
-<h1 align="center">conda和venv的</h1>
+# conda和venv的
 
 `conda` 和 `venv` 都是 Python 中用于管理虚拟环境的工具，但它们的设计目标、功能范围和适用场景有较大区别，具体差异如下：
 

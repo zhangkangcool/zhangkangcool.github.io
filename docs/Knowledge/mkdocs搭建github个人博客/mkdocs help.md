@@ -1,4 +1,4 @@
-<h1 align="center">mkdocs help</h1>
+# mkdocs help
 
 
 # Mkdocs命令简介

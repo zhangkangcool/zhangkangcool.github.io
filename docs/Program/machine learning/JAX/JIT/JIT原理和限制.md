@@ -1,4 +1,4 @@
-<h1 align="center">JIT原理和限制</h1>
+# JIT原理和限制
 
 
 # jax.jit避坑指南

@@ -1,4 +1,4 @@
-<h1 align="center">llc SelectionDag</h1>
+# llc SelectionDag
 https://people.cs.nctu.edu.tw/~chenwj/dokuwiki/doku.php?id=llvm
 
 # Print the SelectionDAG graph

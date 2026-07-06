@@ -1,4 +1,4 @@
-<h1 align="center">vim command</h1>
+# vim command
 中文manual: http://vimcdoc.sourceforge.net/doc/help.html
 
 

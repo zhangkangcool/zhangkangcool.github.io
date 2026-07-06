@@ -1,4 +1,4 @@
-<h1 align="center">mir</h1>
+# mir
 Create & use mir command
 
 ```shell

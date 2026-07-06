@@ -1,4 +1,4 @@
-<h1 align="center">Use clang in vscode</h1>
+# Use clang in vscode
 
 
 https://code.visualstudio.com/docs/cpp/config-clang-mac

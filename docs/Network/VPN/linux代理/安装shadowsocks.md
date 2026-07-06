@@ -1,4 +1,4 @@
-<h1 align="center">安装shadowsocks</h1>
+# 安装shadowsocks
 
 
 

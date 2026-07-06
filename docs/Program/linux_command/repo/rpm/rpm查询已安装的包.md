@@ -1,6 +1,6 @@
 
 
-<h1 align="center">RPM查询已安装的软件包</h1>
+# RPM查询已安装的软件包
 
 
 

@@ -1,4 +1,4 @@
-<h1 align="center">系统LIBRARY设置</h1>
+# 系统LIBRARY设置
 
 
 /usr/local/lib/ 不在系统的LD_LIBRARY_PATH

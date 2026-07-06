@@ -1,4 +1,4 @@
-<h1 align="center">执行Shell脚本的4种方法及区别介绍</h1>
+# 执行Shell脚本的4种方法及区别介绍
 [Source Website](http://4554480.blog.51cto.com/4544480/837006)
 
 放在/root目录下。下面介绍几种在终端执行shell脚本的方法：

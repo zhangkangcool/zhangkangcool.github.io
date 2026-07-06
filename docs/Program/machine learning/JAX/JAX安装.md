@@ -1,4 +1,4 @@
-<h1 align="center">JAX安装</h1>
+# JAX安装
 
 
 
