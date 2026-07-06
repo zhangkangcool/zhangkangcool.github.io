@@ -111,7 +111,7 @@ The buildmaster appears to have (re)started correctly.
 http://khamsin1.fyre.ibm.com:8010
 ```
 
-![image-20200419151726675](assets/image-20200419151726675.png)
+> 图片缺失：BuildBot Web 访问页面截图。
 
 
 
@@ -133,7 +133,7 @@ cd ~/BuildBot/bb-master
 buildbot restart master
 ```
 
-![image-20200419152238034](assets/image-20200419152238034.png)
+> 图片缺失：修改 `buildbotURL` 后的 BuildBot 页面截图。
 
 
 
@@ -228,6 +228,5 @@ http://khamsin1.fyre.ibm.com:8010/#/builders
 ```
 
 ![image-20200419175218521](assets/image-20200419175218521.png)
-
 
 

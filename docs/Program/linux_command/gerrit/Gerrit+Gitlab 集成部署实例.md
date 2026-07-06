@@ -9,7 +9,7 @@
 
 登录账号后，点击Repositories -> CREATE NEW
 
-![img](Untitled.assets/-174598052532729.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052532729.assets`。
 
 ## 1.2 配置gerrit ssh key
 
@@ -35,7 +35,7 @@ ssh-keygen -t rsa -C gerrit@ljm.com
 
 - Step1: 创建和Gerrit 项目同名 的项目
 
-![img](Untitled.assets/-17459805252907.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-17459805252907.assets`。
 
 - Step2:  在gitlab 中创建gerrit 用户（**仅第一次需要创建， 如果有gerrit 用户，就不需要重复创建）**
 
@@ -51,19 +51,19 @@ ssh-keygen -t rsa -C gerrit@ljm.com
 
 - Step1: Gerrit 项目同步到gitlab 是依赖于gerrit 中replication 插件， 请确保gerrit 安装此插件，并使能。（如果显示已经使能， 就不需要enable）
 
-![img](Untitled.assets/-17459805252908.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-17459805252908.assets`。
 
-![img](Untitled.assets/-17459805252909.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-17459805252909.assets`。
 
 - Step2:  配置 replication 插件配置文件
 
 在部署gerrit服务器中， 找到/opt/env_devops/gerrit/docker/gerrit/etc 目录下的replication.config, 
 
-![img](Untitled.assets/-174598052529010.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529010.assets`。
 
 配置文件如下：
 
-![img](Untitled.assets/-174598052529011.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529011.assets`。
 
 如上图所示， 添加了testgilab  repositority 同步配置；
 
@@ -89,7 +89,7 @@ git push origin HEAD:refs/for/master
 
 如果遇到提示没有Change-id, 如下所示：
 
-![img](Untitled.assets/-174598052529012.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529012.assets`。
 
 解决方案：
 
@@ -108,7 +108,7 @@ scp -O -p -P 29418 root@172.18.1.251:hooks/commit-msg ${gitdir}/hooks/
 # 可以通过 `ssh -V` 指令查看openssh 版本
 ```
 
-![img](Untitled.assets/-174598052529113.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529113.assets`。
 
 再次运行command
 
@@ -117,51 +117,51 @@ git commit --amend
 git push origin HEAD:refs/for/master
 ```
 
-![img](Untitled.assets/-174598052529114.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529114.assets`。
 
 将会看到new reference, 同时在gerrit web 看到changes
 
-![img](Untitled.assets/-174598052529115.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529115.assets`。
 
 需要人工review 和投票
 
-![img](Untitled.assets/-174598052529116.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529116.assets`。
 
 当CodeReview +2 后，就可以人工merge
 
-![img](Untitled.assets/-174598052529117.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529117.assets`。
 
-![img](Untitled.assets/-174598052529118.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529118.assets`。
 
 去gitlab 上查看这个改动是否同步：
 
-![img](Untitled.assets/-174598052529119.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529119.assets`。
 
 ## 五、实例CP101 部署实战
 
 ## 5.1、创建Gerrit cp101工程
 
-![img](Untitled.assets/-174598052529120.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529120.assets`。
 
 ## 5.2、创建Gitlab cp101工程
 
 创建与gerrit 上项目同名
 
-![img](Untitled.assets/-174598052529121.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529121.assets`。
 
 添加gerrit 成员到gitlab 仓库成员中
 
-![img](Untitled.assets/-174598052529122.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529122.assets`。
 
 ## 5.3、配置Gerrit 同步项目到Gitlab cp101工程
 
 - Step1: 配置replication config
 
-![img](Untitled.assets/-174598052529123.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529123.assets`。
 
 增加cp101 同步配置
 
-![img](Untitled.assets/-174598052529124.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529124.assets`。
 
 - Step2: replication.config 生效
 
@@ -178,11 +178,11 @@ sudo docker restart <gerrit 容器id>
 
 - Step1： 拉取代码
 
-![img](Untitled.assets/-174598052529125.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529125.assets`。
 
 - Step2: 修改代码，提交到特定分支上进行审核
 
-![img](Untitled.assets/-174598052529126.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529126.assets`。
 
 ## 六、 Gerrit replication 插件调试技巧
 
@@ -209,13 +209,13 @@ ls
 exit
 ```
 
-![img](Untitled.assets/-174598052529127.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529127.assets`。
 
 ## 6.2 Gerrit replication error: SSH-connection Failed 
 
 如图：
 
-![img](Untitled.assets/-174598052529128.assets)
+> 图片缺失：旧版 Gerrit+Gitlab 配置截图 `-174598052529128.assets`。
 
 解决办法：
 

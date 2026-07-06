@@ -127,7 +127,7 @@ The less instruction, we can get the less pipe file. `10000` will get 5M pipe fi
 
 ```
 
-![image-20190605163710552](assets/image-20190605163710552.png)
+![image-20190605163710552](../assets/image-20190605163710552.png)
 
 
 
@@ -139,4 +139,3 @@ Collect the mount of insts.
  trace 0 completed arch 65000
  arch inst 66007  time 77010.000000
 ```
-

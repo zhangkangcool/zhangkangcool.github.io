@@ -22,7 +22,7 @@ OpenCL C → LLVM IR → SPIR-V → [你的编译器] → GPU 二进制
 
 **开发时间：** 1-2 周  
 **参考实现：** Vulkan 驱动 (`/lib/CL/devices/vulkan/`)  
-**跳转到：** [步骤 3.1 - SPIR-V 方案](#31--如果你已有-spir-v--gpu-二进制编译器推荐路径)
+**跳转到：** [步骤 3.1 - SPIR-V 方案](#31-spir-v-gpu)
 
 ---
 
@@ -41,7 +41,7 @@ OpenCL C → LLVM IR → [LLVM后端] → GPU 代码
 
 **开发时间：** 2-4 周  
 **参考实现：** CUDA 驱动 (`/lib/CL/devices/cuda/`)  
-**跳转到：** [步骤 3.2 - LLVM 后端方案](#32-如果你的-gpu-有-llvm-后端传统方式)
+**跳转到：** [步骤 3.2 - LLVM 后端方案](#32-gpu-llvm)
 
 ---
 

@@ -67,7 +67,7 @@ class XlaLowering(Lowering):
 
 
 
-（参考链接：[Change log — JAX documentation](#jax-0-2-28-feb-1-2022)）
+（参考链接：[Change log — JAX documentation](https://docs.jax.dev/en/latest/changelog.html#jax-0-2-28-feb-1-2022)）
 
 **jaxlib 0.1.76 (Jan 27, 2022)**
 
@@ -78,6 +78,5 @@ With jaxlib 0.1.76, JAX uses the MHLO MLIR dialect as its primary target compile
 jax.jit(f).lower(...).compiler_ir() now defaults to the MHLO dialect if no dialect= is passed.
 
 The `jax.jit(f).lower(...).compiler_ir(dialect='mhlo')` now returns an MLIR ir.Module object instead of its string representation.
-
 
 

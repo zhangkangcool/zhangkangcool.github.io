@@ -85,13 +85,13 @@ cmake .
 
 - #### 参数详解
 
-##### **`input`** - 输入文件的路径，它是一个相对路径，以[`CMAKE_CURRENT_SOURCE_DIR`](https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Fv3.14%2Fvariable%2FCMAKE_CURRENT_SOURCE_DIR.html%23variable%3A%22CMAKE_CURRENT_SOURCE_DIR%22)为路径前缀。此外，![\color{red}{它必须是一个文件，不能是目录}](cmake configure_file.assets/math-20230706161016888)。
+##### **`input`** - 输入文件的路径，它是一个相对路径，以[`CMAKE_CURRENT_SOURCE_DIR`](https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Fv3.14%2Fvariable%2FCMAKE_CURRENT_SOURCE_DIR.html%23variable%3A%22CMAKE_CURRENT_SOURCE_DIR%22)为路径前缀。此外，**它必须是一个文件，不能是目录**。
 
 ##### **`output`** - 输出文件或目录，它也是一个相对路径，以[`CMAKE_CURRENT_BINARY_DIR`](https://links.jianshu.com/go?to=https%3A%2F%2Fcmake.org%2Fcmake%2Fhelp%2Fv3.14%2Fvariable%2FCMAKE_CURRENT_BINARY_DIR.html%23variable%3ACMAKE_CURRENT_BINARY_DIR)为前缀。如果output的名称与已存在的目录名称相同，则会在该目录下生成一个与input文件名相同的文件。举个例子：如果input的文件名是inputfile，output是一个目录currentdir，那么生成的文件为currentdir/inputfile。
 
 ### 4.1 **`options`** - 参数选项
 
-1. `COPYONLY`：简单的把`input`文件拷贝到`output`，不做任何替换。注意，![\color{red}{该选项与}](cmake configure_file.assets/math-20230706161016937)`NEWLINE_STYLE`![\color{red}{冲突，不能同时使用}](cmake configure_file.assets/math)。
+1. `COPYONLY`：简单的把`input`文件拷贝到`output`，不做任何替换。注意，**该选项与** `NEWLINE_STYLE` **冲突，不能同时使用**。
 2. `ESCAPE_QUOTES`：忽略反斜杠（C语言风格）的转义。
    举个例子，不加`ESCAPE_QUOTES`的情况，也就是默认会对反斜杠进行转义：
 
@@ -153,6 +153,5 @@ option(var "use var..." ON) # 实际也可以用cmake -Dvar=ON或者cmake -Dvar=
 
 > 1. 对于`#cmakedefine var @var@`或#`cmakedefine var ${var}`，@@之间或${}内的变量名称要与cmakedefine后的变量名称一样，否则替换不成功。
 > 2. `configure_file`要放在变量定义之后（验证发现`OPTION`定义的变量可以在configure_file之后）。
-
 
 

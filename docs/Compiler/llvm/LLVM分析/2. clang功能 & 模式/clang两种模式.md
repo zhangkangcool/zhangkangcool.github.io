@@ -7,7 +7,7 @@ clang的使用有两种方式，一种是通过driver里的clang应用程序，�
 
 下面对driver的实现方式进行分析，clang driver的设计模型如图所示：
 
-![img](clang两种模式.assets\clip_image002.png)
+![img](clang两种模式.assets/clip_image002.png)
 
 
 
@@ -39,7 +39,7 @@ Execute接收翻译过后的参数，执行整个编译过程，从词法分析�
 
 Driver模式下编译器整个的调用流程如图 5所示
 
-![img](clang两种模式.assets\clip_image004.png)
+![img](clang两种模式.assets/clip_image004.png)
 
 clang可执行文件运行的起始入口为clang/tools/driver/driver.cpp中的main函数
 
@@ -69,7 +69,7 @@ main函数主要调用流程如下：
 
 cc1_main的主要函数调用过程如下图所示：
 
-![img](clang两种模式.assets\clip_image006.png)
+![img](clang两种模式.assets/clip_image006.png)
 
  ```shell
  cc1_main -> ExecuteCompilerInvocation -> CompilerInstance::ExecuteAction -> FrontendAction::Execute -> ExecuteAction(虚函数,根据不同的action调用)

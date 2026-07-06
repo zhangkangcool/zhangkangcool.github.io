@@ -6,14 +6,14 @@
 
 ## 内容范围
 
-- [Compiler](Compiler/)：编译器、LLVM、GCC、工具链、交叉编译和优化相关笔记。
-- [Program](Program/)：编程语言、开发工具、Linux 命令、脚本、机器学习和工程实践。
-- [System](System/)：MacOS、Linux 系统安装、软件安装和桌面环境配置。
-- [Device](Device/)：路由器、串口、U 盘、数字设备、树莓派和外设相关记录。
-- [Network](Network/)：VPN、代理、HTTP、域名服务器、网络配置和安全查询。
-- [Knowledge](Knowledge/)：博客搭建、专利、论文、Office、学习资源和虚拟货币笔记。
-- [Life](Life/)：理财、抢购等生活类记录。
-- [Entertainment](Entertainment/)：游戏、音乐、电视等娱乐内容。
+- [Compiler](Compiler/index.md)：编译器、LLVM、GCC、工具链、交叉编译和优化相关笔记。
+- [Program](Program/index.md)：编程语言、开发工具、Linux 命令、脚本、机器学习和工程实践。
+- [System](System/index.md)：MacOS、Linux 系统安装、软件安装和桌面环境配置。
+- [Device](Device/index.md)：路由器、串口、U 盘、数字设备、树莓派和外设相关记录。
+- [Network](Network/index.md)：VPN、代理、HTTP、域名服务器、网络配置和安全查询。
+- [Knowledge](Knowledge/index.md)：博客搭建、专利、论文、Office、学习资源和虚拟货币笔记。
+- [Life](Life/index.md)：理财、抢购等生活类记录。
+- [Entertainment](Entertainment/index.md)：游戏、音乐、电视等娱乐内容。
 
 ## 项目结构
 
