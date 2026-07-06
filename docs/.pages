@@ -1,0 +1,11 @@
+nav:
+  - Home: index.md
+  - Compiler: Compiler
+  - Program: Program
+  - System: System
+  - Device: Device
+  - Network: Network
+  - Knowledge: Knowledge
+  - Life: Life
+  - Entertainment: Entertainment
+  - About: about.md

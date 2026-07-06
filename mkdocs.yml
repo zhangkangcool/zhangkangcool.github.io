@@ -174,7 +174,10 @@ plugins:
 #  - Home: index.md
 #  - Compiler: Compiler/llvm/llvm-ir.md
 #  - Program: Program/
-#  - Useful: Useful/
-#  - Other: Other/
+#  - System: System/
+#  - Device: Device/
+#  - Network: Network/
+#  - Knowledge: Knowledge/
+#  - Life: Life/
+#  - Entertainment: Entertainment/
 #  - About: about.md
-

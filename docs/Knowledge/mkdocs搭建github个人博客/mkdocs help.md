@@ -97,7 +97,6 @@ INFO    -  [11:56:48] Serving on http://127.0.0.1:8000/
 
 ### 4. mkdocs gh-deploy
 
-在github上进行部署，见[mkdocs gh-deploy](./mkdocs gh-deploy.md)。
-
+在github上进行部署，见[mkdocs gh-deploy](./github发布与部署/mkdocs gh-deploy.md)。
 
 
