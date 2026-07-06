@@ -3,7 +3,7 @@ http://llvm.org/docs/CommandGuide/FileCheck.html
 
 http://llvm.org/docs/CommandGuide/lit.html
 
-# make check
+## make check
 
 ```shell
 cd $llvm-build-dir
@@ -24,7 +24,7 @@ ninja -C build check-all
 
 
 
-# run the test suite
+## run the test suite
 
 https://llvm.org/docs/TestSuiteMakefileGuide.html#running-the-test-suite-via-cmake
 ```shell
@@ -55,7 +55,7 @@ grep 'PASS' results.json | wc -l
 
 ```
 
-# USE LIT & LNT to run the test suite
+## USE LIT & LNT to run the test suite
 #### 1. download the test script of kit
 ```shell
 git clone git@github.ibm.com:compiler/scripts.git 
@@ -87,7 +87,7 @@ Some important options, you should check whether the default value is right.
 ```shell
   --test-suite Path to LLVM Test Suite. Default is /home/ken/llvm/test-suite.
 ```
-# Install LNT tool
+## Install LNT tool
 ```shell
 http://llvm.org/docs/lnt/quickstart.html
 ```
@@ -171,7 +171,7 @@ There are 0 failures in unit tests.
 ```shell
 https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001432712108300322c61f256c74803b43bfd65c6f8d0d0000
 ```
-# FileCheck
+## FileCheck
 https://llvm.org/docs/CommandGuide/FileCheck.html
 ### test on assembly `-verity-machineinstrs`
 The test file will tell to how to run the test case
@@ -210,7 +210,7 @@ test/Transforms/InstCombine/select_meta.ll
 ; CHECK:     mul r5, [[REG1]], [[REG2]]
 ```
 
-# How to write the test command line:
+## How to write the test command line:
 ### 1. triple
 This option is to the what object you want get. First your machine should support this target.
 
@@ -246,7 +246,7 @@ It will give your an error when you built it. Because you compiler can't get the
 
 - X86 machine 使用PPC target compiler,有REQUIRES，但未使用triple，会使compiler吐出非PPC asm错误（compiler不知该吐出何种汇编，如compiler支持吐出多种汇编,default与triple不同的情况，如本机支持吐出X86与PPC，默认是X86，而需要CHECK PPC ASM）。
 
-# make check-all -j
+## make check-all -j
 
 If you get the python error, you should modify below file to remove the clang test. `clang/CMakefile.txt`
 
@@ -286,7 +286,7 @@ If you get the python error, you should modify below file to remove the clang te
 
 
 
-# LIT run the single case
+## LIT run the single case
 
 ```asm
  llvm-lit ~/llvm/llvm/test/CodeGen/PowerPC/sms-iterator.ll -a
@@ -345,7 +345,7 @@ Above pattern will may be created in `block-placement` pass which is after the `
 
 
 
-# Get the error command
+## Get the error command
 
 下述脚本中加`set -x`
 

@@ -1,7 +1,7 @@
 # JIT原理和限制
 
 
-# jax.jit避坑指南
+## jax.jit避坑指南
 
 https://zhuanlan.zhihu.com/p/474724292
 

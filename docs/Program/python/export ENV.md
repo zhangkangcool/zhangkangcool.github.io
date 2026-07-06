@@ -1,7 +1,7 @@
 # export ENV
 
 
-# 将python加入环境变量_export-在python脚本中设置环境变量
+## 将python加入环境变量_export-在python脚本中设置环境变量
 
 https://blog.csdn.net/weixin_39528525/article/details/110341763
 

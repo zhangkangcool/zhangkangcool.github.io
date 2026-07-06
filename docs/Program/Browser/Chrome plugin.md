@@ -9,7 +9,7 @@ http://www.taodudu.cc/news/show-4833817.html
 
 
 
-# 程序包无效: CRX_HEADER_INVALID"错误
+## 程序包无效: CRX_HEADER_INVALID"错误
 
 - 将插件crx文件的后缀改成zip，然后再拖入到chrome浏览器的扩展应用中，即可添加成功
 - 打开chrome浏览器，输入`chrome://extensions/`进入扩展应用页面；

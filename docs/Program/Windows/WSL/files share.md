@@ -9,7 +9,7 @@ https://learn.microsoft.com/zh-cn/windows/wsl/filesystems
 
 
 
-# 1. 方法1
+## 1. 方法1
 
 这里的`xxx`表示的是用户名。
 
@@ -77,7 +77,7 @@ ln -s /mnt/c/Users/69138/linux win10
 
 
 
-# 2. 方法2
+## 2. 方法2
 
 下述方法可以用VSCode打开代码，使用本地的VSC，避免使用remote-vscode。
 

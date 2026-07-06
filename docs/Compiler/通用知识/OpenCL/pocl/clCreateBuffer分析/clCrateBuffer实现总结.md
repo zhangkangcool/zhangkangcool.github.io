@@ -1,5 +1,3 @@
-
-
 # clCreateBuffer实现总结
 
 
@@ -52,9 +50,9 @@
 
 | 设备类型         | 核心特点                     | 代码量  | 难度 | 参考                                                         |
 | ---------------- | ---------------------------- | ------- | ---- | ------------------------------------------------------------ |
-| **统一地址空间** | `device_addr = mem_host_ptr` | ~30 行  | ⭐    | [common_driver.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) |
+| **统一地址空间** | `device_addr = mem_host_ptr` | ~30 行  | ⭐    | common_driver.c |
 | **独立显存**     | 需要 H2D/D2H 传输            | ~200 行 | ⭐⭐⭐  | `cuda/cuda.c`                                                |
-| **远程设备**     | 网络/总线通信                | ~300 行 | ⭐⭐⭐⭐ | [remote.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) |
+| **远程设备**     | 网络/总线通信                | ~300 行 | ⭐⭐⭐⭐ | remote.c |
 
 
 

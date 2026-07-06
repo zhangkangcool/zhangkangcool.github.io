@@ -60,7 +60,7 @@ ctrl+b d           脱离当前会话；这样可以暂时返回Shell界面，�
 
 
 
-# Tmux 使用教程
+## Tmux 使用教程
 
 作者： [阮一峰](http://www.ruanyifeng.com/)
 

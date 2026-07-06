@@ -1,5 +1,3 @@
-
-
 # grub set root
 
 

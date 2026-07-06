@@ -1,5 +1,5 @@
 # ssh command
-# 1 Create the key
+## 1 Create the key
 
 https://blog.csdn.net/a753255157/article/details/49156029
 https://blog.csdn.net/gulingfengze/article/details/69665223
@@ -17,7 +17,7 @@ https://help.github.com/cn/github/authenticating-to-github/generating-a-new-ssh-
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
-# 2 linux实现免密码登陆
+## 2 linux实现免密码登陆
 
 ```shell
 https://www.cnblogs.com/yixue2017/p/7559970.html
@@ -34,7 +34,7 @@ Method 1 && 3 is recommended.
 
 
 
-# 3 对于新机器，可以使用下面简单的方法
+## 3 对于新机器，可以使用下面简单的方法
 
 在本地复制文件后，将整个`.ssh`文件夹全部复制到远程机器。假如新机器是`recycler`：
 

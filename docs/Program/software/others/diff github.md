@@ -1,11 +1,11 @@
 # diff github
-# Compare output of WYC and XLC
+## Compare output of WYC and XLC
 
 #### The old shell script & result is in the branch `shell_script`.
 
 -----
 
-# 1 The result info
+## 1 The result info
 
 ## 1.1 result_inst_num
 
@@ -74,7 +74,7 @@ Then, you can use the `reprodece` script to reproduce the issue.
 
 ----------------
 
-# 2 Scripts
+## 2 Scripts
 
 ## 2.1 reproduce(important)
 
@@ -270,7 +270,7 @@ In fact, I get the result in `result_inst_num/Transforms` by using below command
 
 ------
 
-# 3 How to mark the case
+## 3 How to mark the case
 
 ###  3.1 Use the pattern script to mark the case
 

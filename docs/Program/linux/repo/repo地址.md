@@ -3,7 +3,7 @@ https://blog.csdn.net/weixin_45498383/article/details/131047312
 
 
 
-# Ubuntu系统镜像下载，国内镜像站大全
+## Ubuntu系统镜像下载，国内镜像站大全
 
 装Ubuntu，是很多理工科同学入门的第一个挑战，首先我们就需要找到一个能用的iso镜像，根据你的网络环境的不同，不同的站点下载速度会不一样，下面列举一下几个比较好用的，都是来自Ubuntu官方推荐国内镜像站链接导航：Mirrors : Ubuntu
 

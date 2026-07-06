@@ -1,7 +1,7 @@
 # Other
 
 
-# 小米路由器3刷机潘多拉(Openwrt)以及刷回教程
+## 小米路由器3刷机潘多拉(Openwrt)以及刷回教程
 
 https://www.awaimai.com/2852.html
 

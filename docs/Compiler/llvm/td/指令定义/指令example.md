@@ -33,7 +33,7 @@ buf[3] (0x12) -- 高位字节
 
 
 
-# 1.addi
+## 1.addi
 
 ![image-20211027181121740](指令example.assets/image-20211027181121740.png)
 

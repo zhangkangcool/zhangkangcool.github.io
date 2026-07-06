@@ -3,7 +3,7 @@ https://zhuanlan.zhihu.com/p/57883153
 
 
 
-# 如何在 Ubuntu 上为用户授予和移除 sudo 权限
+## 如何在 Ubuntu 上为用户授予和移除 sudo 权限
 
 
 

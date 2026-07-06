@@ -1,7 +1,7 @@
 # Instructoin Selection td files
 
 
-# PPCInstrFormats.td
+## PPCInstrFormats.td
 
 在此文件中，会定义class I和class I2,各种Form都会继承这2个类。这两个类中可以设置各个Form的默认属性。
 
@@ -138,7 +138,7 @@ isStore = MCID.mayStore();
 
 ​                                              
 
-# Instruction
+## Instruction
 
 PPC指令一定是从class I或class I2继续而来。可以在`llvm/build/lib/Target/PowerPC/PPCGenInstrInfo.inc`检查某个符号是不是指令。
 
@@ -237,7 +237,7 @@ PPC指令一定是从class I或class I2继续而来。可以在`llvm/build/lib/T
 
 
 
-# 伪指令/伪结点 
+## 伪指令/伪结点 
 
 只用于吃assembly syntax文件，然后映射到另外的指令，一般是用于alias。不会由codegen产生。不用关心其标志，但要设好，他映射到的指令的标志。
 
@@ -320,7 +320,7 @@ def SUBICo : PPCAsmPseudo<"subic. $rA, $rB, $imm",
 
 
 
-# 函数
+## 函数
 
 使用`!func_name()`在`td`文件中执行函数。
 

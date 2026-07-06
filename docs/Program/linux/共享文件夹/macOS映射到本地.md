@@ -1,12 +1,8 @@
-
-
-
-
-
+# macOSæ å°å°æ¬å°
 
 Ubuntu Samba 共享挂载 macOS 完整教程
 
-# Ubuntu Samba 共享挂载 macOS 完整教程
+## Ubuntu Samba 共享挂载 macOS 完整教程
 
 ### 1. 图形挂载（Finder），临时挂载一次
 

@@ -3,7 +3,7 @@ BUILD_SHARED_LIBS=ON
 
 DLLVM_ENABLE_EXPENSIVE_CHECKS=ON只能在check-llvm时加，否则很多case会挂。
 
-# Build on lep824e1v
+## Build on lep824e1v
 
 ```shell
 https://llvm.org/docs/GettingStarted.html
@@ -127,7 +127,7 @@ make install
 
 
 
-# X86
+## X86
 
 You should set `-DLLVM_TARGETS_TO_BUILD=X86`
 
@@ -185,7 +185,7 @@ llc -O3 add.ll -mtriple=lyngpu
 
 ---------
 
-# zz205p1
+## zz205p1
 
 ### build clang & llvm on zz205p1 with ld.gold
 ```shell
@@ -203,7 +203,7 @@ cmake $SPEC_HOME/llvm/llvm -DLLVM_TARGETS_TO_BUILD=PowerPC  -DCMAKE_INSTALL_PREF
 
 
 
-# afterburner/zz13
+## afterburner/zz13
 
 build clang & llvm & compiler-rt & ld.gold
 
@@ -213,7 +213,7 @@ cmake $HOME/llvm/llvm -DLLVM_TARGETS_TO_BUILD=PowerPC  -DCMAKE_INSTALL_PREFIX=$H
 
 
 
-# recycler
+## recycler
 
 At12 gcc/g++ 的问题，可以使用gsa上的clang.
 
@@ -246,7 +246,7 @@ cmake $HOME/llvm/llvm -DCMAKE_INSTALL_PREFIX=$HOME/llvm/install -DLLVM_ENABLE_AS
 
 
 
-# perfzz13(opt -ffast-math可用)
+## perfzz13(opt -ffast-math可用)
 
 用gcc/g++
 
@@ -260,7 +260,7 @@ cmake $HOME/llvm/llvm -DCMAKE_INSTALL_PREFIX=$HOME/llvm/install -DLLVM_ENABLE_AS
 
 
 
-# Use the xcode to read the source code
+## Use the xcode to read the source code
 
 ```shell
 cmake -G "Xcode" $HOME/llvm/llvm -DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_C_COMPILER=/usr/bin/gcc
@@ -281,7 +281,7 @@ Then, you can use `xcode` to open `/Users/ken/llvm-project/xcode-build/LLVM.xcod
 
 
 
-# Error
+## Error
 
 如果想编译的组件无法成功的话，可直接对`/home/shkzhang/llvm/llvm/CMakeLists.txt`进行修改。
 
@@ -464,7 +464,7 @@ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/Applications/Xcode.app/Contents/D
 
 
 
-# Use the script to build llvm
+## Use the script to build llvm
 
 
 
@@ -495,7 +495,7 @@ ninja -check-all -j120
 
 
 
-# On 3dxp
+## On 3dxp
 
 ```shell
 cmake $HOME/llvm/llvm -DLLVM_TARGETS_TO_BUILD="X86"  -DCMAKE_INSTALL_PREFIX=$HOME/llvm/install -DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RELEASE -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" -DCMAKE_C_COMPILER=/opt/intel/bin/icc -DCMAKE_CXX_COMPILER=/opt/intel/bin/icpc  -DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RELEASE
@@ -504,7 +504,7 @@ cmake $HOME/llvm/llvm -DLLVM_TARGETS_TO_BUILD="X86"  -DCMAKE_INSTALL_PREFIX=$HOM
 
 
 
-# Bootstrap
+## Bootstrap
 
 ```shell
 cd ~/llvm_test_script/scripts

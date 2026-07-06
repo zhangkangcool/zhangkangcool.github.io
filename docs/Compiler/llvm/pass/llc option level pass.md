@@ -17,7 +17,7 @@ llc -O3 empty.ll -debug-pass=Structure > O3.log 2>&1
 
 
 
-# O3.log
+## O3.log
 
 这里的选项如-targetlibinfo,可以在 --print-after=-targetlibinfo
 
@@ -286,7 +286,7 @@ Machine Branch Probability Analysis
 
 
 
-# Opt pass
+## Opt pass
 
 ```shell
 opt -O3 main.ll -S -o test.ll --debug-pass-manager > opt3.log 

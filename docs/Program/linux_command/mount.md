@@ -1,7 +1,7 @@
 # mount
 https://www.cnblogs.com/puloieswind/p/5853401.html
 
-# 查看文件挂载点信息
+## 查看文件挂载点信息
 ```shell
 df -h
 
@@ -33,10 +33,10 @@ cat /etc/fstab
 mount 
 ```
 
-# mount the remove filesystme
+## mount the remove filesystme
 mount 9.23.31.20:/gsa/tlbgsa /gsa/tlbgsa
 
-# Remote I/O error
+## Remote I/O error
 aix nfs share to linux
 mount 报错:mount.nfs: Remote I/O error
 挂载时需要指明版本，由于NFS服务器有多个版本，V2、V3、V4。而且各版本同时运行，因此挂载时需要说明版本号。由于NFS V2最大只支持32BIT的文件大小（4g）,而NFS V3则支持64BIT文件大小。另外V3对于V2还有其他优势，比如文件传输，异步写入等，因此建议采用V3进行访问。
@@ -46,7 +46,7 @@ mount 报错:mount.nfs: Remote I/O error
 mount 9.26.29.200:/test /test -t nfs -o nfsvers=3
 ```
 
-# umount
+## umount
 ```shell
 umout -u /gsa/tlbgsa
 ```

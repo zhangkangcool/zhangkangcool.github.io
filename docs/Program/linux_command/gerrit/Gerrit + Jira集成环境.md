@@ -3,7 +3,7 @@
 
 
 
-# 一、目标
+## 一、目标
 
 **1）自动化工作流优化**
 
@@ -25,7 +25,7 @@
 - 当 Gerrit 代码变更发生特定事件（如 `Change Merged`、`Change Abandoned`）时，自动触发相应的 Jira 更新操作（如添加评论、变更任务状态）。
 - 允许自定义规则，灵活适配不同团队的开发流程。
 
-# 二、实施步骤记录
+## 二、实施步骤记录
 
 ## 2.1 **拷贝** **`its-jira.jar`** **插件**
 
@@ -189,7 +189,7 @@ git push origin HEAD:refs/meta/config
 
 ![img](Gerrit + Jira集成环境.assets/-1745980626114149.assets)
 
-# 三、 Gerrit+jira 联动使用说明
+## 三、 Gerrit+jira 联动使用说明
 
 ## 3.1  Gerrit 链接Jira
 
@@ -211,7 +211,7 @@ git push origin HEAD:refs/meta/config
 
 ![img](Gerrit + Jira集成环境.assets/-1745980626114153.assets)
 
-# 四、常见问题
+## 四、常见问题
 
 1）gerrit error_log中提示没有its-jira 配置或者配置不对
 
@@ -237,7 +237,7 @@ git push origin HEAD:refs/meta/config
 
 要配置**`project.config`**使能 its-jira，增加如下配置， 否则`actions.config`不生效， 无法在jira中添加comment.
 
-# 五、参考链接
+## 五、参考链接
 
 https://www.jianshu.com/p/860eb0502bfc
 

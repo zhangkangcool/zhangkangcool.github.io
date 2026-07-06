@@ -1,5 +1,5 @@
 # dot tool
-# Grammer
+## Grammer
 
 ```
 https://www.cnblogs.com/alenoscar/p/6064737.html
@@ -12,7 +12,7 @@ https://blog.csdn.net/stormdpzh/article/details/14648827
 https://www.jianshu.com/p/5b02445eca1d
 ```
 
-# Using the dot tool in LLVM
+## Using the dot tool in LLVM
 ```shell
 How to use and install
 https://blog.csdn.net/qq_27885505/article/details/80366525

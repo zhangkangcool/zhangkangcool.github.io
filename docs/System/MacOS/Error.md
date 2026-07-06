@@ -1,5 +1,5 @@
 # Error
-# 1. 您需要安装旧 Java SE 6 运行环境才能打开
+## 1. 您需要安装旧 Java SE 6 运行环境才能打开
 https://blog.csdn.net/kongxx/article/details/50969077
 
 Mac OS 您需要安装旧 Java SE 6 运行环境才能打开“XXX” 问题
@@ -17,7 +17,7 @@ https://support.apple.com/kb/DL1572?viewlocale=zh_CN&locale=en_US
 
 ```
 
-# 2. ***.app不能打开
+## 2. ***.app不能打开
 
 可能是该app包中的文件没有可执行权限，例如别人传给你的某个app包。
 右键选择`查看包内容`，可以看到包中有哪些东西。
@@ -33,7 +33,7 @@ chmod a+x /Users/ken/software/macosx.cocoa.x86_64_orion/eclipse/orion.app/Conten
 
 
 
-# 3. MAC无法确认开发者身份
+## 3. MAC无法确认开发者身份
 
 https://blog.csdn.net/mybrahma/article/details/54948808
 https://jingyan.baidu.com/article/f71d60377960651ab741d140.html
@@ -46,7 +46,7 @@ https://jingyan.baidu.com/article/f71d60377960651ab741d140.html
 
 
 
-# 4. 升级系统或软件后无法上网
+## 4. 升级系统或软件后无法上网
 
 https://blog.csdn.net/qq_29768125/article/details/82740543
 
@@ -56,7 +56,7 @@ https://blog.csdn.net/qq_29768125/article/details/82740543
 
 
 
-# 5. 大小写转换键灯有问题
+## 5. 大小写转换键灯有问题
 
 此方法还未真正试用过，先看相关的网站： https://support.apple.com/zh-cn/HT201295
 

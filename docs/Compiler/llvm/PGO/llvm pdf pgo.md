@@ -34,7 +34,7 @@ PASS2_OPTIMIZE = -fprofile-use %{LTO_OPTION}
 PASS2_LDFLAGS  = -pie %{LINKER} -Wl,-q  -Wl,-rpath=%{BASE_DIR}/lib
 ```
 
-# 1. Clang PGO
+## 1. Clang PGO
 ```shell
 https://www.jianshu.com/p/bd2fe89e2025
 https://source.android.com/devices/tech/perf/pgo
@@ -71,7 +71,7 @@ Although both techniques are used for similar purposes, there are important diff
 -  采样配置文件必须由外部工具产生，并对其进行格式转化。
 
 
-# 2. 基于插桩的配置文件 Multi Files & Single Files
+## 2. 基于插桩的配置文件 Multi Files & Single Files
 ### 2.1 Get the prof data file.
 need `libclang-rt`, and link must use the -fprofile-instr-generate/-fprofle-generate
 ```shell
@@ -184,7 +184,7 @@ Clang同时支持:
 -fdebug-info-for-profiling
 
 
-# 3 基于插桩的配置文件Example
+## 3 基于插桩的配置文件Example
 ```shell
 Has some error in these blog.
 https://cmdlinelinux.blogspot.com/2018/04/profiling-c-code-with-clang-using.html
@@ -283,7 +283,7 @@ Count|line#| source code
 
 Notice that the postion of `count` and `line` may be changed.
 
-# 4 Context Sensitive PGO(CSPGO)
+## 4 Context Sensitive PGO(CSPGO)
 ```shell
 https://reviews.llvm.org/D54175
 https://reviews.llvm.org/rL354930
@@ -317,7 +317,7 @@ Use the combined profile. Pass manager will invoke two PGO use passes.
 clang -O2 -fprofile-use=profile.profdata -o use
 ```
 第一次使用`-fprofile-use=pass1.profdata -fcs-profile-generate`，第二次使用`-fprofile-use=pass1.profdata`。
-# 5 基于采样的配置文件使用
+## 5 基于采样的配置文件使用
 Sampling profilers are used to collect runtime information, such as hardware counters, while your application executes. They are typically very efficient and do not incur a large runtime overhead. The sample data collected by the profiler can be used during compilation to determine what the most executed areas of the code are.
 
 Using the data from a sample profiler requires some changes in the way a program is built. Before the compiler can use profiling information, the code needs to execute under the profiler. The following is the usual build cycle when using sample profilers for optimization:
@@ -345,7 +345,7 @@ This will read perf.data and the binary file ./code and emit the profile data in
 
 
 
-# 6 Code
+## 6 Code
 
 ```shell
 lib/Transforms/Instrumentation/PGOInstrumentation.cpp
@@ -353,7 +353,7 @@ lib/Transforms/Instrumentation/PGOInstrumentation.cpp
 
 
 
-# 7 Some options
+## 7 Some options
 
 ### 1 -print-machine-bfi
 
@@ -388,7 +388,7 @@ block-frequency-info: testTripCount2NonSmallLoop
 
 
 
-# 8 ./lib/Analysis/InlineCost.cpp
+## 8 ./lib/Analysis/InlineCost.cpp
 
 If you use the `fprofile-use` option, you can find the `Hot callee` in the debug info file.
 
@@ -396,7 +396,7 @@ If you use the `fprofile-use` option, you can find the `Hot callee` in the debug
 
 
 
-# 9 An example
+## 9 An example
 
 `cat foo.c`
 

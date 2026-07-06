@@ -511,7 +511,7 @@ small这个文件夹里的foo函数的没添加循环对齐，两个target和两
 
 
 
-# Test case
+## Test case
 
 `cpu-cycles` is the default data to gather, `cpu-clock` is same as `cpu-cycles`, it's better to use `cpu-cycles`
 

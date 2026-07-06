@@ -8,7 +8,7 @@ https://blog.admpub.com/blog/post/admin/Vi%E6%96%B9%E5%90%91%E9%94%AE%5BA-%5BB-%
 该问题由于只安装了tiny版所引起，打开c/python/shell文件，代码无高亮。
 
 
-# 1. 问题
+## 1. 问题
 
 在ubuntu下， vi 在编辑模式下使用方向键时没有移动光标，而是在出现 `[A` `[B` `[C` `[D` 之类的字母乱码。编辑错误的话，就连退格键(Backspace键)都使用不了，只能用Delete来删除。
 
@@ -55,7 +55,7 @@ vim --version | grep "syntax"
 
 输出信息里会包含 Vim 的详细版本和编译选项。Full 版的输出通常会显示更多的功能特性和编译选项，而 Tiny 版的输出则相对简洁。例如，Full 版可能会显示对`+syntax`（支持语法高亮）、`+gui`（支持图形界面）等特性的支持，而 Tiny 版可能没有这些特性或者显示的是-syntax。
 
-# 2. 解决
+## 2. 解决
 
 ### 方法一：编辑/etc/vim/vimrc.tiny文件
 

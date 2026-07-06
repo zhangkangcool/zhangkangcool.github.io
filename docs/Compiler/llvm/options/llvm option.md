@@ -43,7 +43,7 @@ llc -O3 test -filetype=obj
 
 
 
-# show registers name & type（for PPC）
+## show registers name & type（for PPC）
 
 ```shell
 -ppc-asm-full-reg-names  
@@ -214,7 +214,7 @@ test:                                   # @test
 
 
 
-# -flto
+## -flto
 
 It will get llvm IR bitcode, if you want get the object file, you'd better remove the option `-flto`.
 
@@ -237,7 +237,7 @@ Playout.o: LLVM IR bitcode
 
 ------
 
-# Target/Triple/Arch/CPU
+## Target/Triple/Arch/CPU
 
 
 

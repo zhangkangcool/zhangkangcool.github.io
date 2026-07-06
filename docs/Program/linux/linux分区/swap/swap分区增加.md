@@ -3,7 +3,7 @@ https://blog.csdn.net/AlexWang30/article/details/90341172
 
 
 
-# Ubuntu 18.04 swap分区扩展（推荐方法）
+## Ubuntu 18.04 swap分区扩展（推荐方法）
 
 以下命令只在`ubuntu`上实际使用过
 

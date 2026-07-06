@@ -165,7 +165,7 @@ clang -O1 -mllvm -disable-llvm-optzns -mllvm -disable-llvm-passes sum.c -S -emit
 
 -----
 
-# -mllvm
+## -mllvm
 
 后面根传给llc的选项，如`-mllvm -debug`。
 

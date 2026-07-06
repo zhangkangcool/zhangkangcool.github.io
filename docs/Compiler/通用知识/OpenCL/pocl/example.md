@@ -1,6 +1,4 @@
-
-
-
+# example
 
 ```c++
 #include <stdio.h>

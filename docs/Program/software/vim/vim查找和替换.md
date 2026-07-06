@@ -1,8 +1,8 @@
 # vim查找和替换
-# vim查找和替换详解
+## vim查找和替换详解
 http://blog.csdn.net/zcube/article/details/42710141
 
-# 1. vim 单文件中查找方法
+## 1. vim 单文件中查找方法
 ```shell
 /love   从光标位置向前搜索关键词 love  
 ?love   从光标位置向后搜索关键词 love  
@@ -19,7 +19,7 @@ http://blog.csdn.net/zcube/article/details/42710141
 :noh    暂时取消高亮显示，不会影响下次高亮显示匹配结果   
 ```
 
-# 2. vim 多文件查找方法  
+## 2. vim 多文件查找方法  
 正常模式下使用 :vim 或 :vimgrep 命令执行多文件搜索  
 搜索的时候涉及到选取文件问题，这里主要用到 * 作为通配符  
 ```shell
@@ -39,7 +39,7 @@ http://blog.csdn.net/zcube/article/details/42710141
 :cp         查找上一个  
 ```
 
-# 3. vim 单文件替换方法
+## 3. vim 单文件替换方法
 单文件中使用 :s 命令进行替换操作  
   替换操作会涉及几个常用的标记  
 % 所有行  g 单行内所有匹配项  i 忽略大小写  c  确认是否替换  
@@ -53,7 +53,7 @@ http://blog.csdn.net/zcube/article/details/42710141
 g i c 可自由组合  
 ```
 
-# 4. vim 多问件替换  
+## 4. vim 多问件替换  
 
 多文件替换使用 :args 和 :argdo 命令，这两个命令结合可以对多文件执行相同操作，不仅是替换  
 ```  shell
@@ -88,7 +88,7 @@ args 命令为选取文件到列表，argdo 命令为对列表中的文件执行
 
 
 
-# 5. 换行问题
+## 5. 换行问题
 
 `\r`是换行，不是`\n`
 

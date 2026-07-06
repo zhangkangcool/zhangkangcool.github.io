@@ -44,7 +44,7 @@ brew update
 
 https://cloud.tencent.com/developer/article/1614039
 
-# **简介**
+## **简介**
 
 Homebrew 是一款自由及开放源代码的软件包管理系统，用以简化 macOS 和 linux 系统上的软件安装过程。它拥有安装、卸载、更新、查看、搜索等很多实用的功能，通过简单的一条指令，就可以实现包管理，十分方便快捷。
 
@@ -57,7 +57,7 @@ Homebrew 是一款自由及开放源代码的软件包管理系统，用以简�
 | homebrew-bottles | Homebrew 预编译二进制软件包     |
 | homebrew-cask    | 提供 macOS 应用和大型二进制文件 |
 
-# **替换为阿里源**
+## **替换为阿里源**
 
 ```javascript
 # 查看 brew.git 当前源
@@ -90,7 +90,7 @@ $ brew update
 
 复制
 
-# **替换为清华源**
+## **替换为清华源**
 
 ```javascript
 # 替换各个源
@@ -112,7 +112,7 @@ $ brew update
 
 复制
 
-# **替换为中科大源**
+## **替换为中科大源**
 
 ```javascript
 # 替换各个源
@@ -134,7 +134,7 @@ $ brew update
 
 复制
 
-# **重置为官方源**
+## **重置为官方源**
 
 ```javascript
 # 重置 brew.git 为官方源

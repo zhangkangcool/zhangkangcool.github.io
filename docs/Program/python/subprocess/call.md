@@ -1,5 +1,5 @@
 # subpcall
-#  subprocess.call(cmd, shell = False, timeout = num)
+## subprocess.call(cmd, shell = False, timeout = num)
 
 
 

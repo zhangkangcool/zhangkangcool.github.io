@@ -1,7 +1,7 @@
 # linux rpm问题：怎样查看rpm安装包的安装路径
 https://blog.csdn.net/vovo2000/article/details/2110762
 
-# 1. 如何安装rpm软件包 
+## 1. 如何安装rpm软件包 
 
 rmp软件包的安装可以使用程序rpm来完成。执行下面的命令 
 ```shell
@@ -18,7 +18,7 @@ rpm -i your-package.rpm
 也就是说，`rpm -i --force --nodeps` 可以忽略所有依赖关系和文件问题，什么包 
 都能安装上，但这种强制安装的软件包不能保证完全发挥功能
 
-# 2.如何安装.src.rpm软件包 
+## 2.如何安装.src.rpm软件包 
 有些软件包是以.src.rpm结尾的，这类软件包是包含了源代码的rpm包，在安装时 
 需要进行编译。这类软件包有两种安装方法，
 
@@ -49,7 +49,7 @@ rpm -i your-package.rpm
 
 ```
 
-# 3.如何卸载rpm软件包 
+## 3.如何卸载rpm软件包 
 使用命令 rpm -e 包名，包名可以包含版本号等信息，但是不可以有后缀.rpm 
 比如卸载软件包proftpd-1.2.8-1，可以使用下列格式：
 ```shell
@@ -69,7 +69,7 @@ rpm -e proftpd-1
 `... is needed by ...` 这说明这个软件被其他软件需要，不能随便卸载 
 可以用rpm -e --nodeps强制卸载
 
-# 4.如何不安装但是获取rpm包中的文件 
+## 4.如何不安装但是获取rpm包中的文件 
 使用工具rpm2cpio和cpio 
 ```shell
 rpm2cpio xxx.rpm | cpio -vi 
@@ -80,7 +80,7 @@ rpm2cpio xxx.rpm | cpio --extract --make-directories
 d和make-directory相同，表示根据包中文件原来的路径建立目录 
 m表示保持文件的更新时间。
 
-# 5.如何查看与rpm包相关的文件和其他信息 
+## 5.如何查看与rpm包相关的文件和其他信息 
 下面所有的例子都假设使用软件包mysql-3.23.54a-11 
 ### 1.我的系统中安装了那些rpm软件包 
 ```shell

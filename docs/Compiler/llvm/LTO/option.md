@@ -5,7 +5,7 @@ https://blog.csdn.net/zhajio/article/details/79640155
 
 https://reviews.llvm.org/D77231
 
-# 1 No lto
+## 1 No lto
 
 ```shell
 [shkzhang@recycler:~/testcpp/linker/test/nolto]$ clang++ foo.cpp main.cpp -Wl,-plugin-opt=save-temps
@@ -22,7 +22,7 @@ For some simple case, `a.out.resolution.txt` is empty.
 
 
 
-# 2 Has lto
+## 2 Has lto
 
 ### 2.1 no emit-asm
 

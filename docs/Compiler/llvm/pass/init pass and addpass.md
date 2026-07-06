@@ -1,5 +1,5 @@
 # init pass and addpass
-# Init the pass
+## Init the pass
 
 `./include/llvm/PassSupport.h`
 
@@ -125,7 +125,7 @@ initialize用于注册pass，后面可以使用create类似的方法，通过 ad
 
 
 
-# Add the pass
+## Add the pass
 
 `PPCTargetMachine.cpp`
 

@@ -3,11 +3,11 @@
 
 
 
-# 一、 Changid
+## 一、 Changid
 
 每一笔提交（对应commit）都会产生一个唯一的changid, gerrit 会把changid当作是一个需要单独审核的提交
 
-# 二、使用技巧
+## 二、使用技巧
 
 1） 单独修改一次提交的冲突
 

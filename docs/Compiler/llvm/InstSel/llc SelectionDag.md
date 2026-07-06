@@ -1,7 +1,7 @@
 # llc SelectionDag
 https://people.cs.nctu.edu.tw/~chenwj/dokuwiki/doku.php?id=llvm
 
-# Print the SelectionDAG graph
+## Print the SelectionDAG graph
 
 ```shell
 [ken@lep824e1v:~/wyvern/add_64unsigned]$ llc -help-hidden | grep view | grep dags
@@ -83,14 +83,14 @@ $ llc -view-sched-dags sum.ll
 $ llc -view-sunit-dags sum.ll
 ```
 
-# using the dot tool
+## using the dot tool
 windows: graph install and use
 https://blog.csdn.net/lanchunhui/article/details/49472949
 ```shell
 dot D:\test\1.gv -Tpng -o image.png
 ```
 
-# Selection Instruction flow
+## Selection Instruction flow
 ```C
 Target/PowerPC/PPCISelDAGTODAG.cpp 
   class PPCDAGToDAGISel : public SelectionDAGISel
@@ -210,7 +210,7 @@ SelectionCode: CodeGen/SelectionDAG/SelectionDAGISel
   view-sunit-dags show SUnit dags after they are processed
 ```
 
-# Combine Lowering InstructionSelection
+## Combine Lowering InstructionSelection
 
 Combine是将多条指令进行合并操作
 
@@ -306,7 +306,7 @@ SDValue PPCTargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
 
 
 
-# Create new instruction
+## Create new instruction
 
 ```c++
    /// This enum indicates whether operations are valid for a target, and if not,
@@ -342,7 +342,7 @@ https://blog.csdn.net/jinweifu/article/details/54132939
 
 
 
-# ISD & PPCISD
+## ISD & PPCISD
 
 combine & lower是在ISD/PPCISD上做的。
 
@@ -352,7 +352,7 @@ combine & lower是在ISD/PPCISD上做的。
 
 
 
-# 指令选择之后，得到的是TargetOpcode
+## 指令选择之后，得到的是TargetOpcode
 
 `PPC::ANDIo`
 

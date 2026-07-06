@@ -3,11 +3,11 @@
 
 
 
-# 一、 创建jenkins 用户
+## 一、 创建jenkins 用户
 
 在gerrit 中创建jenkins 用户,参考 [Gerrit 账号管理](https://kpxqks2w6z.feishu.cn/wiki/LO9cwfPFTi5YKVkZM5GcDSa7nub)。
 
-# 二、 jenkins 安装gerrit 相关插件
+## 二、 jenkins 安装gerrit 相关插件
 
 ## 2.1 从jenkins 官网下载对应版本的 plugins
 
@@ -39,7 +39,7 @@ V0.0.3
 
 ![img](Gerrit+Jenkins 集成部署实例.assets/-174598057242153.assets)
 
-# 三、 Gerrit上安装插件
+## 三、 Gerrit上安装插件
 
 ## 3.1 Gerrit 插件安装（可选步骤）
 
@@ -143,7 +143,7 @@ git push origin HEAD:refs/meta/config
 
 Refer to: https://notes.lzwang.ltd/DevOps/Gerrit/gerrit_add_label/#_2 https://blog.csdn.net/qq_38350702/article/details/129058773
 
-# 四、Gerrit上jenkins配置
+## 四、Gerrit上jenkins配置
 
 ## 4.1 jenkins容器生成ssh-key
 
@@ -190,7 +190,7 @@ Note: Test connection, 出现success， 检查jenkins 上先 gerrit server 状�
 
 当状态显示蓝绿色，表示正常工作。如果显示红色，可以重启Jenkins，再次检查 gerrit server状态和版本。
 
-# 五、jenkins创建Gerrit job
+## 五、jenkins创建Gerrit job
 
 ## 5.1 jenkins 中创建 Gerrit Job
 
@@ -331,7 +331,7 @@ Write-Host "******************CP101 build end***********"
 
 Note: 当需要强制检查编译失败后，不能提交时， 请不要skip vote。
 
-# 六、问题记录
+## 六、问题记录
 
 ## 6.1  ssh key invalid key file
 
@@ -371,7 +371,7 @@ ssh -i /var/jenkins_home/.ssh/id_rsa -p 29418 jenkins@172.18.1.251
 
 ![img](Gerrit+Jenkins 集成部署实例.assets/-174598057246672.assets)
 
-# 七、调试docker
+## 七、调试docker
 
 ```Bash
 # 查看 jenkins docker status

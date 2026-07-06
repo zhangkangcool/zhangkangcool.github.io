@@ -380,7 +380,7 @@ addPass()是添加Pass时，必须调用的方法。所以，可以在里面输�
 
 
 
-# 可用于debug的pass名字 stop-after等使用
+## 可用于debug的pass名字 stop-after等使用
 
 `lib/IR/PassRegistry.cpp`
 

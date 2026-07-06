@@ -17,7 +17,7 @@ https://www.h-schmidt.net/FloatConverter/IEEE754.html
 
 IEEE Calculate: http://weitz.de/ieee/
 
-# 0. 浮点数的表示和精度
+## 0. 浮点数的表示和精度
 
 https://www.h-schmidt.net/FloatConverter/IEEE754.html
 
@@ -45,7 +45,7 @@ ans =
 
 可见，当a等于1/2^53时，1+a>1是不成立的。
 
-# 1. 浮点数
+## 1. 浮点数
 IEEE754定义了单精度浮点数和双精度数浮点数，即float和double。float有32bit，double有64bit。它们都包括符号位、指数和尾数。
 
 
@@ -77,7 +77,7 @@ double的指数部分有11位，可以取值1~2046，减掉1023，得到对应�
 这里的指数是以2为底的，同样尾数也是二进制的。IEEE754要求浮点数以规范形式存储，即小数点前有1位非零数字。 对于二进制数，非零数字只有1。所以IEEE754在存储时省略了这个小数点前面的1，只存储小数点后面的位。 
 
 
-# 2. 精度
+## 2. 精度
 可以把机器精度定义为满足条件
 ```
 fl(1+ε)>1
@@ -86,7 +86,7 @@ fl(1+ε)>1
 
 对于规范数来说，因为小数点前默认有个1，所以float的有效数字是24bit，对应8位十进制有效数字； double的有效数字是53bit，对应16位十进制有效数字。
 
-# 3. 特殊的浮点数
+## 3. 特殊的浮点数
 前面提到浮点数的指数全0或全1有特殊含义，让我们来看看这些特殊的浮点数：
 
 除了 NaN 之外，IEEE 标准还定义了 ±0，±∞ 以及非规范化数（Denormalized Number）。
@@ -162,7 +162,7 @@ https://babbage.cs.qc.cuny.edu/IEEE-754.old/References.xhtml
 
 
 
-# 4. Compare IEEE754
+## 4. Compare IEEE754
 
 #### 2008
 
@@ -235,6 +235,6 @@ NOTE—totalOrder does not impose a total ordering on all encodings in a format.
 
 
 
-# 5.结束语
+## 5.结束语
 
 float和int都是32bit，但float的尾数只用了23bit。int的精度高于float，float的表示范围大于int。float牺牲精度换取了更大的表示范围。 double的尾数是52bit，高于32bit的int，所以用dobule表示int不会有精度损失。 double是科学计算的常用类型，了解double的内在和限制，有助于我们更好地使用它。

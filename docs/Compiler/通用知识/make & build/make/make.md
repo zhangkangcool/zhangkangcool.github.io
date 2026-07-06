@@ -1,8 +1,6 @@
-
-
 # make
 
-# 1. 示例
+## 1. 示例
 
 ```shell
 TARGET = main
@@ -21,7 +19,7 @@ clean:
 
 
 
-# 2 常用选项
+## 2 常用选项
 
 ## 2.1 查看命令行
 
@@ -63,7 +61,7 @@ make --trace
  make -f myMakefile
 ```
 
-# 3. build a software
+## 3. build a software
 
 If you are building the `texinfo-6.0`.
 ```shell
@@ -81,7 +79,7 @@ make install
 
 
 
-# 4. make编译打印详细日志
+## 4. make编译打印详细日志
 
 `make V=1`
 

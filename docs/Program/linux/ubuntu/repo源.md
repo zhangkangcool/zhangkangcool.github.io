@@ -5,7 +5,7 @@ https://blog.csdn.net/weixin_39394526/article/details/87935449
 
 
 
-# ubuntu18.04配置国内apt-get源
+## ubuntu18.04配置国内apt-get源
 
 网上应该可以找到很多关于ubuntu源的设置方法，但是如果不搞清楚就随便设置的话，不仅不能起到应有的效果，还会由于一些问题导致apt不可用。
 

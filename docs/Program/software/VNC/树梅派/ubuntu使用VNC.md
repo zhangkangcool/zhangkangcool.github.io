@@ -1,5 +1,3 @@
-
-
 # ubuntu安装RealVNC
 
 

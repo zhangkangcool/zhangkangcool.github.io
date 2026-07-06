@@ -1,5 +1,5 @@
 # pattern pat
-# 1. Simple Pat<
+## 1. Simple Pat<
 
 
 
@@ -75,7 +75,7 @@ ISEL: Starting selection on root node: t26: i32 = extract_vector_elt t104, Const
 
 
 
-# 2. ComplexPattern
+## 2. ComplexPattern
 
 指令定义时中括号匹配规则中所使用的复杂操作数，利用C++函数进行各种逻辑判断。
 

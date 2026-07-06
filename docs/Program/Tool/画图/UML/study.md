@@ -9,7 +9,7 @@ https://crashedmind.github.io/PlantUMLHitchhikersGuide/layout/layout.html
 
 
 
-# 6. Layout
+## 6. Layout
 
 Tip
 

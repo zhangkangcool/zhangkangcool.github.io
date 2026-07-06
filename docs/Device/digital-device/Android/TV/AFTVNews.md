@@ -21,7 +21,7 @@ Downloader使Android TV所有者可以轻松地将文件从Internet下载到他�
 
 
 
-# 如何使用下载器在Fire TV Stick上安装应用程序
+## 如何使用下载器在Fire TV Stick上安装应用程序
 
 要在Fire Stick TV上手动安装任何应用程序（在Amazon商店之外），您首先需要安装一个Downloader应用程序。 为此，请按照以下说明进行操作：
 

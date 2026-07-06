@@ -1,5 +1,3 @@
-
-
 # Expand Swap to 8GB for LLVM Compilation
 
 我一眼就看出问题了！
@@ -19,38 +17,38 @@
 
 我给你 **无损、无痛、直接扩容到 8GB swap** 的完整命令，复制粘贴就能用：
 
-# 1. 先关闭旧 swap
+## 1. 先关闭旧 swap
 
 ```Bash
 sudo swapoff /swapfile
 ```
 
-# 2. 删除旧 2GB swap 文件
+## 2. 删除旧 2GB swap 文件
 
 ```Bash
 sudo rm /swapfile
 ```
 
-# 3. 创建 **8GB swap**（编译 LLVM 最低要求）
+## 3. 创建 **8GB swap**（编译 LLVM 最低要求）
 
 ```Bash
 sudo fallocate -l 8G /swapfile
 ```
 
-# 4. 设置权限 + 格式化
+## 4. 设置权限 + 格式化
 
 ```Bash
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 ```
 
-# 5. 启用新 swap
+## 5. 启用新 swap
 
 ```Bash
 sudo swapon /swapfile
 ```
 
-# 6. 验证（必须看到 8GB）
+## 6. 验证（必须看到 8GB）
 
 ```Bash
 free -h
@@ -62,7 +60,7 @@ free -h
 交换：         8.0Gi       0B        8.0Gi
 ```
 
-# 7. 现在你可以安心编译了！
+## 7. 现在你可以安心编译了！
 
 进入 build 目录：
 

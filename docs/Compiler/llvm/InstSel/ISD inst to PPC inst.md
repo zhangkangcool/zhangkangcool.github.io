@@ -1,7 +1,7 @@
 # ISD inst to PPC inst
 
 
-# td中定义的指令
+## td中定义的指令
 
 中括号中PPCISD指令需要满足的pattern。
 
@@ -22,7 +22,7 @@ def Inst : Form <some number,
 
 
 
-# 1.自定义的PPCISD -> PPC指令
+## 1.自定义的PPCISD -> PPC指令
 
 ```c++
  156 // Extract FPSCR (not modeled at the DAG level).
@@ -42,7 +42,7 @@ def Inst : Form <some number,
 
 
 
-# 2. Target ISD -> PPC/TargetOp指令
+## 2. Target ISD -> PPC/TargetOp指令
 
 
 
@@ -50,7 +50,7 @@ def Inst : Form <some number,
 
 
 
-# 3. 伪指令
+## 3. 伪指令
 
 如果选择的是一条`PPCCustomInserterPseudo`定义的PPC伪指令的话，需要在`Lowering::EmitInstrWithCustomInserter`中进一步处理成PPC支持的指令。如 [setrnd](https://github.com/llvm/llvm-project/commit/05f78b35ae82e371bfa478d02c482c6825c5fd80)
 

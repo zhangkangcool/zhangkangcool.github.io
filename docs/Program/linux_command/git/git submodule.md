@@ -3,7 +3,7 @@ https://www.jianshu.com/p/2d74a6f41d07?u_atoken=5b7262f6-25f3-43b5-9345-e011135f
 
 
 
-# 深入理解Git submodules
+## 深入理解Git submodules
 
 
 
@@ -19,7 +19,7 @@ Git是世界上最流行的版本控制系统，它提供了一种优雅、健�
 
 在本文中，您将了解到为什么Git中的submodule能起作用、它的底层逻辑是什么以及它是如何工作的。
 
-# 保持代码独立
+## 保持代码独立
 
 为了弄清楚为什么Git的submodule很有价值，让我们先看一个没有submodule的例子。当我们需要引用第三方代码（比如开源库）的时候，最简单的办法是从GitHub下载代码，然后将其保存到自己的项目中。虽然这么做可以很快解决问题，但这么做非常丑陋，原因如下：
 
@@ -35,7 +35,7 @@ Git是世界上最流行的版本控制系统，它提供了一种优雅、健�
 - Submodule提供一致、可靠的接口，和语言或框架无关。当我们使用多种技术时，每种技术可能都有自己的包管理器和自己的一组规则和命令，而Submodule总是可以以相同的方式工作。
 - 不是每段代码都可以通过包管理器复用，有时候我们只想在两个项目之间共享自己的代码，在这种情况下，submodule可以提供最简单的工作流。
 
-# Git Submodule到底是什么
+## Git Submodule到底是什么
 
 Git中的submodule实际上只是标准的Git repository。并没有什么花哨的创新，就只是我们现在都很熟悉的Git repository而已。这也是submodule的一项优势：它们十分健壮、方便直接，因为从技术角度来说，没有任何新东西在里面，并且经过了大量现场测试的考验。
 
@@ -43,7 +43,7 @@ Git中的submodule实际上只是标准的Git repository。并没有什么花哨
 
 除此之外，Git submodule仍然是一个功能完整的repository：我们可以执行所有常规的Git操作——从修改文件，一直到commit、pull和push，在submodule中都可以实现。
 
-# 添加一个Submodule
+## 添加一个Submodule
 
 让我们举一个典型的例子，假设我们想要向项目中添加一个第三方库，在我们获取任何代码之前，需要先创建一个单独的文件夹，作为第三方库存储的路径：
 
@@ -129,7 +129,7 @@ Changes to be committed:
 $ git commit -m "Add timezone converter library as a submodule"
 ```
 
-# 克隆一个含有submodule的项目
+## 克隆一个含有submodule的项目
 
 在上面的示例中，我们向现有的Git repository添加了一个新的submodule。但是，反过来，当我们需要克隆一个已经包含submodule的仓库时，又会怎么样呢？
 
@@ -153,7 +153,7 @@ git clone --recursive https://github.com/zhangkangcool/MyEarning.git
 
 
 
-# 使用特定版本
+## 使用特定版本
 
 在普通的Git仓库中，我们通过使用`git checkout <branchname>`或者在Git 2.23引入的`git switch <branchname>`，告诉git当前活动的分支是什么。当在这个分支上进行新的提交时，HEAD指针会自动移动到最近的提交。理解这一点很重要——因为Git submodule的工作方式不太一样！
 
@@ -217,7 +217,7 @@ $ git commit -m "Changed checked out revision in submodule"
 $ git push
 ```
 
-# 更新Git Submodule
+## 更新Git Submodule
 
 在上面的步骤中，是我们移动了submodule指针：我们选择签出一个不同的修订，提交它，并将它推送到团队的远程仓库中。但如果我们的一个同事更改了submodule的修订——可能是因为子模块发布了一个有趣的新版本，而我们决定在项目中使用它（当然是在彻底测试之后……）。
 
@@ -255,7 +255,7 @@ Submodule path 'lib/spacetime': checked out '5e3d70a88180879ae0222b6929551c41c3e
 
 好了！我们签出了主项目仓库中记录的submodule版本！
 
-# 在工作中使用Git Submodule
+## 在工作中使用Git Submodule
 
 我们已经介绍了使用Git submodule的基本概念，其他工作流程是相当标准的。
 
@@ -263,7 +263,7 @@ Submodule path 'lib/spacetime': checked out '5e3d70a88180879ae0222b6929551c41c3e
 
 如果是自己管理的内部代码库，那也可能需要**在子模块中进行更改**。可以像处理任何其他Git仓库一样处理submodule：可以进行更改、提交更改、推送更改等等。
 
-# 使用Git的全部功能
+## 使用Git的全部功能
 
 在表面简单的命令下面，Git提供了很强大的功能。但是它的许多高级工具——比如Git submodule——并不为人所知。这么多开发人员错过了很多强大的东西，这真是太遗憾了！
 

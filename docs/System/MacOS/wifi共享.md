@@ -1,5 +1,5 @@
 # wifi共享
-# 有线到无线的共享
+## 有线到无线的共享
 
 https://www.jianshu.com/p/7a3d3005b0c9
 
@@ -9,7 +9,7 @@ https://www.jianshu.com/p/7a3d3005b0c9
 
 
 
-# 利用蓝牙共享wifi
+## 利用蓝牙共享wifi
 
 https://jingyan.baidu.com/article/f006222818e0e2fbd3f0c8a3.html
 

@@ -5,11 +5,11 @@ https://portablecl.org/docs/html/opencl_status.html
 
 
 
-# Supported OpenCL features
+## Supported OpenCL features
 
 All mandatory features for OpenCL 1.2 and 3.0 are supported on x86-64+Linux, see [OpenCL conformance](https://portablecl.org/docs/html/conformance.html#pocl-conformance) for details.
 
-# Known unsupported OpenCL features
+## Known unsupported OpenCL features
 
 The known unsupported OpenCL features are listed here as encountered.
 
@@ -33,7 +33,7 @@ All 1.2 runtime API call are implemented. From the 2.x and 3.0 API, all should e
 > - OpenGL interoperability extension
 > - DirectX interoperability extension
 
-# SPIR-V support
+## SPIR-V support
 
 There is now extensive support available for SPIR-V.
 

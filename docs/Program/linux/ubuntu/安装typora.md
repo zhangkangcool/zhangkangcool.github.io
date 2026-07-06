@@ -3,7 +3,7 @@ https://www.cnblogs.com/youngyajun/p/16661980.html
 
 
 
-# [Linux下激活Typora教程](https://www.cnblogs.com/youngyajun/p/16661980.html)
+## [Linux下激活Typora教程](https://www.cnblogs.com/youngyajun/p/16661980.html)
 
 在Linux平台下经测试，对typora_1.0.3版本激活有效。
 
@@ -19,11 +19,11 @@ https://www.cnblogs.com/youngyajun/p/16661980.html
 
 
 
-# 1.下载Typora
+## 1.下载Typora
 
 下载`typora_1.0.3_amd64.deb`安装包，下载地址：https://typora.io/releases/all （可能需要梯子下载）；或者网盘下载：[typora_1.0.3_amd64.deb网盘下载](https://www.aliyundrive.com/s/v3bivFhhxaQ)
 
-# 2.安装Typora
+## 2.安装Typora
 
 ```shell
 sudo dpkg -i typora_1.0.3_amd64.deb
@@ -31,7 +31,7 @@ sudo dpkg -i typora_1.0.3_amd64.deb
 sudp apt install  typora_1.0.3_amd64.deb   # 次命令会把所需要的依赖也一起安装了
 ```
 
-# 3.激活环境准备
+## 3.激活环境准备
 
 - 安装Python3、python3-pip
 
@@ -66,7 +66,7 @@ pip3 install -r requirements.txt
 python3 typora.py --help
 ```
 
-# 4.解包替换文件
+## 4.解包替换文件
 
 以下操作都是切换到**typoraCracker项目根目录下**执行
 
@@ -105,7 +105,7 @@ sudo cp /usr/share/typora/resources/app.asar /usr/share/typora/resources/app.asa
 sudo cp ~/Desktop/app.asar /usr/share/typora/resources/app.asar         
 ```
 
-# 5.激活Typora
+## 5.激活Typora
 
 在**typoraCracker项目根路径下**，执行keygen.js脚本：
 

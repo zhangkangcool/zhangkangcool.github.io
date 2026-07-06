@@ -1,5 +1,5 @@
 # clang-format
-# Clang-Format格式化选项介绍
+## Clang-Format格式化选项介绍
 
 https://blog.csdn.net/softimite_zifeng/article/details/78357898 
 

@@ -1,5 +1,5 @@
 # LLVM CodeBook
-# 1. Error
+## 1. Error
 ### 1. Chapter2
 ```asm
 ch2_toy.cpp:328:33: error: assigning to 'mapped_type' (aka 'llvm::Value *') from incompatible

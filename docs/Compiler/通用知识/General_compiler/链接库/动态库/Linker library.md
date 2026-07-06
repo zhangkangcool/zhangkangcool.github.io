@@ -58,7 +58,7 @@ int main() {
 }
 ```
 
-#  -LDir
+## -LDir
 
 ```
 xlc -ltcmalloc test.cpp -L/opt/at12.0/lib64
@@ -76,7 +76,7 @@ ldd a.out
 
 
 
-# -LDir -Wl,-rpath,Dir
+## -LDir -Wl,-rpath,Dir
 
 这里编译时记住了库所在的路径，所以不需要个性`LD_LIBRARY_PATH`即可运行。
 

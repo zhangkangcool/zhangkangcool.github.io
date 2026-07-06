@@ -5,7 +5,7 @@ https://blog.csdn.net/abld99/article/details/69388858
 
 
 
-# ssh连接长时间不操作自动断开
+## ssh连接长时间不操作自动断开
 
 > 这个问题用ssh一段时间后就觉得很尴尬了,有时隔一小会不操作ssh连接就断开了,重新打开还要卡死一会.
 

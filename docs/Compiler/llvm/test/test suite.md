@@ -1,7 +1,7 @@
 # test suite
 
 
-# How to debug the test suite error
+## How to debug the test suite error
 
 You'd better remove `llvm/log` first.
 

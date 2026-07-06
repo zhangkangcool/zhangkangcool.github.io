@@ -11,7 +11,7 @@ https://www.haoyep.com/posts/zsh-config-oh-my-zsh/
 
 
 
-# Solarized Dark vim
+## Solarized Dark vim
 
 
 
@@ -40,7 +40,7 @@ colorscheme solarized
 
 
 
-# Solarized Dark ls
+## Solarized Dark ls
 
 不仅仅适用`Solarized`，`zsh`，`bash`显示有问题都可以解决。
 

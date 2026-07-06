@@ -1,7 +1,7 @@
 # inline错误解决
 
 
-# C/C++中的inline关键字
+## C/C++中的inline关键字
 
 https://blog.shengbin.me/posts/inline-keyword-in-c-c++
 

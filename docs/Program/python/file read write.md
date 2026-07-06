@@ -13,7 +13,7 @@ https://www.runoob.com/python/python-func-open.html
 
 
 
-# 1. 传统读文件
+## 1. 传统读文件
 
 传统读取文件的方法是先使用Python内置的open函数打开文件，然后标示符’r’表示读，这样，我们就成功地打开了一个文件，获得到一个f文件句柄。
 

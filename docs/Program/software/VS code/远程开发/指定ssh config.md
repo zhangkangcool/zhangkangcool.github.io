@@ -1,9 +1,3 @@
-
-
-
-
-
-
 # 在 VS Code Remote-SSH 插件中设置自定义 SSH Config 文件路径
 
 在 VS Code 的 Remote-SSH 插件中，**可以直接指定自定义的 SSH config 文件路径**，有以下几种方式，按推荐程度排序：

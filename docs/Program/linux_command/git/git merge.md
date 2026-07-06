@@ -1,5 +1,5 @@
 # git merge
-#  1. git merge & git rebase
+## 1. git merge & git rebase
 
 https://blog.csdn.net/liuxiaoheng1992/article/details/79108233
 https://www.cnblogs.com/kidsitcn/p/5339382.html
@@ -113,7 +113,7 @@ git rebase master
 
 
 
-# 2. git merge squash
+## 2. git merge squash
 
 https://blog.csdn.net/coder1994/article/details/80639404
 
@@ -129,7 +129,7 @@ git push origin master
 
 
 
-# 3. 放弃merge
+## 3. 放弃merge
 
 放弃本地merge
 
@@ -142,7 +142,7 @@ git pull
 
 
 
-# 4. git cherry-pick
+## 4. git cherry-pick
 
 https://blog.csdn.net/jerechen/article/details/100814091
 

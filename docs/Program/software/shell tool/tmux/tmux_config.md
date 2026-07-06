@@ -5,7 +5,7 @@ https://linuxtoy.org/archives/from-screen-to-tmux.html
 
 
 
-#  tmux 配置文件
+## tmux 配置文件
 
 tmux的用户级配置文件为`~/.tmux.conf`（没有的话就创建一个）
 

@@ -3,7 +3,7 @@
 
 
 
-# 一、创建Gerrit 账号
+## 一、创建Gerrit 账号
 
 - Step1: 联系管理员创建gerrit账号， 账号密码请到 [Gerrit 账号管理](https://kpxqks2w6z.feishu.cn/wiki/LO9cwfPFTi5YKVkZM5GcDSa7nub)查找
 - Step2: 登录gerrit
@@ -24,7 +24,7 @@
 
 ![img](Gerrit 代码提交审核操作指南v0.1.assets/-174598059072598.assets)
 
-# 二、拉取代码
+## 二、拉取代码
 
 - Step1: 找到repositories,  下面以cp101 为例。
 
@@ -38,7 +38,7 @@
 
 ![img](Gerrit 代码提交审核操作指南v0.1.assets/-1745980590725102.assets)
 
-# 三、修改提交代码
+## 三、修改提交代码
 
 - Step1： 可以在本地从默认的develop 分支切出自己本地开发的分支， 进行修改
 
@@ -105,7 +105,7 @@ git push origin HEAD:refs/for/develop
 
 
 
-# 四、人工审核
+## 四、人工审核
 
 Step1: 点击changes, 查看提交的改动
 
@@ -141,7 +141,7 @@ Step2: 可以审核评论，提交建议
 
 ![img](Gerrit 代码提交审核操作指南v0.1.assets/-1745980590726112.assets)
 
-# 五、管理员Merge MR
+## 五、管理员Merge MR
 
 项目管理员进行submit
 
@@ -155,7 +155,7 @@ Step2: 可以审核评论，提交建议
 
 ![img](Gerrit 代码提交审核操作指南v0.1.assets/-1745980590726115.assets)
 
-# 六、常见问题
+## 六、常见问题
 
 ## 6.1 提示没有chang-id
 
@@ -206,7 +206,7 @@ git push origin HEAD:refs/for/develop
 
 ![img](Gerrit 代码提交审核操作指南v0.1.assets/-1745980590726120.assets)
 
-# 七、实用tips
+## 七、实用tips
 
 ## 7.1 切换到刚提交的commit id
 
@@ -244,7 +244,7 @@ Write-Host "Project: $gerritProject"
 Write-Host "Patchset Revision: $patchsetRevision"
 ```
 
-# 八、更多信息参考
+## 八、更多信息参考
 
 官方指导文档：
 

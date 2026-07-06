@@ -3,7 +3,7 @@ http://llvm.org/docs/LangRef.html#fcmp-instruction
 
 
 
-# [llvm IR `fcmp` Instruction](http://llvm.org/docs/LangRef.html#id1606)
+## [llvm IR `fcmp` Instruction](http://llvm.org/docs/LangRef.html#id1606)
 
 ##### [Syntax:](http://llvm.org/docs/LangRef.html#id1607)
 
@@ -119,7 +119,7 @@ Any set of fast-math flags are legal on an `fcmp` instruction, but the only flag
 
 
 
-# [Fast-Math Flags](http://llvm.org/docs/LangRef.html#id1109)
+## [Fast-Math Flags](http://llvm.org/docs/LangRef.html#id1109)
 
 LLVM IR floating-point operations ([fneg](http://llvm.org/docs/LangRef.html#i-fneg), [fadd](http://llvm.org/docs/LangRef.html#i-fadd), [fsub](http://llvm.org/docs/LangRef.html#i-fsub), [fmul](http://llvm.org/docs/LangRef.html#i-fmul), [fdiv](http://llvm.org/docs/LangRef.html#i-fdiv), [frem](http://llvm.org/docs/LangRef.html#i-frem), [fcmp](http://llvm.org/docs/LangRef.html#i-fcmp)), [phi](http://llvm.org/docs/LangRef.html#i-phi), [select](http://llvm.org/docs/LangRef.html#i-select) and [call](http://llvm.org/docs/LangRef.html#i-call) may use the following flags to enable otherwise unsafe floating-point transformations.
 
@@ -157,7 +157,7 @@ LLVM IR floating-point operations ([fneg](http://llvm.org/docs/LangRef.html#i-fn
 
 
 
-# UnsafeFPMath
+## UnsafeFPMath
 
 https://llvm.org/doxygen/classllvm_1_1TargetOptions.html#a0544e2966374684ff74255e5a4290fa7
 
@@ -169,7 +169,7 @@ When this flag is off (the default), the code generator is not allowed to produc
 
 
 
-# NoNaNsFPMath
+## NoNaNsFPMath
 
 https://llvm.org/doxygen/classllvm_1_1TargetOptions.html#aaf9cc05758a26e784f7cfa554e76f175
 

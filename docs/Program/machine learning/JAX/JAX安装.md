@@ -3,7 +3,7 @@
 
 
 
-# 以下是pip3安装方式
+## 以下是pip3安装方式
 
 最好先弄个虚拟环境
 
@@ -17,7 +17,7 @@ pip3 install jaxlib -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host h
 
 
 
-# 以下是源码安装方式
+## 以下是源码安装方式
 
 https://jax.readthedocs.io/en/latest/developer.html#building-from-source
 

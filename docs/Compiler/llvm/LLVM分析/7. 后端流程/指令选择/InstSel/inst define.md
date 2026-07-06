@@ -1,7 +1,7 @@
 # inst define
 
 
-# Independent instruction property
+## Independent instruction property
 
 `InstrInfoEmitter.cpp`
 
@@ -87,7 +87,7 @@ let isBranch = 1, isTerminator = 1, hasCtrlDep = 1, PPC970_Unit = 7 in {
 
 
 
-# 1. 伪指令
+## 1. 伪指令
 
 ```asm
 //===----------------------------------------------------------------------===//

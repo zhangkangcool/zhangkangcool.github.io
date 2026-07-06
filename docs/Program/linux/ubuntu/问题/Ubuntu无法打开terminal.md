@@ -5,7 +5,7 @@ https://bbs.huaweicloud.com/blogs/313277
 
 
 
-# Ubuntu 无法打开 terminal 之修复
+## Ubuntu 无法打开 terminal 之修复
 
 【摘要】 Ubuntu 18.04中升级了Python环境，之前的Python是2.7和Python3.5，而为了兼容某些软件的运行，需要升级到Python3.7，中间也有安装Python3.6版本。当一切都准备就绪后，重启服务器，突然发现Ubuntu 18.04中的命令行 terminal 终端无法正常打开。本文将通过详细的步骤来解决这种问题。
 

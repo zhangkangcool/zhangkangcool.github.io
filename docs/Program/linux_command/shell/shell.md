@@ -1,5 +1,5 @@
 # shell
-# 1. if statement
+## 1. if statement
 
 ```shell
 XLFPATH="${XLF_PATH:-/gsa/tlbgsa/projects/x/xlcmpbld/run/xlf/dev_lite/linux_leppc/daily/${XLF_DRIVER:-latest}/bin}"
@@ -9,7 +9,7 @@ else if `XLF_DRIVER` exist, `XLFPATH=/gsa/tlbgsa/projects/x/xlcmpbld/run/xlf/dev
 else 
 `XLFPATH=/gsa/tlbgsa/projects/x/xlcmpbld/run/xlf/dev_lite/linux_leppc/daily/latest/bin`
 
-# 2. replace every string
+## 2. replace every string
 
 replace a space ( ) with a dot (.) in a string in bash
 ```shell
@@ -28,7 +28,7 @@ NOBINPATH=/opt/ibm:/opt:/usr/bin
 BINPATH=${NOBINPATH//:/:/bin}
 ```
 
-# 3. set the color
+## 3. set the color
 
 https://blog.csdn.net/zhangym199312/article/details/77600375
 
@@ -88,7 +88,7 @@ export PS1='[\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]]\$ '
 
 
 
-# 4 change the default shell
+## 4 change the default shell
 
 https://www.jianshu.com/p/1661b8c03edd
 

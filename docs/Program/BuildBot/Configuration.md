@@ -1,7 +1,7 @@
 # Configuration
 
 
-# 1 Configure file
+## 1 Configure file
 
 ```shell
 ./bb-master/master/master.cfg

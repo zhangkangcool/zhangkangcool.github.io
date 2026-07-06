@@ -7,7 +7,7 @@ https://lightyearvpn.com/zh/blog/shadowsocks-vs-v2ray-vs-trojan-for-gfw
 
 
 
-# Shadowsocks vs V2Ray vs Trojan 都有什么区别？
+## Shadowsocks vs V2Ray vs Trojan 都有什么区别？
 
 
 

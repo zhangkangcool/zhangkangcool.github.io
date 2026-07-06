@@ -4,7 +4,7 @@ https://reviews.llvm.org/D54738
 https://reviews.llvm.org/D53360
 http://llvm.org/docs/Phabricator.html
 
-# Check the stype
+## Check the stype
 
 ```shell
 clang-format -verbose test.c      // 输出到stdin
@@ -13,7 +13,7 @@ clang-format -i -verbose test.c   // 直接在文件上修改
 
 
 
-# Create the patch
+## Create the patch
 
 ### ***Note that*** : For those new files, it may not in the patch, you must very carefully to check it. You should use git add to add the file.
 
@@ -88,7 +88,7 @@ git diff master -U999999 > diff.patch
 
 
 
-# Use the master compare to the branch to create the patch
+## Use the master compare to the branch to create the patch
 
 ```shell
 git checkout master

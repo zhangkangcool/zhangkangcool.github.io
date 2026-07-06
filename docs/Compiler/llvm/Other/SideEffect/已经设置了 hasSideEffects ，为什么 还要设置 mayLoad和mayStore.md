@@ -1,3 +1,5 @@
+# å·²ç»è®¾ç½®äº hasSideEffects ï¼ä¸ºä»ä¹ è¿è¦è®¾ç½® mayLoadåmayStore
+
 要保留。`hasSideEffects`、`mayLoad`、`mayStore` 不是互相替代关系。
 
 它们分别表达不同事实：

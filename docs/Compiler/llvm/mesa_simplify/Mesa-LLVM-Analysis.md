@@ -41,14 +41,14 @@
       - [3.3.3.2 Pass管理器（Pass Manager)](#3332-pass管理器pass-manager)
 - [4. 当前实现的OpenCL前端demo代码](#4-当前实现的opencl前端demo代码)
 
-# 1. 核函数编译器总体设计方案
+## 1. 核函数编译器总体设计方案
 设计方案如下图所示:  
 <center><img src="./img/总体方案图1.svg"></center>
 
 核心思路是复用clang的前端实现对OpenCL核函数的编译，输出LLVM IR或者SPIR-V的标准中间格式，然后使用现有编译器的后端解析SPIR-V或者将SPIR-V转换为VIR，最终生成可供凌久GPU执行的二进制代码。  
 
 目前clang在命令行(driver模式)是支持对OpenCL核函数的编译，但项目要求的编译器是一个运行时的代码，故需要通过调用clang内部接口的方式来完成整个前端的操作，整个编译器前端的实现会综合参考clang driver mode和mesa 编译器前端的实现流程，并在此基础上进行流程的精简和代码裁剪。
-# 2. Mesa OpenCL编译器分析
+## 2. Mesa OpenCL编译器分析
 mesa在gallium框架下实现了OpenCL驱动的前端clover，具体包括API的上层实现，并设计了和底层驱动相关的接口供设备厂商自行实现（可以理解为HAL层的代码），另外实现了OpenCL编译器的前端，提供了几个路径，包括编译成LLVM IR，spirv，和自己的NIR，后端代码需要厂商自行实现。整个OpenCL模块代码包含在clover文件夹中(mesa/src/gallium/frontends/clover)。
 ## 2.1 clover代码结构
 如下图所示为clover代码目录结构，其中重点需要关注的是core、llvm、spirv目录的代码，其中core里面与编译器最为相关的两个对象为program和kernel,  llvm目录里封装了对llvm和clang调用的方法，在spirv里主要是封装了LLVM IR和SPIR-V互转的接口。 
@@ -117,7 +117,7 @@ clang是处理C、C++、Objective C等类C语言的前端，OpenCL C是基于C99
 
 pipe-loader的调用发生在platform的构造函数中，隐式调用容易被忽略。
 
-# 3. LLVM代码分析
+## 3. LLVM代码分析
 ## 3.1 LLVM代码结构
 LLVM的工程关键目录及主要功能如下所示，非核心目录不包含在内，其中标红模块为OpenCL编译器构建的核心模块。
 <center><img src="img/LLVM代码结构%201.svg"></center>
@@ -578,7 +578,7 @@ void AMDGPUPassConfig::addIRPasses() {
 }
 ```
 
-# 4. 当前实现的OpenCL前端demo代码
+## 4. 当前实现的OpenCL前端demo代码
 在综合分析mesa clover和clang driver前端的实现方式和流程后，实现了一个部分功能的demo程序，可以根据输入的kernel源码输出LLVM IR，再用工具将其转换为SPIR-V格式。
 
 部分核心代码实现如下：  

@@ -1,7 +1,7 @@
 # eh_return
 
 
-# Clang
+## Clang
 
 ### 1 clang/include/clang/Basic/Builtins.def
 
@@ -102,7 +102,7 @@ attributes #1 = { nounwind }
 
 
 
-# llvm
+## llvm
 
 `Intrinsic::eh_return_i64` -> `ISD::EH_RETURN` -> `LowerEH_RETURN` ->
 

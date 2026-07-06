@@ -1,6 +1,4 @@
-
-
-
+# getByClass
 
 ```js
 

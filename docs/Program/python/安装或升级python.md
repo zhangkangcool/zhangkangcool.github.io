@@ -5,7 +5,7 @@ https://www.zhihu.com/question/265332835/answer/2263342488
 
 
 
-# 安装依赖
+## 安装依赖
 
 安装zlib和SSL其中zlib在安装的时候用来解包，**SSL如果不装则Python可用，Pip不可用**
 

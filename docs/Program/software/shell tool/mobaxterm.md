@@ -1,7 +1,7 @@
 # mobaxterm
 
 
-# mobaxterm
+## mobaxterm
 
 有安装版和免安装版
 

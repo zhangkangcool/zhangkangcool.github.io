@@ -1,5 +1,5 @@
 # Loop
-# Natural Loop
+## Natural Loop
 
 https://web.cs.wpi.edu/~kal/PLT/PLT8.6.4.html
 

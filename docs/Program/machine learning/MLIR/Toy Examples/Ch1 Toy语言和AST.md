@@ -1,7 +1,7 @@
 # Ch1 Toy语言和AST
 
 
-# Toy语言和AST
+## Toy语言和AST
 
 https://mp.weixin.qq.com/s/jMHesvKmAUU5dYH0WznulA
 

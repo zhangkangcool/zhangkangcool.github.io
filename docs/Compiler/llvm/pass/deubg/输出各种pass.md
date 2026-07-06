@@ -38,7 +38,7 @@ https://llvm.org/docs/Passes.html
 
 
 
-# 可用于debug的pass名字 stop-after等使用
+## 可用于debug的pass名字 stop-after等使用
 
 `lib/IR/PassRegistry.cpp`
 
@@ -339,7 +339,7 @@ PassName = Expand reduction intrinsics
 PassName = Scavenge virtual registers inside basic blocks
 ```
 
-# One case do what pass
+## One case do what pass
 
 ```asm
   -debug-pass=<value>                                            - Print PassManager debugging information
@@ -421,7 +421,7 @@ llc -mcpu=pwr9  -mtriple=powerpc64le-unknown-unknown -O0 -debug-pass=Structure n
 
 
 
-# 所有的passname
+## 所有的passname
 
 可以找help中的`print-before`或`print-after`。
 

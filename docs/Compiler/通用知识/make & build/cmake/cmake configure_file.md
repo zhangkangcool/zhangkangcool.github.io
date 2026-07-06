@@ -7,17 +7,17 @@ https://www.jianshu.com/p/2946eeec2489
 
    
 
-# Cmake命令之configure_file介绍
+## Cmake命令之configure_file介绍
 
 
 
-# 一、命令格式
+## 一、命令格式
 
 > #### configure_file(input output options)
 >
 > ####   *将一个文件(由`input`参数指定)拷贝到指定位置(由`output`参数指定)，并根据`options`修改其内容。*
 
-# 二、命令解析
+## 二、命令解析
 
 ####   configure_file命令一般用于自定义编译选项或者自定义宏的场景。configure_file命令会根据`options`指定的规则，自动对`input`文件中`cmakedefine`关键字及其内容进行转换。
 
@@ -29,7 +29,7 @@ https://www.jianshu.com/p/2946eeec2489
 
 
 
-# 三、举例说明
+## 三、举例说明
 
 ####   需要准备2个文件，config.h.in（input）、CMakeLists.txt，（output是自动生成的）内容如下：
 
@@ -81,7 +81,7 @@ cmake .
 #endif
 ```
 
-# 四、更多细节
+## 四、更多细节
 
 - #### 参数详解
 

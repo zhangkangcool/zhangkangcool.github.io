@@ -39,7 +39,7 @@ for (pred_iterator PI = pred_begin(BB), E = pred_end(BB); PI != E; ++PI) {
 ```
 同样，为了迭代继承者，使用succ_iterator/succ_begin/succ_end。
 
-# 遍历指令
+## 遍历指令
 ## 在BasicBlock中迭代指令
 
 ```c++
@@ -75,7 +75,7 @@ for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I)
 
 
 
-# 遍历所有后继
+## 遍历所有后继
 
 ```c++
 for (auto I = CmpBB->succ_begin(), E = CmpBB->succ_end(); I != E; ++I)
@@ -89,7 +89,7 @@ MachineFunction::iterator MBBIter = ++MBB->getIterator();
 
 
 
-# iteration & value
+## iteration & value
 
 ```c++
 MachineBasicBlock::pred_iterator PI
@@ -101,7 +101,7 @@ MachineBasicBlock *MBPtr = *PI;
 
 
 
-# 遍历的对象不能修改
+## 遍历的对象不能修改
 
 #### `-DLLVM_ENABLE_EXPENSIVE_CHECKS=On`用此选项进行检测
 

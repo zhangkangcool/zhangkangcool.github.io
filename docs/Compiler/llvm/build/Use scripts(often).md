@@ -3,12 +3,12 @@ https://github.ibm.com/cdl-compiler/llvm/wiki/Use-script-to-build-&-test-llvm
 
 
 
-# Note
+## Note
 
 1. If you are using `buildllvm.sh` to build the master, you should add `--community` option. Or the case `log.test` will be failed. Detail see the issue 6452.
 2. Recofigure can use the option `--clobber` or `rm $LLVM_BUILD/CMakeCache.txt`, it will use `rm -rf *`.
 
-# On recycler
+## On recycler
 
 Below command is for master build, I have add `--community`. If you want to build wyvern_dev, you should remove the `--community`.
 

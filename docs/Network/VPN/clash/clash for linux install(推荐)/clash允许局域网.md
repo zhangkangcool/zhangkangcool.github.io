@@ -1,7 +1,3 @@
-
-
-
-
 # clash允许局域网
 
 VSCode AI回答
@@ -16,7 +12,7 @@ VSCode AI回答
 ## 具体行为（常见实现）
 
 - HTTP 代理（如端口 7890/7910 等）和 SOCKS5（如 7891）会绑定到 0.0.0.0 或 局域网 IP（例如 192.168.x.x），而不是仅绑定到 localhost（127.0.0.1）。
-- Web UI（通常是 9090）也会按 allow-lan 的配置可在局域网地址上访问（比如 [http://192.168.1.100:9090/ui）。](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)
+- Web UI（通常是 9090）也会按 allow-lan 的配置可在局域网地址上访问（比如 http://192.168.1.100:9090/ui）。
 - 有些安装脚本会同时开放端口转发或 iptables 规则以支持 TUN/透明代理，此时也会影响局域网可达性。
 
 ## 常见端口（仅作示例，实际端口以你的配置为准）

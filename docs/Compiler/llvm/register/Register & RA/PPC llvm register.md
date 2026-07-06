@@ -1,5 +1,5 @@
 # PPC llvm register
-# PPCGenRegisterInfo.inc
+## PPCGenRegisterInfo.inc
 
 可在对应的inc文件中看到详细的寄存器定义
 
@@ -79,7 +79,7 @@
 
 ------------
 
-# PPCRegisterInfo.td(可以看到PPC所有支持的寄存器)
+## PPCRegisterInfo.td(可以看到PPC所有支持的寄存器)
 
 `XER` `CARRY` `RM`
 

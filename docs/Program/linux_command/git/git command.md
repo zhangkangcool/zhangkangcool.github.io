@@ -1,5 +1,5 @@
 # git command
-#   1. reset & revert
+## 1. reset & revert
 
 ```
 https://blog.csdn.net/u012589515/article/details/66973734
@@ -63,7 +63,7 @@ git push --force
 - revert只是功能上面实现了看起来的‘回退’代码，实际是通过新的提交来覆盖之前的修改
 
 
-# 2. git commit --amend  --no-edit
+## 2. git commit --amend  --no-edit
 ```shell
 https://blog.csdn.net/zhujiangtaotaise/article/details/73505770
 https://blog.csdn.net/garfielder007/article/details/60885000
@@ -82,7 +82,7 @@ leader不abandon代码，你回去之后，修改出问题的Java文件，修改
 git push --force
 ```
 
-# 3. git pull
+## 3. git pull
 - 远程分支与本地分支进行同步。
 `git pull`提取远程分支代码到本地分支，不过可以冲突的话，需要解决冲突。
 可以通过 `git diff > diff.log 2>&1`来对diff进行备份，方便导入。
@@ -94,7 +94,7 @@ git pull
 
 ```
 
-# 4. git 删除分支
+## 4. git 删除分支
 
 - 在网站上查看分支
 
@@ -167,7 +167,7 @@ git add --all .        // 添加进来，正常情况下git add不会添加删�
 
 
 
-#  6. set multiple comments
+## 6. set multiple comments
 
 ```shell
 which vim
@@ -209,13 +209,13 @@ JIRA-ID:ABC-XXXX                       ------必填      （需求JIRA ID 或 �
 
 
 
-# 7. 查看远程仓库地址
+## 7. 查看远程仓库地址
 
 ```shell
 git remote -v
 ```
 
-# 8. git form one address to another address
+## 8. git form one address to another address
 ```shell
 git clone  /gsa/tlbgsa/projects/x/xlanalytics/public/gromacs/gromacs-2016-rc3/.git/
 cd gromacs-2016-rc3/
@@ -225,7 +225,7 @@ git push -u origin master
 ```
 
 
-# 9. git local
+## 9. git local
 Create the git log
 ```shell
 rm -rf .git
@@ -237,7 +237,7 @@ git push
 
 
 
-# 10. git checkout -f
+## 10. git checkout -f
 
 `git checkout -f`, `-f`会强制删除本地冲突，一定要非常小心，只对那些想删除的分支做此操作。
 
@@ -253,7 +253,7 @@ git branch -d shkzhang-dev
 
 
 
-# 11 git push
+## 11 git push
 
 `git push <远程主机名> <本地分支名>:<远程分支名>`
 

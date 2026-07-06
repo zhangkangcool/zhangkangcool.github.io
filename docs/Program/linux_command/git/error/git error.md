@@ -1,5 +1,5 @@
 # git error
-# git checkout
+## git checkout
 
 #### 1 The following untracked working tree files would be overwritten by checkout
 

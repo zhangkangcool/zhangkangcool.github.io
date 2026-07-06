@@ -1,3 +1,5 @@
+# README
+
 请将 Noto Sans SC 字体文件放到本目录（docs/assets/fonts/）。
 
 推荐下载来源：Google Noto 官方仓库或 Google Fonts（遵循其授权）。

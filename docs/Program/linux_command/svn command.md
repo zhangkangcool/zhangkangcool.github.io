@@ -5,14 +5,14 @@ https://github.ibm.com/cdl-compiler/llvm/wiki/How-to-check-in-LLVM-Phabricator-p
 
 https://llvm.org/docs/GettingStarted.html#checkout-via-svn-deprecated
 
-# 1. Discard local modify
+## 1. Discard local modify
 `svn revert filename`
 
 
-# How to Code Reviews with Phabricator
+## How to Code Reviews with Phabricator
 * http://llvm.org/docs/Phabricator.html
 
-# How to apply permission?
+## How to apply permission?
 
   1. Follow the below link to apply for an account.
      * http://llvm.org/docs/DeveloperPolicy.html#obtaining-commit-access  
@@ -20,7 +20,7 @@ https://llvm.org/docs/GettingStarted.html#checkout-via-svn-deprecated
 
 
 
-# SVN way
+## SVN way
 
 ## account and password
 

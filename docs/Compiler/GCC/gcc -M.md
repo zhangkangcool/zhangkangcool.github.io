@@ -1,7 +1,7 @@
 # gcc -M
 https://blog.csdn.net/pengfei240/article/details/53165151
 
-# 参数详解
+## 参数详解
 
 可用来查看，所使用的头文件，以及各种文件间的依赖关系。
 
@@ -30,7 +30,7 @@ https://blog.csdn.net/pengfei240/article/details/53165151
 
 
 
-# 例子
+## 例子
 
 ```c
 /* main.c */

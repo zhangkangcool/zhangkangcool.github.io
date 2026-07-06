@@ -8,7 +8,7 @@ lnt is the test-suite
 
 lit is the check-all
 
-# Viewing Results
+## Viewing Results
 
 ```shell
 lnt create ~/myperfdb

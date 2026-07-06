@@ -7,7 +7,7 @@ llc中使用的是`intrinsic`
 
 
 
-# 1 Target dependent
+## 1 Target dependent
 
 ## include/llvm/IR/IntrinsicsPowerPC.td
 
@@ -237,7 +237,7 @@ When you def the Intrinsic which has return vaule, and not use the flag `IntrNoM
 
 
 
-# 2 Target Independent
+## 2 Target Independent
 
 
 

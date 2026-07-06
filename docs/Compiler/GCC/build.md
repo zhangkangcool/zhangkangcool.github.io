@@ -1,5 +1,5 @@
 # gbuild
-# 1. Download site
+## 1. Download site
 
 ```shell
 http://ftp.gnu.org/gnu/gcc/gcc-6.2.0/
@@ -10,7 +10,7 @@ wget http://mirrors.ustc.edu.cn/gnu/gcc/gcc-6.2.0/gcc-6.2.0.tar.bz2
 ```
 
 
-# 2. Build & Install
+## 2. Build & Install
 https://blog.csdn.net/tianshi0007/article/details/52981360?locationNum=9&fps=1
 
 ```shell

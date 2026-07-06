@@ -1,5 +1,3 @@
-
-
 # clBuildProgram
 
 ## 1. 介绍

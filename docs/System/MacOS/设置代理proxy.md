@@ -1,5 +1,5 @@
 # 设置代理proxy
-# 命令行
+## 命令行
 
 ```shell
 alias vpn="ssh -D localhost:8080 lep824e1v -N"
@@ -8,7 +8,7 @@ alias vpn1="ssh -D localhost:8080 recycler -N"
 
 
 
-# Chrome
+## Chrome
 
 ![image-20191017105510158](assets/image-20191017105510158.png)
 
@@ -44,7 +44,7 @@ https://github.com/FelisCatus/SwitchyOmega/releases 可以下载crx
 
 
 
-# Firefox
+## Firefox
 
 192.168.5.10
 

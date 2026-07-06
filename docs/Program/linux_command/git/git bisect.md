@@ -5,7 +5,7 @@
 
 
 
-# git bisect 命令教程
+## git bisect 命令教程
 
 需要在`/hone/llvm`目录下运行命令。
 

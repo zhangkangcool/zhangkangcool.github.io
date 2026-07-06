@@ -1,8 +1,4 @@
-
-
-
-
-
+# add spirvæµè¯ç¨åº
 
 ```c++
 export LD_LIBRARY_PATH=/lib/aarch64-linux-gnu/mwv207:$LD_LIBRARY_PATH

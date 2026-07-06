@@ -1,7 +1,7 @@
 # use-define
 
 
-# 1. SSA Reg
+## 1. SSA Reg
 
 ```c++
   MachineRegisterInfo *MRI = &MI.getParent()->getParent()->getRegInfo();
@@ -318,7 +318,7 @@ MachineInstr *MachineRegisterInfo::getUniqueVRegDef(Register Reg) const {
 
 
 
-# 2. PostRA(not SSA)
+## 2. PostRA(not SSA)
 
 `PPCInstrInfo`提供`getDefMIPostRA()`方法。
 

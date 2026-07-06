@@ -7,7 +7,7 @@ llc sum.bc -march=mips -filetype=obj -o sum.o
 ```
 
 
-# debug option
+## debug option
 ### -print-after-all
 Print IR after each pass
 ```shell
@@ -49,7 +49,7 @@ Optimization level. [-O0, -O1, -O2, or -O3] (default = '-O2')
 
 ----------------
 
-# Bitcode
+## Bitcode
 
 ### llvm-as
 

@@ -30,7 +30,7 @@ https://www.jianshu.com/p/1a4fa57d4588?u_atoken=c98bf7c9-d0c0-42fb-9ac1-dd6fb590
 
 [XLA](https://links.jianshu.com/go?to=https%3A%2F%2Fwww.tensorflow.org%2Fxla)(Accelerated Linear Algebra)是专用于机器学习的编译器，机器学习的运算中99%都是向量乘以矩阵、矩阵乘以矩阵的计算，XLA是专门用来优化这些计算的。
 
-# How to
+## How to
 
 举个例子，运行在GPU上的`model_fn`函数会顺序调用`multiply`、`add`和`reduce_sum`这三个op，而且`multiply`，也就是`y * z`的计算结果会先从GPU拷贝回host，再拷贝到device作为`add`的input，同样的，add的计算结果也会以相同的方式传递给下一个op。
 
@@ -48,7 +48,7 @@ def model_fn(x, y, z):
 - 通过手写或codegen工具来开发fused op，例如在上述例子中就可以开发`tf.fused_reduce_sum(x, y, z)`。它的优点是代码可控性高，易于性能优化，但缺点是程序缺乏灵活性。像Pytorch这种动态图的框架走的就是这条路线，Nvidia的Apex提供有大量fused kernel，对fused kernel感兴趣的，可以读读[LayerNorm核心技术](https://www.jianshu.com/p/b6ab2128cea6)。
 - 通过XLA等AI编译器将python函数编译成fused op。这样做的好处是灵活性强，可以fuse任何计算，弊端则是开发难度大，且性能通常会逊色于手写或codegen kernel。
 
-# 性能
+## 性能
 
 XLA的优化当然不只是fuse，还有对计算图的优化，包括删除无效指令、减少内存占用、替换复杂指令等优化。下图是官方提供的性能报告，经XLA优化过后，Tensorflow BERT MLPerf的训练性能提升了~7倍。除了Tensorflow外，XLA还支持[JAX](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fgoogle%2Fjax)、[Julia](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FJuliaTPU%2FXLA.jl)、[PyTorch](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fpytorch%2Fxla)和[Nx](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Felixir-nx%2Fnx)等前端。
 
@@ -56,7 +56,7 @@ XLA的优化当然不只是fuse，还有对计算图的优化，包括删除无�
 
 https://www.tensorflow.org/xla
 
-# Just in time（JIT）
+## Just in time（JIT）
 
 `jit`是指在首次运行时将函数编译成二进制程序，后续再调用该函数时直接运行先前编译好的程序而非python code。`@tf.funciton`修饰的函数（包括它的子函数）会做`jit`。除非signature发生了变化，也就是input的shape或dtype和编译时不同，否则`get_MSE`是不需要重复编译的。
 
@@ -76,7 +76,7 @@ get_MSE(tf.ones([2, 2]), tf.ones([2, 2]) # compile again for new signature
 
 `@tf.function`将函数内的ops替换成一组（`XlaCompile`, `XlaRun`) ops，在运行时前者负责编译，并将编译结果--`executable`保存到cache，后者负责运行executable。如果cache里已经有编译好的程序就不需要编译了，例如`get_MSE(tf.constant(3.0), tf.constant(4.0))`。
 
-# HLO
+## HLO
 
 XLA编译器支持的语言（IR）是HLO（High Level Operations），顾名思义这些语言是由一个个op组成，因此，我们在编译前需要先从python code中提取出所有ops，再将它们转换成HLO。
 
@@ -84,7 +84,7 @@ JAX通过tracing的方式，从`@jax.jit`修饰的函数中提取ops，这些ops
 
 Tensorflow的`tf2xla`为每个`Op`创建了一个同名的`XlaOp`用于生成HLO，`XlaOp`派生于`Op`，使用相同的注册机制，因此，只要把要编译的子图根据拓扑排序运行一遍就能生成它的HLO。
 
-# 编译
+## 编译
 
 HLO先经过一系列`pass`优化后再将HLO lowering成ISA，最后将编译好的二进制封装到`executable`。
 
@@ -92,7 +92,7 @@ HLO先经过一系列`pass`优化后再将HLO lowering成ISA，最后将编译�
 
 https://www.tensorflow.org/xla/architecture
 
-# Executable
+## Executable
 
 除了二进制程序，它还包含运行该程序所需要的infos和options。调用`executable.run()`就可以执行计算图。
 

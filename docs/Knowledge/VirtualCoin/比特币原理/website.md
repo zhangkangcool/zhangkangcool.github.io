@@ -1,12 +1,12 @@
 # website
-# 1. Browser
+## 1. Browser
 
 ```shell
 https://blockchain.info/block-height/277316
 https://btc.com/1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA
 ```
 
-# 2. Install
+## 2. Install
 
 ubuntu下从源码编译比特币(Bitcoin)客户端
 ```shell
@@ -18,7 +18,7 @@ http://cache.baiducontent.com/c?m=9d78d513d99401ef05ad837f7d01d6150e54f13d678786
 https://www.cnblogs.com/wintersun/p/3813424.html
 ```
 
-# 3. Study
+## 3. Study
 
 比特币底层技术探秘
 ```shell

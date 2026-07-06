@@ -1,7 +1,3 @@
-
-
-
-
 # ubuntu上安装flatpak文件
 
 

@@ -9,7 +9,7 @@ https://blog.csdn.net/qq_34355232/article/details/87709418
 
 
 
-# python – subprocess Popen和call之间有什么区别(我如何使用它们)？
+## python – subprocess Popen和call之间有什么区别(我如何使用它们)？
 
 
 
@@ -56,7 +56,7 @@ try:
 
 
 
-# 1 subprocess.call
+## 1 subprocess.call
 
 
 

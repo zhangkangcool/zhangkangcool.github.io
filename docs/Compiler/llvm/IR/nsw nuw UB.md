@@ -17,7 +17,7 @@ http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
 
 
 
-# ADD NSW NUW
+## ADD NSW NUW
 
 ```asm
 <result> = add <ty> <op1>, <op2>          ; yields ty:result
@@ -55,7 +55,7 @@ An instruction that depends on a poison value, produces a poison value itself. A
 
 
 
-# Poison 
+## Poison 
 
 - Ephemeral effect of math instructions that violate
 
@@ -72,7 +72,7 @@ An instruction that depends on a poison value, produces a poison value itself. A
 
   
 
-# True undefined behavior
+## True undefined behavior
 
 #### True undefined behavior
 
@@ -88,7 +88,7 @@ An instruction that depends on a poison value, produces a poison value itself. A
 
 
 
-# 性质
+## 性质
 
 - OK to remove UB(加限制)
 
@@ -99,7 +99,7 @@ An instruction that depends on a poison value, produces a poison value itself. A
 
 
 
-# Example
+## Example
 
 `sgt`与`nsw`一致，`ugt`与`nuw`一致。
 
@@ -276,7 +276,7 @@ More case can be tested on the `alive`.
 
 
 
-# posion -> UB
+## posion -> UB
 
 Posion value是为了跟踪状态，看不否能最终角发UB。
 

@@ -1,10 +1,10 @@
 # llvm debug
-# GDB
+## GDB
 ### print I.dump()
 
 
 
-# llvm 
+## llvm 
 
 ```shell
 #include "llvm/Support/Debug.h"
@@ -14,7 +14,7 @@ dbgs() << __LINE__ << " zhangkang\n";
 
 
 
-# print in clang & llvm
+## print in clang & llvm
 
 ```c++
 #include "llvm/Support/Debug.h"

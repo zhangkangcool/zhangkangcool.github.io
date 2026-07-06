@@ -7,7 +7,7 @@ https://zhuanlan.zhihu.com/p/69406037(Important)
 
 
 
-# 1. 框架中的ISD结点
+## 1. 框架中的ISD结点
 
 非框架中的自定义的结果，不存在下面说的4种情况，只有一种情况，不需要调用`setOperationAction()`
 
@@ -153,7 +153,7 @@ For an operation without native support for a given type, the specified type may
 
 
 
-# 2 为架构添加原始支持的类型
+## 2 为架构添加原始支持的类型
 
 使用`addRegisterClass`来添加支持的类型，不支持的类型可以使用`setOperationAction(promote)`。
 

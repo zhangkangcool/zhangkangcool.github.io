@@ -30,7 +30,7 @@ pip uninstall shadowsocks # 出现错误的话，进行删除
 
 
 
-# 2. 源码安装3.0版本（推荐方式）
+## 2. 源码安装3.0版本（推荐方式）
 
 https://liqiang.io/post/aes-256-gcm-not-supported-solution-50fd04e3
 

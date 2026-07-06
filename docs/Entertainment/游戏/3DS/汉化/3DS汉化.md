@@ -1,3 +1,5 @@
+# 3DSæ±å
+
 \https://stray-soul.com/softwares.html
 
 视屏教程
@@ -6,7 +8,7 @@ https://www.bilibili.com/video/BV1h44y1K7eV/?vd_source=d08e560079f40cdcbcd81c7f2
 
 https://www.bilibili.com/video/BV1ct4y1L7Hx/
 
-# 3DS汉化
+## 3DS汉化
 
 汉化包：
 

@@ -265,7 +265,7 @@ set termencoding=utf-8              " Vim 与终端之间的编码
 
 
 
-# 设置使用指定的vimrc
+## 设置使用指定的vimrc
 
 https://segmentfault.com/q/1010000000411428
 

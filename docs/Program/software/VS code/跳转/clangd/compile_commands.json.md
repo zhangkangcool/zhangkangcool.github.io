@@ -1,3 +1,5 @@
+# compile_commands.json
+
 ## `compile_commands.json` 的生成机制
 
 ### 核心结论

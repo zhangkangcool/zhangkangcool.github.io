@@ -3,7 +3,7 @@ https://zhuanlan.zhihu.com/p/98565435
 
 https://zhuanlan.zhihu.com/p/462522388
 
-# TensorFlow XLA工作原理
+## TensorFlow XLA工作原理
 
 XLA是TensorFlow图表的编译器，只需添加少量代码，即可明显加速TensorFlow ML模型。下图是谷歌官方提供的XLA性能表现。
 

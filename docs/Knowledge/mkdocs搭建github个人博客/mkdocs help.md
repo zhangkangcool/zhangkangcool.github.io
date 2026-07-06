@@ -1,7 +1,7 @@
 # mkdocs help
 
 
-# Mkdocs命令简介
+## Mkdocs命令简介
 
 ```shell
 Usage: mkdocs [OPTIONS] COMMAND [ARGS]...

@@ -1,7 +1,7 @@
 # Ch2 生成初级MLIR
 
 
-# 生成初级MLIR
+## 生成初级MLIR
 
 https://mp.weixin.qq.com/s/jMHesvKmAUU5dYH0WznulA
 

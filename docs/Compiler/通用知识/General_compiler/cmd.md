@@ -1,5 +1,5 @@
 # cmd
-# Option
+## Option
 
 1. `-o -`输出到screen
 

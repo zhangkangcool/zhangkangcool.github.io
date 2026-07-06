@@ -1,5 +1,5 @@
 # inline assembly test
-# 1 How to write the inline assembly test program
+## 1 How to write the inline assembly test program
 https://github.ibm.com/cdl-compiler/llvm/issues/36 
 
 ### 1.1 The regsiter is allocation by compiler
@@ -118,7 +118,7 @@ int main() {
 }
 ```
 
-# 2 Bind the cpu to run the test program
+## 2 Bind the cpu to run the test program
 ### 2.1 See the cpu information
 ```shell
 cat /proc/cpuinfo

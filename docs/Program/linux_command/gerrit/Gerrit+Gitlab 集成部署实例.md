@@ -3,15 +3,15 @@
 
 
 
-# 一、创建Gerrit 项目工程
+## 一、创建Gerrit 项目工程
 
-# 1.1 创建工程
+## 1.1 创建工程
 
 登录账号后，点击Repositories -> CREATE NEW
 
 ![img](Untitled.assets/-174598052532729.assets)
 
-# 1.2 配置gerrit ssh key
+## 1.2 配置gerrit ssh key
 
 在 docker gerrit 容器中，创建gerrit， 并生成gerrit ssh-key (**仅第一次需要操作生成ssh -key**)
 
@@ -31,7 +31,7 @@ git config --global user.email "gerrit@ljm.com"
 ssh-keygen -t rsa -C gerrit@ljm.com
 ```
 
-# 二、创建Gitlab 项目工程
+## 二、创建Gitlab 项目工程
 
 - Step1: 创建和Gerrit 项目同名 的项目
 
@@ -47,7 +47,7 @@ ssh-keygen -t rsa -C gerrit@ljm.com
 
 - Step4: 为Gitlab 项目添加项目成员gerrit
 
-# 三、配置Gerrit同步项目到gitlab 
+## 三、配置Gerrit同步项目到gitlab 
 
 - Step1: Gerrit 项目同步到gitlab 是依赖于gerrit 中replication 插件， 请确保gerrit 安装此插件，并使能。（如果显示已经使能， 就不需要enable）
 
@@ -76,7 +76,7 @@ sudo docker ps
 docker restart <gerrit_container_id>
 ```
 
-# 四、Gerrit同步项目到gitlab 测试
+## 四、Gerrit同步项目到gitlab 测试
 
 4.1 拉取gerrit 代码
 
@@ -137,7 +137,7 @@ git push origin HEAD:refs/for/master
 
 ![img](Untitled.assets/-174598052529119.assets)
 
-# 五、实例CP101 部署实战
+## 五、实例CP101 部署实战
 
 ## 5.1、创建Gerrit cp101工程
 
@@ -184,7 +184,7 @@ sudo docker restart <gerrit 容器id>
 
 ![img](Untitled.assets/-174598052529126.assets)
 
-# 六、 Gerrit replication 插件调试技巧
+## 六、 Gerrit replication 插件调试技巧
 
 ## 6.1 查看log
 

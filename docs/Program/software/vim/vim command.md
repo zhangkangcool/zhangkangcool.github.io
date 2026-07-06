@@ -3,7 +3,7 @@
 
 
 
-# 1. color scheme
+## 1. color scheme
 
 http://blog.csdn.net/hjx5200/article/details/21789821
 
@@ -19,7 +19,7 @@ Set the scheme
 :colorscheme blue
 ```
 
-# 2. 翻页
+## 2. 翻页
 
 ```shell
 整页翻页 ctrl-f ctrl-b
@@ -39,7 +39,7 @@ zb 让光标所杂的行居屏幕最下一行 b=bottom
 
 
 
-# 3. 折叠
+## 3. 折叠
 
 https://blog.csdn.net/woshicsdn7547/article/details/45364047
 
@@ -77,7 +77,7 @@ zk      向上移动到前一折叠的结束处。关闭的折叠也被计入。
 
 
 
-# 4 查看历史
+## 4 查看历史
 
 #### 4.1 命令行模式下：
 

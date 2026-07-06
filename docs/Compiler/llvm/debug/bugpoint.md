@@ -1,5 +1,5 @@
 # bugpoint
-# LLVM bugpoint tool: design and usage
+## LLVM bugpoint tool: design and usage
 
 https://llvm.org/docs/Bugpoint.html
 
@@ -116,7 +116,7 @@ llvm-dis bugpoint-reduced-simplified.bc -o bugpoint-reduced-simplified.ll
 
 
 
-# Example
+## Example
 
 从`~/llvm/llvm/test/CodeGen/PowerPC/bdzlr.ll`中提取能用于测试`ppc-early-ret`pass的从`BCC->BCCLR`的小case。
 

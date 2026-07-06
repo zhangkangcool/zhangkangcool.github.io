@@ -1,6 +1,4 @@
-
-
-
+# chain
 
 不是。`let hasSideEffects = 1` **本身不会“加 chain”**。
 

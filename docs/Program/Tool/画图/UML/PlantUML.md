@@ -1,7 +1,7 @@
 # PlantUML
 
 
-# 1. 快速使用
+## 1. 快速使用
 
 在线的plantuml，本地版是依赖于java和graphviz的。
 

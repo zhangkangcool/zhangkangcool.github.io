@@ -1,7 +1,7 @@
 # Mac shortcut
 https://www.jianshu.com/p/e6c364084c22
 
-# Control
+## Control
 ```shell
 Ctrl+a：光标回到命令行首。 （a：ahead）
 Ctrl+e：光标回到命令行尾。 （e：end） 
@@ -46,7 +46,7 @@ command + option + V: cut
 
 
 
-# 全屏时显示DOCK
+## 全屏时显示DOCK
 
 http://mos86.com/22189.html
 
@@ -54,7 +54,7 @@ http://mos86.com/22189.html
 
 
 
-# 截图
+## 截图
 
 - Shift+command+3 全屏幕截图
 

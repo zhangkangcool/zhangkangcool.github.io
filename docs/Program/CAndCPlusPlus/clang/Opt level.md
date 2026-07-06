@@ -79,7 +79,7 @@ optimization is done at link time. -O1 is somewhere between -O0 and -O2.
 
 `gcc -O` is equal `gcc -O1`. 
 
-# How to use
+## How to use
 
 the `opt` is defaut use the ll file or bc file. And the output is bc file. If you want to the output is ll file, you should use the `-S`.
 ```

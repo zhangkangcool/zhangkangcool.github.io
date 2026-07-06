@@ -1,5 +1,5 @@
 # shrotcut
-# Mac
+## Mac
 
 ### 1. 向前/向后
 

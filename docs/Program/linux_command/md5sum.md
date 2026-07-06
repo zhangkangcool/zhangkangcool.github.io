@@ -7,7 +7,7 @@ http://linux.51yip.com/search/md5sum
 
 比*md5*更安全的校验*[**算法**](http://lib.csdn.net/base/datastructure)*还有*SHA**系列如`sha512sum`
 
-# 1. md5sum
+## 1. md5sum
 
 ### 1.1 用法
 
@@ -66,7 +66,7 @@ lua-5.3.4.tar.gz: OK
 
 
 
-#  2. sha512sum
+## 2. sha512sum
 
 `sha1sum/sha224sum/sha256sum/sha384sum/sha512sum`
 

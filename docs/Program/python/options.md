@@ -1,7 +1,7 @@
 # options
 
 
-# 1 `--user`
+## 1 `--user`
 
 利用 pip 安装 Python 程序包到个人用户文件夹下
 

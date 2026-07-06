@@ -1,3 +1,5 @@
+# clangd(cix-compiler)
+
 当前项目的 `.vscode/settings.json`
 
 

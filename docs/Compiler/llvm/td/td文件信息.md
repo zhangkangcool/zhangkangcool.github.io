@@ -7,7 +7,7 @@ https://blog.csdn.net/fs3296/article/details/141831812
 
 
 
-# 定义指令
+## 定义指令
 
 td通过class Instruction来定义指令，其各个字段意义如下：
 
@@ -32,7 +32,7 @@ TSFlags：
 
 
 
-# . 定义SDNode
+## . 定义SDNode
 SDNode用于定义一个dag节点，它分别有如下重要参数：
 
 ```asm
@@ -56,7 +56,7 @@ constraints：节点输出/入的约束；
 
 
 
-# 3. PatFrags
+## 3. PatFrags
 例如store节点包括unindexed store、normal store、trunc store等，怎么分别定义这些SDNode呢？这时PatFrags就派上用场，其主要的参数如下：
 
 ```c++
@@ -112,7 +112,7 @@ def i32immSExt8_su : PatLeaf<(i32immSExt8), [{
 
 
 
-# 4 ComplexPattern
+## 4 ComplexPattern
 
 ComplexPattern可用于从节点中提前操作数。例如地址有基地址、偏移、scale等组成，这时ComplexPattern派上用场。其各个字段意义如下：
 
@@ -149,7 +149,7 @@ bool X86DAGToDAGISel::selectAddr(SDNode *Parent, SDValue N, SDValue &Base,
 
 
 
-# 5. 谓词条件
+## 5. 谓词条件
 谓词条件表示匹配或定义有效的前置条件。除了前面各个record中表示谓词的字段。还有一种定义谓词的通用方式，就是def的record多重继承class Requires< list < Predicate > preds >。其中Predicate定义的谓词一般访问Subtarget实现返回条件布尔值。
 
 

@@ -3,7 +3,7 @@ https://releases.llvm.org/1.3/docs/CodeGenerator.html
 
 
 
-# BuildMI
+## BuildMI
 
 Implicit operands必须在explicit operands之后。
 
@@ -162,7 +162,7 @@ Below is the def of `BLCR`
 
 
 
-# MachineInstrBuilder
+## MachineInstrBuilder
 
 This function will be called by `BuildMi()`.  Modify the existed instruction.
 

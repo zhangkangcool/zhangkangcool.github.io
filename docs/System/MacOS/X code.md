@@ -1,5 +1,5 @@
 # X code
-# 使用`cmake`产生`xcode`所需的配置文件
+## 使用`cmake`产生`xcode`所需的配置文件
 
 ```shell
 cmake -G "Xcode" $HOME/llvm/llvm -DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DCMAKE_C_COMPILER=/usr/bin/gcc
@@ -16,7 +16,7 @@ Then, you can use `xcode` to open `/Users/ken/llvm-project/xcode-build/LLVM.xcod
 
 
 
-# Settings
+## Settings
 
 https://www.jianshu.com/p/07a281ff57d3
 
@@ -38,7 +38,7 @@ https://www.jianshu.com/p/07a281ff57d3
 
 
 
-# ShortCut
+## ShortCut
 
 ## 切换头文件和cpp文件，很实用
 

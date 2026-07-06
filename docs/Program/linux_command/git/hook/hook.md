@@ -5,7 +5,7 @@ https://zhuanlan.zhihu.com/p/521707440
 
 
 
-#  1. 设置git模板(不推荐)
+## 1. 设置git模板(不推荐)
 
 这里是输入`git commit`时的输出信息，不会强制进行check
 
@@ -36,7 +36,7 @@ JIRA-ID:ABC-XXXX                       ------必填      （需求JIRA ID 或 �
 
 
 
-# 2. 使用hook(推荐方式)
+## 2. 使用hook(推荐方式)
 
 强制check
 

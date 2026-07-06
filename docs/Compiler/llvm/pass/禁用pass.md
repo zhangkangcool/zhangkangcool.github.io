@@ -3,7 +3,7 @@
 
 
 
-#  1. 以下是禁用llvm/lib/CodeGen下的pass
+## 1. 以下是禁用llvm/lib/CodeGen下的pass
 
 
 
@@ -78,7 +78,7 @@ static cl::opt<bool> DisablePostRAMachineSink("disable-postra-machine-sink",
 
 
 
-# 2.  以下是禁用llvm/lib/Transforms下的pass
+## 2.  以下是禁用llvm/lib/Transforms下的pass
 
 
 

@@ -52,7 +52,7 @@
 
 ## 2. 详细步骤
 
-#### **1. clBuildProgram 入口** ([clBuildProgram.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
+#### **1. clBuildProgram 入口** (clBuildProgram.c)
 
 ```c++
 CL_API_ENTRY cl_int CL_API_CALL
@@ -76,7 +76,7 @@ POname(clBuildProgram)(cl_program program,
 
 
 
-#### **2. 核心编译函数** ([lib/CL/pocl_build.c:612](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
+#### **2. 核心编译函数** (lib/CL/pocl_build.c:612)
 
 ```c++
 int compile_and_link_program(...)
@@ -113,7 +113,7 @@ int compile_and_link_program(...)
 
 
 
-#### **3. 驱动层编译** ([common_driver.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
+#### **3. 驱动层编译** (common_driver.c)
 
 ```c++
 int pocl_driver_build_source(cl_program program, cl_uint device_i, ...)
@@ -129,7 +129,7 @@ int pocl_driver_build_source(cl_program program, cl_uint device_i, ...)
 
 
 
-#### **4. LLVM 编译管线** ([pocl_llvm_build.cc](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
+#### **4. LLVM 编译管线** (pocl_llvm_build.cc)
 
 ```c++
 int pocl_llvm_build_program(cl_program program, unsigned device_i, ...)
@@ -251,13 +251,13 @@ smallgrid        → 小网格优化（max_grid_width < 设备限制）
 
 - | 功能             | 文件路径                                                     | 行数 |
   | ---------------- | ------------------------------------------------------------ | ---- |
-  | **API 入口**     | [clBuildProgram.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 37   |
-  | **编译协调**     | [pocl_build.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 612  |
-  | **驱动接口**     | [common_driver.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 721  |
-  | **LLVM 编译**    | [pocl_llvm_build.cc](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 209  |
-  | **缓存管理**     | [pocl_cache.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 全文 |
-  | **pthread 驱动** | [pthread.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 全文 |
-  | **basic 驱动**   | [basic.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) | 全文 |
+  | **API 入口**     | clBuildProgram.c | 37   |
+  | **编译协调**     | pocl_build.c | 612  |
+  | **驱动接口**     | common_driver.c | 721  |
+  | **LLVM 编译**    | pocl_llvm_build.cc | 209  |
+  | **缓存管理**     | pocl_cache.c | 全文 |
+  | **pthread 驱动** | pthread.c | 全文 |
+  | **basic 驱动**   | basic.c | 全文 |
 
 - 
 

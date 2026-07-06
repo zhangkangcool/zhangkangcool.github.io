@@ -131,7 +131,7 @@ PPCInstrInfo.td:def SUBIC_rec : PPCAsmPseudo<"subic. $rA, $rB, $imm",
 
 
 
-# InstAlias
+## InstAlias
 
 InstAlias<def LA中的`la $rD, $sym($rA)`, (def ADDI中的addi $rD, $rA, $imm加上类型)>
 

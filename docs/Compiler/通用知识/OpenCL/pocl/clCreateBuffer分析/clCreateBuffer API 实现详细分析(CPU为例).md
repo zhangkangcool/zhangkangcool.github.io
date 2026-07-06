@@ -1,9 +1,6 @@
-
-
 # clCreateBuffer API 实现详细分析
 
-# 
-
+## 
 ## 📋 概览
 
 `clCreateBuffer` 是 OpenCL 中用于创建缓冲区对象的核心 API。在 PoCL 中，这个函数负责:

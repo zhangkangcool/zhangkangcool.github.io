@@ -71,7 +71,7 @@ live range：这里采取文献 [Register Allocation](https://web.stanford.edu/c
 
 
 
-# 6 参考文献
+## 6 参考文献
 [1] [Register Allocation in LLVM 3.0](http://llvm.org/devmtg/2011-11/Olesen_RegisterAllocation.pdf)
 [2] [Hacker News - Register Allocation](https://news.ycombinator.com/item?id=9754013)
 [3] [Linear Scan Register Allocation](http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf)

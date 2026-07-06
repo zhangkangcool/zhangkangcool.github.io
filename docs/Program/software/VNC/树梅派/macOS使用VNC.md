@@ -1,5 +1,3 @@
-
-
 # MacOS安装RealVNC
 
 

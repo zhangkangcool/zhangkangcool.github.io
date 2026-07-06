@@ -3,7 +3,7 @@ https://home.x-wan.top/archives/mi-ax6s-jiu
 
 
 
-# 红米AX6S救砖教程
+## 红米AX6S救砖教程
 
 
 

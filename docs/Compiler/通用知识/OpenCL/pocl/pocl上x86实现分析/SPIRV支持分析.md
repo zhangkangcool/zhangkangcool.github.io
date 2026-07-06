@@ -78,7 +78,7 @@ clBuildProgram(program, 1, &device, NULL, NULL, NULL);
 
 
 
-**实现路径**（[clCreateProgramWithIL.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)）：
+**实现路径**（clCreateProgramWithIL.c）：
 
 ```c++
 cl_program clCreateProgramWithIL(...)
@@ -103,7 +103,7 @@ cl_program clCreateProgramWithIL(...)
 
 
 
-**编译时转换**（[common_driver.c](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html)）：
+**编译时转换**（common_driver.c）：
 
 ```c++
 static int pocl_regen_spirv_binary(cl_program program, cl_uint device_i)

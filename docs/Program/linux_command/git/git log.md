@@ -1,11 +1,11 @@
 # git log
-# 1 git reflog
+## 1 git reflog
 
 该命令可以查看最近所有的HEAD变化，一般用于恢复。查看git reset的用法md
 
 
 
-# 2 git log查看两次commit之间的commit
+## 2 git log查看两次commit之间的commit
 
 https://blog.csdn.net/robertsong2004/article/details/46893211
 
@@ -49,7 +49,7 @@ git log --pretty=oneline ^tagA tagB
 
 
 
-# 3 git log查看记录信息
+## 3 git log查看记录信息
 
 默认git log 出来的格式并不是特别直观，很多时候想要更简便的输出更多或者更少的信息，这里列出几个git log的format。
 可以根据自己的需要定制。

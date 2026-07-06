@@ -13,7 +13,7 @@ https://www.4spaces.org/how-to-use-shadowrocket/
 
 
 
-# 配置文件（设置哪些过滤，哪些直连）
+## 配置文件（设置哪些过滤，哪些直连）
 
 连接上VPN后，才能进行下载
 

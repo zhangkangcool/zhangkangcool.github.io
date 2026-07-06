@@ -1,5 +1,5 @@
 # print format
-# print.format
+## print.format
 
 此方法是推荐方法
 
@@ -27,7 +27,7 @@ https://www.cnblogs.com/qinchao0317/p/10699717.html
 
 
 
-# format用法
+## format用法
 
  相对基本格式化输出采用‘%’的方法，format()功能更强大，该函数把字符串当成一个模板，通过传入的参数进行格式化，并且使用大括号‘{}’作为特殊字符代替‘%’
 
@@ -284,7 +284,7 @@ conversion ::= "r" | "s" | "a"
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
-# format的用法变形
+## format的用法变形
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 

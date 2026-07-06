@@ -1,5 +1,5 @@
 # get pgo info
-# 静态分析
+## 静态分析
 
 `lib/Analysis/BranchProbabilityInfo.cpp`
 
@@ -26,7 +26,7 @@
 
 
 
-# 判断和使用PGO优化
+## 判断和使用PGO优化
 
 `./lib/Passes/PassBuilder.cpp`
 

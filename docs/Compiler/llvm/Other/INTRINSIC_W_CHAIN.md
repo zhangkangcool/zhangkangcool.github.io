@@ -1,8 +1,4 @@
-
-
-
-
-
+# INTRINSIC_W_CHAIN
 
 ```cpp
 setOperationAction(ISD::INTRINSIC_W_CHAIN, MVT::i32, Custom);
