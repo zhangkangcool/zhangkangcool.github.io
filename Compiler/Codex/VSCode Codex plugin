@@ -1,0 +1,20 @@
+
+
+
+
+VSCode无法正常加载codex时，
+
+```shell
+killall code
+# 清理Codex会话
+for db in ~/.config/Code/User/workspaceStorage/*/state.vscdb; do
+sqlite3 "$db" "delete from ItemTable where key like '%codex%';"
+done
+rm -rf ~/.config/Code/User/globalStorage/openai.codex*
+# 清理全局缓存
+rm -rf ~/.cache/Code ~/.config/Code/Cache ~/.config/Code/CachedData
+# 修复权限
+sudo chown -R $USER:$USER ~/.config/Code ~/.cache/Code ~/.vscode
+code
+```
+

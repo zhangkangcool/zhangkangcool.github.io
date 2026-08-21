@@ -1,0 +1,54 @@
+https://www.cnblogs.com/WangHaiMing/p/9553678.html
+
+
+
+# [chrome浏览器控制台创建js脚本并执行](https://www.cnblogs.com/WangHaiMing/p/9553678.html)
+
+Chrome的snippets是小脚本，还可以创作并在Chrome DevTools的来源面板中执行。您可以访问和从任何页面运行它们。当你运行一个片段，它从当前打开的页面的上下文中执行。本文主要讲如何使用，并完成一个页面自动刷新的功能。
+
+### 第一步
+
+首先f12 打开开发者工具，再打开Sources面板中，单击上Snippets选项卡，在导航器中单击鼠标右键，然后选择New。
+
+![img](https://images2018.cnblogs.com/blog/1241406/201808/1241406-20180829130001655-765953396.jpg)
+
+### 第二步
+
+在编辑器中输入代码。当你有未保存的更改，您的脚本名称旁边有“*”，像下面的截图。按Command+S（Mac）或Ctrl+S（Windows和Linux），以保存更改。
+
+![img](https://images2018.cnblogs.com/blog/1241406/201808/1241406-20180829130301689-1249908280.jpg)
+
+### 第三步运行你的代码片段
+
+有三种方式：
+1、在片段文件名（在左侧窗格中列出了所有的片段）右键单击并选择“RUN”。
+2、点击运行按钮（▶）。
+3、按Command+Enter（Mac）或Ctrl+Enter（Windows和Linux）。
+
+![img](https://images2018.cnblogs.com/blog/1241406/201808/1241406-20180829130531615-1488978366.png)
+
+这就可以完成当前网页的自动刷新了，代码如下:
+
+```JS
+timeout = prompt("Set timeout (Second):");  // 弹出对话框输入
+count = 0
+current = location.href;
+if (timeout > 0)
+  setTimeout('reload()',1000 * timeout);
+else
+  location.replace(current);
+
+function reload() {
+  setTimeout('reload()', 1000 * timeout);
+  count++;
+  console.log('每（' + timeout + '）秒自动刷新,刷新次数：' + count);   // 在控制台进行输出
+  fr4me = '<frameset cols=\'*\'>\n<frame src=\'' + current + '\'/>';
+  fr4me += '</frameset>';
+  with(document) {
+    write(fr4me);
+    void(close())
+  };
+}
+```
+
+标签: [js](https://www.cnblogs.com/WangHaiMing/tag/js/)
