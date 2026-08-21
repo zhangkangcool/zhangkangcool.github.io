@@ -85,6 +85,9 @@ the `opt` is defaut use the ll file or bc file. And the output is bc file. If yo
 ```
 opt -O3 sum.ll -o sum.O3.ll
 opt -O3 sum.ll -o sum.O3.ll -S
+
+opt -passes="mem2reg,default<O3>,instcombine" -S resnet50.ll -o resnet50_opt.ll
+
 ```
 
 

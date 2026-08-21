@@ -1,6 +1,6 @@
 # clangd(llvm-project)
 
-根目标下的clangd文件
+根目标下的`.clangd`文件
 
 ```json
 ---
@@ -52,6 +52,8 @@ Diagnostics:
 
 
 `.vscode/settings.json`
+
+需要使用compile_commands.json
 
 ```json
 {

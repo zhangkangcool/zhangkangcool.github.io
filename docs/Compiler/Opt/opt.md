@@ -9,11 +9,15 @@
 
 
 
-```shell
+````shell
 opt -O3 main.ll -S -o test.ll --debug-pass-manager > opt3.log 
 
 opt -O3 main.ll -S -o test.ll --debug-pass=Structure > opt3.log 
+
 ```
+opt -passes="default<O3>" --print-pipeline-passes resnet50.ll -S -o /dev/null
+```
+````
 
 
 

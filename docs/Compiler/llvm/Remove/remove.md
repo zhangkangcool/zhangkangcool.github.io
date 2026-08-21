@@ -1,9 +1,0 @@
-# remove
-
-
-
-
-```c++
-RecursivelyDeleteTriviallyDeadInstructions(OldMi);
-```
-
